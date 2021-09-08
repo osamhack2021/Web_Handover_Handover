@@ -2,7 +2,7 @@
 해당 내용은 모두 예시이며 설명이 부족하거나 추가하고싶은 부분이 있으면 개발자님이 추가해서 작성하셔도 무관합니다. (동영상, 이미지, 텍스트 적용 전부 자유)
 
 
-# Project name or Logo
+# Handover
 ![Logo](https://logosbynick.com/wp-content/uploads/2018/03/final-logo-example.png)
 
 프로젝트명 또는 프로젝트 로고 이미지 **(택1)**
@@ -20,20 +20,20 @@
 
 ## 기술 스택 (Technique Used) 
 ### Server(back-end)
- -  nodejs, php, java 등 서버 언어 버전 
- - express, laravel, sptring boot 등 사용한 프레임워크 
- - DB 등 사용한 다른 프로그램 
+ - nodejs 14.17.6
+ - expressjs
+ - MariaDB, MongoDB
  
 ### Front-end
- -  react.js, vue.js 등 사용한 front-end 프레임워크 
- -  UI framework
+ - react.js
+ - UI framework
  - 기타 사용한 라이브러리
 
 ## 설치 안내 (Installation Process)
 ```bash
-$ git clone git주소
-$ yarn or npm install
-$ yarn start or npm run start
+$ git clone osamhack2021/App_Flutter_Web_Express_Handover_TeamName
+$ yarn install
+$ yarn start
 ```
 
 ## 프로젝트 사용법 (Getting Started)
