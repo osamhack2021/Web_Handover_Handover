@@ -1,0 +1,36 @@
+version: '3.3'
+services:
+  redis:
+    image: 'redis'
+    ports:
+     - '6379:6379'
+    restart: always
+    volumes:
+     - ./docker-config/redis_volumes:/var/lib/redis
+     - ./docker-config/redis.conf:/var/lib/redis.conf
+  mariadb:
+    image: mariadb:10.4.6
+    restart: always
+    environment:
+     - MYSQL_ROOT_PASSWORD=codespace
+     - TZ=Asia/Seoul
+    volumes:
+     - ./docker-config/mariadb/db_volumes:/var/lib/mysql
+     - ./docker-config/mariadb/initcnf:/etc/mysql/conf.d
+     - ./docker-config/mariadb/initsql:/docker-entrypoint-initdb.d
+    ports:
+     - '3306:3306'
+    depends_on:
+      - redis
+  backend:
+    build:
+      context: ./backend 
+    container_name: express
+    ports:
+     - '3000:3000'
+#    expose:
+#      - "3000"
+    volumes:
+      - ./backend:/backend 
+      - /backend/node_modules
+    restart: "unless-stopped"
