@@ -5,9 +5,11 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
 var app = express();
+
+const maria = require('./maria');
+maria.connect();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -20,7 +22,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 app.listen(3000, () => {
   console.log(`Example app listening at http://localhost:3000`)

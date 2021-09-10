@@ -2,14 +2,18 @@ version: '3.3'
 services:
   redis:
     image: 'redis'
+    container_name: redis
     ports:
      - '6379:6379'
     restart: always
     volumes:
      - ./docker-config/redis_volumes:/var/lib/redis
      - ./docker-config/redis.conf:/var/lib/redis.conf
+    networks: 
+      - net
   mariadb:
     image: mariadb:10.4.6
+    container_name: mariadb
     restart: always
     environment:
      - MYSQL_ROOT_PASSWORD=codespace
@@ -22,6 +26,8 @@ services:
      - '3306:3306'
     depends_on:
       - redis
+    networks: 
+      - net
   backend:
     build:
       context: ./backend 
@@ -34,3 +40,11 @@ services:
       - ./backend:/backend 
       - /backend/node_modules
     restart: "unless-stopped"
+    depends_on:
+      - mariadb
+      - redis
+    networks: 
+      - net
+networks:
+  net:
+    driver: bridge
