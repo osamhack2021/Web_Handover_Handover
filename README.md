@@ -57,7 +57,7 @@ $ yarn start
     <tr>
         <td width="100" align="center">
             <a href="https://github.com/ntcho">
-                <img src="https://via.placeholder.com/150" width="60" height="60" style="border-radius: 50%;">
+                <img src="https://user-images.githubusercontent.com/13298429/132792476-1880bc9e-6e0f-4abb-8d45-a4ca38a3e218.jpg" width="60" height="60" style="border-radius: 50%;">
             </a>
         </td>
         <td width="100" align="center">조나단</td>
