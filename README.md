@@ -57,7 +57,7 @@ $ yarn start
     <tr>
         <td width="100" align="center">
             <a href="https://github.com/ntcho">
-                <img src="https://user-images.githubusercontent.com/13298429/132792476-1880bc9e-6e0f-4abb-8d45-a4ca38a3e218.jpg" width="60" height="60" style="border-radius: 50%;">
+                <img src="https://user-images.githubusercontent.com/13298429/132793750-33ab9941-00f3-4ee9-8401-adbf95201806.png" width="60" height="60">
             </a>
         </td>
         <td width="100" align="center">조나단</td>
@@ -79,7 +79,7 @@ $ yarn start
     <tr>
         <td width="100" align="center">
             <a href="https://github.com/holymollyhao">
-                <img src="https://via.placeholder.com/150" width="60" height="60" style="border-radius: 50%;">
+                <img src="https://via.placeholder.com/150" width="60" height="60">
             </a>
         </td>
         <td width="100" align="center">김태원</td>
@@ -100,7 +100,7 @@ $ yarn start
     <tr>
         <td width="100" align="center">
             <a href="https://github.com/phjppo0918">
-                <img src="https://via.placeholder.com/150" width="60" height="60" style="border-radius: 50%;">
+                <img src="https://via.placeholder.com/150" width="60" height="60">
             </a>
         </td>
         <td width="100" align="center">박현준</td>
@@ -121,7 +121,7 @@ $ yarn start
     <tr>
         <td width="100" align="center">
             <a href="https://github.com/ahnavocado">
-                <img src="https://via.placeholder.com/150" width="60" height="60" style="border-radius: 50%;">
+                <img src="https://via.placeholder.com/150" width="60" height="60">
             </a>
         </td>
         <td width="100" align="center">안수겸</td>
@@ -143,7 +143,7 @@ $ yarn start
     <tr>
         <td width="100" align="center">
             <a href="https://github.com/134130">
-                <img src="https://via.placeholder.com/150" width="60" height="60" style="border-radius: 50%;">
+                <img src="https://via.placeholder.com/150" width="60" height="60">
             </a>
         </td>
         <td width="100" align="center">오지환</td>
@@ -164,7 +164,7 @@ $ yarn start
     <tr>
         <td width="100" align="center">
             <a href="https://github.com/cw00h">
-                <img src="https://via.placeholder.com/150" width="60" height="60" style="border-radius: 50%;">
+                <img src="https://via.placeholder.com/150" width="60" height="60">
             </a>
         </td>
         <td width="100" align="center">최우혁</td>
