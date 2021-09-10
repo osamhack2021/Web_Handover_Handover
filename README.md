@@ -33,7 +33,6 @@ $ yarn start
 ```
 
 ## 프로젝트 사용법 (Getting Started)
-**마크다운 문법을 이용하여 자유롭게 기재**
 
 잘 모를 경우
 구글 검색 - 마크다운 문법
@@ -44,14 +43,147 @@ $ yarn start
  
 ## 팀 정보 (Team Information)
 
-| 이름 | 역할 | GitHub | Email |
-|------|:------|--------|-------|
-|조나단|팀장|       |
-|김태원|프론트엔드|        |       |
-|박현준|백엔드|[phjppo0918](https://github.com/phjppo0918)|phjppo0918@gmail.com|
-|안수겸|디자인|        |       |
-|오지환|백엔드|        |       |
-|최우혁|프론트엔드|        |       |
+<table width="788">
+    <thead>
+    <tr>
+        <th width="100" align="center">사진</th>
+        <th width="100" align="center">이름</th>
+        <th width="150" align="left">역할</th>
+        <th width="100" align="center">GitHub</th>
+        <th width="175" align="center">이메일</th>
+    </tr> 
+    </thead>
+    <tbody>
+    <tr>
+        <td width="100" align="center">
+            <a href="https://github.com/ntcho">
+                <img src="https://via.placeholder.com/150" width="60" height="60" style="border-radius: 50%;">
+            </a>
+        </td>
+        <td width="100" align="center">조나단</td>
+        <td width="150">
+            팀장<br>
+            프론트엔드 개발
+        </td>
+        <td width="100" align="center">
+            <a href="https://github.com/ntcho">
+                <img src="http://img.shields.io/badge/ntcho-green?style=social&logo=github"/>
+            </a>
+        </td>
+        <td width="175" align="center">
+            <a href="mailto:ntcho13@gmail.com">
+                <img src="https://img.shields.io/badge/ntcho13@gmail.com-green?logo=gmail&style=social">
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td width="100" align="center">
+            <a href="https://github.com/holymollyhao">
+                <img src="https://via.placeholder.com/150" width="60" height="60" style="border-radius: 50%;">
+            </a>
+        </td>
+        <td width="100" align="center">김태원</td>
+        <td width="150">
+            프론트엔드 개발
+        </td>
+        <td width="100" align="center">
+            <a href="https://github.com/holymollyhao">
+                <img src="http://img.shields.io/badge/holymollyhao-green?style=social&logo=github"/>
+            </a>
+        </td>
+        <td width="175" align="center">
+            <a href="mailto:maxkim139@gmail.com">
+                <img src="https://img.shields.io/badge/maxkim139@gmail.com-green?logo=gmail&style=social">
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td width="100" align="center">
+            <a href="https://github.com/phjppo0918">
+                <img src="https://via.placeholder.com/150" width="60" height="60" style="border-radius: 50%;">
+            </a>
+        </td>
+        <td width="100" align="center">박현준</td>
+        <td width="150">
+            백엔드 개발
+        </td>
+        <td width="100" align="center">
+            <a href="https://github.com/phjppo0918">
+                <img src="http://img.shields.io/badge/phjppo0918-green?style=social&logo=github"/>
+            </a>
+        </td>
+        <td width="175" align="center">
+            <a href="mailto:phjppo0918@gmail.com">
+                <img src="https://img.shields.io/badge/phjppo0918@gmail.com-green?logo=gmail&style=social">
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td width="100" align="center">
+            <a href="https://github.com/ahnavocado">
+                <img src="https://via.placeholder.com/150" width="60" height="60" style="border-radius: 50%;">
+            </a>
+        </td>
+        <td width="100" align="center">안수겸</td>
+        <td width="150">
+            디자인<br>
+            프론트엔드 개발
+        </td>
+        <td width="100" align="center">
+            <a href="https://github.com/ahnavocado">
+                <img src="http://img.shields.io/badge/ahnavocado-green?style=social&logo=github"/>
+            </a>
+        </td>
+        <td width="175" align="center">
+            <a href="mailto:ahn.avocado@gmail.com">
+                <img src="https://img.shields.io/badge/ahn.avocado@gmail.com-green?logo=gmail&style=social">
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td width="100" align="center">
+            <a href="https://github.com/134130">
+                <img src="https://via.placeholder.com/150" width="60" height="60" style="border-radius: 50%;">
+            </a>
+        </td>
+        <td width="100" align="center">오지환</td>
+        <td width="150">
+            백엔드 개발
+        </td>
+        <td width="100" align="center">
+            <a href="https://github.com/134130">
+                <img src="http://img.shields.io/badge/134130-green?style=social&logo=github"/>
+            </a>
+        </td>
+        <td width="175" align="center">
+            <a href="mailto:sapindus_hwan@naver.com">
+                <img src="https://img.shields.io/badge/sapindus_hwan@naver.com-green?logo=naver&style=social">
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td width="100" align="center">
+            <a href="https://github.com/cw00h">
+                <img src="https://via.placeholder.com/150" width="60" height="60" style="border-radius: 50%;">
+            </a>
+        </td>
+        <td width="100" align="center">최우혁</td>
+        <td width="150">
+            프론트엔드 개발
+        </td>
+        <td width="100" align="center">
+            <a href="https://github.com/cw00h">
+                <img src="http://img.shields.io/badge/cw00h-green?style=social&logo=github"/>
+            </a>
+        </td>
+        <td width="175" align="center">
+            <a href="mailto:00cwooh@snu.ac.kr">
+                <img src="https://img.shields.io/badge/00cwooh@snu.ac.kr-green?logo=gmail&style=social">
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
 ## 저작권 및 사용권 정보 (Copyleft / End User License)
  * [MIT](https://github.com/osam2020-WEB/Sample-ProjectName-TeamName/blob/master/license.md)
