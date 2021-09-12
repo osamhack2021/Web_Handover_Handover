@@ -79,7 +79,7 @@ $ yarn start
     <tr>
         <td width="100" align="center">
             <a href="https://github.com/holymollyhao">
-                <img src="https://via.placeholder.com/150" width="60" height="60">
+                <img src="https://user-images.githubusercontent.com/13298429/132990109-6c65271f-431b-460a-98bb-d59ad00b1024.png" width="60" height="60">
             </a>
         </td>
         <td width="100" align="center">김태원</td>
@@ -100,7 +100,7 @@ $ yarn start
     <tr>
         <td width="100" align="center">
             <a href="https://github.com/phjppo0918">
-                <img src="https://via.placeholder.com/150" width="60" height="60">
+                <img src="https://user-images.githubusercontent.com/13298429/132939286-3aa06019-e474-4f42-b164-1813a925d624.png" width="60" height="60">
             </a>
         </td>
         <td width="100" align="center">박현준</td>
@@ -121,7 +121,7 @@ $ yarn start
     <tr>
         <td width="100" align="center">
             <a href="https://github.com/ahnavocado">
-                <img src="https://via.placeholder.com/150" width="60" height="60">
+                <img src="https://user-images.githubusercontent.com/13298429/132990151-bb4bbdb0-67b0-4df8-894a-5173204778b2.png" width="60" height="60">
             </a>
         </td>
         <td width="100" align="center">안수겸</td>
@@ -143,7 +143,7 @@ $ yarn start
     <tr>
         <td width="100" align="center">
             <a href="https://github.com/134130">
-                <img src="https://via.placeholder.com/150" width="60" height="60">
+                <img src="https://user-images.githubusercontent.com/13298429/132968154-4d885c91-ba18-4bbd-871b-8f4b969451a8.png" width="60" height="60">
             </a>
         </td>
         <td width="100" align="center">오지환</td>
@@ -164,7 +164,7 @@ $ yarn start
     <tr>
         <td width="100" align="center">
             <a href="https://github.com/cw00h">
-                <img src="https://via.placeholder.com/150" width="60" height="60">
+                <img src="https://user-images.githubusercontent.com/13298429/132937945-1035efad-e38b-4595-9f68-8593d03fb214.png" width="60" height="60">
             </a>
         </td>
         <td width="100" align="center">최우혁</td>
