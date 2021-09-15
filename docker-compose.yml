@@ -1,27 +1,16 @@
 version: '3.3'
 services:
-  redis:
-    image: 'redis'
-    ports:
-     - '6379:6379'
+  mongodb:
+    image: mongo
+    container_name: mongodb
     restart: always
     volumes:
-     - ./docker-config/redis_volumes:/var/lib/redis
-     - ./docker-config/redis.conf:/var/lib/redis.conf
-  mariadb:
-    image: mariadb:10.4.6
-    restart: always
-    environment:
-     - MYSQL_ROOT_PASSWORD=codespace
-     - TZ=Asia/Seoul
-    volumes:
-     - ./docker-config/mariadb/db_volumes:/var/lib/mysql
-     - ./docker-config/mariadb/initcnf:/etc/mysql/conf.d
-     - ./docker-config/mariadb/initsql:/docker-entrypoint-initdb.d
+     - ./docker-config/mongodb:/data/db
+     - ./docker-config/mongodb/initdb:/docker-entrypoint-initdb.d
     ports:
-     - '3306:3306'
-    depends_on:
-      - redis
+     - '27019:27019'
+    networks: 
+      - net
   backend:
     build:
       context: ./backend 
@@ -34,3 +23,10 @@ services:
       - ./backend:/backend 
       - /backend/node_modules
     restart: "unless-stopped"
+    depends_on:
+      - mongodb
+    networks: 
+      - net
+networks:
+  net:
+    driver: bridge
