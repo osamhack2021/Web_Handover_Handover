@@ -14,6 +14,9 @@ var indexRouter = require('./routes/index.js');
 app.use('/', indexRouter);
 var apiRouter = require('./routes/api/api.js');
 app.use('/api', apiRouter);
+var userRouter = require('./routes/api/user.js');
+app.use('/user', userRouter);
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

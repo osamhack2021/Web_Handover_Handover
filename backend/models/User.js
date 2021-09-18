@@ -38,17 +38,21 @@ userSchema.statics.create = function(payload) {
     return user.save();
 };
 
+userSchema.statics.findAll = function() {
+    return this.find({});
+}
 
-userSchema.statics.findOneByUserid = function(id) {
+userSchema.statics.findOneByid = function(id) {
     return this.findOne({ id });
 };
 
-userSchema.statics.updateByUserid = function(id, payload) {
+userSchema.statics.updateByid = function(id, payload) {
     return this.findOneAndUpdate({ id }, payload, { new: true });
 };
 
-userSchema.statics.deleteByUserid = function(id) {
+userSchema.statics.deleteByid = function(id) {
     return this.remove({ id });
 };
+
 
 module.exports = mongoose.model('User', userSchema);
