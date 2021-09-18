@@ -7,7 +7,7 @@ module.exports = {
 			return result.id;
 		} catch(err) {
 			if(err.code === 11000) throw 'Duplicated Key Error: "serviceNumber" is unique';
-			return err;
+			throw err;
 		}
 	},
 	
