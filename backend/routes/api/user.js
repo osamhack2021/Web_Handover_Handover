@@ -1,13 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../../models/User.js');
+const UserService = require('../../services/UserService.js');
 
-router.post('/user/create', (req, res) => {
-    let body = req.body;
+router.post('', (req, res) => {
+    UserService.save(req.body)
+        .then(result => res.send(result));
+});
 
-    User.create(body)
-        .then(user => res.send(user))
-        .catch(err => res.status(500).send(err));
+router.get('', (req, res) => {
+    UserService.findAll()
+        .then(result => res.send(result));
+});
+
+router.get('/:id', (req, res) => {
+    UserService.findAll(req.params.id)
+        .then(result => res.send(result));
 });
 
 module.exports = router;
