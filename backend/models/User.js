@@ -54,4 +54,5 @@ userSchema.statics.deleteByid = function(id) {
     return this.remove({ id });
 };
 
+
 module.exports = mongoose.model('User', userSchema);
