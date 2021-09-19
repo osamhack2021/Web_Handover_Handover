@@ -1,6 +1,7 @@
 .env
 
-./backend/node_modules
+# mongodb datas
+docker-config/mongodb/
 
 # From https://github.com/djizco/mern-boilerplate/blob/master/.gitignore
 
