@@ -30,8 +30,8 @@ app.use(
 	})
 );
 
-var indexRouter = require('./routes/index.js');
-app.use('/', indexRouter);
+var commonRouter = require('./routes/common.js');
+app.use('/', commonRouter);
 var apiRouter = require('./routes/api/api.js');
 app.use('/api', apiRouter);
 var userRouter = require('./routes/api/user.js');
