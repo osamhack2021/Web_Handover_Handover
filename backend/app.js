@@ -10,6 +10,26 @@ var app = express();
 var mongoose = require('./mongo.js');
 mongoose();
 
+var cors = require('cors');
+app.use(cors({
+	origin: true,
+	credential: true
+}));
+
+var session = require('express-session');
+app.use(
+	session({
+		key: "loginData",
+    // need to blind
+		secret: "secretSample",
+		resave: false,
+		saveUninitialized: false,
+		cookie: {
+			express: 60 * 60 * 24
+		}
+	})
+);
+
 var indexRouter = require('./routes/index.js');
 app.use('/', indexRouter);
 var apiRouter = require('./routes/api/api.js');
