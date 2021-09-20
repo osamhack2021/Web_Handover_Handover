@@ -28,6 +28,8 @@ const userSchema = mongoose.Schema({
         users: [{ type: Types.ObjectId, ref: 'User' }],
         groups: [{ type: Types.ObjectId, ref: 'Group' }]
     }
+},{
+    versionKey: false
 });
 
 
@@ -54,5 +56,9 @@ userSchema.statics.deleteByid = function(id) {
     return this.remove({ id });
 };
 
+
+userSchema.statics.findOneByServiceNumber = function(serviceNumber) {
+    return this.findOne({serviceNumber});
+}
 
 module.exports = mongoose.model('User', userSchema);
