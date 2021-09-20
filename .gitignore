@@ -36,3 +36,7 @@ patches/
 
 # OSX
 .DS_Store
+
+# Settings
+.eslintrc.json
+.prettierrc.json

@@ -126,6 +126,17 @@ export default function Navigation({ pathname }) {
                   Settings
                 </Title>
               </Navbar.Item>
+              <Navbar.Item
+                className="is-hidden-mobile"
+                to="/devpage"
+                active={isSettings}
+                tab
+                component={Link}
+              >
+                <Title size="6">
+                  Devpage
+                </Title>
+              </Navbar.Item>
             </Navbar.Start>
             <Navbar.End>
               <Navbar.Item onClick={toggleDropdown} onKeyPress={toggleDropdown} hoverable component="a">
