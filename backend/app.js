@@ -1,4 +1,3 @@
-let createError = require('http-errors');
 let path = require('path');
 let bodyParser = require('body-parser');
 let cookieParser = require('cookie-parser');
@@ -38,6 +37,9 @@ app.use(
 	})
 );
 
+let indexRouter = require('./routes/index.js');
+app.use('/', indexRouter);
+
 let userRouter = require('./routes/api/user.js');
 app.use('/user', userRouter);
 
@@ -47,16 +49,9 @@ app.listen(3000, () => {
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  next('404 Not Found');
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+let errorHandler = require('./errorHandler.js');
+app.use(errorHandler);
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
