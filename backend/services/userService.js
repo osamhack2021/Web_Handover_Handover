@@ -8,45 +8,37 @@ module.exports = {
 		try {
 			shasum = crypto.createHash('sha256');
 			params.password = shasum.digest(params.password);
+
 			let result = await User.create(params);
-			return result.id;
-		} catch(err) {
-			if(err.code === 11000) throw 'Duplicated Key Error: "serviceNumber" is unique';
-			throw err;
-		}
+			result._id = '';
+			result.password = '';
+
+			return result;
+		} catch(err) { throw err; }
 	},
 	
 	findAll: async function() {
-		return await User.findAll();
-	},
-	
-	findById: async function(id) {		
-		let result = await User.findById(id);
-
-		if(!result) {
-			throw new Error('not found');
-		}
-
-		return result;
+		try {
+			return await User.findAll();
+		} catch(err) { throw err; }
 	},
 
 	auth: async function(params) {
 		try {
 			shasum = crypto.createHash('sha256');
 			params.password = shasum.digest(params.password);
+
 			const loginUser = await User.findOneByServiceNumber(params.serviceNumber);
 
-			if(!loginUser) {
-				throw new Error('user not found');
+			if(loginUser === null) {
+				return false;
 			}
 			
 			if(loginUser.password != params.password) {
-				throw new Error('Passwords do not match');
+				return false;
 			}
 
 			return true;
-		}catch(error){
-			
-		}
+		} catch(err) { throw err; }
 	}
 };
