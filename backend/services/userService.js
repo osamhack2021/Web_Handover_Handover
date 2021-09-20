@@ -1,11 +1,12 @@
 const User = require('../models/User.js');
 
 const crypto = require('crypto');
-const shasum = crypto.createHash('sha256');
+let shasum;
 
 module.exports = {
 	save: async function(params) {
 		try {
+			shasum = crypto.createHash('sha256');
 			params.password = shasum.digest(params.password);
 			let result = await User.create(params);
 			return result.id;
@@ -31,14 +32,15 @@ module.exports = {
 
 	auth: async function(params) {
 		try {
+			shasum = crypto.createHash('sha256');
 			params.password = shasum.digest(params.password);
-			const loginUser = await User.serviceNumber(params.serviceNumber);
+			const loginUser = await User.findOneByServiceNumber(params.serviceNumber);
 
 			if(!loginUser) {
 				throw new Error('user not found');
 			}
 			
-			if(loginUser.password !== params.password) {
+			if(loginUser.password != params.password) {
 				throw new Error('Passwords do not match');
 			}
 
