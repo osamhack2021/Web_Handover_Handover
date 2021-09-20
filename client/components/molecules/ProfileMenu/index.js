@@ -1,3 +1,3 @@
-import ProfileMenu from './ProfileMenu.js'
+import ProfileMenu from './ProfileMenu';
 
 export default ProfileMenu;
