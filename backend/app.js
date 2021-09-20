@@ -1,13 +1,13 @@
-var createError = require('http-errors');
-var path = require('path');
-var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+let createError = require('http-errors');
+let path = require('path');
+let bodyParser = require('body-parser');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
 
-var express = require('express');
-var app = express();
+let express = require('express');
+let app = express();
 
-var mongoose = require('./mongo.js');
+let mongoose = require('./mongo.js');
 mongoose();
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -18,13 +18,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var cors = require('cors');
+let cors = require('cors');
 app.use(cors({
 	origin: true,
 	credential: true
 }));
 
-var session = require('express-session');
+let session = require('express-session');
 app.use(
 	session({
 		key: "loginData",
@@ -38,19 +38,8 @@ app.use(
 	})
 );
 
-var commonRouter = require('./routes/common.js');
-app.use('/', commonRouter);
-var apiRouter = require('./routes/api/api.js');
-app.use('/api', apiRouter);
-var userRouter = require('./routes/api/user.js');
+let userRouter = require('./routes/api/user.js');
 app.use('/user', userRouter);
-
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-
 
 app.listen(3000, () => {
   console.log(`Example app listening at http://localhost:3000`)
@@ -71,5 +60,3 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-// module.exports = app;
