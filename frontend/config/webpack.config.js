@@ -30,7 +30,7 @@ module.exports = {
   ],
   output: {
     filename: isDev ? '[name].js' : '[name].[fullhash].js',
-    path: resolve('dist'),
+    path: resolve('frontend/dist'),
     publicPath: '/',
     clean: true,
   },
