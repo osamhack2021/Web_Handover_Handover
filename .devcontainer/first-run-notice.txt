@@ -1,0 +1,9 @@
+👋 Welcome to Handover! You are on the Codespaces image for the Handover project.
+   - It includes runtimes and tools for Python, Node.js, Docker, and more. See the full list here: https://aka.ms/ghcs-default-image
+   - Want to check out the project repository? Learn more here: https://github.com/osamhack2021/Web_Handover_Handover
+
+🔍 To explore VS Code to its fullest, search using the Command Palette (Cmd/Ctrl + Shift + P or F1).
+
+📝 Edit away, run your app as usual, and we'll automatically make it available for you to access.
+
+🚀 To compile and run the project, run `docker-compose up --build` command below.
