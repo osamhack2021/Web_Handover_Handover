@@ -3,7 +3,7 @@ const router = express.Router();
 const userController = require('../controllers/userController.js');
 
 router.get('/', (req, res) => {
-    res.render('../views/index');
+    res.send('hello');
 });
 
 router.post('/login', userController.login);

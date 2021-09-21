@@ -1,13 +1,16 @@
 const User = require('../models/User.js');
 
 const crypto = require('crypto');
-let shasum;
+function encode(rowPassword) {
+	return crypto.createHmac('sha256', 'secret12341234')
+	.update(rowPassword)
+	.digest('hex');
+}
 
 module.exports = {
 	save: async function(params) {
 		try {
-			shasum = crypto.createHash('sha256');
-			params.password = shasum.digest(params.password);
+			params.password = encode(params.password);
 
 			let result = await User.create(params);
 			result._id = '';
@@ -25,8 +28,7 @@ module.exports = {
 
 	auth: async function(params) {
 		try {
-			shasum = crypto.createHash('sha256');
-			params.password = shasum.digest(params.password);
+			params.password =  encode(params.password);
 
 			const loginUser = await User.findOneByServiceNumber(params.serviceNumber);
 
@@ -34,7 +36,9 @@ module.exports = {
 				return false;
 			}
 			
-			if(loginUser.password != params.password) {
+			if(loginUser.password !== params.password) {
+				console.log(loginUser.password);
+				console.log(params.password);
 				return false;
 			}
 
