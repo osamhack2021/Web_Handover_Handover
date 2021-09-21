@@ -1,25 +1,44 @@
 const User = require('../models/User.js');
 
+const crypto = require('crypto');
+let shasum;
+
 module.exports = {
 	save: async function(params) {
 		try {
+			shasum = crypto.createHash('sha256');
+			params.password = shasum.digest(params.password);
+
 			let result = await User.create(params);
-			return result.id;
-		} catch(err) {
-			if(err.code === 11000) throw 'Duplicated Key Error: "serviceNumber" is unique';
-			throw err;
-		}
+			result._id = '';
+			result.password = '';
+
+			return result;
+		} catch(err) { throw err; }
 	},
 	
 	findAll: async function() {
-		var result;
-		await User.findAll().then(rs => result = rs);
-		return result;
+		try {
+			return await User.findAll();
+		} catch(err) { throw err; }
 	},
-	
-	findById: async function(id) {
-		var result;
-		await User.findById(id).then(rs => result = rs);
-		return result;
+
+	auth: async function(params) {
+		try {
+			shasum = crypto.createHash('sha256');
+			params.password = shasum.digest(params.password);
+
+			const loginUser = await User.findOneByServiceNumber(params.serviceNumber);
+
+			if(loginUser === null) {
+				return false;
+			}
+			
+			if(loginUser.password != params.password) {
+				return false;
+			}
+
+			return true;
+		} catch(err) { throw err; }
 	}
 };
