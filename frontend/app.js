@@ -13,4 +13,4 @@ app.use(express.static(assetFolder));
 
 app.use('/', routes);
 
-app.listen(port, () => console.log(`Server is listening on port ${port}`));
+app.listen(port, () => console.log(`React server is listening on port ${port}`));
