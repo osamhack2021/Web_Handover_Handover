@@ -1,13 +1,9 @@
-FROM node:12
+FROM node:14
 
-WORKDIR /backend
+WORKDIR /app/backend
+# COPY package.json .
 COPY . .
 
 RUN npm install
-# RUN npm install -g pm2
-RUN npm install -g mongoose
-RUN npm install -g nodemon
-CMD ["npm", "start"]
-# CMD ["pm2", "start", "app.js", "--watch"]
 
-# "start": "nodemon --watch . app.js"
+CMD npm start
