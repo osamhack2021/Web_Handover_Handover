@@ -3,7 +3,7 @@
 {
 	"name": "Handover",
 	"build": {
-		"dockerfile": "Dockerfile"
+		"dockerfile": "base.Dockerfile"
 	},
 	"settings": {
 		"go.toolsManagement.checkForUpdates": "local",
