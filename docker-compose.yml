@@ -15,7 +15,7 @@ services:
 
   # Express.js Server
   backend:
-    command: tail -f /dev/null # keeps container running
+    # command: tail -f /dev/null # DEBUG: uncomment to keep container running
     depends_on:
       - mongodb
     build: 
@@ -34,7 +34,7 @@ services:
 
   # React.js App Client
   frontend:
-    command: tail -f /dev/null # keeps container running
+    # command: tail -f /dev/null # DEBUG: uncomment to keep container running
     depends_on: 
       - backend
     build: 
