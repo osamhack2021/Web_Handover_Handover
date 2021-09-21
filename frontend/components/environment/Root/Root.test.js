@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import history from '_client/history';
-import store from '_client/store';
+import history from '_frontend/history';
+import store from '_frontend/store';
 
 import Root from './Root';
 

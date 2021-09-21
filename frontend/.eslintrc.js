@@ -4,7 +4,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       webpack: {
-        config: './client/config/webpack.config.js',
+        config: './frontend/config/webpack.config.js',
       },
     },
   },
