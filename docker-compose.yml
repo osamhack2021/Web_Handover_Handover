@@ -1,32 +1,58 @@
-version: '3.3'
+version: "3.9"
+
 services:
+  # MongoDB
   mongodb:
-    image: mongo
-    container_name: mongodb
-    restart: always
-    volumes:
-     - ./docker-config/mongodb:/data/db
-     - ./docker-config/mongodb/initdb:/docker-entrypoint-initdb.d
+    image: mongo:latest
+    # restart: unless-stopped
+    env_file: ./.env
     ports:
-     - '27019:27019'
-    networks: 
-      - net
+      - $MONGODB_LOCAL_PORT:$MONGODB_DOCKER_PORT
+    volumes:
+      - db:/data/db
+    networks:
+      - backend
+
+  # Express.js Server
   backend:
-    build:
-      context: ./backend 
-    container_name: express
-    ports:
-     - '3000:3000'
-#    expose:
-#      - "3000"
-    volumes:
-      - ./backend:/backend 
-      - /backend/node_modules
-    restart: "unless-stopped"
+    # command: tail -f /dev/null # DEBUG: uncomment to keep container running
     depends_on:
       - mongodb
-    networks: 
-      - net
+    build: 
+      dockerfile: Dockerfile
+      context: ./backend
+    # restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+    volumes:
+      - ./backend:/app/backend
+      - /app/backend/node_modules/
+    networks:
+      - backend
+      - frontend
+
+  # React.js App Client
+  frontend:
+    # command: tail -f /dev/null # DEBUG: uncomment to keep container running
+    depends_on: 
+      - backend
+    build: 
+      dockerfile: Dockerfile
+      context: ./frontend
+      args:
+        - REACT_APP_API_BASE_URL=$API_BASE_URL
+    ports:
+      - $REACT_LOCAL_PORT:$REACT_DOCKER_PORT
+    volumes:
+      - ./frontend:/app/frontend
+      - /app/frontend/node_modules/
+    networks:
+      - frontend
+
+volumes:
+  db:
+
 networks:
-  net:
-    driver: bridge
+  backend:
+  frontend:
