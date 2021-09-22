@@ -1,11 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from "react";
+import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Field from 'react-bulma-companion/lib/Field';
-import Control from 'react-bulma-companion/lib/Control';
-import Input from 'react-bulma-companion/lib/Input';
-import Icon from 'react-bulma-companion/lib/Icon';
+import Field from "react-bulma-companion/lib/Field";
+import Control from "react-bulma-companion/lib/Control";
+import Input from "react-bulma-companion/lib/Input";
+import Icon from "react-bulma-companion/lib/Icon";
 
 export default function FormInput({
   className,
@@ -15,15 +15,17 @@ export default function FormInput({
   type,
   leftIcon,
   rightIcon,
+  size,
 }) {
   return (
-    <Field className={className}>
+    <Field className={className} is-fullwidth>
       <Control iconsLeft={!!leftIcon} iconsRight={!!rightIcon}>
         <Input
           type={type}
           placeholder={placeholder}
           onChange={onChange}
           value={value}
+          size={size}
         />
         {leftIcon && (
           <Icon size="small" align="left">
@@ -41,10 +43,11 @@ export default function FormInput({
 }
 
 FormInput.defaultProps = {
-  className: '',
+  className: "",
   leftIcon: undefined,
   rightIcon: undefined,
-  type: 'text',
+  type: "text",
+  size: "medium",
 };
 
 FormInput.propTypes = {
@@ -55,4 +58,5 @@ FormInput.propTypes = {
   leftIcon: PropTypes.object,
   rightIcon: PropTypes.object,
   type: PropTypes.string,
+  size: PropTypes.string,
 };
