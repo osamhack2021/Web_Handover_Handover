@@ -1,30 +1,25 @@
 const userService = require('../services/userService.js');
-const ControllerError = require('./ControllerError');
 
 module.exports = {
-    saveUser: async function(req, res, next) {
+    saveUser: async function(req, res) {
         try {
-            let result = await userService.save(req.body);
+            const result = await userService.save(req.body);
             res.status(201).send(result);   // 201 Created
         } catch(err) {
-            next(err);
+            res.status(err.status).send(err.message);
         }
     },
 
-    login: async function(req, res, next) {
+    login: async function(req, res) {
         try {
-            let result = await userService.auth(req.body);
+            const result = await userService.auth(req.body);
 
-            console.log(result);
+            req.session.loginData = req.body.serviceNumber;
+            res.status(200).send('Login Success');
 
-            if(!!result) {
-                req.session.loginData = req.body.serviceNumber;
-                res.status(200).send('Login Success');   // 200 OK
-            } else {
-                throw new ControllerError('Login Failed');
-            }
         } catch(err) {
-            next(err);
+            console.log(err);
+           res.status(err.status).send(err.message);
         }
     }
 };

@@ -51,7 +51,3 @@ app.listen(3000, () => {
 app.use(function(req, res, next) {
   next('404 Not Found');
 });
-
-let errorHandler = require('./errorHandler.js');
-app.use(errorHandler);
-
