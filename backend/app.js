@@ -21,22 +21,15 @@ app.use(cors({
 	credential: true
 }));
 
-let session = require('express-session');
-app.use(
-	session({
-		key: "loginData",
-    // need to blind
-		secret: "secretSample",
-		resave: false,
-		saveUninitialized: false,
-		cookie: {
-			express: 60 * 60 * 24
-		}
-	})
-);
-
 let indexRouter = require('./routes/index.js');
 app.use('/', indexRouter);
+
+/**
+	indexRouter내에 정의되지 않은 경로들은 모두 jwtRouter로 이동함.
+	jwtRouter에서 token이 없는 사용자면 res.send(401) 발생
+**/
+let jwtRouter = require('./routes/api/jwt.js');
+app.use('*', jwtRouter);
 
 let userRouter = require('./routes/api/user.js');
 app.use('/user', userRouter);
