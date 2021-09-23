@@ -1,5 +1,8 @@
 const userService = require('../services/userService.js');
 
+const jwt = require('jsonwebtoken');
+const SECRET_KEY = "MY_SECRET_KEY";
+
 module.exports = {
     saveUser: async function(req, res) {
         try {
@@ -14,8 +17,23 @@ module.exports = {
         try {
             const result = await userService.auth(req.body);
 
-            req.session.loginData = req.body.serviceNumber;
-            res.status(200).send('Login Success');
+            if(result) {
+                
+                const token = jwt.sign({
+                    serviceNumber: result.serviceNumber
+                }, SECRET_KEY, {
+                    expiresIn: '1h'
+                });
+
+                console.log(token)
+
+                res.cookie('jwt', token);
+
+                res.status(201).send({
+                    result: 'OK',
+                    token
+                });
+            }
 
         } catch(err) {
             console.log(err);
