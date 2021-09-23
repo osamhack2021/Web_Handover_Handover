@@ -1,23 +1,25 @@
-@import 'bulma-config';
-@import '~bulma';
+@import "bulma-config";
+@import "~bulma";
 
-@import 'variables';
-@import 'general';
-@import 'modifiers';
-@import 'components';
+@import "variables";
+@import "general";
+@import "modifiers";
+@import "components";
 
-@import 'main';
-@import 'navigation';
-@import 'footer';
-@import 'lost';
+@import "main";
+@import "navigation";
+@import "footer";
+@import "lost";
 
-@import 'welcome';
-@import 'login';
-@import 'register';
+@import "welcome";
+@import "login";
+@import "register";
 
-@import 'home';
-@import 'todo';
-@import 'settings';
+@import "home";
+@import "todo";
+@import "settings";
 
-@import 'leftmenu';
-@import 'card';
+@import "leftmenu";
+@import "card";
+
+@import "forminput";

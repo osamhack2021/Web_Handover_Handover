@@ -1,10 +1,7 @@
 @import "mixins";
 
-.login-page {
-  .box {
-    margin: 0 auto;
-    max-width: 25rem;
-  }
+.login-page,
+.register-page {
   .login-box {
     display: flex;
     flex-direction: column;
@@ -42,17 +39,6 @@
       color: $pale-sky;
     }
 
-    .login-label {
-      @include setfonts($font-size: 15px, $line-height: 20px);
-      color: $grayish-blue;
-      margin: 0 auto 4px 0;
-    }
-
-    .login-input {
-      height: 40px;
-      color: $pale-sky;
-    }
-
     .login-button {
       width: 100%;
       background-color: $pink;
@@ -66,10 +52,10 @@
       }
     }
 
-    .login-link{
-      color:$pink;
+    .login-link {
+      color: $pink;
     }
-    
+
     .login-register {
       @include setfonts($line-height: 20px);
     }

@@ -16,29 +16,34 @@ export default function FormInput({
   leftIcon,
   rightIcon,
   size,
+  label,
 }) {
+
   return (
-    <Field className={className} is-fullwidth>
-      <Control iconsLeft={!!leftIcon} iconsRight={!!rightIcon}>
-        <Input
-          type={type}
-          placeholder={placeholder}
-          onChange={onChange}
-          value={value}
-          size={size}
-        />
-        {leftIcon && (
-          <Icon size="small" align="left">
-            <FontAwesomeIcon icon={leftIcon} />
-          </Icon>
-        )}
-        {rightIcon && (
-          <Icon size="small" align="left">
-            <FontAwesomeIcon icon={rightIcon} />
-          </Icon>
-        )}
-      </Control>
-    </Field>
+    <div className="form-input">
+      <div className="form-input-label">{label}</div>
+      <Field className={className} is-fullwidth>
+        <Control iconsLeft={!!leftIcon} iconsRight={!!rightIcon}>
+          <Input
+            type={type}
+            placeholder={placeholder}
+            onChange={onChange}
+            value={value}
+            size={size}
+          />
+          {leftIcon && (
+            <Icon size="small" align="left">
+              <FontAwesomeIcon icon={leftIcon} />
+            </Icon>
+          )}
+          {rightIcon && (
+            <Icon size="small" align="left">
+              <FontAwesomeIcon icon={rightIcon} />
+            </Icon>
+          )}
+        </Control>
+      </Field>
+    </div>
   );
 }
 
@@ -48,6 +53,7 @@ FormInput.defaultProps = {
   rightIcon: undefined,
   type: "text",
   size: "medium",
+  label: "",
 };
 
 FormInput.propTypes = {
@@ -59,4 +65,5 @@ FormInput.propTypes = {
   rightIcon: PropTypes.object,
   type: PropTypes.string,
   size: PropTypes.string,
+  label: PropTypes.string,
 };
