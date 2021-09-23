@@ -74,12 +74,7 @@ export default function Login() {
         className="login-input is-fullwidth"
         label="Password"
       />
-      <Button
-        className="login-button my-5"
-        onClick={login}
-        size="medium"
-        $button-hover-border-color="orange"
-      >
+      <Button className="login-button my-5" onClick={login} size="medium">
         Sign in
       </Button>
       <Block className="login-register">

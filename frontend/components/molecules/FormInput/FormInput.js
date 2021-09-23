@@ -25,7 +25,7 @@ export default function FormInput({
   return (
     <div className="form-input">
       <div className="form-input-label">{label}</div>
-      <Field className={className} is-fullwidth>
+      <Field className={className}>
         <Control iconsLeft={!!leftIcon} iconsRight={!!rightIcon}>
           <Input
             type={type}

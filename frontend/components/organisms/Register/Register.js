@@ -1,34 +1,37 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import R from 'ramda';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import R from "ramda";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons/faExclamationTriangle';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExclamationTriangle";
 
-import Box from 'react-bulma-companion/lib/Box';
-import Button from 'react-bulma-companion/lib/Button';
-import Title from 'react-bulma-companion/lib/Title';
-import Field from 'react-bulma-companion/lib/Field';
-import Control from 'react-bulma-companion/lib/Control';
-import Icon from 'react-bulma-companion/lib/Icon';
-import Input from 'react-bulma-companion/lib/Input';
-import Label from 'react-bulma-companion/lib/Label';
-import Help from 'react-bulma-companion/lib/Help';
+import Box from "react-bulma-companion/lib/Box";
+import Button from "react-bulma-companion/lib/Button";
+import Block from "react-bulma-companion/lib/Block";
+import Title from "react-bulma-companion/lib/Title";
+import Field from "react-bulma-companion/lib/Field";
+import Control from "react-bulma-companion/lib/Control";
+import Icon from "react-bulma-companion/lib/Icon";
+import Input from "react-bulma-companion/lib/Input";
+import Label from "react-bulma-companion/lib/Label";
+import Help from "react-bulma-companion/lib/Help";
 
-import useKeyPress from '_hooks/useKeyPress';
-import { postCheckUsername } from '_api/users';
-import { validateUsername, validatePassword } from '_utils/validation';
-import { attemptRegister } from '_thunks/auth';
+import useKeyPress from "_hooks/useKeyPress";
+import { postCheckUsername } from "_api/users";
+import { validateUsername, validatePassword } from "_utils/validation";
+import { attemptRegister } from "_thunks/auth";
+
+import FormInput from "_molecules/FormInput";
 
 export default function Register() {
   const dispatch = useDispatch();
 
-  const [username, setUsername] = useState('');
-  const [usernameMessage, setUsernameMessage] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordMessage, setPasswordMessage] = useState('');
+  const [username, setUsername] = useState("");
+  const [usernameMessage, setUsernameMessage] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
   const [usernameAvailable, setUsernameAvailable] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
 
@@ -39,15 +42,15 @@ export default function Register() {
     setPasswordMessage(message);
   };
 
-  const checkUsername = newUsername => {
+  const checkUsername = (newUsername) => {
     const { valid, message } = validateUsername(newUsername);
 
     if (valid) {
-      setUsernameMessage('Checking username...');
+      setUsernameMessage("Checking username...");
       setUsernameAvailable(false);
 
       postCheckUsername(newUsername)
-        .then(res => {
+        .then((res) => {
           setUsernameAvailable(res.available);
           setUsernameMessage(res.message);
         })
@@ -58,17 +61,17 @@ export default function Register() {
     }
   };
 
-  const updateUsername = newUserName => {
+  const updateUsername = (newUserName) => {
     setUsername(newUserName);
     checkPassword(newUserName, password);
   };
 
-  const handleUsernameChange = e => {
+  const handleUsernameChange = (e) => {
     updateUsername(e.target.value);
     checkUsername(e.target.value);
   };
 
-  const handlePasswordChange = e => {
+  const handlePasswordChange = (e) => {
     setPassword(e.target.value);
     checkPassword(username, e.target.value);
   };
@@ -80,92 +83,98 @@ export default function Register() {
         password,
       };
 
-      dispatch(attemptRegister(newUser))
-        .catch(R.identity);
+      dispatch(attemptRegister(newUser)).catch(R.identity);
     }
   };
 
-  useKeyPress('Enter', register);
+  useKeyPress("Enter", register);
 
   return (
-    <Box className="register">
-      <Title size="3">
-        Sign Up
-      </Title>
+    <div className="register-box">
+      <div className="login-logo"></div>
+      <Block className="login-title">회원가입</Block>
+      <div className="login-subtitle">Welcome!</div>
       <hr className="separator" />
-      <p className="has-space-below">
-        Already a member?&nbsp;
-        <Link to="/login">
-          Login
-        </Link>
-      </p>
-      <Field>
-        <Label htmlFor="username">
-          Username
-        </Label>
-        <Control iconsRight>
-          <Input
-            id="username"
-            placeholder="Username"
-            color={username ? (usernameAvailable ? 'success' : 'danger') : undefined}
-            value={username}
-            onChange={handleUsernameChange}
-          />
-          {username && (
-            <Icon
-              size="small"
-              align="right"
-              color={usernameAvailable ? 'success' : 'danger'}
-            >
-              <FontAwesomeIcon
-                icon={usernameAvailable ? faCheck : faExclamationTriangle}
-              />
-            </Icon>
-          )}
-        </Control>
-        {username && (
-          <Help color={usernameAvailable ? 'success' : 'danger'}>
-            {usernameMessage}
-          </Help>
-        )}
-      </Field>
-      <Field>
-        <Label htmlFor="password">
-          Password
-        </Label>
-        <Control iconsRight>
-          <Input
-            id="password"
-            placeholder="Password"
-            type="password"
-            color={password ? (passwordValid ? 'success' : 'danger') : undefined}
-            value={password}
-            onChange={handlePasswordChange}
-          />
-          {password && (
-            <Icon
-              size="small"
-              align="right"
-              color={passwordValid ? 'success' : 'danger'}
-            >
-              <FontAwesomeIcon
-                icon={passwordValid ? faCheck : faExclamationTriangle}
-              />
-            </Icon>
-          )}
-        </Control>
-        {password && (
-          <Help color={passwordValid ? 'success' : 'danger'}>
-            {passwordMessage}
-          </Help>
-        )}
-      </Field>
+      <FormInput
+        id="username"
+        className="is-fullwidth"
+        onChange={handleUsernameChange}
+        value={username}
+        placeholder="군번을 입력해주세요"
+        label="군번"
+        color={
+          username ? (usernameAvailable ? "success" : "danger") : undefined
+        }
+        rightIcon={usernameAvailable ? faCheck : faExclamationTriangle}
+        inputIsvalid={usernameAvailable}
+        helpMessage={usernameMessage}
+      />
+      <FormInput
+        id="password"
+        className="is-fullwidth"
+        placeholder="비밀번호를 입력해주세요"
+        type="password"
+        value={password}
+        onChange={handlePasswordChange}
+        label="비밀번호"
+        color={password ? (passwordValid ? "success" : "danger") : undefined}
+        rightIcon={passwordValid ? faCheck : faExclamationTriangle}
+        inputIsvalid={passwordValid}
+        helpMessage={passwordMessage}
+      />
+      <FormInput
+        id="password-re"
+        className="is-fullwidth"
+        placeholder="비밀번호를 다시 입력해주세요"
+        type="password"
+        label="비밀번호 재입력"
+      />
+      <FormInput
+        id="name"
+        className="is-fullwidth"
+        placeholder="이름을 입력해주세요"
+        label="이름"
+      />
+      <FormInput
+        id="name"
+        className="is-fullwidth"
+        placeholder="이름을 입력해주세요"
+        label="이름"
+      />
+      <FormInput
+        id="job-name"
+        className="is-fullwidth"
+        placeholder="e.g. 인사 담당관, 대대장..."
+        label="직무명"
+      />
+      <FormInput
+        id="email"
+        className="is-fullwidth"
+        placeholder="e.g. example@example.com"
+        label="군 이메일"
+      />
+      <FormInput
+        id="number-army"
+        className="is-fullwidth"
+        placeholder="e.g.  000-0000"
+        label="군 연락처"
+      />
+      <FormInput
+        id="number-phone"
+        className="is-fullwidth"
+        placeholder="e.g.  010-1111-1111"
+        label="휴대폰 번호"
+      />
       <hr className="separator" />
-      <div className="has-text-right">
-        <Button color="success" onClick={register} disabled={!passwordValid || !usernameAvailable}>
-          Create Account
-        </Button>
-      </div>
-    </Box>
+      <Button
+        className="login-button"
+        onClick={register}
+        size="medium"
+        /*disabled={!passwordValid || !usernameAvailable}*/
+        /*$button-hover-border-color="orange"*/
+      >
+        회원가입
+      </Button>
+    </div>
   );
 }
