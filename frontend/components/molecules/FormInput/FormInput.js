@@ -6,6 +6,7 @@ import Field from "react-bulma-companion/lib/Field";
 import Control from "react-bulma-companion/lib/Control";
 import Input from "react-bulma-companion/lib/Input";
 import Icon from "react-bulma-companion/lib/Icon";
+import Help from "react-bulma-companion/lib/Help";
 
 export default function FormInput({
   className,
@@ -17,8 +18,10 @@ export default function FormInput({
   rightIcon,
   size,
   label,
+  color,
+  inputIsvalid,
+  helpMessage,
 }) {
-
   return (
     <div className="form-input">
       <div className="form-input-label">{label}</div>
@@ -30,18 +33,26 @@ export default function FormInput({
             onChange={onChange}
             value={value}
             size={size}
+            color={color}
           />
           {leftIcon && (
             <Icon size="small" align="left">
               <FontAwesomeIcon icon={leftIcon} />
             </Icon>
           )}
-          {rightIcon && (
-            <Icon size="small" align="left">
+          {value && rightIcon && (
+            <Icon
+              size="small"
+              align="right"
+              color={inputIsvalid ? "success" : "danger"}
+            >
               <FontAwesomeIcon icon={rightIcon} />
             </Icon>
           )}
         </Control>
+        {value && (
+          <Help color={inputIsvalid ? "success" : "danger"}>{helpMessage}</Help>
+        )}
       </Field>
     </div>
   );
@@ -54,6 +65,9 @@ FormInput.defaultProps = {
   type: "text",
   size: "medium",
   label: "",
+  color: undefined,
+  inputIsvalid: true,
+  helpMessage: "",
 };
 
 FormInput.propTypes = {
@@ -66,4 +80,7 @@ FormInput.propTypes = {
   type: PropTypes.string,
   size: PropTypes.string,
   label: PropTypes.string,
+  color: PropTypes.string,
+  inputIsvalid: PropTypes.bool,
+  helpMessage: PropTypes.string,
 };
