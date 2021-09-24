@@ -18,14 +18,11 @@ module.exports = {
             const result = await userService.auth(req.body);
 
             if(result) {
-                
                 const token = jwt.sign({
                     serviceNumber: result.serviceNumber
                 }, SECRET_KEY, {
                     expiresIn: '1h'
                 });
-
-                console.log(token)
 
                 res.cookie('jwt', token);
 
