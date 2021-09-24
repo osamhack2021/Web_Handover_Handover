@@ -7,7 +7,7 @@ const userSchema = mongoose.Schema({
     name: { type: String, required: true },
     rank: { type: String, required: true },
     title: { type: String, required: true },
-    status: { type: String, required: true },
+    status: { type: String, default: 'avail' },   // stop, sleep, gone, avail, deleted
     group: { type: Types.ObjectId, ref: 'Group', required: true },
     specialtyNumber: { type: String },
     email: { type: String },
@@ -34,8 +34,8 @@ userSchema.statics.create = function(payload) {
     return user.save();
 };
 
-userSchema.statics.findAll = function() {
-    return this.find({});
+userSchema.statics.findAll = function(query, projection) {
+    return this.find(query, projection);
 }
 
 userSchema.statics.findOneByid = function(id) {

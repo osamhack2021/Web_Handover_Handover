@@ -1,7 +1,7 @@
 const User = require('../models/User.js');
 
 const crypto = require('crypto');
-const { RuntimeError } = require('./errors/RuntimeError.js');
+const { RuntimeError, InvalidParameterError, DocumentNotFounndError, NotFoundError } = require('./errors/RuntimeError.js');
 const { BussinessError, AuthError } = require('./errors/BussinessError.js');
 
 function encode(rowPassword) {
@@ -11,16 +11,22 @@ function encode(rowPassword) {
 }
 
 module.exports = {
-	save: async function(params) {
+	search: async function(query) {
+		try {
+			let result = await User.findAll(query);
+			
+			if(result.length === 0) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
 
+			return result;
+		} catch(err) { throw err; }
+	},
+
+	save: async function(params) {
 		params.password = encode(params.password);
 
 		let result = await User
 			.create(params)
 			.catch(err => {
-				if(err.code === 11000) {
-					throw new BussinessError('serviceNumber overlap');
-				}
 				throw new RuntimeError(err.message);
 			});
 
@@ -29,15 +35,8 @@ module.exports = {
 
 		return result;
 	},
-	
-	findAll: async function() {
-		try {
-			return await User.findAll();
-		} catch(err) { throw err; }
-	},
 
 	auth: async function(params) {
-		
 		params.password = encode(params.password);
 
 		const loginUser = await User
@@ -49,7 +48,7 @@ module.exports = {
 		if(loginUser === null|| loginUser.password !== params.password) {
 			throw new AuthError('LOGIN fail');
 		}
-		return true;
-		
+
+		return loginUser;
 	}
 };

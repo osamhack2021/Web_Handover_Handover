@@ -11,7 +11,7 @@ mongoose();
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -34,12 +34,15 @@ app.use('*', jwtRouter);
 let userRouter = require('./routes/api/user.js');
 app.use('/user', userRouter);
 
+let groupRouter = require('./routes/api/group.js');
+app.use('/group', groupRouter);
+
 app.listen(3000, () => {
   console.log(`API listening at http://localhost:3000`);
 });
 
 
-const { DocumentNotFounndError } = require('./services/erros/RuntimeError.js');
+const { DocumentNotFounndError } = require('./services/errors/RuntimeError.js');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
