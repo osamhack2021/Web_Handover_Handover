@@ -1,8 +1,8 @@
 const User = require('../models/User.js');
 
 const crypto = require('crypto');
-const RuntimeError = require('./errors/RuntimeError.js');
-const BussinessError = require('./errors/BussinessError.js');
+const { RuntimeError } = require('./errors/RuntimeError.js');
+const { BussinessError, AuthError } = require('./errors/BussinessError.js');
 
 function encode(rowPassword) {
 	return crypto.createHmac('sha256', 'secret12341234')
