@@ -1,3 +1,19 @@
-.home-page {
-  text-align: center;
+@import 'mixins';
+
+.home-page{
+  margin-left : 240px;
+  @include flexBox($display : flex, $justify-content : center);
+  width: calc(100% - 240px);
+  min-width: fit-content;
+
+  .grid-container {
+    margin-top:0;
+    max-height: 100%;
+    overflow-x: auto;
+    display: grid;
+    grid-template-columns : 1fr;
+    gap : 80px;
+  }
 }
+
+

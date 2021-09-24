@@ -1,0 +1,30 @@
+
+.leftpane{
+    width: 240px;
+    height : 100vh;
+    overflow-y: auto;
+    margin : 0;
+    box-shadow : (2px 0px 6px rgba(0, 0, 0, 0.25));
+    position : fixed;
+    .leftpane-header{
+        position: static
+    }
+
+    .leftpane-menu{
+        padding-top :24px;
+        .leftpane-item{ 
+            font-family: Inter;
+            font-style: normal;
+            font-weight: bold;
+            font-size : 16px;
+            line-height: 19px;
+            height : 48px;
+            padding-left : 24px;
+        }
+        .leftpane-label{
+            padding-left : 24px;
+        }
+    }
+}
+
+

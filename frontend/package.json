@@ -50,6 +50,8 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.15",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/styles": "^4.11.4",
     "animate.css": "^4.1.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -85,9 +87,8 @@
     "seamless-immutable": "^7.1.4",
     "terser-webpack-plugin": "^5.2.4",
     "uuid": "^8.3.2",
-    "webpack": "^5.52.1",
-    "webpack-bundle-analyzer": "^4.4.2",
-    "webpack-cli": "^4.8.0"
+    "webpack": "^5.53.0",
+    "webpack-bundle-analyzer": "^4.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
@@ -119,6 +120,7 @@
     "sass-loader": "^12.1.0",
     "style-loader": "^3.2.1",
     "superagent": "^6.1.0",
-    "supertest": "^6.1.6"
+    "supertest": "^6.1.6",
+    "webpack-cli": "^4.8.0"
   }
 }

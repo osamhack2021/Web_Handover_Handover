@@ -1,6 +1,6 @@
-html {
-  background-color: $beige;
-  font-size: 12px;
+html, body, #app, #app>div {
+  background-color : $beige;
+  overflow: auto;
 }
 
 a {
