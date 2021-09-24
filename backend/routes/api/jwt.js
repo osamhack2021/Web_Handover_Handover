@@ -4,6 +4,8 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = "MY_SECRET_KEY";
 
+const { AuthError } = require('../../services/errors/BusinessError');
+
 router.all('', (req, res, next) => {
     try {
         const clientToken = req.cookies.jwt;
@@ -15,10 +17,12 @@ router.all('', (req, res, next) => {
             res.locals.serviceNumber = decoded.serviceNumber;
             next();
         } else {
-            res.status(401).send({ error: 'unauthorized' });
+            let error = new Error('Authentication Failed: unauthorized');
+            res.send(error.status).send(error.message);
         }
     } catch(err) {
-        res.status(401).json({ error: 'token expired' });
+        let error = new Error('Authentication Failed: token expired');
+        res.send(error.status).send(error.message);
     }
 });
 

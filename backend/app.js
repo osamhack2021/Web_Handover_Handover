@@ -38,7 +38,14 @@ app.listen(3000, () => {
   console.log(`API listening at http://localhost:3000`);
 });
 
+
+const { DocumentNotFounndError } = require('./services/erros/RuntimeError.js');
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next('404 Not Found');
+	throw new DocumentNotFounndError();
+});
+
+app.use(function(error, req, res, next) {
+	res.status(error.status).send(error.message);
 });
