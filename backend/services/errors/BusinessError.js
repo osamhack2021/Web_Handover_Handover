@@ -1,4 +1,4 @@
-class BussinessError extends Error {
+class BusinessError extends Error {
     constructor(message) {
         super(message);
         this.status = 400;
@@ -6,11 +6,11 @@ class BussinessError extends Error {
     }
 }
 
-class AuthError extends BussinessError {
+class AuthError extends BusinessError {
     constructor(message) {
         this.status = 401;
         this.name = "AuthError";
     }
 }
 
-module.exports = { BussinessError, AuthError };
+module.exports = { BusinessError, AuthError };

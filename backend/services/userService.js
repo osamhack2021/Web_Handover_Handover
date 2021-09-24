@@ -2,7 +2,7 @@ const User = require('../models/User.js');
 
 const crypto = require('crypto');
 const { RuntimeError } = require('./errors/RuntimeError.js');
-const { BussinessError, AuthError } = require('./errors/BussinessError.js');
+const { BusinessError, AuthError } = require('./errors/BusinessError.js');
 
 function encode(rowPassword) {
 	return crypto.createHmac('sha256', 'secret12341234')
@@ -53,13 +53,13 @@ module.exports = {
 		
 	},
 
-	update: async function(params) {
+	update: async function(id ,params) {
 		if(params.password) {
 			params.password = encode(params.password);
 		}
 
 		const result = await User
-			.updateByid(params._id, params)
+			.updateByid(params.id, params)
 			.catch(err => {
 				throw new RuntimeError(err.message);
 			});
@@ -73,7 +73,7 @@ module.exports = {
 	delete: async function(params) {
 		
 		const result = await User
-			.deleteByid(params._id)
+			.deleteByid(params.id)
 			.catch(err => {
 				throw new RuntimeError(err.message);
 			});

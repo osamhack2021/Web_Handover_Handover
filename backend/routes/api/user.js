@@ -15,4 +15,7 @@ router.get('/:id', (req, res) => {
         .then(result => res.send(result));
 });
 
+router.put('/:id', userController.updateUser);
+router.delete('/:id', userController.deleteUser);
+
 module.exports = router;
