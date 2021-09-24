@@ -21,20 +21,4 @@ groupSchema.statics.create = function(payload) {
     return group.save();
 };
 
-// groupSchema.statics.find() = function(query, projection) {
-//     return this.find(query, projection);
-// }
-
-groupSchema.statics.findOneByid = function(id) {
-    return this.findOne({ id });
-};
-
-groupSchema.statics.updateByid = function(id, payload) {
-    return this.findOneAndUpdate({ id }, payload, { new: true });
-};
-
-groupSchema.statics.deleteByid = function(id) {
-    return this.remove({ id });
-};
-
 module.exports = mongoose.model('Group', groupSchema);
