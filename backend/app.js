@@ -35,8 +35,8 @@ let userRouter = require('./routes/api/user.js');
 app.use('/user', userRouter);
 
 app.listen(3000, () => {
-  console.log(`API listening at http://localhost:3000`)
-})
+  console.log(`API listening at http://localhost:3000`);
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
