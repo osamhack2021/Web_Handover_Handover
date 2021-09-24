@@ -93,7 +93,7 @@ export default function Register() {
     <div className="register-box">
       <div className="login-logo"></div>
       <Block className="login-title">회원가입</Block>
-      <div className="login-subtitle">Welcome!</div>
+      <div className="login-subtitle">환영합니다!</div>
       <hr className="separator" />
       <FormInput
         id="username"
@@ -128,12 +128,6 @@ export default function Register() {
         placeholder="비밀번호를 다시 입력해주세요"
         type="password"
         label="비밀번호 재입력"
-      />
-      <FormInput
-        id="name"
-        className="is-fullwidth"
-        placeholder="이름을 입력해주세요"
-        label="이름"
       />
       <FormInput
         id="name"

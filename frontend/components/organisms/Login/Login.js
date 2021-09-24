@@ -57,35 +57,35 @@ export default function Login() {
     <div className="login-box">
       <div className="login-logo mx-auto"></div>
       <Block className="login-title">로그인</Block>
-      <div className="login-subtitle">Welcome back!</div>
+      <div className="login-subtitle">환영합니다!</div>
       <hr className="separator" />
       <FormInput
         onChange={updateUsername}
-        placeholder="군번을 입력하세요"
+        placeholder="군번을 입력해주세요"
         value={username}
         className="login-input is-fullwidth"
         label="군번"
       />
       <FormInput
         onChange={updatePassword}
-        placeholder="비밀번호를 입력하세요"
+        placeholder="비밀번호를 입력해주세요"
         value={password}
         type="password"
         className="login-input is-fullwidth"
         label="Password"
       />
       <Button className="login-button my-5" onClick={login} size="medium">
-        Sign in
+        로그인
       </Button>
       <Block className="login-register">
         <Link to="/recovery" className="login-link">
-          Forgot password
+          비밀번호 찾기
         </Link>
       </Block>
       <Block className="login-register">
-        Don't have an account?&nbsp;
+        계정이 없으신가요?&nbsp;
         <Link to="/register" className="login-link">
-          Sign up
+          회원가입
         </Link>
       </Block>
     </div>
