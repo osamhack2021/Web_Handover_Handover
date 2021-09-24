@@ -51,5 +51,33 @@ module.exports = {
 		}
 		return true;
 		
+	},
+
+	update: async function(params) {
+		if(params.password) {
+			params.password = encode(params.password);
+		}
+
+		const result = await User
+			.updateByid(params._id, params)
+			.catch(err => {
+				throw new RuntimeError(err.message);
+			});
+
+		result._id = '';
+		result.password = '';
+	
+		return result;
+	},
+
+	delete: async function(params) {
+		
+		const result = await User
+			.deleteByid(params._id)
+			.catch(err => {
+				throw new RuntimeError(err.message);
+			});
+
+		return true;
 	}
 };
