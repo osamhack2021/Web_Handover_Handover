@@ -1,9 +1,11 @@
 @import "mixins";
 
 .login-page,
-.register-page {
+.register-page,
+.recovery-page {
   .login-box,
-  .register-box {
+  .register-box,
+  .recovery-box {
     display: flex;
     flex-direction: column;
     align-items: center;
