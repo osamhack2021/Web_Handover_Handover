@@ -13,11 +13,11 @@ module.exports = {
 
             return result;
         } catch(err) {
-            throw err;
+            throw new RuntimeError(err.message);
         }
     },
 
-    save: async (params) => {
+    create: async (params) => {
         try {
             let result = await Group.create(params);
             return result;
@@ -37,6 +37,14 @@ module.exports = {
                 return true;
             }
             
+        } catch(err) {
+            throw new RuntimeError(err.message);
+        }
+    },
+
+    delete: async (params) => {
+        try {
+            let deleted = await Group.deleteOne(params);
         } catch(err) {
             throw new RuntimeError(err.message);
         }
