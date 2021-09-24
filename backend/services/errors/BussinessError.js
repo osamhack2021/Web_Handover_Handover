@@ -8,9 +8,18 @@ class BussinessError extends Error {
 
 class AuthError extends BussinessError {
     constructor(message) {
+        super(message);
         this.status = 401;
         this.name = "AuthError";
     }
 }
 
-module.exports = { BussinessError, AuthError };
+class ForbiddenError extends BussinessError {
+    constructor(message) {
+        super(message);
+        this.status = 403;
+        this.name = "ForbiddenError";
+    }
+}
+
+module.exports = { BussinessError, AuthError, ForbiddenError };
