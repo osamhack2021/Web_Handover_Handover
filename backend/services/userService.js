@@ -1,7 +1,6 @@
 const User = require('../models/User.js');
 
 const crypto = require('crypto');
-const AuthError = require('./errors/AuthError.js');
 const RuntimeError = require('./errors/RuntimeError.js');
 const BussinessError = require('./errors/BussinessError.js');
 
