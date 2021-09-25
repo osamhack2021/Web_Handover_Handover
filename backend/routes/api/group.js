@@ -8,17 +8,12 @@ const groupController = require('../../controllers/groupController.js');
  *    get:
  *      tags:
  *        - group
- *      summary: 모든 그룹 조회
+ *      summary: 그룹 조회
  *      parameters:
  *        - in: query
- *          name: 부대명
+ *          name: query
  *          schema: 
  *            type: string
- *        - in: query
- *          name: 부대경로
- *          schema:
- *            type: string
- *            format: ',(.+,)'
  *        - in: cookie
  *          name: JWT Token
  *          schema:

@@ -5,7 +5,8 @@ const { RuntimeError } = require('./errors/RuntimeError.js');
 module.exports = {
 	search: async (query) => {
         try {
-            let result = await Group.find(query)
+            let regex = new RegExp(query);
+            let result = await Group.find({ path: regex })
                 .populate('admins', {
                     id: true, serviceNumber: true, name: true, rank: true,
                     title: true, group: true, email: true, tel: true
