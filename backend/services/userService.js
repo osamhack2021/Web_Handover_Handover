@@ -68,6 +68,7 @@ module.exports = {
 		}
 
 		const token = jwt.sign({
+			_id: loginUser._id,
 			serviceNumber: loginUser.serviceNumber
 		}, SECRET_KEY, {
 			expiresIn: '1h'
