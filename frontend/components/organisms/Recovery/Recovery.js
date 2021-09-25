@@ -21,27 +21,29 @@ export default function Login() {
       <div className="login-logo mx-auto"></div>
       <Block className="login-title">비밀번호 찾기</Block>
       <hr className="separator" />
-      <FormInput
-        onChange={updateUsername}
-        placeholder="군번을 입력해주세요"
-        value={username}
-        className="is-fullwidth"
-        label="군번"
-      />
-      <FormInput
-        /*onChange={}*/
-        placeholder="이름을 입력해주세요"
-        /*value={}*/
-        className="is-fullwidth"
-        label="이름"
-      />
-      <FormInput
-        onChange={updateEmail}
-        placeholder="e.g. example@example.com"
-        /*value={password}*/
-        className="is-fullwidth"
-        label="군 이메일"
-      />
+      <div className="forminput-container">
+        <FormInput
+          onChange={updateUsername}
+          placeholder="군번을 입력해주세요"
+          value={username}
+          className="is-fullwidth"
+          label="군번"
+        />
+        <FormInput
+          /*onChange={}*/
+          placeholder="이름을 입력해주세요"
+          /*value={}*/
+          className="is-fullwidth"
+          label="이름"
+        />
+        <FormInput
+          onChange={updateEmail}
+          placeholder="e.g. example@example.com"
+          /*value={password}*/
+          className="is-fullwidth"
+          label="군 이메일"
+        />
+      </div>
       <hr className="separator" />
       <Button
         className="login-button"

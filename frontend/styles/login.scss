@@ -47,12 +47,6 @@
       background-color: $pink;
       color: $white;
       @include setfonts($font-size: 15px, $line-height: 24px);
-      &:hover {
-        border-color: $light-red;
-      }
-      &:focus {
-        border-color: $light-red;
-      }
     }
 
     .login-link {
@@ -61,6 +55,10 @@
 
     .login-register {
       @include setfonts($line-height: 20px);
+    }
+
+    .forminput-container {
+      width: 100%;
     }
   }
 }

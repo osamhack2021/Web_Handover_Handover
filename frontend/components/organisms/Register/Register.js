@@ -95,70 +95,72 @@ export default function Register() {
       <Block className="login-title">회원가입</Block>
       <div className="login-subtitle">환영합니다!</div>
       <hr className="separator" />
-      <FormInput
-        id="username"
-        className="is-fullwidth"
-        onChange={handleUsernameChange}
-        value={username}
-        placeholder="군번을 입력해주세요"
-        label="군번"
-        color={
-          username ? (usernameAvailable ? "success" : "danger") : undefined
-        }
-        rightIcon={usernameAvailable ? faCheck : faExclamationTriangle}
-        inputIsvalid={usernameAvailable}
-        helpMessage={usernameMessage}
-      />
-      <FormInput
-        id="password"
-        className="is-fullwidth"
-        placeholder="비밀번호를 입력해주세요"
-        type="password"
-        value={password}
-        onChange={handlePasswordChange}
-        label="비밀번호"
-        color={password ? (passwordValid ? "success" : "danger") : undefined}
-        rightIcon={passwordValid ? faCheck : faExclamationTriangle}
-        inputIsvalid={passwordValid}
-        helpMessage={passwordMessage}
-      />
-      <FormInput
-        id="password-re"
-        className="is-fullwidth"
-        placeholder="비밀번호를 다시 입력해주세요"
-        type="password"
-        label="비밀번호 재입력"
-      />
-      <FormInput
-        id="name"
-        className="is-fullwidth"
-        placeholder="이름을 입력해주세요"
-        label="이름"
-      />
-      <FormInput
-        id="job-name"
-        className="is-fullwidth"
-        placeholder="e.g. 인사 담당관, 대대장..."
-        label="직무명"
-      />
-      <FormInput
-        id="email"
-        className="is-fullwidth"
-        placeholder="e.g. example@example.com"
-        label="군 이메일"
-      />
-      <FormInput
-        id="number-army"
-        className="is-fullwidth"
-        placeholder="e.g.  000-0000"
-        label="군 연락처"
-      />
-      <FormInput
-        id="number-phone"
-        className="is-fullwidth"
-        placeholder="e.g.  010-1111-1111"
-        label="휴대폰 번호"
-      />
+      <div className="forminput-container">
+        <FormInput
+          id="username"
+          className="is-fullwidth"
+          onChange={handleUsernameChange}
+          value={username}
+          placeholder="군번을 입력해주세요"
+          label="군번"
+          color={
+            username ? (usernameAvailable ? "success" : "danger") : undefined
+          }
+          rightIcon={usernameAvailable ? faCheck : faExclamationTriangle}
+          inputIsvalid={usernameAvailable}
+          helpMessage={usernameMessage}
+        />
+        <FormInput
+          id="password"
+          className="is-fullwidth"
+          placeholder="비밀번호를 입력해주세요"
+          type="password"
+          value={password}
+          onChange={handlePasswordChange}
+          label="비밀번호"
+          color={password ? (passwordValid ? "success" : "danger") : undefined}
+          rightIcon={passwordValid ? faCheck : faExclamationTriangle}
+          inputIsvalid={passwordValid}
+          helpMessage={passwordMessage}
+        />
+        <FormInput
+          id="password-re"
+          className="is-fullwidth"
+          placeholder="비밀번호를 다시 입력해주세요"
+          type="password"
+          label="비밀번호 재입력"
+        />
+        <FormInput
+          id="name"
+          className="is-fullwidth"
+          placeholder="이름을 입력해주세요"
+          label="이름"
+        />
+        <FormInput
+          id="job-name"
+          className="is-fullwidth"
+          placeholder="e.g. 인사 담당관, 대대장..."
+          label="직무명"
+        />
+        <FormInput
+          id="email"
+          className="is-fullwidth"
+          placeholder="e.g. example@example.com"
+          label="군 이메일"
+        />
+        <FormInput
+          id="number-army"
+          className="is-fullwidth"
+          placeholder="e.g.  000-0000"
+          label="군 연락처"
+        />
+        <FormInput
+          id="number-phone"
+          className="is-fullwidth"
+          placeholder="e.g.  010-1111-1111"
+          label="휴대폰 번호"
+        />
+      </div>
       <hr className="separator" />
       <Button
         className="login-button"
