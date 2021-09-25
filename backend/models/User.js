@@ -7,9 +7,8 @@ const userSchema = mongoose.Schema({
     name: { type: String, required: true },
     rank: { type: String, required: true },
     title: { type: String, required: true },
-    status: { type: String, default: 'avail' },   // stop, sleep, gone, avail, deleted
+    status: { type: String, default: 'avail', enum: ['active', 'inactive', 'retired', 'deleted'] },
     group: { type: Types.ObjectId, ref: 'Group', required: true },
-    specialtyNumber: { type: String },
     email: { type: String },
     tel: { 
         military: { type: String },
