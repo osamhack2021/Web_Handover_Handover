@@ -4,6 +4,9 @@ const crypto = require('crypto');
 const { RuntimeError } = require('./errors/RuntimeError.js');
 const { BusinessError, AuthError } = require('./errors/BusinessError.js');
 
+const jwt = require('jsonwebtoken');
+const SECRET_KEY = "MY_SECRET_KEY";
+
 function encode(rowPassword) {
 	return crypto.createHmac('sha256', 'secret12341234')
 	.update(rowPassword)
@@ -49,8 +52,14 @@ module.exports = {
 		if(loginUser === null|| loginUser.password !== params.password) {
 			throw new AuthError('LOGIN fail');
 		}
-		return true;
-		
+
+		const token = jwt.sign({
+			serviceNumber: loginUser.serviceNumber
+		}, SECRET_KEY, {
+			expiresIn: '1h'
+		});
+
+		return token;		
 	},
 
 	update: async function(id ,params) {

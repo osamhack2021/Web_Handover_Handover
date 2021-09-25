@@ -14,6 +14,14 @@ class AuthError extends BusinessError {
     }
 }
 
+class ForbiddenError extends BusinessError {
+    constructor(message) {
+        super(message);
+        this.status = 403;
+        this.name = "ForbiddenError";
+    }
+}
+
 class NotFounndError extends BusinessError {
     constructor(message) {
         super(message);
@@ -22,4 +30,4 @@ class NotFounndError extends BusinessError {
     }
 }
 
-module.exports = { BusinessError, AuthError, NotFounndError };
+module.exports = { BusinessError, AuthError, ForbiddenError, NotFounndError };
