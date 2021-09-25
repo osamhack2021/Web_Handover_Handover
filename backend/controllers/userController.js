@@ -1,7 +1,25 @@
 const userService = require('../services/userService.js');
 
 module.exports = {
-    saveUser: async function(req, res) {
+
+    search: async function(req, res) {
+
+        // 활성화 상태의 유저만 조회
+        let query = Object.assign(req.query, { status: 'avail' });
+        let projection = {
+            name: true, rank: true, title: true,
+            group: true, email: true, tel: true
+        };
+
+        try {
+            const result = await userService.search(query, projection);
+            res.status(200).send(result);
+        } catch(err) {
+            res.status(err.status).send(err.message);
+        }
+    },
+
+    save: async function(req, res) {
         try {
             const result = await userService.save(req.body);
             res.status(201).send(result);   // 201 Created

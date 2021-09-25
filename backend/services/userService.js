@@ -14,6 +14,20 @@ function encode(rowPassword) {
 }
 
 module.exports = {
+
+	search: async function(query) {
+		let result = await User
+		.findAll(query)
+		.catch(err => {
+			throw new RuntimeError(err.message);
+		});
+			
+		if(result.length === 0) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
+
+		return result;
+
+	},
+
 	save: async function(params) {
 
 		params.password = encode(params.password);
