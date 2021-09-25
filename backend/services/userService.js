@@ -19,9 +19,9 @@ module.exports = {
 			.create(params)
 			.catch(err => {
 				if(err.code === 11000) {
-					throw new BussinessError('serviceNumber overlap');
-				}
-				throw new RuntimeError(err.message);
+					throw new BusinessError('serviceNumber overlap');
+				} 
+				throw new RuntimeError(err.message);		
 			});
 
 		result._id = '';
@@ -59,7 +59,7 @@ module.exports = {
 		}
 
 		const result = await User
-			.updateByid(params.id, params)
+			.updateByid(id, params)
 			.catch(err => {
 				throw new RuntimeError(err.message);
 			});

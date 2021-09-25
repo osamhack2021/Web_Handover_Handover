@@ -7,12 +7,4 @@ class RuntimeError extends Error {
     }
 }
 
-class DocumentNotFounndError extends RuntimeError {
-    constructor(message) {
-        super(message);
-        this.status = 404;
-        this.name = "DocumentNotFounndError";
-    }
-}
-
-module.exports = { RuntimeError, DocumentNotFounndError }
+module.exports = { RuntimeError }

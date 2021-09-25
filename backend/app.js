@@ -39,11 +39,11 @@ app.listen(3000, () => {
 });
 
 
-const { DocumentNotFounndError } = require('./services/errors/RuntimeError.js');
+const { NotFounndError } = require('./services/errors/BusinessError.js');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-	throw new DocumentNotFounndError();
+	throw new NotFounndError();
 });
 
 app.use(function(error, req, res, next) {
