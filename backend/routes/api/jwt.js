@@ -16,13 +16,13 @@ router.all('', (req, res, next) => {
             next();
         } else {
             let error = new Error('Authentication Failed: unauthorized');
-            res.send(error.status).send(error.message);
+            res.status(error.status || 500).send(error.message);
         }
     } catch(err) {
         if(err instanceof AuthError) {
-            res.send(err.status).send(err.message);
+            res.status(err.status || 500).send(err.message);
         } else {
-            res.send(401).send('Authentication Failed: token expired');
+            res.status(401).send('Authentication Failed: token expired');
         }
     }
 });

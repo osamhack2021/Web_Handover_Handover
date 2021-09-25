@@ -58,6 +58,13 @@ let groups = [{
     path: ',handover,frontend,',
 }];
 
+const crypto = require('crypto');
+function encode(rowPassword) {
+	return crypto.createHmac('sha256', 'secret12341234')
+	.update(rowPassword)
+	.digest('hex');
+}
+
 async function init() {
     await User.deleteMany({});
     await Group.deleteMany({});
@@ -88,6 +95,7 @@ async function createUsers() {
     users[5].group = mongoose.Types.ObjectId(frontendId);
 
     for(let user of users) {
+        user.password = encode(user.serviceNumber);
         let user_ = new User(user);
         await user_.save();
     }
