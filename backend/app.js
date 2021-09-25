@@ -21,6 +21,9 @@ app.use(cors({
 	credential: true
 }));
 
+const { swaggerUi, specs } = require('./swagger.js');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
 let indexRouter = require('./routes/index.js');
 app.use('/', indexRouter);
 

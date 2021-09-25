@@ -7,7 +7,7 @@ module.exports = {
         try {
             let result = await Group.find(query)
                 .populate('admins', {
-                    serviceNumber: true, name: true, rank: true,
+                    id: true, serviceNumber: true, name: true, rank: true,
                     title: true, group: true, email: true, tel: true
                 }).exec();
 

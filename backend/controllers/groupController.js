@@ -21,6 +21,9 @@ module.exports = {
 
         try {
             const result = await groupService.search(query);
+
+            if(result.length < 1) res.status(404).send('NotFound');
+
             res.status(200).send(result);
         } catch(err) {
             res.status(err.status || 500).send(err.message);
@@ -29,7 +32,14 @@ module.exports = {
 
     // POST
     create: async (req, res) => {
-        const params = req.body;
+        let params = req.body;
+
+        if(!params.admins) {
+            let serviceNumber = res.locals.serviceNumber;
+            let id = groupService.find({serviceNumber})[0].id
+
+            params.admins = [id];
+        }
 
         try {
             const result = await groupService.create(params);
