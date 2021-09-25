@@ -1,8 +1,11 @@
 const User = require('../models/User.js');
 
 const crypto = require('crypto');
-const { RuntimeError, InvalidParameterError, DocumentNotFounndError, NotFoundError } = require('./errors/RuntimeError.js');
-const { BussinessError, AuthError } = require('./errors/BussinessError.js');
+const { RuntimeError } = require('./errors/RuntimeError.js');
+const { BusinessError, AuthError } = require('./errors/BusinessError.js');
+
+const jwt = require('jsonwebtoken');
+const SECRET_KEY = "MY_SECRET_KEY";
 
 function encode(rowPassword) {
 	return crypto.createHmac('sha256', 'secret12341234')
@@ -11,23 +14,31 @@ function encode(rowPassword) {
 }
 
 module.exports = {
-	search: async function(query) {
-		try {
-			let result = await User.findAll(query);
-			
-			if(result.length === 0) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
 
-			return result;
-		} catch(err) { throw err; }
+	search: async function(query) {
+		let result = await User
+		.findAll(query)
+		.catch(err => {
+			throw new RuntimeError(err.message);
+		});
+			
+		if(result.length === 0) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
+
+		return result;
+
 	},
 
 	save: async function(params) {
+
 		params.password = encode(params.password);
 
 		let result = await User
 			.create(params)
 			.catch(err => {
-				throw new RuntimeError(err.message);
+				if(err.code === 11000) {
+					throw new BusinessError('serviceNumber overlap');
+				} 
+				throw new RuntimeError(err.message);		
 			});
 
 		result._id = '';
@@ -35,8 +46,15 @@ module.exports = {
 
 		return result;
 	},
+	
+	findAll: async function() {
+		try {
+			return await User.findAll();
+		} catch(err) { throw err; }
+	},
 
 	auth: async function(params) {
+		
 		params.password = encode(params.password);
 
 		const loginUser = await User
@@ -49,6 +67,40 @@ module.exports = {
 			throw new AuthError('LOGIN fail');
 		}
 
-		return loginUser;
+		const token = jwt.sign({
+			serviceNumber: loginUser.serviceNumber
+		}, SECRET_KEY, {
+			expiresIn: '1h'
+		});
+
+		return token;		
+	},
+
+	update: async function(id ,params) {
+		if(params.password) {
+			params.password = encode(params.password);
+		}
+
+		const result = await User
+			.updateByid(id, params)
+			.catch(err => {
+				throw new RuntimeError(err.message);
+			});
+
+		result._id = '';
+		result.password = '';
+	
+		return result;
+	},
+
+	delete: async function(params) {
+		
+		const result = await User
+			.deleteByid(params.id)
+			.catch(err => {
+				throw new RuntimeError(err.message);
+			});
+
+		return true;
 	}
 };

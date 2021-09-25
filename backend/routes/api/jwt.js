@@ -4,7 +4,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = "MY_SECRET_KEY";
 
-const { AuthError } = require('../../services/errors/BussinessError');
+const { AuthError } = require('../../services/errors/BusinessError');
 
 router.all('', (req, res, next) => {
     try {
