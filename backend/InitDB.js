@@ -9,42 +9,42 @@ let users = [{
     name: '조나단',
     rank: '병장',
     title: '팀장',
-    status: 'avail'
+    status: 'active'
 }, {
     serviceNumber: 'phjppo0918',
     password: 'phjppo0918',
     name: '박현준',
     rank: '상병',
     title: '백엔드 개발자',
-    status: 'avail'
+    status: 'active'
 }, {
     serviceNumber: '134130',
     password: '134130',
     name: '오지환',
     rank: '일병',
     title: '백엔드 노예',
-    status: 'avail'
+    status: 'active'
 }, {
     serviceNumber: 'ahnavocado',
     password: 'ahnavocado',
     name: '안수겸',
     rank: '상병',
     title: '디자이너',
-    status: 'avail'
+    status: 'active'
 }, {
     serviceNumber: 'cw00h',
     password: 'cw00h',
     name: '최우혁',
     rank: '일병',
     title: '프론트 개발자',
-    status: 'avail'
+    status: 'active'
 }, {
     serviceNumber: 'holymollyhao',
     password: 'holymollyhao',
     name: '김태원',
     rank: '일병',
     title: '프론트 개발자',
-    status: 'avail'
+    status: 'active'
 }];
 
 let groups = [{
