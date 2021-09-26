@@ -24,9 +24,9 @@ const useStyles = makeStyles({
   `,
 });
 
-export default function GridHeader({ pathArr = [], title}) {
+export default function GridHeader({ pathArr = [], title }) {
   const classes = useStyles();
-  const dummyTitle = "재고 관리"
+  const dummyTitle = '재고 관리';
   const dummyPathArr = [
     {
       _id: 1,
@@ -41,7 +41,7 @@ export default function GridHeader({ pathArr = [], title}) {
   ];
 
   return (
-    <div className="search-bar">
+    <div className="grid-header">
       <div>
         <Breadcrumbs separator=">">
           {listToComponent(BreadCrumb, dummyPathArr, '_id')}

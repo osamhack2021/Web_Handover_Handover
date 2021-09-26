@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router';
 import LeftPane from '_organisms/LeftPane';
 // import GridLayout from '_organisms/GridLayout';
 import HomePage from '_pages/HomePage';
+import RecommendPage from '_pages/RecommendPage';
 
 export default function RoutingPage() {
   const dummyGroupData = [
@@ -36,7 +37,8 @@ export default function RoutingPage() {
       </div>
       <Switch>
         {/* <Route path="/blahblahbalh" component={anything} /> */}
-        <Route path="*" component={HomePage} />
+        {/* <Route path="*" component={HomePage} /> */}
+        <Route path="*" component={RecommendPage} />
       </Switch>
     </div>
   );

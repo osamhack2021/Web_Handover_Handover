@@ -10,3 +10,4 @@ import './svgs/show_content.svg';
 import './svgs/comment.svg';
 import './svgs/search_icon.svg';
 import './svgs/clock_icon.svg';
+import './svgs/bell.svg';

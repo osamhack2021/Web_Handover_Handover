@@ -167,5 +167,7 @@ node_modules
 psd
 thumb
 sketch
+./frontend/eslintrc.js
+./frontend/package.json
 
 # End of https://www.toptal.com/developers/gitignore/api/react,node

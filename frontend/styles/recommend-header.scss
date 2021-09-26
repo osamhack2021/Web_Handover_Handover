@@ -1,0 +1,34 @@
+@import 'mixins';
+
+.recommend-header{
+  @include flexBox(
+    $display : flex,
+    $flex-direction : row,
+    $justify-content : space-between
+  );
+  margin-bottom : 6px;
+  color : black;
+
+  .recommend-header-title{
+    @include setfonts(
+      $font-weight: bold,
+      $font-size: 36px,
+      $line-height: 44px
+    )
+  }
+  .recommend-header-link{
+    display: flex;
+    align-items: flex-end;
+    .recommend-link-text{
+        @include setfonts(
+        $font-weight: bold,
+        $font-size: 20px,
+        $line-height: 24px
+      );
+      color : black;
+      &:hover{
+        color : lighten(black, 10%);
+      }
+    }
+  }
+}
