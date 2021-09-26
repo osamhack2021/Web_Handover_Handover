@@ -13,6 +13,7 @@ router.all('', (req, res, next) => {
 
         if(decoded) {
             res.locals.serviceNumber = decoded.serviceNumber;
+            res.locals.serviceNumber = decoded._id;
             next();
         } else {
             let error = new Error('Authentication Failed: unauthorized');
