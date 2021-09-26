@@ -37,8 +37,8 @@ export default function RoutingPage() {
       </div>
       <Switch>
         {/* <Route path="/blahblahbalh" component={anything} /> */}
-        {/* <Route path="*" component={HomePage} /> */}
-        <Route path="*" component={RecommendPage} />
+        <Route path="/home" component={HomePage} />
+        <Route path="/recommend" component={RecommendPage} />
       </Switch>
     </div>
   );
