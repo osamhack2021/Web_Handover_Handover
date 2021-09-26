@@ -1,6 +1,6 @@
 const groupService = require('../services/groupService.js');
 
-const { ForbiddenError } = require('../services/errors/BussinessError');
+const { ForbiddenError } = require('../services/errors/BusinessError');
 
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = "MY_SECRET_KEY";
