@@ -5,20 +5,20 @@
   grid-auto-flow : column;
   gap : 40px;
   overflow-x: hidden;
+  padding-bottom: 8px;
   &:hover{
     overflow-x: auto;
-    p{
-      padding-bottom : 0px;
-    }
-  }
-  & p{
-    padding-bottom: 16px;
+    padding-bottom : 0px;
   }
 }
 
-// ::-webkit-scrollbar{
-//   background-color: transparent;
-// }
-// ::-webkit-scrollbar-thumb{
-//   background-color: darken($beige, 10%);
-// }
+.recommend-card::-webkit-scrollbar{
+  margin : 0px;
+  height: 8px;
+  background-color: transparent; /* or add it to the track */
+}
+.recommend-card::-webkit-scrollbar-thumb{
+  margin : 0px;
+  background-color: darken($beige, 10%);
+  border-radius: 5%;
+}
