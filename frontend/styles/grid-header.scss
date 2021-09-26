@@ -26,42 +26,4 @@
             color: darken($black-b50, 10%)
         }
     }
-
-    .search-bar-search {
-        @include setfonts($font-weight : $weight-semibold,
-            $font-size : $size-5,
-            $line-height : 24px);
-        background-color: $grey-light;
-        border: none;
-        outline: none;
-        height: 30px;
-        margin-right: 10px;
-    }
-
-    form {
-        @include flexBox($display : flex, $flex-direction : row, $justify-content : center, $align-items:center);
-        margin-bottom: 10px;
-    }
-
-    button {
-        background-color: transparent;
-        border-color: transparent;
-        width: 30px;
-        height: 30px;
-        padding: 0px;
-        outline: none;
-        border-radius: 10%;
-        margin-right: 5px;
-
-        &:active {
-            background-color: $grey-light;
-        }
-    }
-
-    hr {
-        width: 1200px;
-        margin: auto;
-        border: 2px solid $black-b50;
-        background-color: solid $black-b50;
-    }
 }
