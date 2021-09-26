@@ -4,9 +4,6 @@ const crypto = require('crypto');
 const { RuntimeError } = require('./errors/RuntimeError.js');
 const { BusinessError, AuthError } = require('./errors/BusinessError.js');
 
-const jwt = require('jsonwebtoken');
-const SECRET_KEY = "MY_SECRET_KEY";
-
 function encode(rowPassword) {
 	return crypto.createHmac('sha256', 'secret12341234')
 	.update(rowPassword)
@@ -16,7 +13,7 @@ function encode(rowPassword) {
 module.exports = {
 
 	search: async function(query) {
-		let result = await User
+		const result = await User
 		.findAll(query)
 		.catch(err => {
 			throw new RuntimeError(err.message);
@@ -26,6 +23,18 @@ module.exports = {
 
 		return result;
 
+	},
+
+	searchByServiceNumber: async function(serviceNumber) {
+		const result = await User
+		.findOneByServiceNumber(serviceNumber)
+		.catch(err => {
+			throw new RuntimeError(err.message);
+		});
+
+		if(result.length === 0) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
+
+		return result;
 	},
 
 	save: async function(params) {
@@ -51,30 +60,6 @@ module.exports = {
 		try {
 			return await User.findAll();
 		} catch(err) { throw err; }
-	},
-
-	auth: async function(params) {
-		
-		params.password = encode(params.password);
-
-		const loginUser = await User
-			.findOneByServiceNumber(params.serviceNumber)
-			.catch(err => {
-				throw new RuntimeError(err.message);
-			});
-
-		if(loginUser === null|| loginUser.password !== params.password) {
-			throw new AuthError('LOGIN fail');
-		}
-
-		const token = jwt.sign({
-			_id: loginUser._id,
-			serviceNumber: loginUser.serviceNumber
-		}, SECRET_KEY, {
-			expiresIn: '1h'
-		});
-
-		return token;		
 	},
 
 	update: async function(id ,params) {

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/userController.js');
+const authController = require('../controllers/authController.js');
 const { init } = require('../InitDB.js');
 
 router.get('/', (req, res) => {
@@ -19,7 +19,7 @@ router.get('/initDB', (req, res) => {
     }
 })
 
-router.post('/login', userController.login);
+router.post('/login', authController.login);
 
 
 module.exports = router;
