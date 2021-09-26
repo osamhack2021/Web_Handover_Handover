@@ -9,8 +9,8 @@
   margin-bottom: 20px;
 
   .form-input-label {
-    @include setfonts($font-size: 15px, $line-height: 20px);
-    color: $grayish-blue;
+    @include setfonts($font-size: $size-6, $line-height: 20px);
+    color: $black-b70;
     margin: 0 auto 6px 0;
   }
 }

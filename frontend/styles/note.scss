@@ -9,7 +9,7 @@ $width,
 $height,
 $border-radius in $classnames {
     .note--#{$classname} {
-        background: #FFFFFF;
+        background: $white;
         mix-blend-mode: normal;
 
         width: $width;
@@ -21,7 +21,7 @@ $border-radius in $classnames {
         padding-top: 25px;
         padding-bottom: 10px;
 
-        border: 0.5px solid rgba(0, 0, 0, 0.5);
+        border: 0.5px solid $black-b50;
         border-radius: 0px 0px 16px 16px;
 
         position: relative;
@@ -29,13 +29,13 @@ $border-radius in $classnames {
 
         .note-header {
             @include flexBox(flex, row, space-between, center);
-            color: black;
+            color: $black;
             height: 30px;
             box-shadow: none;
             margin-bottom: 9px;
 
             .main-title {
-                @include setfonts($font-weight : 700,
+                @include setfonts($font-weight : $weight-bold,
                     $font-size : 24px,
                     $line-height : 29px);
                 width: 135px;
@@ -43,11 +43,11 @@ $border-radius in $classnames {
         }
 
         .description {
-            @include setfonts($font-weight : 500,
-                $font-size : 14px,
+            @include setfonts($font-weight : $weight-semibold,
+                $font-size : $size-6,
                 $line-height : 17px);
 
-            color: rgba(0, 0, 0, 0.75);
+            color: $black-b70;
             margin-bottom: 10px;
         }
 
@@ -55,22 +55,21 @@ $border-radius in $classnames {
             margin-top: 15px;
 
             .child {
-                @include setfonts($font-weight : bold,
-                    $font-size : 16px,
+                @include setfonts($font-weight : $weight-bold,
+                    $font-size : $size-6,
                     $line-height : 19px);
                 @include flexBox($display : flex, $align-items : center);
                 letter-spacing: -0.017em;
                 margin-bottom: 8px;
-
             }
         }
 
         .note-footer {
             @include flexBox($display : flex, $justify-content : space-between, $align-items:center);
-            @include setfonts($font-weight : 500,
-                $font-size : 12px,
+            @include setfonts($font-weight : $weight-semibold,
+                $font-size : $size-7,
                 $line-height : 15px);
-            color: rgba(0, 0, 0, 0.5);
+            color: $black-b50;
             border: 0;
 
             .date-from-now {
@@ -107,7 +106,7 @@ $border-radius in $classnames {
             margin-right: 5px;
 
             &:active {
-                background-color: lightgray;
+                background-color: $grey-lighter;
             }
         }
     }
