@@ -76,7 +76,7 @@ export default function Login() {
           label="Password"
         />
       </div>
-      <Button className="login-button my-5" onClick={login} size="medium">
+      <Button className="login-button mb-5" onClick={login} size="medium">
         로그인
       </Button>
       <Block className="login-register">
