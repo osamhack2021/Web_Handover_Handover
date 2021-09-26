@@ -7,7 +7,7 @@
     color: $black-b50;
 }
 
-.grid-header{
+.grid-header {
     @include flexBox($display : flex, $flex-direction : column, $justify-content : center);
     @include setfonts($font-weight : $weight-semibold,
         $font-size : 40px,

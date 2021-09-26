@@ -47,7 +47,6 @@ export default function RecommendContent({ type, cardArray }) {
       <Card type={type} />
       <Card type={type} />
     </div>
-
   );
 }
 
