@@ -7,7 +7,9 @@ import ProfileMenu from '_molecules/ProfileMenu';
 import MenuItem from '_molecules/MenuItem';
 import listToCompnent from '../../../utils/listToComponent';
 
-export default function LeftPane({ name, rank, title, division, groupData }) {
+export default function LeftPane({
+  name, rank, title, division, groupData,
+}) {
   // const { user } = useSelector(R.pick(['user']));
   // const {name, rank, title, groups} = user;
   // const groupData = CreateGroupData(groups);
@@ -64,5 +66,5 @@ LeftPane.propTypes = {
   rank: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   division: PropTypes.string.isRequired,
-  groupData: PropTypes.array.isRequired,
+  groupData: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

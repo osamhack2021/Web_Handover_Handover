@@ -1,0 +1,24 @@
+@import 'mixins';
+.recommend-card{
+  width : 960px;
+  display : grid;
+  grid-auto-flow : column;
+  gap : 40px;
+  overflow-x: hidden;
+  &:hover{
+    overflow-x: auto;
+    p{
+      padding-bottom : 0px;
+    }
+  }
+  & p{
+    padding-bottom: 16px;
+  }
+}
+
+// ::-webkit-scrollbar{
+//   background-color: transparent;
+// }
+// ::-webkit-scrollbar-thumb{
+//   background-color: darken($beige, 10%);
+// }

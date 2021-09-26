@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function CustomButton({ imgSrc, className = '', onClick, alt, type }) {
+export default function CustomButton({
+  imgSrc, className = '', onClick, alt, type,
+}) {
   if (className === '' && type === '') {
     return (
       <button type={type} onClick={onClick}>
@@ -21,5 +23,5 @@ CustomButton.propTypes = {
   className: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   alt: PropTypes.string.isRequired,
-  type : PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
 };
