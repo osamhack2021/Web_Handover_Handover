@@ -2,28 +2,22 @@ const mongoose = require('mongoose');
 const Types = mongoose.Schema.Types
 
 const userSchema = mongoose.Schema({
-
-    // 군번
-    serviceNumber: { type: String, unique: 1 },
-    // 비밀번호
-    password: { type: String },
-    // 이름
-    name: { type: String },
-    // 계급
-    rank: { type: String },
-    // 직위
-    title: { type: String },
-    // 부서
-    groups: [{ type: Types.ObjectId, ref: 'Group' }],
+    serviceNumber: { type: String, unique: true, required: true },
+    password: { type: String, required: true },
+    name: { type: String, required: true },
+    rank: { type: String, required: true },
+    title: { type: String, required: true },
+    status: { type: String, required: true },
+    group: { type: Types.ObjectId, ref: 'Group', required: true },
+    specialtyNumber: { type: String },
     email: { type: String },
-    tel: { type: String },
-    // 최종 접속 일시
+    tel: { 
+        military: { type: String },
+        mobile: { type: String }
+    },
     lastLogin: { type: Date },
-    // 계정 생성 일시
     firstLogin: { type: Date },
-    // 북마크
     bookmarks: [{ type: Types.ObjectId, ref: 'Item' }],
-    // 구독
     subscriptions: {
         users: [{ type: Types.ObjectId, ref: 'User' }],
         groups: [{ type: Types.ObjectId, ref: 'Group' }]

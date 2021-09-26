@@ -1,30 +1,43 @@
 const userService = require('../services/userService.js');
-const ControllerError = require('./ControllerError');
+
+const jwt = require('jsonwebtoken');
+const SECRET_KEY = "MY_SECRET_KEY";
 
 module.exports = {
-    saveUser: async function(req, res, next) {
+    saveUser: async function(req, res) {
         try {
-            let result = await userService.save(req.body);
+            const result = await userService.save(req.body);
             res.status(201).send(result);   // 201 Created
         } catch(err) {
-            next(err);
+            res.status(err.status).send(err.message);
         }
     },
 
-    login: async function(req, res, next) {
+    login: async function(req, res) {
         try {
-            let result = await userService.auth(req.body);
+            const result = await userService.auth(req.body);
 
-            console.log(result);
+            if(result) {
+                
+                const token = jwt.sign({
+                    serviceNumber: result.serviceNumber
+                }, SECRET_KEY, {
+                    expiresIn: '1h'
+                });
 
-            if(!!result) {
-                req.session.loginData = req.body.serviceNumber;
-                res.status(200).send('Login Success');   // 200 OK
-            } else {
-                throw new ControllerError('Login Failed');
+                console.log(token)
+
+                res.cookie('jwt', token);
+
+                res.status(201).send({
+                    result: 'OK',
+                    token
+                });
             }
+
         } catch(err) {
-            next(err);
+            console.log(err);
+           res.status(err.status).send(err.message);
         }
     }
 };

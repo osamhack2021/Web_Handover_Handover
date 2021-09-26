@@ -20,7 +20,7 @@ a {
 }
 
 .select::after {
-  border-color: $dark-grey;
+  border-color: $grey-dark;
 }
 
 .field.has-help {
@@ -30,7 +30,7 @@ a {
 .card-footer-item {
   cursor: pointer;
   &:hover {
-    background-color: $lightest-grey;
+    background-color: $grey-lightest;
   }
 }
 

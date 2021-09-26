@@ -63,7 +63,7 @@ FormInput.defaultProps = {
   leftIcon: undefined,
   rightIcon: undefined,
   type: "text",
-  size: "medium",
+  size: "",
   label: "",
   color: undefined,
   inputIsvalid: true,

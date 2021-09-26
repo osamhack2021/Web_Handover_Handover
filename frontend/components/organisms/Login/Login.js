@@ -51,7 +51,6 @@ export default function Login() {
 
   const updateUsername = (e) => setUsername(e.target.value);
   const updatePassword = (e) => setPassword(e.target.value);
-  //      <div className="login-label">군번</div>
 
   return (
     <div className="login-box">
@@ -59,21 +58,24 @@ export default function Login() {
       <Block className="login-title">로그인</Block>
       <div className="login-subtitle">환영합니다!</div>
       <hr className="separator" />
-      <FormInput
-        onChange={updateUsername}
-        placeholder="군번을 입력해주세요"
-        value={username}
-        className="login-input is-fullwidth"
-        label="군번"
-      />
-      <FormInput
-        onChange={updatePassword}
-        placeholder="비밀번호를 입력해주세요"
-        value={password}
-        type="password"
-        className="login-input is-fullwidth"
-        label="Password"
-      />
+      <div className="forminput-container">
+        <FormInput
+          onChange={updateUsername}
+          placeholder="군번을 입력해주세요"
+          value={username}
+          className="login-input is-fullwidth"
+          label="군번"
+        />
+
+        <FormInput
+                  onChange={updatePassword}
+          placeholder="비밀번호를 입력해주세요"
+          value={password}
+          type="password"
+          className="login-input is-fullwidth"
+          label="Password"
+        />
+      </div>
       <Button className="login-button my-5" onClick={login} size="medium">
         로그인
       </Button>

@@ -1,34 +1,70 @@
 @import 'mixins';
 
-.MuiBreadcrumbs-separator{
-    @include setfonts(
-        $font-weight : 600,
+.MuiBreadcrumbs-separator {
+    @include setfonts($font-weight : 600,
         $font-size : 20px,
-        $line-height : 24px
-    );
-    color: rgba(0, 0, 0, 0.5);
+        $line-height : 24px);
+    color: $black-b50;
 }
 
 .grid-header{
     @include flexBox($display : flex, $flex-direction : column, $justify-content : center);
-    @include setfonts(
-        $font-weight : 600,
+    @include setfonts($font-weight : $weight-semibold,
         $font-size : 40px,
-        $line-height : 48px
-    );
-    color : black;
-    width : 100%;
-    margin-top : 50px;
-    
-    .breadcrumb{
-        @include setfonts(
-            $font-weight : 600,
-            $font-size : 20px,
-            $line-height : 24px
-        );
-        color: rgba(0, 0, 0, 0.5);
-        &:hover{
-            color : darken(rgba(0, 0, 0, 0.5), 10%)
+        $line-height : 48px);
+    color: $black;
+    width: 100%;
+    margin-top: 50px;
+
+    .breadcrumb {
+        @include setfonts($font-weight : $weight-semibold,
+            $font-size : $size-5,
+            $line-height : 24px);
+        color: $black-b50;
+
+        &:hover {
+            color: darken($black-b50, 10%)
         }
     }
+<<<<<<< HEAD
+=======
+
+    .search-bar-search {
+        @include setfonts($font-weight : $weight-semibold,
+            $font-size : $size-5,
+            $line-height : 24px);
+        background-color: $grey-light;
+        border: none;
+        outline: none;
+        height: 30px;
+        margin-right: 10px;
+    }
+
+    form {
+        @include flexBox($display : flex, $flex-direction : row, $justify-content : center, $align-items:center);
+        margin-bottom: 10px;
+    }
+
+    button {
+        background-color: transparent;
+        border-color: transparent;
+        width: 30px;
+        height: 30px;
+        padding: 0px;
+        outline: none;
+        border-radius: 10%;
+        margin-right: 5px;
+
+        &:active {
+            background-color: $grey-light;
+        }
+    }
+
+    hr {
+        width: 1200px;
+        margin: auto;
+        border: 2px solid $black-b50;
+        background-color: solid $black-b50;
+    }
+>>>>>>> 30234923c9e29a5714bd91a53208b079ebc4ce21
 }
