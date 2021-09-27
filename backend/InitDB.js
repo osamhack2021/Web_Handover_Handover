@@ -63,25 +63,29 @@ let items = [{
     type: 'cabinet',
     owner: mongoose.Types.ObjectId(),
     path: ',Handover,',
-    content: 'Handover Cabinet'
+    content: 'Handover Cabinet',
+    status: 'published'
 }, {
     title: 'handover',
     type: 'document',
     owner: mongoose.Types.ObjectId(),
     path: ',Handover,handover,',
-    content: 'handover document'
+    content: 'handover document',
+    status: 'published'
 }, {
     title: 'backend',
     type: 'card',
     owner: mongoose.Types.ObjectId(),
     path: ',Handover,handover,backend',
-    content: 'backend card'
+    content: 'backend card',
+    status: 'published'
 }, {
     title: 'frontend',
     type: 'card',
     owner: mongoose.Types.ObjectId(),
     path: ',Handover,handover,frontend',
-    content: 'frontend card'
+    content: 'frontend card',
+    status: 'deleted'
 }
 ];
 
@@ -102,18 +106,42 @@ async function init() {
     await createUsers();
     await createItems();
 
-    let ntcho = (await User.find({ serviceNumber: users[0].serviceNumber }))[0]._id;
-    await Group.updateOne(groups[0], { admins: [ mongoose.Types.ObjectId(ntcho) ] });
-    await Item.updateOne(items[0], { owner: mongoose.Types.ObjectId(ntcho) });
-    await Item.updateOne(items[1], { owner: mongoose.Types.ObjectId(ntcho) });
+    let ntcho = (await User.find({ serviceNumber: users[0].serviceNumber }))[0];
+    await Group.updateOne(groups[0], { admins: [ mongoose.Types.ObjectId(ntcho._id) ] });
+    await Item.updateOne(items[0], {
+        owner: mongoose.Types.ObjectId(ntcho._id),
+        accessGroups: {
+            read: [mongoose.Types.ObjectId(ntcho.group)],
+            edit: [mongoose.Types.ObjectId(ntcho.group)]
+        }
+    });
+    await Item.updateOne(items[1], {
+        owner: mongoose.Types.ObjectId(ntcho._id),
+        accessGroups: {
+            read: [mongoose.Types.ObjectId(ntcho.group)],
+            edit: [mongoose.Types.ObjectId(ntcho.group)]
+        }
+    });
 
-    let phjppo0918 = (await User.find({ serviceNumber: users[1].serviceNumber }))[0]._id;
-    await Group.updateOne(groups[1], { admins: [ mongoose.Types.ObjectId(phjppo0918) ] });
-    await Item.updateOne(items[2], { owner: mongoose.Types.ObjectId(phjppo0918) });
+    let phjppo0918 = (await User.find({ serviceNumber: users[1].serviceNumber }))[0];
+    await Group.updateOne(groups[1], { admins: [ mongoose.Types.ObjectId(phjppo0918._id) ] });
+    await Item.updateOne(items[2], {
+        owner: mongoose.Types.ObjectId(phjppo0918._id),
+        accessGroups: {
+            read: [mongoose.Types.ObjectId(phjppo0918.group)],
+            edit: [mongoose.Types.ObjectId(phjppo0918.group)]
+        }
+    });
 
-    let ahnavocado = (await User.find({ serviceNumber: users[3].serviceNumber }))[0]._id;
-    await Group.updateOne(groups[2], { admins: [ mongoose.Types.ObjectId(ahnavocado) ] });
-    await Item.updateOne(items[3], { owner: mongoose.Types.ObjectId(ahnavocado) });
+    let ahnavocado = (await User.find({ serviceNumber: users[3].serviceNumber }))[0];
+    await Group.updateOne(groups[2], { admins: [ mongoose.Types.ObjectId(ahnavocado._id) ] });
+    await Item.updateOne(items[3], {
+        owner: mongoose.Types.ObjectId(ahnavocado._id),
+        accessGroups: {
+            read: [mongoose.Types.ObjectId(ahnavocado.group)],
+            edit: [mongoose.Types.ObjectId(ahnavocado.group)]
+        }
+    });
 }
 
 async function createUsers() {
