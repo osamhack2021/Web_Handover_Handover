@@ -51,12 +51,8 @@ module.exports = {
         const groups = [req.params.group, ...req.params['0'].split('/').slice(1)];
         const path = ',' + groups.join(',') + ',';
 
-        let admins;
-        if(!req.body.admins) {
-            admins = [res.locals._id];
-        } else {
-            admins = admins.map(admin => Types.ObjectId(admin));
-        }
+        let admins = req.body.admins || [res.locals._id];
+        admins = admins.map(admin => Types.ObjectId(admin));
 
         let inspectors = req.body.inspectors || [];
         inspectors = inspectors.map(inspector => Types.ObjectId(inspector));
@@ -80,7 +76,7 @@ module.exports = {
         const groups = [req.params.group, ...req.params['0'].split('/').slice(1)];
         const path = ',' + groups.join(',') + ',';
         
-        let admins = req.body.admins || [];
+        let admins = req.body.admins || [res.locals._id];
         admins = admins.map(admin => Types.ObjectId(admin));
 
         let inspectors = req.body.inspectors || [];
