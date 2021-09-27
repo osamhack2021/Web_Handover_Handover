@@ -1,13 +1,20 @@
 const Item = require('../models/Item.js');
-const { MongoError } = require('mongoose');
+const { MongoError, Types } = require('mongoose');
 const { RuntimeError } = require('./errors/RuntimeError.js');
 
 module.exports = {
-    search: async (title, type, owner) => {
+    search: async (title, type, readerGroup) => {
         try {
-            title = new RegExp('^' + title);
-            console.log({ title, type })
-            let result = await Item.find({ title, type });
+            title = new RegExp(title);
+            console.log({ title, type, readerGroup })
+            let result = await Item.find({
+                title,
+                type,
+                'accessGroups.read': {
+                    $elemMatch: { $eq: readerGroup }
+                },
+                status: { $ne: 'deleted' }
+            });
 
             return result;
         } catch(err) {
