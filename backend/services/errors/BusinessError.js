@@ -26,7 +26,7 @@ class NotFoundError extends BusinessError {
     constructor(message) {
         super(message);
         this.status = 404;
-        this.name = "NotFounndError";
+        this.name = "NotFoundError";
     }
 }
 
