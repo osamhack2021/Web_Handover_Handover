@@ -45,9 +45,10 @@ module.exports = {
         }
     },
 
-    create: async (params) => {
+    create: async (query) => {
         try {
-            
+            const result = await Item.create(query);
+            return result;
         } catch(err) {
             throw new RuntimeError(err.message);
         }

@@ -30,4 +30,10 @@ const itemSchema = mongoose.Schema({
     }
 });
 
+itemSchema.statics.create = function(payload) {
+    const item = new this(payload);
+
+    return item.save();
+};
+
 module.exports = mongoose.model('Item', itemSchema);
