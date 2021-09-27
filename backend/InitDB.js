@@ -58,7 +58,35 @@ let groups = [{
     path: ',handover,frontend,',
 }];
 
+let items = [{
+    title: 'Handover',
+    type: 'cabinet',
+    owner: mongoose.Types.ObjectId(),
+    path: ',Handover,',
+    content: 'Handover Cabinet'
+}, {
+    title: 'handover',
+    type: 'document',
+    owner: mongoose.Types.ObjectId(),
+    path: ',Handover,handover,',
+    content: 'handover document'
+}, {
+    title: 'backend',
+    type: 'card',
+    owner: mongoose.Types.ObjectId(),
+    path: ',Handover,handover,backend',
+    content: 'backend card'
+}, {
+    title: 'frontend',
+    type: 'card',
+    owner: mongoose.Types.ObjectId(),
+    path: ',Handover,handover,frontend',
+    content: 'frontend card'
+}
+];
+
 const crypto = require('crypto');
+const Item = require('./models/Item.js');
 function encode(rowPassword) {
 	return crypto.createHmac('sha256', 'secret12341234')
 	.update(rowPassword)
@@ -68,18 +96,24 @@ function encode(rowPassword) {
 async function init() {
     await User.deleteMany({});
     await Group.deleteMany({});
+    await Item.deleteMany({});
 
     await createGroups();
     await createUsers();
+    await createItems();
 
     let ntcho = (await User.find({ serviceNumber: users[0].serviceNumber }))[0]._id;
     await Group.updateOne(groups[0], { admins: [ mongoose.Types.ObjectId(ntcho) ] });
+    await Item.updateOne(items[0], { owner: mongoose.Types.ObjectId(ntcho) });
+    await Item.updateOne(items[1], { owner: mongoose.Types.ObjectId(ntcho) });
 
     let phjppo0918 = (await User.find({ serviceNumber: users[1].serviceNumber }))[0]._id;
     await Group.updateOne(groups[1], { admins: [ mongoose.Types.ObjectId(phjppo0918) ] });
+    await Item.updateOne(items[2], { owner: mongoose.Types.ObjectId(phjppo0918) });
 
     let ahnavocado = (await User.find({ serviceNumber: users[3].serviceNumber }))[0]._id;
     await Group.updateOne(groups[2], { admins: [ mongoose.Types.ObjectId(ahnavocado) ] });
+    await Item.updateOne(items[3], { owner: mongoose.Types.ObjectId(ahnavocado) });
 }
 
 async function createUsers() {
@@ -106,6 +140,19 @@ async function createGroups() {
         for(let group of groups) {
             let group_ = new Group(group);
             await group_.save();
+        }
+    } catch(e) {
+        console.error(e);
+    }
+}
+
+
+
+async function createItems() {
+    try {
+        for(let item of items) {
+            let item_ = new Item(item);
+            await item_.save();
         }
     } catch(e) {
         console.error(e);
