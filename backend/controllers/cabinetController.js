@@ -2,7 +2,7 @@ const itemService = require('../services/itemService.js');
 const userService = require('../services/userService.js');
 
 const jwt = require('jsonwebtoken');
-const { NotFoundError } = require('../services/errors/BusinessError.js');
+const { NotFoundError, ForbiddenError } = require('../services/errors/BusinessError.js');
 const SECRET_KEY = "MY_SECRET_KEY";
 
 const isAdmin = (group, serviceNumber) => {
@@ -33,10 +33,25 @@ module.exports = {
         }
     },
 
-    // GET
+    // GET /item/:title
     read: async (req, res) => {
         try {
+            const title = req.params.title;
+            const path = ',' + title + ',';
 
+            const result = await itemService.read(path);
+            if(result.length < 1) throw new NotFoundError('Not Found');
+
+            const _id = res.locals._id;
+            const currGroup = (await userService.search({ _id }))[0].group;
+
+            const readable = result.accessGroups.read.some(reader => {
+                return reader.equals(currGroup)
+            });
+            
+            if(!readable) throw new ForbiddenError('Forbidden');
+
+            res.status(200).send(result);
         } catch(err) {
             res.status(err.status || 500).send(err.message);
         }

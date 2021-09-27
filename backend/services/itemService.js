@@ -26,9 +26,20 @@ module.exports = {
         }
     },
 
-	read: async (query) => {
+	read: async (path) => {
         try {
+            const result = await Item.findOne({
+                path
+            }).populate('accessGroups.read', {
+                _id: true, name: true, path: true
+            }).populate('accessGroups.edit', {
+                _id: true, name: true, path: true
+            }).populate('owner', {
+                _id: true, serviceNumber: true, name: true,
+                rank: true, title: true, email: true, tel: true
+            }).exec();
 
+            return result;
         } catch(err) {
             throw new RuntimeError(err.message);
         }

@@ -4,10 +4,10 @@ const cabinetController = require('../../controllers/cabinetController.js');
 
 
 router.get('', cabinetController.search);
-router.get('/:cabinetId', cabinetController.read);
-router.post('', cabinetController.create);
-router.put('', cabinetController.update);
-router.delete('', cabinetController.delete);
+router.get('/:title', cabinetController.read);
+router.post('/:title', cabinetController.create);
+router.put('/:title', cabinetController.update);
+router.delete('/:title', cabinetController.delete);
 
 
 
