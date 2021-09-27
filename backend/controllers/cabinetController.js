@@ -1,4 +1,4 @@
-const itemService = require('../services/itemService.js');
+const itemService = require('../services/cabinetService.js');
 
 const { ForbiddenError } = require('../services/errors/BussinessError');
 
@@ -14,6 +14,11 @@ const isAdmin = (group, serviceNumber) => {
 }
 
 module.exports = {
+
+    // GET /item?=title
+    searchAll: async (req, res) => {
+
+    },
 
     // GET
     search: async (req, res) => {

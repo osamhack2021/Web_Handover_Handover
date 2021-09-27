@@ -3,6 +3,10 @@ const { MongoError } = require('mongoose');
 const { RuntimeError } = require('./errors/RuntimeError.js');
 
 module.exports = {
+    searchAll: async (title) => {
+
+    },
+
 	search: async (query) => {
         
     },
