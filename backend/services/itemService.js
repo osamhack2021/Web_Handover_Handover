@@ -6,7 +6,6 @@ module.exports = {
     search: async (title, type, readerGroup) => {
         try {
             title = new RegExp(title);
-            console.log({ title, type, readerGroup })
             let result = await Item.find({
                 title,
                 type,
@@ -14,7 +13,12 @@ module.exports = {
                     $elemMatch: { $eq: readerGroup }
                 },
                 status: { $ne: 'deleted' }
-            });
+            }).populate('accessGroups.read', {
+                _id: true, name: true, path: true
+            }).populate('owner', {
+                _id: true, serviceNumber: true, name: true,
+                rank: true, title: true, email: true, tel: true
+            }).exec();
 
             return result;
         } catch(err) {
