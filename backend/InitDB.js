@@ -76,14 +76,14 @@ let items = [{
     title: 'backend',
     type: 'card',
     owner: mongoose.Types.ObjectId(),
-    path: ',Handover,handover,backend',
+    path: ',Handover,handover,backend,',
     content: 'backend card',
     status: 'published'
 }, {
     title: 'frontend',
     type: 'card',
     owner: mongoose.Types.ObjectId(),
-    path: ',Handover,handover,frontend',
+    path: ',Handover,handover,frontend,',
     content: 'frontend card',
     status: 'deleted'
 }
