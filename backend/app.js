@@ -36,6 +36,9 @@ app.use('/user', userRouter);
 let groupRouter = require('./routes/api/group.js');
 app.use('/group', groupRouter);
 
+let itemRouter = require('./routes/api/item.js');
+app.use('/item', itemRouter);
+
 app.listen(3000, () => {
   console.log(`API listening at http://localhost:3000`);
 });
