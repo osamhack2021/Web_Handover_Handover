@@ -30,10 +30,6 @@ module.exports = {
 
     updateUser: async function(req, res) {
         try {
-            if(!authService.isAdmin() && !authService.isSelf() ) {
-                
-            }
-
             const result = await userService.update(req.params.id,req.body);
             res.status(201).send(result);   // 201 Created
         } catch(err) {
