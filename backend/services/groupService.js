@@ -3,9 +3,9 @@ const { MongoError } = require('mongoose');
 const { RuntimeError } = require('./errors/RuntimeError.js');
 
 module.exports = {
-	search: async (query) => {
+	search: async (path) => {
         try {
-            let regex = new RegExp(query);
+            let regex = new RegExp(path);
             let result = await Group.find({ path: regex })
                 .populate('admins', {
                     id: true, serviceNumber: true, name: true, rank: true,

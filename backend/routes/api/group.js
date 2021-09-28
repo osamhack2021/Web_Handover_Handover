@@ -2,6 +2,12 @@ const express = require('express');
 const router = express.Router();
 const groupController = require('../../controllers/groupController.js');
 
+router.get('', groupController.searchAll);
+router.get('/:group*', groupController.search);
+router.post('/:group*', groupController.create);
+router.put('/:group*', groupController.update);
+router.delete('/:group*', groupController.delete);
+
 /**
  * @swagger
  *  /group:
@@ -29,7 +35,7 @@ const groupController = require('../../controllers/groupController.js');
  *        500:
  *          description: Interner Server Error
  */
-router.get('', groupController.search);
+
 
 /**
  * @swagger
@@ -83,7 +89,7 @@ router.get('', groupController.search);
  *        500:
  *          description: Interner Server Error
  */
-router.post('', groupController.create);
+
 
 /**
  * @swagger
@@ -137,7 +143,7 @@ router.post('', groupController.create);
  *        500:
  *          description: Interner Server Error
  */
-router.put('', groupController.update);
+
 
 /**
  * @swagger
@@ -179,6 +185,6 @@ router.put('', groupController.update);
  *        500:
  *          description: Interner Server Error
  */
-router.delete('', groupController.delete);
+
 
 module.exports = router;

@@ -22,12 +22,12 @@ class ForbiddenError extends BusinessError {
     }
 }
 
-class NotFounndError extends BusinessError {
+class NotFoundError extends BusinessError {
     constructor(message) {
         super(message);
         this.status = 404;
-        this.name = "NotFounndError";
+        this.name = "NotFoundError";
     }
 }
 
-module.exports = { BusinessError, AuthError, ForbiddenError, NotFounndError };
+module.exports = { BusinessError, AuthError, ForbiddenError, NotFoundError };
