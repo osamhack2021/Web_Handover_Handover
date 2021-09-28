@@ -9,6 +9,8 @@ const groupSchema = mongoose.Schema({
         required: true
     },
     inspectors: [{ type: Types.ObjectId, ref: 'User' }]
+}, {
+    versionKey: false
 });
 
 groupSchema.statics.create = function(payload) {
