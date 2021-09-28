@@ -1,5 +1,5 @@
 const userService = require('../services/userService.js');
-
+const authService = require('../services/authService.js');
 module.exports = {
 
     search: async function(req, res) {
@@ -30,6 +30,10 @@ module.exports = {
 
     updateUser: async function(req, res) {
         try {
+            if(!authService.isAdmin() && !authService.isSelf() ) {
+                
+            }
+
             const result = await userService.update(req.params.id,req.body);
             res.status(201).send(result);   // 201 Created
         } catch(err) {

@@ -42,7 +42,7 @@ module.exports = {
 		const token = jwt.sign({
 			_id: loginUser._id,
 			serviceNumber: loginUser.serviceNumber,
-			
+			status: loginUser.status,
 		}, SECRET_KEY, {
 			expiresIn: '1h'
 		});
@@ -50,25 +50,16 @@ module.exports = {
 		return token;		
 	},
 
-	isAdmin: async function(token) {
-		//const clientToken = req.cookies.jwt;
-        const decoded = decodeToken(token);
-
-		if(decoded.status === 'admin'){
-			return true;
-		}
-
-		return false;
+	getLoginUser: function(token) {
+		return decodeToken(token);
 	},
 
-	isSelf: async function(token, serviceNumber) {
-        const decoded = decodeToken(token);
-
-		if(decoded.serviceNumber === serviceNumber){
-			return true;
+	authAdmin: function(token) {
+		const result = decodeToken;
+		if(result.status !== 'admin') {
+			throw new ForbiddenError('not have access');
 		}
-		
-		return false;
+		return result;	
 	}
 
 }
