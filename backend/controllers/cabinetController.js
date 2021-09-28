@@ -73,7 +73,7 @@ module.exports = {
         }
     },
 
-    // POST
+    // POST /item/:title
     create: async (req, res) => {
 
         // Parse title and path from req.params
