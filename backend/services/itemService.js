@@ -1,6 +1,7 @@
 const Item = require('../models/Item.js');
 const { MongoError, Types } = require('mongoose');
 const { RuntimeError } = require('./errors/RuntimeError.js');
+const { BusinessError } = require('./errors/BusinessError.js');
 
 module.exports = {
     search: async (title, type, readerGroup) => {
@@ -22,7 +23,7 @@ module.exports = {
 
             return result;
         } catch(err) {
-            throw new RuntimeError(err.message);
+            throw new BusinessError(err.message);
         }
     },
 
@@ -41,7 +42,7 @@ module.exports = {
 
             return result;
         } catch(err) {
-            throw new RuntimeError(err.message);
+            throw new BusinessError(err.message);
         }
     },
 
@@ -50,7 +51,7 @@ module.exports = {
             const result = await Item.create(query);
             return result;
         } catch(err) {
-            throw new RuntimeError(err.message);
+            throw new BusinessError(err.message);
         }
     },
 
@@ -58,7 +59,7 @@ module.exports = {
         try {
             
         } catch(err) {
-            throw new RuntimeError(err.message);
+            throw new BusinessError(err.message);
         }
     },
 
