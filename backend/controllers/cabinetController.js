@@ -18,8 +18,8 @@ module.exports = {
     // GET /item?=title
     search: async (req, res) => {
 
-        // If Request /item without query, req.query.title is undefined
-        // So allocate '' to const title
+        // If GET request contains no query, req.query.title will be undefined
+        // Allocating empty string to the title if it is undefined will prevent unexpected behaviors
         const title = req.query.title || '';
         const _id = res.locals._id;
 
@@ -31,7 +31,7 @@ module.exports = {
             // Search (partialTitle, type, readGroup)
             const result = await itemService.search(title, 'cabinet', currGroup);
 
-            // If can't find cabinet, throw 404
+            // If cabinet is not found, throw 404
             if(result.length < 1) throw new NotFoundError('Not Found');
 
             res.status(200).send(result);
@@ -65,7 +65,7 @@ module.exports = {
                 return reader.equals(currGroup)
             });
             
-            // If session's group can't read cabinet, throw 403
+            // If session.accessGroups is not authorized to read the cabinet, throw HTTP 403
             if(!readable) throw new ForbiddenError('Forbidden');
 
             res.status(200).send(result);
