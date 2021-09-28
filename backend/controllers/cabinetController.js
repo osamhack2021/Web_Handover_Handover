@@ -18,7 +18,8 @@ module.exports = {
     // GET /item?=title
     search: async (req, res) => {
 
-        // If Request /item, req.query.title == undefined
+        // If Request /item without query, req.query.title is undefined
+        // So allocate '' to const title
         const title = req.query.title || '';
         const _id = res.locals._id;
 
