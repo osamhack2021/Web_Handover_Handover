@@ -99,8 +99,8 @@ module.exports = {
             // Current session's group is automatically added.
             query = Object.assign(query, {
                 accessGroups: {
-                    read: query.accessGroups.read || [currGroup],
-                    edit: query.accessGroups.edit || [currGroup]
+                    read: query.accessGroups?.read || [currGroup],
+                    edit: query.accessGroups?.edit || [currGroup]
                 }
             });
 
