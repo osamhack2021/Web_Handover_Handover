@@ -1,5 +1,5 @@
 const userService = require('../services/userService.js');
-
+const authService = require('../services/authService.js');
 module.exports = {
 
     search: async function(req, res) {
