@@ -3,6 +3,7 @@ const userService = require('../services/userService.js');
 
 const jwt = require('jsonwebtoken');
 const { NotFoundError, ForbiddenError } = require('../services/errors/BusinessError.js');
+const Item = require('../models/Item.js');
 const SECRET_KEY = "MY_SECRET_KEY";
 
 const isAdmin = (group, serviceNumber) => {
@@ -101,7 +102,8 @@ module.exports = {
                 accessGroups: {
                     read: query.accessGroups?.read || [currGroup],
                     edit: query.accessGroups?.edit || [currGroup]
-                }
+                },
+                contributors: [_id]
             });
 
             // Create item
@@ -115,11 +117,49 @@ module.exports = {
         }
     },
 
-    // PUT
+    // PUT /item/:title
     update: async (req, res) => {
-        try {
+
+        // Parse title and path from req.params
+        const title = req.params.title;
+        const path = ',' + title + ',';
+
+        // Add title and path to client's request body
+        let query = Object.assign(req.body, {
+            title,
+            path,
+            type: 'cabinet',
+            owner: res.locals._id,
+        });
+
+        try { 
+            // Get current session's group
+            const _id = res.locals._id;
+            const currGroup = (await userService.search({ _id }))[0].group;
+
+            let before = await itemService.read(path);
+            if(before.length === 0) throw new Error('Cannot find before doc');
+
+            // If session.accessGroups is not authorized to edit the cabinet, throw HTTP 403
+            const editable = before.accessGroups.edit.some(editor => {
+                return editor.equals(currGroup);
+            });
+            if(!editable) throw new ForbiddenError('Forbidden');
+            
+            // Add currUser to contributors
+            query = Object.assign(query, { contributors: [...before.contributors, res.locals._id] });
+
+            // Remove inspection
+            query = Object.assign(query, { inspection: [] });
+
+            // Update Item
+            const result = await itemService.update(before, query);
+
+            // 204 No Content
+            res.status(204).send(result);
 
         } catch(err) {
+            console.log(err);
             res.status(err.status || 500).send(err.message);
         }
     },

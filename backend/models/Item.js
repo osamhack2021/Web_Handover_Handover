@@ -8,7 +8,7 @@ const itemSchema = mongoose.Schema({
     path: { type: String, required: true },
     content: { type: String },
     tags: [{ type: String }],
-    contributor: [{ type: Types.ObjectId, ref: 'User' }],
+    contributors: [{ type: Types.ObjectId, ref: 'User' }],
     accessGroups: {
         read: [{ type: Types.ObjectId, ref: 'Group' }],
         edit: [{ type: Types.ObjectId, ref: 'Group' }]
@@ -27,12 +27,11 @@ const itemSchema = mongoose.Schema({
             date: { type: Date },
             isEdited: { type: Boolean, default: false }
         }]
-    }
-});
+    },
+    created: { type: Date }
+}, { versionKey: false });
 
 itemSchema.statics.create = async function(payload) {
-
-    const item = new this(payload);
 
     // Path, Status unique check
     let items = await this.find({
@@ -47,6 +46,23 @@ itemSchema.statics.create = async function(payload) {
     if(items.length > 0) {
         throw new mongoose.Error('MongoError: Item already exists');
     }
+
+    const preset = {
+        content: '',
+        tags: [],
+        contributors: [],
+        accessGroups: {
+            read: [],
+            edit: []
+        },
+        history: [],
+        status: 'draft',
+        comments: [],
+        created: new Date()
+    };
+
+    let item = Object.assign(preset, payload);
+    item = new this(item);
 
     return item.save();
 };
