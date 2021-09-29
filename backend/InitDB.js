@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const User = require('./models/User.js');
 const Group = require('./models/Group.js');
+const Item = require('./models/Item.js');
 
 let users = [{
     serviceNumber: 'ntcho',
@@ -90,7 +91,7 @@ let items = [{
 ];
 
 const crypto = require('crypto');
-const Item = require('./models/Item.js');
+
 function encode(rowPassword) {
 	return crypto.createHmac('sha256', 'secret12341234')
 	.update(rowPassword)
@@ -98,9 +99,9 @@ function encode(rowPassword) {
 }
 
 async function init() {
-    await User.deleteMany({});
-    await Group.deleteMany({});
-    await Item.deleteMany({});
+    await Group.collection.drop();
+    await User.collection.drop();
+    await Item.collection.drop();
 
     await createGroups();
     await createUsers();
