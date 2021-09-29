@@ -14,7 +14,7 @@ const itemSchema = mongoose.Schema({
         edit: [{ type: Types.ObjectId, ref: 'Group' }]
     },
     history: [{ type: Types.ObjectId, ref: 'Item' }],
-    status: { type: String, enum: [ 'draft', 'archived', 'published', 'deleted' ] },
+    status: { type: String, enum: [ 'draft', 'archived', 'published', 'deleted' ], required: true },
     inspection: {
         result: { type: String },   // approve: 통과, deny: 거절
         by: { type: Types.ObjectId, ref: 'User' },
@@ -29,5 +29,11 @@ const itemSchema = mongoose.Schema({
         }]
     }
 });
+
+itemSchema.statics.create = function(payload) {
+    const item = new this(payload);
+
+    return item.save();
+};
 
 module.exports = mongoose.model('Item', itemSchema);
