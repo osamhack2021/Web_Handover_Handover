@@ -138,7 +138,8 @@ module.exports = {
             const currGroup = (await userService.search({ _id }))[0].group;
 
             let before = await itemService.read(path);
-            if(before.length === 0) throw new Error('Cannot find before doc');
+            console.log(before)
+            if(!before) throw new NotFoundError('Not Found');
 
             // If session.accessGroups is not authorized to edit the cabinet, throw HTTP 403
             const editable = before.accessGroups.edit.some(editor => {
@@ -164,9 +165,33 @@ module.exports = {
         }
     },
 
-    // DELETE
+    // DELETE /item/:title
     delete: async (req, res) => {
 
+        // Parse title and path from req.params
+        const title = req.params.title;
+        const path = ',' + title + ',';
+
+        try {
+            // Get current session's group
+            const _id = res.locals._id;
+            const currGroup = (await userService.search({ _id }))[0].group;
+
+            let item = await itemService.read(path);
+            if(!item) throw new NotFoundError('Not Found');
+
+            // If session.accessGroups is not authorized to remove the cabinet, throw HTTP 403
+            const removable = item.accessGroups.edit.some(remover => {
+                return remover.equals(currGroup);
+            });
+            if(!removable) throw new ForbiddenError('Forbidden');
+
+            await itemService.delete(item);
+
+            res.status(204).send();
+        } catch(err) {
+            res.status(err.status || 500).send(err.message);
+        }
     },
 
     

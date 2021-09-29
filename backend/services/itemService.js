@@ -104,7 +104,15 @@ module.exports = {
         }
     },
 
-    delete: async (params) => {
-        
+    delete: async (item) => {
+
+        // Remove related items
+        for(item_ of item.history) {
+            Item.findOneAndUpdate({ _id: item_.toString() }, { status: "deleted" });
+        }
+
+        return Item.findOneAndUpdate({ _id: item._id }, {
+            status: "deleted",
+        });
     }
 };
