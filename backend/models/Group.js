@@ -3,7 +3,18 @@ const Types = mongoose.Schema.Types
 
 const groupSchema = mongoose.Schema({
     name: { type: String, required: true },
-    path: { type: String, required: true },
+
+    // ,{ObjectId},{ObjectId},...
+    path: {
+        type: String,
+        validate: {
+            validator: function(v) {
+                return /^,(.+?,){1,}$/.test(v);
+            },
+            message: props => `${props.value} is not a valid path!`
+        },
+        required: true
+    },
     admins: {
         type: [{ type: Types.ObjectId, ref: 'User', populate: true }],
         required: true
@@ -21,16 +32,16 @@ function distinctObjectIdArray(arr) {
     let uniqueArr = arr.map(item => item.toString());
 
     // ["61507eaab51b4983b5fb8f1a"]
-    uniqueArr = [...new Set(arr)];
+    uniqueArr = [...new Set(uniqueArr)];
 
     // [ new ObjectId("61507eaab51b4983b5fb8f1a") ]
-    uniqueArr = arr.map(item => mongoose.Types.ObjectId(item));
+    uniqueArr = uniqueArr.map(item => mongoose.Types.ObjectId(item));
 
     return uniqueArr;
 }
 
 groupSchema.pre('save', function(next) {
-    this.admins = distinctObjectIdArray(this.arr);
+    this.admins = distinctObjectIdArray(this.admins);
     next();
 });
 groupSchema.pre('updateOne', function(next) {
