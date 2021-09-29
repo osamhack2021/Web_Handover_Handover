@@ -13,7 +13,11 @@ module.exports = {
                 'accessGroups.read': {
                     $elemMatch: { $eq: readerGroup }
                 },
-                status: { $ne: 'deleted' }
+                status: {
+                    $not: {
+                        $regex: new RegExp('deleted|modified')
+                    }
+                }
             }).populate('accessGroups.read', {
                 _id: true, name: true, path: true
             }).populate('accessGroups.edit', {

@@ -6,14 +6,6 @@ const { NotFoundError, ForbiddenError } = require('../services/errors/BusinessEr
 const Item = require('../models/Item.js');
 const SECRET_KEY = "MY_SECRET_KEY";
 
-const isAdmin = (group, serviceNumber) => {
-    let adminServiceNumbers = group.admins.map(admin => admin.serviceNumber);
-    if(adminServiceNumbers.indexOf(serviceNumber) < 0) {
-        return false;
-    }
-    return true;
-}
-
 module.exports = {
 
     // GET /item?=title
