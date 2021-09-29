@@ -78,6 +78,8 @@ module.exports = {
             // console.log(item.contributors[0], item.contributors[0].toString)
 
             // Making unique array
+	    // Before: ["615435c9f19accbc765bdc10", "615435c9f19accbc765bdc10", "615435c9f19accbc765bdc10"]
+            // After:  ["615435c9f19accbc765bdc10"]
             item.contributors = [...new Set(item.contributors.map(obj => obj.toString()))]
                                 .map(str => {
                                     return item.contributors.find(c => c.toString() === str);
