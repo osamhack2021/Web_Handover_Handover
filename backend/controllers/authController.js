@@ -14,5 +14,12 @@ module.exports = {
         } catch(err) {
            res.status(err.status).send(err.message);
         }
+    },
+
+    logout: async function(req, res) {
+        res.cookie('jwt', '');
+        res.status(201).send({
+            result: 'OK',
+        });
     }
 }

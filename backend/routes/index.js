@@ -22,6 +22,7 @@ router.get('/initDB', (req, res) => {
 })
 
 router.post('/login', authController.login);
+router.post('/logout', authController.logout);
 router.post('/user', userController.save);
 
 
