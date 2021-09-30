@@ -43,7 +43,7 @@ export default function Main({ location }) {
       {/* <Navigation pathname={location.pathname} /> */}
       <div className="main">
         <Switch>
-          <Route exact path="/" component={RoutingPage} />
+          <Route path="*" component={RoutingPage} />
           {/* <Route path="/login" component={LoginPage} />
           <Route path="/register" component={RegisterPage} />
           <Route path="/home" component={HomePage} />
