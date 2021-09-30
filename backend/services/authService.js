@@ -14,11 +14,10 @@ function encode(rowPassword) {
 }
 
 function decodeToken(token) {
-	const decoded = jwt.verify(token, SECRET_KEY);
-	
-	if(!decoded) {
-		throw new ForbiddenError('unauthorized');
-	}
+	const decoded = jwt.verify(token, SECRET_KEY)
+					   .catch(err => {
+						   throw new ForbiddenError(err.message)
+						});
 
 	return decoded;
 }
