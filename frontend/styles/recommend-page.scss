@@ -13,11 +13,11 @@
 
   .recommend-page-header{
     @include setfonts(
-        $font-weight : 600,
-        $font-size : 40px,
+        $font-weight : $weight-semibold,
+        $font-size : $size-2,
         $line-height : 48px
     );
-    color : black;
+    color : $black;
     width : 960px;
     margin-top : 50px;
     margin-bottom : 46px;
@@ -38,8 +38,8 @@
       padding-bottom : 40px;
     
       hr{
-        border: 1px solid #000000;
-        background-color: #000000;
+        border: 1px solid $black;
+        background-color: $black;
         margin : 0px;
         margin-bottom: 20px;
       }
