@@ -14,11 +14,10 @@ function encode(rowPassword) {
 }
 
 function decodeToken(token) {
-	const decoded = jwt.verify(token, SECRET_KEY);
-
-	if(!decoded) {
-		throw new ForbiddenError('unauthorized');
-	}
+	const decoded = jwt.verify(token, SECRET_KEY)
+					   .catch(err => {
+						   throw new ForbiddenError(err.message)
+						});
 
 	return decoded;
 }
@@ -30,10 +29,13 @@ module.exports = {
 		params.password = encode(params.password);
 
 		const loginUser = await userService
-			.searchByServiceNumber(params.serviceNumber)
-			.catch(err => {
-				throw new RuntimeError(err.message);
-			});
+            .searchByServiceNumber(params.serviceNumber)
+            .catch(err => {
+                if(err instanceof TypeError) {
+                    throw new AuthError("LOGIN fail");
+                }
+                throw new RuntimeError(err.message);
+            });
 
 		if(loginUser === null|| loginUser.password !== params.password) {
 			throw new AuthError('LOGIN fail');
