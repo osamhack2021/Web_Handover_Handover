@@ -14,10 +14,25 @@
 @import 'welcome';
 @import 'login';
 @import 'register';
+@import 'forminput';
 
 @import 'home';
 @import 'todo';
 @import 'settings';
 
-@import 'leftmenu';
-@import 'card';
+@import 'leftpane';
+@import 'note';
+@import 'template';
+@import 'profile-menu';
+@import 'grid-layout';
+@import 'grid-header';
+
+@import 'recommend-card';
+@import 'recommend-header';
+@import 'recommend-page';
+@import 'header';
+
+@import 'profile-page';
+@import 'item-select';
+@import 'drawer';
+@import 'drawer-profile';
