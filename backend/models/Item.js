@@ -9,7 +9,7 @@ const itemSchema = mongoose.Schema({
         type: String,
         validate: {
             validator: function(v) {
-                return /^,(.+?,){1,}$/.test(v);
+                return /^,(.+?,){1,}$/.test(v);     // ,{objid},{objid},{objid},...
             },
             message: props => `${props.value} is not a valid path!`
         },
@@ -62,28 +62,43 @@ function distinctObjectIdArray(arr) {
 }
 
 itemSchema.pre('save', function(next) {
-    this.tags = distinctObjectIdArray(this.tags);
-    this.contributors = distinctObjectIdArray(this.contributors);
-    this.accessGroups.read = distinctObjectIdArray(this.accessGroups.read);
-    this.accessGroups.edit = distinctObjectIdArray(this.accessGroups.edit);
-    this.history = distinctObjectIdArray(this.history);
+    let keys = ['contributors', 'history'];
+    for(let key of keys) {
+        if(this[key]) this[key] = distinctObjectIdArray(this[key]);
+    }
+
+    this.tags = [...new Set(this.tags)];
+
+    if(this.accessGroups?.read)
+        this.accessGroups.read = distinctObjectIdArray(this.accessGroups.read);
+    if(this.accessGroups?.edit)
+        this.accessGroups.edit = distinctObjectIdArray(this.accessGroups.edit);
 
     next();
 });
+
 itemSchema.pre('updateOne', function(next) {
     const data = this.getUpdate();
 
-    data.tags = distinctObjectIdArray(data.tags);
-    data.contributors = distinctObjectIdArray(data.contributors);
-    data.accessGroups.read = distinctObjectIdArray(data.accessGroups.read);
-    data.accessGroups.edit = distinctObjectIdArray(data.accessGroups.edit);
-    data.history = distinctObjectIdArray(data.history);
+    let keys = ['contributors', 'history'];
+    for(let key of keys) {
+        if(data[key]) data[key] = distinctObjectIdArray(data[key]);
+    }
+
+    data.tags = [...new Set(data.tags)];
+
+    if(data.accessGroups?.read)
+        data.accessGroups.read = distinctObjectIdArray(data.accessGroups.read);
+    if(data.accessGroups?.edit)
+        data.accessGroups.edit = distinctObjectIdArray(data.accessGroups.edit);
+
     this.update({}, data);
 
     next();
 });
 
 itemSchema.statics.create = async function(payload) {
+    payload.created = new Date();
     const item = new this(payload);
 
     return item.save();

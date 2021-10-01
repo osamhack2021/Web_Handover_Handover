@@ -1,110 +1,109 @@
 const Item = require('../models/Item.js');
 const { MongoError, Types } = require('mongoose');
-const { RuntimeError } = require('./errors/RuntimeError.js');
 const { BusinessError } = require('./errors/BusinessError.js');
 
+const LIMIT = 20;
+
 module.exports = {
-    search: async (title, type, readerGroup) => {
+    search: async (query = {}) => {
         try {
-            title = new RegExp(title);
-            let result = await Item.find({
-                title,
-                type,
-                'accessGroups.read': {
-                    $elemMatch: { $eq: readerGroup }
-                },
-                status: { $ne: 'deleted' }
-            }).populate('accessGroups.read', {
-                _id: true, name: true, path: true
-            }).populate('accessGroups.edit', {
-                _id: true, name: true, path: true
-            }).populate('owner', {
-                _id: true, serviceNumber: true, name: true,
-                rank: true, title: true, email: true, tel: true
-            }).exec();
+            const projection = {
+                title: true, path: true, type: true,
+                owner: true, tags: true, history: true,
+                status: true, inspection: true, created: true
+            };
 
-            return result;
-        } catch(err) {
-            throw new BusinessError(err.message);
-        }
-    },
-
-	read: async (path) => {
-        try {
-            const result = await Item.findOne({
-                path,
-                status: {
-                    $not: {
-                        $regex: new RegExp('deleted|modified')
-                    }
-                }
-            }).populate('accessGroups.read', {
-                _id: true, name: true, path: true
-            }).populate('accessGroups.edit', {
-                _id: true, name: true, path: true
-            }).populate('owner', {
-                _id: true, serviceNumber: true, name: true,
-                rank: true, title: true, email: true, tel: true
-            }).exec();
-
-            return result;
-        } catch(err) {
-            throw new BusinessError(err.message);
-        }
-    },
-
-    create: async (query) => {
-        try {
-            const result = await Item.create(query);
-            return result;
-        } catch(err) {
-            throw new BusinessError(err.message);
-        }
-    },
-
-    update: async (before, to) => {
-        try {
-
-            // Before's status change
-            await Item.findOneAndUpdate({ _id: before._id }, { status: 'modified' });
-
-            // Append history
-            to = Object.assign(to, { history: [...before.history, before._id]});
-
-            // Copy Item
-            let item = Object.assign(before, to).toJSON();
-            delete item._id
-
-            // console.log(item.contributors[0], item.contributors[0].toString)
-
-            // Making unique array
-            item.contributors = [...new Set(item.contributors.map(obj => obj.toString()))]
-                                .map(str => {
-                                    return item.contributors.find(c => c.toString() === str);
-                                });
-            if(item.accessGroups) {
-                item.accessGroups = {
-                    read: [...new Set(item.accessGroups?.read.map(obj => obj.toString()))]
-                            .map(str => {
-                                return item.accessGroups.read.find(r => r.toString() === str)
-                            }),
-                    edit: [...new Set(item.accessGroups?.edit.map(obj => obj.toString()))]
-                            .map(str => {
-                                return item.accessGroups.edit.find(e => e.toString() === str)
-                            }),
-                };
+            if(query.group) {
+                query['accessGroups.read'] = { $eq: query.group };
+                delete query.group;
             }
 
-            item = new Item(item);
-            
-            const result = await item.save();
+            // Exclude deleted or modified items
+            query.status = {
+                $nin: ['deleted', 'modified']
+            };
+
+            let query_ = Item.find(query, projection);
+
+            query_.sort('created');
+
+            query_.populate({
+                path: 'owner',
+                select: ['rank', 'name']
+            });
+
+            query_.skip(query_.page * LIMIT).limit(LIMIT);
+
+            return await query_.exec();
+
+        } catch(err) {
+            throw new BusinessError(err.message);
+        }
+    },
+
+	read: async (_id, options = { populate: true }) => {
+        try {
+            let query = Item.findOne({ _id });
+
+            if(options.populate) {
+                query.populate([{
+                    path: 'accessGroups.read',
+                    select: ['name', 'path']
+                }, {
+                    path: 'accessGroups.edit',
+                    select: ['name', 'path']
+                }, {
+                    path: 'owner',
+                    select: ['rank', 'name']
+                }]);
+            }
+
+            return await query.exec();
+        } catch(err) {
+            throw new BusinessError(err.message);
+        }
+    },
+
+    create: async (payload) => {
+        try {
+            const result = await Item.create(payload);
             return result;
         } catch(err) {
             throw new BusinessError(err.message);
         }
     },
 
-    delete: async (params) => {
-        
+    update: async (item, payload) => {
+        try {
+
+            // Change before item's status
+            await Item.findOneAndUpdate(item, { status: 'modified' });
+
+            // Copy and assign object
+            item = item.toObject();
+            item = Object.assign(item, payload);
+
+            // Append history
+            item = Object.assign(item, { history: [...item.history, item._id]});
+
+            // Clear inspection
+            item = Object.assign(item, { inspection: {} });
+
+            // Create new Item
+            delete item._id;
+            const result = await Item.create(item);
+
+            return result;
+        } catch(err) {
+            throw new BusinessError(err.message);
+        }
+    },
+
+    delete: async (_id) => {
+        try {
+            return Item.findOneAndDelete({ _id });
+        } catch(err) {
+            throw new BusinessError(err.message);
+        }
     }
 };
