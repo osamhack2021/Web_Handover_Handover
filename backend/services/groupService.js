@@ -1,51 +1,50 @@
 const Group = require('../models/Group.js');
-const { MongoError } = require('mongoose');
+const { Types } = require('mongoose');
 const { RuntimeError } = require('./errors/RuntimeError.js');
 
 module.exports = {
-	search: async (path) => {
-        try {
-            let regex = new RegExp(path);
-            let result = await Group.find({ path: regex })
-                .populate('admins', {
-                    id: true, serviceNumber: true, name: true, rank: true,
-                    title: true, group: true, email: true, tel: true
-                }).exec();
+    search: async (query) => {
+        const projection = { name: true, path: true };
 
-            return result;
+        if(!query) {
+            return await Group.find({}, projection);
+        }
+
+        if(query.admin) {
+            query.admins = { $eq: query.admin };
+            delete query.admin;
+        }
+        
+        return await Group.find(query, projection);
+    },
+
+	read: async (query, projection = { name: true, path: true }) => {
+        try {
+            return await Group.findOne(query, projection);
         } catch(err) {
             throw new RuntimeError(err.message);
         }
     },
 
-    create: async (params) => {
+    create: async (payload) => {
         try {
-            let result = await Group.create(params);
-            return result;
+            return await Group.create(payload);
         } catch(err) {
             throw new RuntimeError(err.message);
         }
     },
 
-    update: async (params) => {
+    update: async (_id, payload) => {
         try {
-            let updated = await Group.updateOne({
-                name: params.name,
-                path: params.path
-            }, params);
-
-            if(updated.modifiedCount > 0) {
-                return true;
-            }
-            
+            return await Group.findOneAndUpdate({ _id }, payload);
         } catch(err) {
             throw new RuntimeError(err.message);
         }
     },
 
-    delete: async (params) => {
+    delete: async (_id) => {
         try {
-            let deleted = await Group.deleteOne(params);
+            return await Group.findOneAndDelete({ _id });
         } catch(err) {
             throw new RuntimeError(err.message);
         }

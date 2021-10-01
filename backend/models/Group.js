@@ -17,7 +17,12 @@ const groupSchema = mongoose.Schema({
     },
     admins: {
         type: [{ type: Types.ObjectId, ref: 'User', populate: true }],
-        required: true
+        validate: {
+            validator: function(v) {
+                return v.length > 0;
+            },
+            message: props => `admins.length should be bigger than 0!`
+        }
     },
     inspectors: [{ type: Types.ObjectId, ref: 'User', populate: true }]
 }, {
