@@ -22,7 +22,7 @@ services:
     depends_on:
       - mongodb
     build: 
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev # DEV: uses separate Dockerfile for development environment
       context: ./backend
     # restart: unless-stopped
     env_file: ./.env
@@ -43,12 +43,13 @@ services:
     depends_on: 
       - backend
     build: 
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev # DEV: uses separate Dockerfile for development environment
       context: ./frontend
       args:
         - REACT_APP_API_BASE_URL=$API_BASE_URL
     ports:
       - $REACT_LOCAL_PORT:$REACT_DOCKER_PORT
+      - $REACT_DOCKER_PORT:$REACT_DOCKER_PORT # DEV: open 8080 to local to enable hot reload
     volumes:
       - ./frontend:/app/frontend
       - node_modules_frontend:/app/frontend/node_modules
