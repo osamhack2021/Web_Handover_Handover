@@ -1,0 +1,38 @@
+{
+  "name": "handover",
+  "description": "📋 국방업무공유체계 – 업무 인수인계 및 공유 플랫폼",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "docker-compose down && docker-compose up --build",
+    "dev": "docker-compose down && docker-compose --file docker-compose.dev.yml up",
+    "dev:build": "docker-compose down && docker-compose --file docker-compose.dev.yml up --build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/osamhack2021/Web_Handover_Handover.git"
+  },
+  "author": {
+    "name": "Nathan Cho",
+    "email": "ntcho13@gmail.com",
+    "url": "https://github.com/ntcho"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/osamhack2021/Web_Handover_Handover/issues"
+  },
+  "keywords": [
+    "react",
+    "redux",
+    "webpack",
+    "express",
+    "bulma",
+    "ramda",
+    "eslint",
+    "jest",
+    "mongodb"
+  ],
+  "homepage": "https://github.com/osamhack2021/Web_Handover_Handover#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
