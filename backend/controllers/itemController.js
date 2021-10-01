@@ -2,7 +2,7 @@ const itemService = require('../services/itemService.js');
 const userService = require('../services/userService.js');
 
 const jwt = require('jsonwebtoken');
-const { NotFoundError, ForbiddenError } = require('../services/errors/BusinessError.js');
+const { BusinessError, NotFoundError, ForbiddenError } = require('../services/errors/BusinessError.js');
 const SECRET_KEY = "MY_SECRET_KEY";
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
     search: async (req, res) => {
         try {
             const keys = Object.keys(req.query);
-            const valids = ['title', 'path', 'type', 'owner', 'group', 'page'];
+            const valids = ['title', 'path', 'type', 'owner', 'group', 'page', 'tag'];
 
             // Only allowed fields are Searchable
             for(let key of keys) {
