@@ -32,7 +32,7 @@ module.exports = {
 			throw new RuntimeError(err.message);
 		});
 
-		if(result.length === 0) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
+		if(result === null) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
 
 		return result;
 	},
@@ -44,7 +44,7 @@ module.exports = {
 			throw new RuntimeError(err.message);
 		});
 
-		if(result.length === 0) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
+		if(result === null) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
 
 		return result;
 	},
