@@ -23,6 +23,16 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 
 module.exports = {
   devtool: 'source-map',
+  devServer: {
+    historyApiFallback: true,
+    magicHtml: true, // route all requests to /dist/index.js
+    client: {
+      webSocketURL: 'ws://0.0.0.0/ws',
+    },
+    allowedHosts: [
+      '.githubpreview.dev',
+    ],
+  },
   watchOptions: {
     ignored: '**/node_modules',
     aggregateTimeout: 200,

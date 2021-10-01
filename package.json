@@ -4,7 +4,8 @@
   "version": "0.0.1",
   "scripts": {
     "build": "docker-compose down && docker-compose up --build",
-    "dev": "docker-compose down && docker-compose --file docker-compose.dev.yml up --build"
+    "dev": "docker-compose down && docker-compose --file docker-compose.dev.yml up",
+    "dev:build": "docker-compose down && docker-compose --file docker-compose.dev.yml up --build"
   },
   "repository": {
     "type": "git",
