@@ -1,26 +1,28 @@
 const groupService = require('../services/groupService.js');
 const { Types } = require('mongoose');
 
-const { ForbiddenError, NotFoundError } = require('../services/errors/BusinessError');
+const { BusinessError, ForbiddenError, NotFoundError } = require('../services/errors/BusinessError');
 
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = "MY_SECRET_KEY";
 
-const isAdmin = (group, serviceNumber) => {
-    let adminServiceNumbers = group.admins.map(admin => admin.serviceNumber);
-    if(adminServiceNumbers.indexOf(serviceNumber) < 0) {
-        return false;
-    }
-    return true;
-}
-
 module.exports = {
 
-    searchAll: async (req, res) => {
+    // GET /group
+    search: async (req, res) => {
         try {
-            const result = await groupService.search('');
+            const keys = Object.keys(req.query);
+            const valids = ['name', 'path', 'admin'];
+            
+            // Only allowed fields are Searchable
+            for(let key of keys) {
+                if(!valids.includes(key))
+                    throw new BusinessError(`${key} is not allowed param`);
+            }
 
-            if(result.length < 1) throw new NotFoundError('Not Found');
+            const result = await groupService.search(req.query);
+
+            if(result.length < 1) throw new NotFoundError(`Not Found: No results were found for your search`);
 
             res.status(200).send(result);
         } catch(err) {
@@ -28,100 +30,73 @@ module.exports = {
         }
     },
 
-    // GET
-    search: async (req, res) => {
+    // GET /group/:group_id
+    read: async (req, res) => {
         try {
-        const groups = [req.params.group, ...req.params['0'].split('/').slice(1)];
-        const path = ',' + groups.join(',') + ',';
-        
-        const result = await groupService.search('^' + path);
+            const group_id = req.params.group_id;
 
-        if(result.length < 1) throw new NotFoundError('Not Found');
+            const result = await groupService.read({ _id: group_id });
 
-        res.status(200).send(result);
+            if(result === null) throw new NotFoundError(`Not Found: No result is found for group_id: ${group_id}`);
+
+            res.status(200).send(result);
         } catch(err) {
             res.status(err.status || 500).send(err.message);
         }
-
     },
 
-    // POST
+    // POST /group
     create: async (req, res) => {
-        const name = req.params.group;
-        const groups = [req.params.group, ...req.params['0'].split('/').slice(1)];
-        const path = ',' + groups.join(',') + ',';
-
-        let admins = req.body.admins || [res.locals._id];
-        admins = admins.map(admin => Types.ObjectId(admin));
-
-        let inspectors = req.body.inspectors || [];
-        inspectors = inspectors.map(inspector => Types.ObjectId(inspector));
-
-        const query = {
-            name, path, admins, inspectors
-        };
-
         try {
-            const result = await groupService.create(query);
 
+            // If Request /group without admins,
+            // Allocate '' to body.admins
+            let body = req.body;
+            body.admins = req.body.admins.length > 0 ? req.body.admins : [res.locals._id];
+
+            const result = await groupService.create(body);
+            
             res.status(201).send(result);
         } catch(err) {
             res.status(err.status || 500).send(err.message);
         }
     },
 
-    // PUT
+    // PUT /group/:group_id
     update: async (req, res) => {
-        const name = req.params.group;
-        const groups = [req.params.group, ...req.params['0'].split('/').slice(1)];
-        const path = ',' + groups.join(',') + ',';
-        
-        let admins = req.body.admins || [res.locals._id];
-        admins = admins.map(admin => Types.ObjectId(admin));
-
-        let inspectors = req.body.inspectors || [];
-        inspectors = inspectors.map(inspector => Types.ObjectId(inspector));
-
-        const query = {
-            name, path, admins, inspectors
-        };
-
         try {
-            let group = (await groupService.search(`^${path}$`))[0];
+            const group_id = req.params.group_id;
 
-            if(!isAdmin(group, res.locals.serviceNumber))
-                throw new ForbiddenError('Forbidden: 권한이 없습니다.');
+            const projection = {
+                name: true, path: true,
+                admins: true
+            };
+            const group = await groupService.read({ _id: group_id }, projection);
 
-            const result = await groupService.update(query);
-            if(result) res.status(204).send();
+            // Invalid group_id
+            if(group === null) throw new NotFoundError(`Not Found: No result is found for group_id: ${group_id}`);
+
+            // Admin check
+            if(!group.admins.some(admin => admin.equals(res.locals._id))) throw new ForbiddenError(`Forbidden: You are not admin of this group`);
+
+            await groupService.update(group_id, req.body);
+
+            res.status(204).send();
         } catch(err) {
             res.status(err.status || 500).send(err.message);
         }
     },
 
+    // DELETE /group/:group_id
     delete: async (req, res) => {
-        const name = req.params.group;
-        const groups = [req.params.group, ...req.params['0'].split('/').slice(1)];
-        const path = ',' + groups.join(',') + ',';
-        
-        let admins = req.body.admins || [];
-        admins = admins.map(admin => Types.ObjectId(admin));
-
-        let inspectors = req.body.inspectors || [];
-        inspectors = inspectors.map(inspector => Types.ObjectId(inspector));
-
-        const query = {
-            name, path, admins, inspectors
-        };
-
         try {
-            let group = (await groupService.search(`^${path}$`))[0];
-
-            if(!isAdmin(group, res.locals.serviceNumber))
-                throw new ForbiddenError('Forbidden: 권한이 없습니다.');
+            const group_id = req.params.group_id;
             
-            const result = await groupService.delete({ path });
-            if(result) res.status(204).send();
+            let result = await groupService.delete(group_id);
+
+            if(result === null) throw new NotFoundError(`Not Found: No result is found for group_id: ${group_id}`);
+
+            res.status(204).send();
         } catch(err) {
             res.status(err.status || 500).send(err.message);
         }
