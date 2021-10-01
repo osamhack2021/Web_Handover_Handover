@@ -1,0 +1,15 @@
+@import 'mixins';
+
+.page-template{
+    height: 100%;
+    margin:0;
+    @include flexBox($display : flex, $flex-direction : row);
+    display: flex;
+    flex-direction: row;
+    .left-pane-container{
+        background-color: $beige;
+        height : 100%;
+        margin : 0;
+        width : fit-content;
+    }
+}

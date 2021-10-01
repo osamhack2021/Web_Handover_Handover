@@ -1,48 +1,62 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-function ElementMapper(children = []) {
-  return (children.map(elem => (
-    <div key={elem.id} className="child">
-      {elem.title}
-    </div>
-  )));
-}
+import NoteHeader from '../NoteHeader';
+import NoteFooter from '../NoteFooter';
+import CardItem from '../CardItem';
 
-export default function Card() {
+import listToCompnent from '../../../utils/listToComponent';
+
+// type takes "card", "document", "cabinet" values
+// rest of the props are self-evident
+
+export default function Card({ type = 'card', title, description, children, isArchived = false }) {
   // const mainTitle = item.title;
   // const description = item.content.description;
   // const children = item.content.children;
 
-  const dummychildren = [
+  const className = `note--${type}`;
+  const dummyTitle = '물품 관리';
+  const dummyDescription = '대위 이순신';
+  const dummyChildren = [
     {
-      id: 1,
+      _id: 1,
       title: '문서 제목 1',
     },
     {
-      id: 2,
+      _id: 2,
       title: '문서 제목 2',
     },
     {
-      id: 3,
+      _id: 3,
       title: '문서 제목 3',
     },
   ];
 
-  const arrayRender = ElementMapper(dummychildren);
+  const dummyIsArchived = true;
+  const arrayRender = listToCompnent(CardItem, dummyChildren, '_id');
+  const dateFromNow = '2주 전 수정됨';
 
   return (
-    <div className="card">
-      <div className="main-title">
-        서랍 이름
+    <div className={className}>
+      <div>
+        <NoteHeader title={dummyTitle} isArchived={isArchived} />
+        <div className="description">
+          {dummyDescription}
+        </div>
+        <div className="container-child">
+          {arrayRender}
+        </div>
       </div>
-      <div className="description">
-        서랍 설명 Lorem ipsum
-      </div>
-      <div className="container-child">
-        {arrayRender}
-      </div>
-      <div className="card-footer" />
-
+      <NoteFooter dateFromNow={dateFromNow} />
     </div>
   );
 }
+
+Card.propTypes = {
+  type: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  children: PropTypes.array.isRequired,
+  isArchived: PropTypes.bool.isRequired,
+};

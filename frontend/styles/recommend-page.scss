@@ -1,0 +1,48 @@
+@import 'mixins';
+.recommend-page{
+  margin-left : 240px;
+  @include flexBox(
+    $display : flex, 
+    $flex-direction : column,
+    $justify-content : center,
+    $align-items : center
+  );
+  width: calc(100% - 240px);
+  min-width: fit-content;
+  padding-bottom : 50px;
+
+  .recommend-page-header{
+    @include setfonts(
+        $font-weight : $weight-semibold,
+        $font-size : $size-2,
+        $line-height : 48px
+    );
+    color : $black;
+    width : 960px;
+    margin-top : 50px;
+    margin-bottom : 46px;
+  }
+  .recommend-container{
+    @include flexBox(
+      $display : flex, 
+      $flex-direction : column,
+      $justify-content : center,
+    );
+    .recommend-block{
+      @include flexBox(
+        $display : flex,
+        $flex-direction : column,
+      );
+      width : 960px;
+      padding-top : 20px;
+      padding-bottom : 40px;
+    
+      hr{
+        border: 1px solid $black;
+        background-color: $black;
+        margin : 0px;
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
