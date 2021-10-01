@@ -37,7 +37,7 @@ module.exports = {
 
             const result = await groupService.read({ _id: group_id });
 
-            if(result.length < 1) throw new NotFoundError(`Not Found: No result is found for group_id: ${group_id}`);
+            if(result === null) throw new NotFoundError(`Not Found: No result is found for group_id: ${group_id}`);
 
             res.status(200).send(result);
         } catch(err) {
