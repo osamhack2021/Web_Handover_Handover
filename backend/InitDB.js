@@ -99,50 +99,54 @@ function encode(rowPassword) {
 }
 
 async function init() {
-    await Group.collection.drop();
-    await User.collection.drop();
-    await Item.collection.drop();
+    try {
+        await Group.collection.drop();
+        await User.collection.drop();
+        await Item.collection.drop();
 
-    await createGroups();
-    await createUsers();
-    await createItems();
+        await createGroups();
+        await createUsers();
+        await createItems();
 
-    let ntcho = (await User.find({ serviceNumber: users[0].serviceNumber }))[0];
-    await Group.updateOne(groups[0], { admins: [ mongoose.Types.ObjectId(ntcho._id) ] });
-    await Item.updateOne(items[0], {
-        owner: mongoose.Types.ObjectId(ntcho._id),
-        accessGroups: {
-            read: [mongoose.Types.ObjectId(ntcho.group)],
-            edit: [mongoose.Types.ObjectId(ntcho.group)]
-        }
-    });
-    await Item.updateOne(items[1], {
-        owner: mongoose.Types.ObjectId(ntcho._id),
-        accessGroups: {
-            read: [mongoose.Types.ObjectId(ntcho.group)],
-            edit: [mongoose.Types.ObjectId(ntcho.group)]
-        }
-    });
+        let ntcho = (await User.find({ serviceNumber: users[0].serviceNumber }))[0];
+        await Group.updateOne(groups[0], { admins: [ mongoose.Types.ObjectId(ntcho._id) ] });
+        await Item.updateOne(items[0], {
+            owner: mongoose.Types.ObjectId(ntcho._id),
+            accessGroups: {
+                read: [mongoose.Types.ObjectId(ntcho.group)],
+                edit: [mongoose.Types.ObjectId(ntcho.group)]
+            }
+        });
+        await Item.updateOne(items[1], {
+            owner: mongoose.Types.ObjectId(ntcho._id),
+            accessGroups: {
+                read: [mongoose.Types.ObjectId(ntcho.group)],
+                edit: [mongoose.Types.ObjectId(ntcho.group)]
+            }
+        });
 
-    let phjppo0918 = (await User.find({ serviceNumber: users[1].serviceNumber }))[0];
-    await Group.updateOne(groups[1], { admins: [ mongoose.Types.ObjectId(phjppo0918._id) ] });
-    await Item.updateOne(items[2], {
-        owner: mongoose.Types.ObjectId(phjppo0918._id),
-        accessGroups: {
-            read: [mongoose.Types.ObjectId(phjppo0918.group)],
-            edit: [mongoose.Types.ObjectId(phjppo0918.group)]
-        }
-    });
+        let phjppo0918 = (await User.find({ serviceNumber: users[1].serviceNumber }))[0];
+        await Group.updateOne(groups[1], { admins: [ mongoose.Types.ObjectId(phjppo0918._id) ] });
+        await Item.updateOne(items[2], {
+            owner: mongoose.Types.ObjectId(phjppo0918._id),
+            accessGroups: {
+                read: [mongoose.Types.ObjectId(phjppo0918.group)],
+                edit: [mongoose.Types.ObjectId(phjppo0918.group)]
+            }
+        });
 
-    let ahnavocado = (await User.find({ serviceNumber: users[3].serviceNumber }))[0];
-    await Group.updateOne(groups[2], { admins: [ mongoose.Types.ObjectId(ahnavocado._id) ] });
-    await Item.updateOne(items[3], {
-        owner: mongoose.Types.ObjectId(ahnavocado._id),
-        accessGroups: {
-            read: [mongoose.Types.ObjectId(ahnavocado.group)],
-            edit: [mongoose.Types.ObjectId(ahnavocado.group)]
-        }
-    });
+        let ahnavocado = (await User.find({ serviceNumber: users[3].serviceNumber }))[0];
+        await Group.updateOne(groups[2], { admins: [ mongoose.Types.ObjectId(ahnavocado._id) ] });
+        await Item.updateOne(items[3], {
+            owner: mongoose.Types.ObjectId(ahnavocado._id),
+            accessGroups: {
+                read: [mongoose.Types.ObjectId(ahnavocado.group)],
+                edit: [mongoose.Types.ObjectId(ahnavocado.group)]
+            }
+        });
+    } catch(e) {
+        console.log(e);
+    }
 }
 
 async function createUsers() {
