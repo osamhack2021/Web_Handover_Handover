@@ -5,41 +5,48 @@ import Menu from 'react-bulma-companion/lib/Menu';
 import DrawerProfile from '_molecules/DrawerProfile';
 import MenuItem from '_molecules/MenuItem';
 
-export default function Drawer({name, rank, title, division,}) {
+/*
+Example of menulist :
+const menulist = [
+  'ME',
+  [
+    {name: '프로필', src: User, alt: 'user', link: '/'},
+    {name: '테마 변경', src: ThemeChange, alt: 'themechange', link: '/'},
+  ]  ,
+  'TEAM',
+  [
+    {name: '문서 권한 수정', src: Auth, alt: 'auth', link: '/'},
+    {name: '알림', src: Alert, alt: 'alert', link: '/'},
+  ],
+];
+*/
+export default function Drawer({
+  name, rank, title, division, menulist,
+}) {
   return (
     <div className="drawer">
-      <DrawerProfile name="야옹이" rank="하사" division="0사단 00연대" title="짬타이거" />
+      <DrawerProfile name={name} rank={rank} division={division} title={title} />
       <Menu className="drawer-menu">
-        <Menu.Label className="drawer-label">
-          ME
-        </Menu.Label>
-        <Menu.List className="drawer-list">
-          <MenuItem value={{
-            name: '프로필',
-            link: '/',
-          }}
-          />
-          <MenuItem value={{
-            name: '테마 변경',
-            link: '/',
-          }}
-          />
-        </Menu.List>
-        <Menu.Label className="drawer-label">
-          TEAM
-        </Menu.Label>
-        <Menu.List className="drawer-list">
-          <MenuItem value={{
-            name: '문서 권한 수정',
-            link: '/',
-          }}
-          />
-          <MenuItem value={{
-            name: '알림',
-            link: '/',
-          }}
-          />
-        </Menu.List>
+        {
+          menulist.map((list) => {
+            if (typeof list === 'string') {
+              return (
+                <Menu.Label className="drawer-label">
+                  {list}
+                </Menu.Label>
+              );
+            }
+            return (
+              <Menu.List className="drawer-list">
+                {
+                  list.map((item) => (
+                    <MenuItem value={item} />
+                  ))
+                }
+              </Menu.List>
+            );
+          })
+        }
       </Menu>
     </div>
   );
@@ -50,4 +57,5 @@ Drawer.propTypes = {
   rank: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   division: PropTypes.string.isRequired,
+  menulist: PropTypes.array.isRequired,
 };
