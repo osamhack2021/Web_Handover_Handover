@@ -8,9 +8,9 @@ const { AuthError, ForbiddenError } = require('./errors/BusinessError.js');
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = "MY_SECRET_KEY";
 
-function encode(rowPassword) {
+function encode(rawPassword) {
 	return crypto.createHmac('sha256', 'secret12341234')
-	.update(rowPassword)
+	.update(rawPassword)
 	.digest('hex');
 }
 
@@ -71,7 +71,7 @@ module.exports = {
 
 		return token;		
 	},
-
+  
 	getLoginUser: function(token) {
 		return decodeToken(token);
 	},
