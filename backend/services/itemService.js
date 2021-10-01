@@ -18,6 +18,11 @@ module.exports = {
                 delete query.group;
             }
 
+            if(query.tag) {
+                query.tags = { $eq: query.tag };
+                delete query.tag;
+            }
+
             // Exclude deleted or modified items
             query.status = {
                 $nin: ['deleted', 'modified']
