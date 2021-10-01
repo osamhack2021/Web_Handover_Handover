@@ -18,6 +18,15 @@ module.exports = {
         }
     },
 
+    searchById: async function(id) {
+		const result = await Group
+		.findByid(id)
+		.catch(err => {
+			throw new RuntimeError(err.message);
+		});
+        return result;
+    },
+
     create: async (params) => {
         try {
             let result = await Group.create(params);

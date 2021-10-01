@@ -37,6 +37,18 @@ module.exports = {
 		return result;
 	},
 
+	searchById: async function(id) {
+		const result = await User
+		.findOneByid(id)
+		.catch(err => {
+			throw new RuntimeError(err.message);
+		});
+
+		if(result.length === 0) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
+
+		return result;
+	},
+
 	save: async function(params) {
 
 		params.password = encode(params.password);
