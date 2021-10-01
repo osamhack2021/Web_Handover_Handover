@@ -23,6 +23,11 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 
 module.exports = {
   devtool: 'source-map',
+  watchOptions: {
+    ignored: '**/node_modules',
+    aggregateTimeout: 200,
+    poll: 500,
+  },
   entry: [
     resolve('frontend/styles/index.scss'),
     resolve('frontend/assets/index.js'),
