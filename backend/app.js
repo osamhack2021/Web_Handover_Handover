@@ -36,15 +36,18 @@ app.use('/user', userRouter);
 let groupRouter = require('./routes/api/group.js');
 app.use('/group', groupRouter);
 
+let itemRouter = require('./routes/api/item.js');
+app.use('/item', itemRouter);
+
 app.listen(3000, () => {
   console.log(`API listening at http://localhost:3000`);
 });
 
-const { NotFounndError } = require('./services/errors/BusinessError.js');
+const { NotFoundError } = require('./services/errors/BusinessError.js');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-	throw new NotFounndError();
+	throw new NotFoundError();
 });
 
 app.use(function(error, req, res, next) {
