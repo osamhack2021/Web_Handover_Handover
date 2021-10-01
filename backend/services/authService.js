@@ -36,7 +36,7 @@ async function isGroupAdmin(loginUser, targetUser) {
 	const tu = await userService.searchById(targetUser)
 			.catch(err => {throw err});
 	const targetGroup = await groupService.read({_id: tu.group}, {admins: true})
-			.catch(err => {console.log(err); throw err});
+			.catch(err => {throw err});
 
 	return targetGroup.admins.includes(loginUser);
 }

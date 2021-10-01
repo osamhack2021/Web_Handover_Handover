@@ -18,15 +18,7 @@ module.exports = {
         return await Group.find(query, projection);
     },
 
-	  read: async (query, projection = { name: true, path: true }) => {
-        try {
-            return await Group.findOne(query, projection);
-        } catch(err) {
-            throw new RuntimeError(err.message);
-        }
-    },
-    
-    read: async (query, projection = { name: true, path: true }) => {
+	read: async (query, projection = { name: true, path: true }) => {
         try {
             return await Group.findOne(query, projection);
         } catch(err) {
