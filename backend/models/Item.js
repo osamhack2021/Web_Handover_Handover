@@ -5,7 +5,16 @@ const itemSchema = mongoose.Schema({
     title: { type: String, required: true },
     type: { type: String, required: true, enum: [ 'cabinet', 'document', 'card' ] },
     owner: { type: Types.ObjectId, ref: 'User', required: true },
-    path: { type: String, required: true },
+    path: {
+        type: String,
+        validate: {
+            validator: function(v) {
+                return /^,(.+?,){1,}$/.test(v);     // ,{objid},{objid},{objid},...
+            },
+            message: props => `${props.value} is not a valid path!`
+        },
+        required: true
+    },
     content: { type: String },
     tags: [{ type: String }],
     contributors: [{ type: Types.ObjectId, ref: 'User' }],
@@ -14,9 +23,13 @@ const itemSchema = mongoose.Schema({
         edit: [{ type: Types.ObjectId, ref: 'Group' }]
     },
     history: [{ type: Types.ObjectId, ref: 'Item' }],
-    status: { type: String, enum: [ 'draft', 'archived', 'published', 'deleted', 'modified' ], required: true },
+    status: {
+        type: String,
+        enum: [ 'draft', 'archived', 'published', 'deleted', 'modified' ],
+        required: true
+    },
     inspection: {
-        result: { type: String },   // approve: 통과, deny: 거절
+        result: { type: String, enum: [ 'approve', 'deny' ] },
         by: { type: Types.ObjectId, ref: 'User' },
         date: { type: Date }
     },
@@ -31,38 +44,62 @@ const itemSchema = mongoose.Schema({
     created: { type: Date }
 }, { versionKey: false });
 
-itemSchema.statics.create = async function(payload) {
 
-    // Path, Status unique check
-    let items = await this.find({
-        path: payload.path,
-        status: {
-            $not: {
-                $regex: new RegExp('deleted|modified')
-            }
-        }
-    });
-  
-    if(items.length > 0) {
-        throw new mongoose.Error('MongoError: Item already exists');
+function distinctObjectIdArray(arr) {
+
+    /* Removing duplicate values */
+
+    // ["61507eaab51b4983b5fb8f1a", "61507eaab51b4983b5fb8f1a"]
+    let uniqueArr = arr.map(item => item.toString());
+
+    // ["61507eaab51b4983b5fb8f1a"]
+    uniqueArr = [...new Set(uniqueArr)];
+
+    // [ new ObjectId("61507eaab51b4983b5fb8f1a") ]
+    uniqueArr = uniqueArr.map(item => mongoose.Types.ObjectId(item));
+
+    return uniqueArr;
+}
+
+itemSchema.pre('save', function(next) {
+    let keys = ['contributors', 'history'];
+    for(let key of keys) {
+        if(this[key]) this[key] = distinctObjectIdArray(this[key]);
     }
 
-    const preset = {
-        content: '',
-        tags: [],
-        contributors: [],
-        accessGroups: {
-            read: [],
-            edit: []
-        },
-        history: [],
-        status: 'draft',
-        comments: [],
-        created: new Date()
-    };
+    this.tags = [...new Set(this.tags)];
 
-    let item = Object.assign(preset, payload);
-    item = new this(item);
+    if(this.accessGroups?.read)
+        this.accessGroups.read = distinctObjectIdArray(this.accessGroups.read);
+    if(this.accessGroups?.edit)
+        this.accessGroups.edit = distinctObjectIdArray(this.accessGroups.edit);
+
+    next();
+});
+
+itemSchema.pre('updateOne', function(next) {
+    const data = this.getUpdate();
+
+    let keys = ['contributors', 'history'];
+    for(let key of keys) {
+        if(data[key]) data[key] = distinctObjectIdArray(data[key]);
+    }
+
+    data.tags = [...new Set(data.tags)];
+
+    if(data.accessGroups?.read)
+        data.accessGroups.read = distinctObjectIdArray(data.accessGroups.read);
+    if(data.accessGroups?.edit)
+        data.accessGroups.edit = distinctObjectIdArray(data.accessGroups.edit);
+
+    this.update({}, data);
+
+    next();
+});
+
+itemSchema.statics.create = async function(payload) {
+    payload.created = new Date();
+    const item = new this(payload);
 
     return item.save();
 };
