@@ -17,14 +17,13 @@ module.exports = {
             throw new RuntimeError(err.message);
         }
     },
-
-    searchById: async function(id) {
-		const result = await Group
-		.findByid(id)
-		.catch(err => {
-			throw new RuntimeError(err.message);
-		});
-        return result;
+    
+    read: async (query, projection = { name: true, path: true }) => {
+        try {
+            return await Group.findOne(query, projection);
+        } catch(err) {
+            throw new RuntimeError(err.message);
+        }
     },
 
     create: async (params) => {
