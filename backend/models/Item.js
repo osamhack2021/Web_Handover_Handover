@@ -14,9 +14,13 @@ const itemSchema = mongoose.Schema({
         edit: [{ type: Types.ObjectId, ref: 'Group' }]
     },
     history: [{ type: Types.ObjectId, ref: 'Item' }],
-    status: { type: String, enum: [ 'draft', 'archived', 'published', 'deleted', 'modified' ], required: true },
+    status: {
+        type: String,
+        enum: [ 'draft', 'archived', 'published', 'deleted', 'modified' ],
+        required: true
+    },
     inspection: {
-        result: { type: String },   // approve: 통과, deny: 거절
+        result: { type: String, enum: [ 'approve', 'deny' ] },
         by: { type: Types.ObjectId, ref: 'User' },
         date: { type: Date }
     },
@@ -32,37 +36,7 @@ const itemSchema = mongoose.Schema({
 }, { versionKey: false });
 
 itemSchema.statics.create = async function(payload) {
-
-    // Path, Status unique check
-    let items = await this.find({
-        path: payload.path,
-        status: {
-            $not: {
-                $regex: new RegExp('deleted|modified')
-            }
-        }
-    });
-  
-    if(items.length > 0) {
-        throw new mongoose.Error('MongoError: Item already exists');
-    }
-
-    const preset = {
-        content: '',
-        tags: [],
-        contributors: [],
-        accessGroups: {
-            read: [],
-            edit: []
-        },
-        history: [],
-        status: 'draft',
-        comments: [],
-        created: new Date()
-    };
-
-    let item = Object.assign(preset, payload);
-    item = new this(item);
+    const item = new this(payload);
 
     return item.save();
 };
