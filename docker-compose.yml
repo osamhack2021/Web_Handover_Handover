@@ -3,6 +3,8 @@ version: "3.9"
 services:
   # MongoDB
   mongodb:
+    container_name: db
+    command: mongod --quiet --logpath /dev/null # disable mongodb verbose logging
     image: mongo:latest
     # restart: unless-stopped
     env_file: ./.env
@@ -15,6 +17,7 @@ services:
 
   # Express.js Server
   backend:
+    container_name: back
     # command: tail -f /dev/null # DEBUG: uncomment to keep container running
     depends_on:
       - mongodb
@@ -27,13 +30,15 @@ services:
       - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
     volumes:
       - ./backend:/app/backend
-      - /app/backend/node_modules/
+      - node_modules_backend:/app/backend/node_modules
+      - node_modules_backend:/tmp/node_modules
     networks:
       - backend
       - frontend
 
   # React.js App Client
   frontend:
+    container_name: front
     # command: tail -f /dev/null # DEBUG: uncomment to keep container running
     depends_on: 
       - backend
@@ -46,12 +51,15 @@ services:
       - $REACT_LOCAL_PORT:$REACT_DOCKER_PORT
     volumes:
       - ./frontend:/app/frontend
-      - /app/frontend/node_modules/
+      - node_modules_frontend:/app/frontend/node_modules
+      - node_modules_frontend:/tmp/node_modules
     networks:
       - frontend
 
 volumes:
   db:
+  node_modules_backend:
+  node_modules_frontend:
 
 networks:
   backend:
