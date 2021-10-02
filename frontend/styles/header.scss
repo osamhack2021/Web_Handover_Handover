@@ -1,0 +1,70 @@
+@import 'mixins';
+
+.header{
+  background-color : $pink;
+  height: 60px;
+  width : 100%;
+  @include flexBox(
+    $display : flex,
+    $flex-direction : row,
+    $justify-content : center,
+    $align-items : center
+  );
+  position : relative;
+  button{
+    position: absolute;
+    right : 15px;
+    top : 15px;
+    width : 30px;
+    height: 30px;
+    background-color: transparent;
+    outline : none;
+    border : none;
+    border-radius: 10%;
+    &:hover{
+      background-color: darken($pink, 10%);
+    }
+  }
+  .search-bar{
+    @include flexBox(
+      $display : flex,
+      $flex-direction : row
+    );
+    width : 720px;
+    height : 30px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    border : 0px;
+
+    .search-form{
+      margin : 0px;
+      padding : 0px;
+    }
+    form{
+      @include flexBox(
+        $display : flex,
+        $flex-direction : row,
+        $align-items : center
+      );
+      padding-left : 10px;
+
+      img{
+        width : 18px;
+        height: 18px;
+        margin-right : 7px;
+      }
+
+      input{
+        @include setfonts(
+          $font-weight: bold,
+          $font-size: 15px,
+          $line-height: 18px
+        );
+        width : calc(720px - 42px);
+        outline : none;
+        background-color: transparent;
+        border : none;
+      }
+    }
+  }
+}
