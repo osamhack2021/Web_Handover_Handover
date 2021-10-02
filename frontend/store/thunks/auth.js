@@ -10,11 +10,13 @@ import { dispatchError } from '_utils/api';
 export const attemptLogin = user => dispatch =>
   postLogin(user)
     .then(data => {
-      dispatch(login(snakeToCamelCase(data.user)));
+      dispatch(login(snakeToCamelCase(data)));
+
+      console.log(`Login successful: response is ${JSON.stringify(data)}`)
 
       RNC.addNotification({
         title: 'Success!',
-        message: data.message,
+        message: `JWT token = ${data.token}`, // TODO: change to confirmation message
         type: 'success',
         container: 'top-right',
         animationIn: ['animated', 'fadeInRight'],
@@ -24,7 +26,7 @@ export const attemptLogin = user => dispatch =>
         },
       });
 
-      dispatch(push('/home'));
+      dispatch(push('/'));
       return data;
     })
     .catch(dispatchError(dispatch));
