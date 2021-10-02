@@ -1,6 +1,6 @@
 @import 'mixins';
 
-.profile-setting-page {
+.profile-page {
     
     @include flexBox($display : flex,
         $flex-direction : column,
@@ -18,24 +18,6 @@
 
     .tabpanel {
         margin-top : 80px;
-    
-        .forminput-container {
-            width : 300px;
-        }
-        .form-input-label{
-            @include setfonts (
-            $font-weight : $weight-semibold,
-            $font-size : $size-5,
-            $line-height : 24px
-            );
-        margin-bottom : 27px;
-        }
-        .profile-button {
-           width: 100%;
-           background-color: $pink;
-           color: $white;
-           @include setfonts($font-size: $size-6, $line-height: 24px);
-        }
     }
 
 }

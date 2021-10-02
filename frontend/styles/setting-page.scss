@@ -1,0 +1,41 @@
+@import 'mixins';
+
+.setting-page {
+    
+    @include flexBox($display : flex,
+        $flex-direction : column,
+        $justify-content : flex-start,
+        $align-items : center);
+    width: 100%;
+    min-width: fit-content;
+    background-color: $white;
+    height: 1080px;
+
+    .tabs-container {
+        margin: 90px auto 80px auto;
+        width: 720px;
+    }
+
+    .tabpanel {
+        margin-top : 80px;
+    
+        .forminput-container {
+            width : 300px;
+        }
+        .form-input-label{
+            @include setfonts (
+            $font-weight : $weight-semibold,
+            $font-size : $size-5,
+            $line-height : 24px
+            );
+        margin-bottom : 27px;
+        }
+        .profile-button {
+           width: 100%;
+           background-color: $pink;
+           color: $white;
+           @include setfonts($font-size: $size-6, $line-height: 24px);
+        }
+    }
+
+}
