@@ -5,6 +5,8 @@ import LeftPane from '_organisms/LeftPane';
 // import GridLayout from '_organisms/GridLayout';
 import HomePage from '_pages/HomePage';
 import RecommendPage from '_pages/RecommendPage';
+import LoginPage from '_pages/LoginPage';
+import RegisterPage from '_pages/RegisterPage';
 
 export default function RoutingPage() {
   const dummyGroupData = [
@@ -39,6 +41,8 @@ export default function RoutingPage() {
         {/* <Route path="/blahblahbalh" component={anything} /> */}
         <Route path="/home" component={HomePage} />
         <Route path="/recommend" component={RecommendPage} />
+        <Route path="/login" component={LoginPage} />
+        <Route path="/register" component={RegisterPage} />
       </Switch>
     </div>
   );
