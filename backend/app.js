@@ -22,22 +22,22 @@ app.use(cors({
 }));
 
 const { swaggerUi, specs } = require('./swagger.js');
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 let indexRouter = require('./routes/index.js');
-app.use('/', indexRouter);
+app.use('/api/', indexRouter);
 
 let jwtRouter = require('./routes/api/jwt.js');
-app.use('*', jwtRouter);
+app.use('/api/*', jwtRouter);
 
 let userRouter = require('./routes/api/user.js');
-app.use('/user', userRouter);
+app.use('/api/user', userRouter);
 
 let groupRouter = require('./routes/api/group.js');
-app.use('/group', groupRouter);
+app.use('/api/group', groupRouter);
 
 let itemRouter = require('./routes/api/item.js');
-app.use('/item', itemRouter);
+app.use('/api/item', itemRouter);
 
 app.listen(3000, () => {
   console.log(`API listening at http://localhost:3000`);
