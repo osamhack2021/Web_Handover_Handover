@@ -1,31 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import R from "ramda";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import R from 'ramda';
 
-import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
-import { faLock } from "@fortawesome/free-solid-svg-icons/faLock";
+import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
+import { faLock } from '@fortawesome/free-solid-svg-icons/faLock';
 
-import Box from "react-bulma-companion/lib/Box";
-import Block from "react-bulma-companion/lib/Block";
-import Title from "react-bulma-companion/lib/Title";
-import Control from "react-bulma-companion/lib/Control";
-import Button from "react-bulma-companion/lib/Button";
-import Checkbox from "react-bulma-companion/lib/Checkbox";
+import Box from 'react-bulma-companion/lib/Box';
+import Block from 'react-bulma-companion/lib/Block';
+import Title from 'react-bulma-companion/lib/Title';
+import Control from 'react-bulma-companion/lib/Control';
+import Button from 'react-bulma-companion/lib/Button';
+import Checkbox from 'react-bulma-companion/lib/Checkbox';
 
-import useKeyPress from "_hooks/useKeyPress";
-import { attemptLogin } from "_thunks/auth";
-import FormInput from "_molecules/FormInput";
+import useKeyPress from '_hooks/useKeyPress';
+import { attemptLogin } from '_thunks/auth';
+// import { attemptDummyLogin } from '_thunks/auth';
+import FormInput from '_molecules/FormInput';
 
 export default function Login() {
   const dispatch = useDispatch();
 
   const [remember, setRemember] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
-    const username = localStorage.getItem("username");
+    const username = localStorage.getItem('username');
     if (username) {
       setRemember(true);
       setUsername(username);
@@ -36,16 +37,16 @@ export default function Login() {
     const userCredentials = { username, password };
 
     if (remember) {
-      localStorage.setItem("username", username);
+      localStorage.setItem('username', username);
     }
 
     dispatch(attemptLogin(userCredentials)).catch(R.identity);
   };
 
-  useKeyPress("Enter", login);
+  useKeyPress('Enter', login);
 
   const rememberMe = () => {
-    localStorage.removeItem("username");
+    localStorage.removeItem('username');
     setRemember(!remember);
   };
 
@@ -54,7 +55,7 @@ export default function Login() {
 
   return (
     <div className="login-box">
-      <div className="login-logo mx-auto"></div>
+      <div className="login-logo mx-auto" />
       <Block className="login-title">로그인</Block>
       <div className="login-subtitle">환영합니다!</div>
       <hr className="separator" />
@@ -68,7 +69,7 @@ export default function Login() {
         />
 
         <FormInput
-                  onChange={updatePassword}
+          onChange={updatePassword}
           placeholder="비밀번호를 입력해주세요"
           value={password}
           type="password"

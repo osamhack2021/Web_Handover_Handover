@@ -1,47 +1,50 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import R from 'ramda';
 import PropTypes from 'prop-types';
 
 import Menu from 'react-bulma-companion/lib/Menu';
 
 import ProfileMenu from '_molecules/ProfileMenu';
 import MenuItem from '_molecules/MenuItem';
+import { attemptGetGroup } from '_thunks/group';
 import listToCompnent from '../../../utils/listToComponent';
 
-export default function LeftPane({
-  name, rank, title, division, groupData,
-}) {
-  // const { user } = useSelector(R.pick(['user']));
-  // const {name, rank, title, groups} = user;
-  // const groupData = CreateGroupData(groups);
+export default function LeftPane() {
+  const dispatch = useDispatch();
+  // if user exists, means a user has logged in, i.e. item, group items are available
+  const { user } = useSelector(R.pick(['user']));
+  const { group } = useSelector(R.pick(['group']));
+  const { userItem } = useSelector(R.pick(['userItem']));
 
   return (
     <div className="leftpane">
       <div className="leftpane-header">
-        <ProfileMenu name={name} rank={rank} title={title} division={division} position="인사담당관" />
+        <ProfileMenu name={user.name} rank={user.rank} title={user.title} division={group.name} />
       </div>
       <Menu className="leftpane-menu">
         <Menu.Label className="leftpane-label">
           내 서랍
         </Menu.Label>
         <Menu.List>
-          {listToCompnent(MenuItem, groupData, '_id')}
+          {listToCompnent(MenuItem, userItem.cabinet, 'Id')}
         </Menu.List>
         <Menu.Label className="leftpane-label">
           내 문서
         </Menu.Label>
         <Menu.List>
           <MenuItem value={{
-            name: '최근에 본',
+            title: '최근에 본',
             link: '/',
           }}
           />
           <MenuItem value={{
-            name: '북마크',
+            title: '북마크',
             link: '/',
           }}
           />
           <MenuItem value={{
-            name: '임시저장',
+            title: '임시저장',
             link: '/',
           }}
           />
@@ -51,7 +54,7 @@ export default function LeftPane({
         </Menu.Label>
         <Menu.List>
           <MenuItem value={{
-            name: '도움말',
+            title: '도움말',
             link: '/',
           }}
           />
@@ -60,11 +63,3 @@ export default function LeftPane({
     </div>
   );
 }
-
-LeftPane.propTypes = {
-  name: PropTypes.string.isRequired,
-  rank: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  division: PropTypes.string.isRequired,
-  groupData: PropTypes.arrayOf(PropTypes.object).isRequired,
-};

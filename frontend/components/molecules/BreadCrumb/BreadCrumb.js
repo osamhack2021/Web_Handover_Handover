@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 export default function BreadCrumb({ value }) {
-  console.log(value);
-	const {url, name} = value;
+  const { Id, title } = value;
   return (
-    <Link to={url} className="breadcrumb">{name}</Link>
+    <Link to={`/item/${Id}`} className="breadcrumb">{title}</Link>
   );
 }
 

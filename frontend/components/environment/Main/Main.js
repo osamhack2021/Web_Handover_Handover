@@ -7,9 +7,9 @@ import R from 'ramda';
 
 import { attemptGetUser } from '_thunks/user';
 
-// import WelcomePage from '_pages/WelcomePage';
-// import LoginPage from '_pages/LoginPage';
-// import RegisterPage from '_pages/RegisterPage';
+import WelcomePage from '_pages/WelcomePage';
+import LoginPage from '_pages/LoginPage';
+import RegisterPage from '_pages/RegisterPage';
 // import HomePage from '_pages/HomePage';
 // import TodoPage from '_pages/TodoPage';
 // import SettingsPage from '_pages/SettingsPage';
@@ -43,6 +43,9 @@ export default function Main({ location }) {
       {/* <Navigation pathname={location.pathname} /> */}
       <div className="main">
         <Switch>
+          <Route exact path="/" component={WelcomePage} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/register" component={RegisterPage} />
           <Route path="*" component={RoutingPage} />
           {/* <Route path="/login" component={LoginPage} />
           <Route path="/register" component={RegisterPage} />
