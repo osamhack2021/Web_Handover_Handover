@@ -3,9 +3,16 @@
   "description": "📋 국방업무공유체계 – 업무 인수인계 및 공유 플랫폼",
   "version": "0.0.1",
   "scripts": {
-    "build": "docker-compose down && docker-compose up --build",
-    "dev": "docker-compose down && docker-compose --file docker-compose.dev.yml up",
-    "dev:build": "docker-compose down && docker-compose --file docker-compose.dev.yml up --build"
+    "start": "npm run build && docker compose up --detach",
+    "clean": "npm run down && npm run prune",
+    "down": "docker compose down",
+    "prune": "docker system prune",
+    "prune:image": "docker image prune",
+    "prune:volume": "docker volume prune",
+    "build": "npm run down && docker compose build --parallel",
+    "build:dev": "npm run down && docker compose --file docker-compose.dev.yml build --parallel",
+    "dev": "npm run build:dev && docker compose --file docker-compose.dev.yml up",
+    "prd": "npm run build && docker compose up"
   },
   "repository": {
     "type": "git",
