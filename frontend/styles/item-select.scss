@@ -1,0 +1,14 @@
+@import 'mixins';
+
+.item-select-box {
+    margin-bottom : 50px;
+    width : 240px;
+    .item-select-label {
+        @include setfonts (
+            $font-weight : $weight-semibold,
+            $font-size : $size-5,
+            $line-height : 24px
+        );
+        margin-bottom : 27px;
+    }
+}

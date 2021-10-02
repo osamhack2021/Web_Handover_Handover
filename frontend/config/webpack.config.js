@@ -23,6 +23,26 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 
 module.exports = {
   devtool: 'source-map',
+  devServer: {
+    historyApiFallback: true,
+    magicHtml: true, // route all requests to /dist/index.js
+    client: {
+      webSocketURL: 'ws://0.0.0.0/ws',
+    },
+    // allowedHosts: [
+    //   '.githubpreview.dev',
+    //   '.github.dev',
+    //   'nginx',
+    //   'localhost',
+    //   '0.0.0.0',
+    // ],
+    allowedHosts: 'all', // DEV: Temporary fix for "Invalid Host header" message
+  },
+  watchOptions: {
+    ignored: '**/node_modules',
+    aggregateTimeout: 200,
+    poll: 500,
+  },
   entry: [
     resolve('frontend/styles/index.scss'),
     resolve('frontend/assets/index.js'),

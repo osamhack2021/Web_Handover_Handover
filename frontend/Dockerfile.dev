@@ -1,0 +1,17 @@
+FROM node:14
+
+# following will only run when the package.json is changed
+COPY package.json /tmp/package.json
+RUN cd /tmp && npm install && cd ..
+RUN mkdir -p /app/frontend && cp -a /tmp/node_modules /app/frontend/
+
+# load applicaton code on top of cache if available
+WORKDIR /app/frontend
+COPY . .
+
+# set environment variable for React app URL
+ARG REACT_APP_API_BASE_URL
+ENV REACT_APP_API_BASE_URL=$API_BASE_URL
+
+# start webpack-dev-server with hot reload
+CMD npm run serve

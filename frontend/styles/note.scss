@@ -1,0 +1,115 @@
+@import 'mixins';
+
+$classnames: "cabinet"240px 250px (5px 5px 25px 25px),
+"document"240px 250px (5px 25px 25px 5px),
+"card"320px 240px 25px;
+
+@each $classname,
+$width,
+$height,
+$border-radius in $classnames {
+    .note--#{$classname} {
+        background: $white;
+        mix-blend-mode: normal;
+
+        width: $width;
+        height: $height;
+        border-radius: $border-radius;
+
+        padding-left: 20px;
+        padding-right: 10px;
+        padding-top: 25px;
+        padding-bottom: 10px;
+
+        margin-bottom : 10px;
+
+        border: 0.5px solid $black-b50;
+        border-radius: 0px 0px 16px 16px;
+
+        position: relative;
+        @include flexBox(flex, column, space-between);
+
+        .note-header {
+            @include flexBox(flex, row, space-between, center);
+            color: $black;
+            height: 30px;
+            box-shadow: none;
+            margin-bottom: 9px;
+
+            .main-title {
+                @include setfonts($font-weight : $weight-bold,
+                    $font-size : 24px,
+                    $line-height : 29px);
+                width: 135px;
+            }
+        }
+
+        .description {
+            @include setfonts($font-weight : $weight-semibold,
+                $font-size : $size-6,
+                $line-height : 17px);
+
+            color: $black-b70;
+            margin-bottom: 10px;
+        }
+
+        .container-child {
+            margin-top: 15px;
+
+            .child {
+                @include setfonts($font-weight : $weight-bold,
+                    $font-size : $size-6,
+                    $line-height : 19px);
+                @include flexBox($display : flex, $align-items : center);
+                letter-spacing: -0.017em;
+                margin-bottom: 8px;
+            }
+        }
+
+        .note-footer {
+            @include flexBox($display : flex, $justify-content : space-between, $align-items:center);
+            @include setfonts($font-weight : $weight-semibold,
+                $font-size : $size-7,
+                $line-height : 15px);
+            color: $black-b50;
+            border: 0;
+
+            .date-from-now {
+                @include flexBox($display : flex, $align-items:center);
+            }
+
+            .clock-icon {
+                width: 18px;
+                height: 18px;
+                margin-right: 4px;
+            }
+        }
+
+        .hidden {
+            visibility: hidden;
+        }
+
+        &:hover .hidden {
+            visibility: visible;
+        }
+
+        .button-group {
+            @include flexBox(flex, row);
+        }
+
+        button {
+            background-color: transparent;
+            border-color: transparent;
+            width: 30px;
+            height: 30px;
+            padding: 0px;
+            outline: none;
+            border-radius: 10%;
+            margin-right: 5px;
+
+            &:active {
+                background-color: $grey-lighter;
+            }
+        }
+    }
+}

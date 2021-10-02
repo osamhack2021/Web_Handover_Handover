@@ -2,3 +2,12 @@
 import './images/default-profile.png';
 import './svgs/pink_trapezoid.svg';
 import './svgs/logo.svg';
+import './svgs/bookmark.svg';
+import './svgs/bookmark-filled.svg';
+import './svgs/duplicate.svg';
+import './svgs/print.svg';
+import './svgs/show_content.svg';
+import './svgs/comment.svg';
+import './svgs/search_icon.svg';
+import './svgs/clock_icon.svg';
+import './svgs/bell.svg';

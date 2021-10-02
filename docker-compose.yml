@@ -4,10 +4,10 @@ services:
   # MongoDB
   mongodb:
     image: mongo:latest
+    container_name: db
+    command: mongod --quiet --logpath /dev/null # disable mongodb verbose logging
     # restart: unless-stopped
     env_file: ./.env
-    ports:
-      - $MONGODB_LOCAL_PORT:$MONGODB_DOCKER_PORT
     volumes:
       - db:/data/db
     networks:
@@ -15,6 +15,7 @@ services:
 
   # Express.js Server
   backend:
+    container_name: back
     # command: tail -f /dev/null # DEBUG: uncomment to keep container running
     depends_on:
       - mongodb
@@ -23,17 +24,17 @@ services:
       context: ./backend
     # restart: unless-stopped
     env_file: ./.env
-    ports:
-      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
     volumes:
       - ./backend:/app/backend
-      - /app/backend/node_modules/
+      - node_modules_backend:/app/backend/node_modules
+      - node_modules_backend:/tmp/node_modules
     networks:
       - backend
       - frontend
 
   # React.js App Client
   frontend:
+    container_name: front
     # command: tail -f /dev/null # DEBUG: uncomment to keep container running
     depends_on: 
       - backend
@@ -42,16 +43,34 @@ services:
       context: ./frontend
       args:
         - REACT_APP_API_BASE_URL=$API_BASE_URL
-    ports:
-      - $REACT_LOCAL_PORT:$REACT_DOCKER_PORT
     volumes:
       - ./frontend:/app/frontend
-      - /app/frontend/node_modules/
+      - node_modules_frontend:/app/frontend/node_modules
+      - node_modules_frontend:/tmp/node_modules
     networks:
+      - frontend
+  
+  # Nginx Reserse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    # command: tail -f /dev/null # DEBUG: uncomment to keep container running
+    depends_on: 
+      - frontend
+    ports:
+      - 80:80
+      - 443:443 # TODO: Add SSL support
+    volumes:
+      - ./nginx/config:/etc/nginx
+      - ./nginx/certs:/etc/ssl/private
+    networks:
+      - backend
       - frontend
 
 volumes:
   db:
+  node_modules_backend:
+  node_modules_frontend:
 
 networks:
   backend:

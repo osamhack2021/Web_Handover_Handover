@@ -13,3 +13,19 @@
     line-height: $line-height;
     letter-spacing: $letter-spacing;
 }
+
+
+@mixin flexBox( $display : '', $flex-direction: '', $justify-content: '', $align-items: ''){
+    @if $display {
+        display: $display;
+    }
+    @if $flex-direction {
+        flex-direction: $flex-direction;
+    }
+    @if $justify-content {
+        justify-content: $justify-content;
+    }
+    @if $align-items {
+        align-items: $align-items;
+    }
+}

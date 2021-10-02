@@ -1,0 +1,30 @@
+@import "mixins";
+
+.leftpane {
+    width: 240px;
+    height: 100vh;
+    overflow-y: auto;
+    margin: 0;
+    box-shadow: (2px 0px 6px $black-b25);
+    position: fixed;
+
+    .leftpane-header {
+        position: static
+    }
+
+    .leftpane-menu {
+        padding-top: 24px;
+
+        .leftpane-item {
+            @include setfonts($font-weight : $weight-bold,
+                $font-size : $size-6,
+                $line-height : 19px);
+            height: 48px;
+            padding-left: 24px;
+        }
+
+        .leftpane-label {
+            padding-left: 24px;
+        }
+    }
+}

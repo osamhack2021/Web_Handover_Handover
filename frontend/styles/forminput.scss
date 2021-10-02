@@ -1,0 +1,16 @@
+@import "mixins";
+
+.form-input {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  width: 100%;
+  margin-bottom: 20px;
+
+  .form-input-label {
+    @include setfonts($font-size: $size-6, $line-height: 20px);
+    color: $black-b70;
+    margin: 0 auto 6px 0;
+  }
+}

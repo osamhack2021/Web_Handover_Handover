@@ -1,0 +1,14 @@
+.recovery-page {
+  .recovery-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+
+    position: absolute;
+    width: 480px;
+    height: 710px;
+    left: calc(50% - 500px / 2);
+    top: calc(50% - 720px / 2);
+  }
+}
