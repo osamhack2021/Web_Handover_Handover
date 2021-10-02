@@ -13,5 +13,5 @@ COPY . .
 ARG REACT_APP_API_BASE_URL
 ENV REACT_APP_API_BASE_URL=$API_BASE_URL
 
-# serve app with app.js
-CMD npm run build && npm start
+# start webpack-dev-server with hot reload
+CMD npm run serve

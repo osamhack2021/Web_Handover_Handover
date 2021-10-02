@@ -1,53 +1,36 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { push } from 'connected-react-router';
+import React from 'react';
 import { Switch, Route } from 'react-router';
-import R from 'ramda';
 
-import Section from 'react-bulma-companion/lib/Section';
-import Container from 'react-bulma-companion/lib/Container';
-import Columns from 'react-bulma-companion/lib/Columns';
-import Column from 'react-bulma-companion/lib/Column';
+import ProfileSettings from '_organisms/ProfileSettings';
+import Drawer from '_organisms/Drawer';
+import Profile from '_organisms/Profile';
 
-import ProfileSettings from '_templates/ProfileSettings';
-import AccountSettings from '_templates/AccountSettings';
-import SettingsMenu from '_organisms/SettingsMenu';
+import User from '_assets/svgs/user.svg';
 
-export default function SettingsPage({ location }) {
-  const dispatch = useDispatch();
-  const { user } = useSelector(R.pick(['user']));
-
-  useEffect(() => {
-    if (R.isEmpty(user)) {
-      dispatch(push('/login'));
-    }
-  }, []);
-
+export default function SettingsPage() {
+  const menulist = [
+    'ME',
+    [
+      {name: '프로필', src: User, alt: 'user', link: '/setting/profile'},
+      {name: '테마 변경', src: User, alt: 'themechange', link: '/setting/themechange'},
+    ],
+    'TEAM',
+    [
+      {name: '문서 권한 수정', src: User, alt: 'auth', link: '/'},
+      {name: '알림', src: User, alt: 'alert', link: '/'},
+    ],
+  ];
   return (
-    <div className="settings-page page">
-      <Section>
-        <Container>
-          <Columns>
-            <Column size="3">
-              <SettingsMenu pathname={location.pathname} />
-            </Column>
-            <Column>
-              <Switch>
-                <Route path="/settings/profile/" component={ProfileSettings} />
-                <Route path="/settings/account/" component={AccountSettings} />
-                <Route path="*" component={ProfileSettings} />
-              </Switch>
-            </Column>
-          </Columns>
-        </Container>
-      </Section>
+    <div className="page-template">
+      <div className="drawer">
+        <Drawer name="야옹이" rank="이병" title="짬타이거" division="0사단 00연대" menulist={menulist} />
+      </div>
+      <div className="setting-page">
+        <Switch>
+          {/* <Route path="/setting/themechange" component={} /> */}
+          <Route path="/setting" component={ProfileSettings} />
+        </Switch>
+      </div>
     </div>
-  );
+  )
 }
-
-SettingsPage.propTypes = {
-  location: PropTypes.shape({
-    pathname: PropTypes.string.isRequired,
-  }).isRequired,
-};

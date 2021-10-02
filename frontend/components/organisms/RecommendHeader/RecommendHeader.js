@@ -21,7 +21,7 @@ export default function RecommendHeader({ type, link = '/' }) {
         {title}
       </div>
       <div className="recommend-header-link">
-        <Link to={link} className="recommend-link-text">더 보기></Link>
+        <Link to={link} className="recommend-link-text">더 보기</Link>
       </div>
     </div>
   );

@@ -7,12 +7,12 @@
     $justify-content : space-between
   );
   margin-bottom : 6px;
-  color : black;
+  color : $black;
 
   .recommend-header-title{
     @include setfonts(
-      $font-weight: bold,
-      $font-size: 36px,
+      $font-weight: $weight-bold,
+      $font-size: $size-3,
       $line-height: 44px
     )
   }
@@ -21,13 +21,13 @@
     align-items: flex-end;
     .recommend-link-text{
         @include setfonts(
-        $font-weight: bold,
-        $font-size: 20px,
+        $font-weight: $weight-bold,
+        $font-size: $size-5,
         $line-height: 24px
       );
-      color : black;
+      color : $black;
       &:hover{
-        color : lighten(black, 10%);
+        color : lighten($black, 10%);
       }
     }
   }

@@ -1,41 +1,48 @@
 @import 'mixins';
-.recommend-card{
-  width : 960px;
-  display : grid;
-  grid-auto-flow : column;
-  gap : 40px;
+
+.recommend-card {
+  width: 960px;
+  display: grid;
+  grid-auto-flow: column;
+  gap: 40px;
   overflow-x: hidden;
-  &:hover{
+
+  &:hover {
     overflow-x: auto;
-    p{
-      padding-bottom : 0px;
+
+    p {
+      padding-bottom: 0px;
     }
   }
-  & p{
+
+  & p {
     padding-bottom: 16px;
   }
-}
 
-// ::-webkit-scrollbar{
-//   background-color: transparent;
-// }
-// ::-webkit-scrollbar-thumb{
-//   background-color: darken($beige, 10%);
-// }
+
+  // ::-webkit-scrollbar{
+  //   background-color: transparent;
+  // }
+  // ::-webkit-scrollbar-thumb{
+  //   background-color: darken($beige, 10%);
+  // }
   padding-bottom: 8px;
-  &:hover{
+
+  &:hover {
     overflow-x: auto;
-    padding-bottom : 0px;
+    padding-bottom: 0px;
   }
 }
 
-.recommend-card::-webkit-scrollbar{
-  margin : 0px;
+.recommend-card::-webkit-scrollbar {
+  margin: 0px;
   height: 8px;
-  background-color: transparent; /* or add it to the track */
+  background-color: transparent;
+  /* or add it to the track */
 }
-.recommend-card::-webkit-scrollbar-thumb{
-  margin : 0px;
+
+.recommend-card::-webkit-scrollbar-thumb {
+  margin: 0px;
   background-color: darken($beige, 10%);
   border-radius: 5%;
 }
