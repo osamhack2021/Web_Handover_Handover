@@ -29,4 +29,4 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script_stop: true  # Stop script after first failure
-        script: /bin/sh ./workspace/handover/scripts/deploy.sh
+        script: cd ~/workspace/handover && /bin/sh ./scripts/deploy.sh
