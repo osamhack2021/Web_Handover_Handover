@@ -30,9 +30,12 @@ module.exports = {
 
     updateUser: async function(req, res) {
         try {
+            const auth = await authService.editAuth(res.locals._id.toString(),res.locals.status,req.params.id);
+
             const result = await userService.update(req.params.id,req.body);
             res.status(201).send(result);   // 201 Created
         } catch(err) {
+            console.log(err);
             res.status(err.status).send(err.message);
         }
     },

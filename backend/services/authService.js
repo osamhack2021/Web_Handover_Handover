@@ -1,4 +1,5 @@
-const userService = require('./userService.js')
+const userService = require('./userService.js');
+const groupService = require('./groupService.js');
 
 const crypto = require('crypto');
 const { RuntimeError } = require('./errors/RuntimeError.js');
@@ -14,13 +15,32 @@ function encode(rawPassword) {
 }
 
 function decodeToken(token) {
-	const decoded = jwt.verify(token, SECRET_KEY)
-					   .catch(err => {
-						   throw new ForbiddenError(err.message)
-						});
-
-	return decoded;
+	try{
+		const decoded = jwt.verify(token, SECRET_KEY);
+		
+		return decoded;
+	}catch(err) {
+		throw new ForbiddenError(err.message);
+	}	
 }
+
+function isSelf(loginUser, targetUser) {
+	return loginUser === targetUser;
+}
+
+function isAdmin(loginUserStatus) {
+	return loginUserStatus === 'admin';
+}
+
+async function isGroupAdmin(loginUser, targetUser) {
+	const tu = await userService.searchById(targetUser)
+			.catch(err => {throw err});
+	const targetGroup = await groupService.read({_id: tu.group}, {admins: true})
+			.catch(err => {throw err});
+
+	return targetGroup.admins.includes(loginUser);
+}
+
 
 module.exports = {
 
@@ -57,11 +77,24 @@ module.exports = {
 	},
 
 	authAdmin: function(token) {
-		const result = decodeToken;
+		const result = decodeToken(token);
 		if(result.status !== 'admin') {
 			throw new ForbiddenError('not have access');
 		}
 		return result;	
+	},
+
+	editAuth: async function(loginUser,loginUserStatus , targetUser) {
+		const isGA = await isGroupAdmin(loginUser, targetUser).catch(err => {throw err});
+		
+		if(!isSelf(loginUser, targetUser) &&
+		   !isAdmin(loginUserStatus) &&
+		   !(isGA)){
+			throw new ForbiddenError('not have access');
+		}
+
+		return true;
 	}
+
 
 }

@@ -11,6 +11,7 @@ router.all('', (req, res, next) => {
 
         res.locals.serviceNumber = loginUser.serviceNumber;
         res.locals._id = Types.ObjectId(loginUser._id);
+        res.locals.status = loginUser.status;
 
         next();
     } catch(err) {
@@ -26,7 +27,8 @@ router.all('/admin/*', (req, res, next) => {
 
         res.locals.serviceNumber = loginUser.serviceNumber;
         res.locals._id = Types.ObjectId(loginUser._id);
-        
+        res.locals.status = loginUser.status;
+
         next();
     } catch(err) {
         console.log(err);

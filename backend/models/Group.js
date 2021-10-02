@@ -64,4 +64,8 @@ groupSchema.statics.create = function(payload) {
     return group.save();
 };
 
+groupSchema.statics.findByid = function(id) {
+    return this.findOne({ id });
+}
+
 module.exports = mongoose.model('Group', groupSchema);
