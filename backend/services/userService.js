@@ -2,7 +2,7 @@ const User = require('../models/User.js');
 
 const crypto = require('crypto');
 const { RuntimeError } = require('./errors/RuntimeError.js');
-const { BussinessError, AuthError } = require('./errors/BusinessError.js');
+const { BusinessError, AuthError, NotFoundError } = require('./errors/BusinessError.js');
 
 function encode(rowPassword) {
 	return crypto.createHmac('sha256', 'secret12341234')
@@ -11,6 +11,44 @@ function encode(rowPassword) {
 }
 
 module.exports = {
+
+	search: async function(query) {
+		const result = await User
+		.findAll(query)
+		.catch(err => {
+			throw new RuntimeError(err.message);
+		});
+			
+		if(result.length === 0) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
+
+		return result;
+
+	},
+
+	searchByServiceNumber: async function(serviceNumber) {
+		const result = await User
+		.findOneByServiceNumber(serviceNumber)
+		.catch(err => {
+			throw new RuntimeError(err.message);
+		});
+
+		if(result === null) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
+
+		return result;
+	},
+
+	searchById: async function(id) {
+		const result = await User
+		.findOneByid(id)
+		.catch(err => {
+			throw new RuntimeError(err.message);
+		});
+
+		if(result === null) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
+
+		return result;
+	},
+
 	save: async function(params) {
 
 		params.password = encode(params.password);
@@ -19,9 +57,9 @@ module.exports = {
 			.create(params)
 			.catch(err => {
 				if(err.code === 11000) {
-					throw new BussinessError('serviceNumber overlap');
-				}
-				throw new RuntimeError(err.message);
+					throw new BusinessError('serviceNumber overlap');
+				} 
+				throw new RuntimeError(err.message);		
 			});
 
 		result._id = '';
@@ -36,30 +74,13 @@ module.exports = {
 		} catch(err) { throw err; }
 	},
 
-	auth: async function(params) {
-		
-		params.password = encode(params.password);
-
-		const loginUser = await User
-			.findOneByServiceNumber(params.serviceNumber)
-			.catch(err => {
-				throw new RuntimeError(err.message);
-			});
-
-		if(loginUser === null|| loginUser.password !== params.password) {
-			throw new AuthError('LOGIN fail');
-		}
-		return true;
-		
-	},
-
-	update: async function(params) {
+	update: async function(id ,params) {
 		if(params.password) {
 			params.password = encode(params.password);
 		}
 
 		const result = await User
-			.updateByid(params._id, params)
+			.updateByid(id, params)
 			.catch(err => {
 				throw new RuntimeError(err.message);
 			});
@@ -73,7 +94,7 @@ module.exports = {
 	delete: async function(params) {
 		
 		const result = await User
-			.deleteByid(params._id)
+			.deleteByid(params.id)
 			.catch(err => {
 				throw new RuntimeError(err.message);
 			});
