@@ -46,7 +46,7 @@ userSchema.statics.updateByid = function(id, payload) {
 };
 
 userSchema.statics.deleteByid = function(id) {
-    return this.remove({ id });
+    return this.deleteOne({ id });
 };
 
 
