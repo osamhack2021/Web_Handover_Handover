@@ -81,22 +81,20 @@ module.exports = {
     update: async (item, payload) => {
         try {
 
-            // Change before item's status
-            await Item.findOneAndUpdate(item, { status: 'modified' });
-
-            // Copy and assign object
-            item = item.toObject();
-            item = Object.assign(item, payload);
+            // Create before item
+            before_item = item.toObject();
+            before_item = Object.assign(before_item, { status: 'modified' });
+            delete before_item._id;
+            before_item = await Item.create(before_item);
 
             // Append history
-            item = Object.assign(item, { history: [...item.history, item._id]});
+            payload.history = [...item.history, before_item._id];
 
             // Clear inspection
-            item = Object.assign(item, { inspection: {} });
+            payload.inspection = {};
 
-            // Create new Item
-            delete item._id;
-            const result = await Item.create(item);
+            // Update item
+            await Item.findOneAndUpdate(item, payload)
 
             return result;
         } catch(err) {
