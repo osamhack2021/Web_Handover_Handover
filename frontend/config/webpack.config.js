@@ -29,9 +29,14 @@ module.exports = {
     client: {
       webSocketURL: 'ws://0.0.0.0/ws',
     },
-    allowedHosts: [
-      '.githubpreview.dev',
-    ],
+    // allowedHosts: [
+    //   '.githubpreview.dev',
+    //   '.github.dev',
+    //   'nginx',
+    //   'localhost',
+    //   '0.0.0.0',
+    // ],
+    allowedHosts: 'all', // DEV: Temporary fix for "Invalid Host header" message
   },
   watchOptions: {
     ignored: '**/node_modules',

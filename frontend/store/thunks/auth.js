@@ -10,47 +10,29 @@ import R from 'ramda';
 import { attemptGetGroup } from './group';
 import { attemptLoadItems } from './item';
 
-// upon success dispatches the user data in camelToSnakeCase.
-export const attemptLogin = (user) => (dispatch) => postLogin(user)
-  .then((data) => {
-    const camelData = snakeToCamelCase(data);
-    // set user
-    dispatch(login(camelData));
-    RNC.addNotification({
-      title: 'Success!',
-      message: data.title,
-      type: 'success',
-      container: 'top-right',
-      animationIn: ['animated', 'fadeInRight'],
-      animationOut: ['animated', 'fadeOutRight'],
-      dismiss: {
-        duration: 5000,
-      },
-    });
+export const attemptLogin = user => dispatch =>
+  postLogin(user)
+    .then(data => {
+      dispatch(login(snakeToCamelCase(data)));
 
-    dispatch(push('/home'));
-    return data;
-  })
-  .catch(dispatchError(dispatch));
+      console.log(`Login successful: response is ${JSON.stringify(data)}`)
 
-export const attemptRegister = (newUser) => (dispatch) => postRegister(newUser)
-  .then((data) => {
-    RNC.addNotification({
-      title: 'Success!',
-      message: data.message,
-      type: 'success',
-      container: 'top-right',
-      animationIn: ['animated', 'fadeInRight'],
-      animationOut: ['animated', 'fadeOutRight'],
-      dismiss: {
-        duration: 5000,
-      },
-    });
+      RNC.addNotification({
+        title: 'Success!',
+        message: `JWT token = ${data.token}`, // TODO: change to confirmation message
+        type: 'success',
+        container: 'top-right',
+        animationIn: ['animated', 'fadeInRight'],
+        animationOut: ['animated', 'fadeOutRight'],
+        dismiss: {
+          duration: 5000,
+        },
+      });
 
-    return dispatch(attemptLogin(newUser));
-  })
-  .then(() => dispatch(push('/settings')))
-  .catch(dispatchError(dispatch));
+      dispatch(push('/'));
+      return data;
+    })
+    .catch(dispatchError(dispatch));
 
 export const attemptLogout = () => (dispatch) => postLogout()
   .then((data) => {

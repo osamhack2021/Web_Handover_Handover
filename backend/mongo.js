@@ -7,7 +7,7 @@ db.once('open', function() {
 })
 
 module.exports = () => {
-    mongoose.connect('mongodb://mongodb:27017/Handover', function (err) {
+    mongoose.connect('mongodb://db:27017/Handover', function (err) {
         if(err) {
            console.log('mongodb connection err');
            console.log(err)

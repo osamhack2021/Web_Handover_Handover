@@ -11,8 +11,8 @@
     "prune:volume": "docker volume prune",
     "build": "npm run down && docker compose build --parallel",
     "build:dev": "npm run down && docker compose --file docker-compose.dev.yml build --parallel",
-    "dev": "npm run build:dev && docker compose --file docker-compose.dev.yml up",
-    "prd": "npm run build && docker compose up"
+    "dev": "npm run build:dev && docker compose --file docker-compose.dev.yml up --force-recreate",
+    "prd": "npm run build && docker compose up --force-recreate"
   },
   "repository": {
     "type": "git",

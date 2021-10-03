@@ -7,8 +7,8 @@ import R from 'ramda';
 import LeftPane from '_organisms/LeftPane';
 import HomePage from '_pages/HomePage';
 import RecommendPage from '_pages/RecommendPage';
-import { attemptGetGroup } from '_thunks/group';
-import { attemptLoadItems } from '_thunks/item';
+import LoginPage from '_pages/LoginPage';
+import RegisterPage from '_pages/RegisterPage';
 
 export default function RoutingPage() {
   const dispatch = useDispatch();
@@ -39,9 +39,10 @@ export default function RoutingPage() {
       </div>
       <Switch>
         {/* <Route path="/blahblahbalh" component={anything} /> */}
-        <Route path="/home" component={RecommendPage} />
-        <Route path="/item/:itemId" component={HomePage} />
-        {/* <Route path="/recommend" component={RecommendPage} /> */}
+        <Route path="/home" component={HomePage} />
+        <Route path="/recommend" component={RecommendPage} />
+        <Route path="/login" component={LoginPage} />
+        <Route path="/register" component={RegisterPage} />
       </Switch>
     </div>
   );
