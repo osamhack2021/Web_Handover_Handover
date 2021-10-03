@@ -1,5 +1,6 @@
 const userService = require('./userService.js');
 const groupService = require('./groupService.js');
+const itemService = require('./itemService.js');
 
 const crypto = require('crypto');
 const { RuntimeError } = require('./errors/RuntimeError.js');
@@ -28,17 +29,37 @@ function isSelf(loginUser, targetUser) {
 	return loginUser === targetUser;
 }
 
-function isAdmin(loginUserStatus) {
-	return loginUserStatus === 'admin';
+async function isAdmin(loginUser) {
+	const user = await userService.searchById(loginUser)
+			.catch(err => {throw err});
+	return user.status === 'admin';
 }
 
-async function isGroupAdmin(loginUser, targetUser) {
-	const tu = await userService.searchById(targetUser)
+async function isHumanResourceManager(loginUser, targetUser) {
+	const user = await userService.searchById(targetUser)
 			.catch(err => {throw err});
-	const targetGroup = await groupService.read({_id: tu.group}, {admins: true})
+	const targetGroup = await groupService.read({_id: user.group}, {admins: true})
 			.catch(err => {throw err});
 
 	return targetGroup.admins.includes(loginUser);
+}
+
+async function isGroupManager(loginUser, targetGroup) {
+	const targetGroup_ = await groupService.read({_id: targetGroup}, {admins: true})
+			.catch(err => {throw err});
+
+	return targetGroup_.admins.includes(loginUser);		
+}
+
+async function isItemEditor(loginUser, targetItem) {
+	const user = await userService.searchById(loginUser)
+			.catch(err => {throw err});
+	const targetItem_ = await itemService.read({_id: targetItem}, {owner: true, contributors: true, accessGroups: true})
+			.catch(err => {throw err});
+
+	return (targetItem_.owner._id === loginUser ||
+			targetItem_.contributors.includes(user._id)||
+			accessGroups.edit.includes(user.group));		
 }
 
 
@@ -64,7 +85,6 @@ module.exports = {
 		const token = jwt.sign({
 			_id: loginUser._id,
 			serviceNumber: loginUser.serviceNumber,
-			status: loginUser.status,
 		}, SECRET_KEY, {
 			expiresIn: '1h'
 		});
@@ -76,25 +96,50 @@ module.exports = {
 		return decodeToken(token);
 	},
 
-	authAdmin: function(token) {
-		const result = decodeToken(token);
-		if(result.status !== 'admin') {
+	authAdmin: async function(token) {
+		const decode = decodeToken(token);
+
+		const isAd = await isAdmin(decode._id).catch(err => {throw err});
+		if(!isAd) {
 			throw new ForbiddenError('not have access');
 		}
-		return result;	
+		return isAd;	
 	},
-
-	editAuth: async function(loginUser,loginUserStatus , targetUser) {
-		const isGA = await isGroupAdmin(loginUser, targetUser).catch(err => {throw err});
+	//User 수정 권한 확인
+	editUserAuth: async function(loginUser, targetUser) {
+		const isHRM = await isHumanResourceManager(loginUser, targetUser).catch(err => {throw err});
+		const isAd = await isAdmin(loginUser).catch(err => {throw err});
 		
 		if(!isSelf(loginUser, targetUser) &&
-		   !isAdmin(loginUserStatus) &&
-		   !(isGA)){
+		   !isAd && !isHRM){
+			throw new ForbiddenError('not have access');
+		}
+
+		return true;
+	},
+
+	//Group 수정 권한 확인
+	editGroupAuth: async function(loginUser, targetGroup) {
+		const isGM = await isGroupManager(loginUser, targetGroup).catch(err => {throw err});
+		const isAd = await isAdmin(loginUser).catch(err => {throw err});
+
+		if(!isAd && !isGM){
+			throw new ForbiddenError('not have access');
+		}
+
+		return true;
+	},
+
+	//Item 수정 권한 확인
+	editItemAuth: async function(loginUser, targetItem) {
+		const isIE = await isItemEditor(loginUser, targetItem).catch(err => {throw err});
+		const isAd = await isAdmin(loginUser).catch(err => {throw err});
+
+		if(!isAd && !isIE){
 			throw new ForbiddenError('not have access');
 		}
 
 		return true;
 	}
-
 
 }
