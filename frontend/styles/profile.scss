@@ -1,0 +1,58 @@
+@import 'mixins';
+
+.profile{
+    margin-right: auto;
+    margin-left : 360px;
+
+    .tab{
+        padding : 0 0 3px 22px;
+        margin-top : 100px;
+        width : 150px;
+        border-bottom: 3px solid $black-b70;    
+                
+        @include setfonts(
+            $font-family : Roboto,
+            $font-weight : $weight-semibold,
+            $font-size : $size-5,
+            $line-height : 23px
+        );
+    }
+
+    .tab:after{    
+        content: '';
+        display: block;
+        border-bottom: 3px solid $black-b25;
+        margin-bottom: -6px;
+        width: 720px;
+    }
+    
+
+    .profile-labels{
+        display:inline-block;
+        margin : 110px 100px 0 0;
+
+        @include setfonts(
+            $font-weight : $weight-bold,
+            $font-size : $size-5,
+            $line-height : 24px
+        );
+        
+        .profile-label{
+            margin-bottom : 50px;
+        }
+    }
+    .profile-values{
+        display:inline-block;
+        color: $black-b50;
+
+        @include setfonts(
+            $font-weight : $weight-bold,
+            $font-size : $size-5,
+            $line-height : 24px
+        );
+
+        .profile-value{
+            margin-bottom : 50px;
+        }
+    }
+}

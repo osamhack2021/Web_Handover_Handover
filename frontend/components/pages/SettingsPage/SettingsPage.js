@@ -3,7 +3,6 @@ import { Switch, Route } from 'react-router';
 
 import ProfileSettings from '_organisms/ProfileSettings';
 import Drawer from '_organisms/Drawer';
-import Profile from '_organisms/Profile';
 
 import User from '_assets/svgs/user.svg';
 
@@ -22,7 +21,7 @@ export default function SettingsPage() {
   ];
   return (
     <div className="page-template">
-      <div className="drawer">
+      <div className="drawer-container">
         <Drawer name="야옹이" rank="이병" title="짬타이거" division="0사단 00연대" menulist={menulist} />
       </div>
       <div className="setting-page">
