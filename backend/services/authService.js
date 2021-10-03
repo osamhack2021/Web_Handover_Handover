@@ -57,9 +57,20 @@ async function isItemEditor(loginUser, targetItem) {
 	const targetItem_ = await itemService.read({_id: targetItem}, {owner: true, contributors: true, accessGroups: true})
 			.catch(err => {throw err});
 
-	return (targetItem_.owner._id === loginUser ||
-			targetItem_.contributors.includes(user._id)||
-			accessGroups.edit.includes(user.group));		
+	return targetItem_.owner._id === loginUser ||
+			targetItem_.contributors.includes(user._id) ||
+			accessGroups.edit.includes(user.group);		
+}
+
+async function isItemReader(loginUser, targetItem) {
+	const user = await userService.searchById(loginUser)
+			.catch(err => {throw err});
+	const targetItem_ = await itemService.read({_id: targetItem}, { contributors: true, accessGroups: true})
+			.catch(err => {throw err});
+
+	return targetItem_.contributors.includes(user._id) ||
+			accessGroups.edit.includes(user.group) ||	
+			accessGroups.read.includes(user.group);
 }
 
 
@@ -118,6 +129,18 @@ module.exports = {
 		return true;
 	},
 
+	readUserAuth: async function(loginUser, targetUser) {
+		const isHRM = await isHumanResourceManager(loginUser, targetUser).catch(err => {throw err});
+		const isAd = await isAdmin(loginUser).catch(err => {throw err});
+
+		if(!isSelf(loginUser, targetUser) &&
+		   !isAd && !isHRM){
+			return 'general';
+		}
+		
+		return 'all';
+	},
+
 	//Group 수정 권한 확인
 	editGroupAuth: async function(loginUser, targetGroup) {
 		const isGM = await isGroupManager(loginUser, targetGroup).catch(err => {throw err});
@@ -140,6 +163,17 @@ module.exports = {
 		}
 
 		return true;
-	}
+	},
+
+	readItemAuth: async function(loginUser, targetItem) {
+		const isIR = await isItemReader(loginUser, targetItem).catch(err => {throw err});
+		const isAd = await isAdmin(loginUser).catch(err => {throw err});
+
+		if(!isAd && !isIR){
+			throw new ForbiddenError('not have access');
+		}
+
+		return true;
+	},
 
 }
