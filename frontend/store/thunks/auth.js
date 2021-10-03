@@ -14,9 +14,7 @@ import { attemptLoadItems } from './item';
 export const attemptLogin = (user) => (dispatch) => postLogin(user)
   .then((data) => {
     const camelData = snakeToCamelCase(data);
-    console.log(camelData);
     // set user
-    console.log('setting user');
     dispatch(login(camelData));
     RNC.addNotification({
       title: 'Success!',

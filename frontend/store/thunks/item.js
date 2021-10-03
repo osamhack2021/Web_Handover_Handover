@@ -7,8 +7,6 @@ import { dispatchError } from '_utils/api';
 // eslint-disable-next-line import/prefer-default-export
 export const attemptLoadItems = (userId) => (dispatch) => getItemByUserId(userId)
   .then((data) => {
-    console.log('attemptingLoadItems');
-    console.log(data);
     // set item
     dispatch(loadUserItem(snakeToCamelCase(data)));
     return data;
