@@ -42,6 +42,7 @@ export default function RoutingPage() {
         <Route path="/home" component={RecommendPage} />
         <Route path="/item/:itemId" component={HomePage} />
         {/* <Route path="/recommend" component={RecommendPage} /> */}
+
       </Switch>
     </div>
   );

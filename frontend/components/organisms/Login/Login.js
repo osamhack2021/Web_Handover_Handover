@@ -34,10 +34,10 @@ export default function Login() {
   }, []);
 
   const login = () => {
-    const userCredentials = { username, password };
+    const userCredentials = { serviceNumber: username, password };
 
     if (remember) {
-      localStorage.setItem('username', username);
+      localStorage.setItem('serviceNumber', username);
     }
 
     dispatch(attemptLogin(userCredentials)).catch(R.identity);

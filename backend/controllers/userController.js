@@ -1,10 +1,25 @@
 const userService = require('../services/userService.js');
-
-const jwt = require('jsonwebtoken');
-const SECRET_KEY = "MY_SECRET_KEY";
-
+const authService = require('../services/authService.js');
 module.exports = {
-    saveUser: async function(req, res) {
+
+    search: async function(req, res) {
+
+        // 활성화 상태의 유저만 조회
+        let query = Object.assign(req.query, { status: 'avail' });
+        let projection = {
+            name: true, rank: true, title: true,
+            group: true, email: true, tel: true
+        };
+
+        try {
+            const result = await userService.search(query, projection);
+            res.status(200).send(result);
+        } catch(err) {
+            res.status(err.status).send(err.message);
+        }
+    },
+
+    save: async function(req, res) {
         try {
             const result = await userService.save(req.body);
             res.status(201).send(result);   // 201 Created
@@ -13,31 +28,24 @@ module.exports = {
         }
     },
 
-    login: async function(req, res) {
+    updateUser: async function(req, res) {
         try {
-            const result = await userService.auth(req.body);
+            const auth = await authService.editAuth(res.locals._id.toString(),res.locals.status,req.params.id);
 
-            if(result) {
-                
-                const token = jwt.sign({
-                    serviceNumber: result.serviceNumber
-                }, SECRET_KEY, {
-                    expiresIn: '1h'
-                });
-
-                console.log(token)
-
-                res.cookie('jwt', token);
-
-                res.status(201).send({
-                    result: 'OK',
-                    token
-                });
-            }
-
+            const result = await userService.update(req.params.id,req.body);
+            res.status(201).send(result);   // 201 Created
         } catch(err) {
             console.log(err);
-           res.status(err.status).send(err.message);
+            res.status(err.status).send(err.message);
+        }
+    },
+
+    deleteUser: async function(req, res) {
+        try {
+            const result = await userService.delete(req.params.id);
+            res.status(204).send(result);   // 201 Created
+        } catch(err) {
+            res.status(err.status).send(err.message);
         }
     }
 };

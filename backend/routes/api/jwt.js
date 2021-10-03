@@ -1,28 +1,38 @@
 const express = require('express');
 const router = express.Router();
+const authService = require('../../services/authService.js');
 
-const jwt = require('jsonwebtoken');
-const SECRET_KEY = "MY_SECRET_KEY";
-
-const { AuthError } = require('../../services/errors/BusinessError');
+const { Types } = require('mongoose');
 
 router.all('', (req, res, next) => {
     try {
         const clientToken = req.cookies.jwt;
-        const decoded = jwt.verify(clientToken, SECRET_KEY);
+        const loginUser = authService.getLoginUser(clientToken);
 
-        console.log(clientToken);
+        res.locals.serviceNumber = loginUser.serviceNumber;
+        res.locals._id = Types.ObjectId(loginUser._id);
+        res.locals.status = loginUser.status;
 
-        if(decoded) {
-            res.locals.serviceNumber = decoded.serviceNumber;
-            next();
-        } else {
-            let error = new Error('Authentication Failed: unauthorized');
-            res.send(error.status).send(error.message);
-        }
+        next();
     } catch(err) {
-        let error = new Error('Authentication Failed: token expired');
-        res.send(error.status).send(error.message);
+        console.log(err);
+        res.status(err.status).send(err.message);
+    }
+});
+
+router.all('/admin/*', (req, res, next) => {
+    try {
+        const clientToken = req.cookies.jwt;
+        const loginUser = authService.authAdmin(clientToken);
+
+        res.locals.serviceNumber = loginUser.serviceNumber;
+        res.locals._id = Types.ObjectId(loginUser._id);
+        res.locals.status = loginUser.status;
+
+        next();
+    } catch(err) {
+        console.log(err);
+        res.status(err.status).send(err.message);
     }
 });
 
