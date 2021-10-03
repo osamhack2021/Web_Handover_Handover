@@ -105,7 +105,7 @@ module.exports = {
 		}
 		return isAd;	
 	},
-
+	//User 수정 권한 확인
 	editUserAuth: async function(loginUser, targetUser) {
 		const isHRM = await isHumanResourceManager(loginUser, targetUser).catch(err => {throw err});
 		const isAd = await isAdmin(loginUser).catch(err => {throw err});
@@ -118,7 +118,8 @@ module.exports = {
 		return true;
 	},
 
-	groupEditAuth: async function(loginUser, targetGroup) {
+	//Group 수정 권한 확인
+	editGroupAuth: async function(loginUser, targetGroup) {
 		const isGM = await isGroupManager(loginUser, targetGroup).catch(err => {throw err});
 		const isAd = await isAdmin(loginUser).catch(err => {throw err});
 
@@ -129,7 +130,8 @@ module.exports = {
 		return true;
 	},
 
-	itemEditAuth: async function(loginUser, targetItem) {
+	//Item 수정 권한 확인
+	editItemAuth: async function(loginUser, targetItem) {
 		const isIE = await isItemEditor(loginUser, targetItem).catch(err => {throw err});
 		const isAd = await isAdmin(loginUser).catch(err => {throw err});
 
