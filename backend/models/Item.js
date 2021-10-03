@@ -16,6 +16,7 @@ const itemSchema = mongoose.Schema({
         required: true
     },
     content: { type: String },
+    files: [{ type: Types.ObjectId, ref: 'File' }],
     tags: [{ type: String }],
     contributors: [{ type: Types.ObjectId, ref: 'User' }],
     accessGroups: {
