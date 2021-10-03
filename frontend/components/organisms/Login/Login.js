@@ -37,7 +37,7 @@ export default function Login() {
     const userCredentials = { serviceNumber: username, password };
 
     if (remember) {
-      localStorage.setItem('serviceNumber', username);
+      localStorage.setItem("serviceNumber", username);
     }
 
     dispatch(attemptLogin(userCredentials)).catch(R.identity);

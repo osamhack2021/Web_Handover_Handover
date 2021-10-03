@@ -1,24 +1,44 @@
-import { push } from 'connected-react-router';
-import { camelToSnakeCase, snakeToCamelCase } from 'json-style-converter/es5';
-import { store as RNC } from 'react-notifications-component';
+import {
+  push,
+} from 'connected-react-router';
+import {
+  camelToSnakeCase,
+  snakeToCamelCase,
+} from 'json-style-converter/es5';
+import {
+  store as RNC,
+} from 'react-notifications-component';
 
-import { postRegister, postLogin, postLogout } from '_api/auth';
-import { login, logout } from '_actions/user';
-import { dispatchError, handleSuccess } from '_utils/api';
+import {
+  postRegister,
+  postLogin,
+  postLogout,
+} from '_api/auth';
+import {
+  login,
+  logout,
+} from '_actions/user';
+import {
+  dispatchError,
+  handleSuccess,
+} from '_utils/api';
 import R from 'ramda';
 
-import { attemptGetGroup } from './group';
-import { attemptLoadItems } from './item';
+import {
+  attemptGetGroup,
+} from './group';
+import {
+  attemptLoadItems,
+} from './item';
 
-// upon success dispatches the user data in camelToSnakeCase.
 export const attemptLogin = (user) => (dispatch) => postLogin(user)
   .then((data) => {
-    const camelData = snakeToCamelCase(data);
-    // set user
-    dispatch(login(camelData));
+    dispatch(login(snakeToCamelCase(data)));
+
+    console.log(`Login successful: response is ${JSON.stringify(data)}`);
     RNC.addNotification({
       title: 'Success!',
-      message: data.title,
+      message: `JWT token = ${data.token}`, // TODO: change to confirmation message
       type: 'success',
       container: 'top-right',
       animationIn: ['animated', 'fadeInRight'],
@@ -28,7 +48,7 @@ export const attemptLogin = (user) => (dispatch) => postLogin(user)
       },
     });
 
-    dispatch(push('/home'));
+    dispatch(push('/'));
     return data;
   })
   .catch(dispatchError(dispatch));
