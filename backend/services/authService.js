@@ -25,50 +25,50 @@ function decodeToken(token) {
 	}	
 }
 
-function isSelf(loginUser, targetUser) {
-	return loginUser === targetUser;
+function isSelf(loginUserId, targetUserId) {
+	return loginUserId === targetUserId;
 }
 
-async function isAdmin(loginUser) {
-	const user = await userService.searchById(loginUser)
+async function isAdmin(loginUserId) {
+	const user = await userService.searchById(loginUserId)
 			.catch(err => {throw err});
 	return user.status === 'admin';
 }
 
-async function isHumanResourceManager(loginUser, targetUser) {
-	const user = await userService.searchById(targetUser)
+async function isHumanResourceManager(loginUserId, targetUserId) {
+	const user = await userService.searchById(targetUserId)
 			.catch(err => {throw err});
 	const targetGroup = await groupService.read({_id: user.group}, {admins: true})
 			.catch(err => {throw err});
 
-	return targetGroup.admins.includes(loginUser);
+	return targetGroup.admins.includes(loginUserId);
 }
 
-async function isGroupManager(loginUser, targetGroup) {
-	const targetGroup_ = await groupService.read({_id: targetGroup}, {admins: true})
+async function isGroupManager(loginUserId, targetGroupId) {
+	const targetGroup = await groupService.read({_id: targetGroupId}, {admins: true})
 			.catch(err => {throw err});
 
-	return targetGroup_.admins.includes(loginUser);		
+	return targetGroup.admins.includes(loginUserId);		
 }
 
-async function isItemEditor(loginUser, targetItem) {
-	const user = await userService.searchById(loginUser)
+async function isItemEditor(loginUserId, targetItemId) {
+	const user = await userService.searchById(loginUserId)
 			.catch(err => {throw err});
-	const targetItem_ = await itemService.read({_id: targetItem}, {owner: true, contributors: true, accessGroups: true})
+	const targetItem = await itemService.read({_id: targetItemId}, {owner: true, contributors: true, accessGroups: true})
 			.catch(err => {throw err});
 
-	return targetItem_.owner._id === loginUser ||
-			targetItem_.contributors.includes(user._id) ||
+	return targetItem.owner._id === loginUserId ||
+			targetItem.contributors.includes(user._id) ||
 			accessGroups.edit.includes(user.group);		
 }
 
-async function isItemReader(loginUser, targetItem) {
-	const user = await userService.searchById(loginUser)
+async function isItemReader(loginUserId, targetItemId) {
+	const user = await userService.searchById(loginUserId)
 			.catch(err => {throw err});
-	const targetItem_ = await itemService.read({_id: targetItem}, { contributors: true, accessGroups: true})
+	const targetItem = await itemService.read({_id: targetItemId}, { contributors: true, accessGroups: true})
 			.catch(err => {throw err});
 
-	return targetItem_.contributors.includes(user._id) ||
+	return targetItem.contributors.includes(user._id) ||
 			accessGroups.edit.includes(user.group) ||	
 			accessGroups.read.includes(user.group);
 }
@@ -117,11 +117,11 @@ module.exports = {
 		return isAd;	
 	},
 	//User 수정 권한 확인
-	editUserAuth: async function(loginUser, targetUser) {
-		const isHRM = await isHumanResourceManager(loginUser, targetUser).catch(err => {throw err});
+	editUserAuth: async function(loginUserId, targetUserId) {
+		const isHRM = await isHumanResourceManager(loginUserId, targetUserId).catch(err => {throw err});
 		const isAd = await isAdmin(loginUser).catch(err => {throw err});
 		
-		if(!isSelf(loginUser, targetUser) &&
+		if(!isSelf(loginUserId, targetUserId) &&
 		   !isAd && !isHRM){
 			throw new ForbiddenError('not have access');
 		}
@@ -129,11 +129,11 @@ module.exports = {
 		return true;
 	},
 
-	readUserAuth: async function(loginUser, targetUser) {
-		const isHRM = await isHumanResourceManager(loginUser, targetUser).catch(err => {throw err});
-		const isAd = await isAdmin(loginUser).catch(err => {throw err});
+	readUserAuth: async function(loginUserId, targetUserId) {
+		const isHRM = await isHumanResourceManager(loginUserId, targetUserId).catch(err => {throw err});
+		const isAd = await isAdmin(loginUserId).catch(err => {throw err});
 
-		if(!isSelf(loginUser, targetUser) &&
+		if(!isSelf(loginUserId, targetUserId) &&
 		   !isAd && !isHRM){
 			return 'general';
 		}
@@ -142,9 +142,9 @@ module.exports = {
 	},
 
 	//Group 수정 권한 확인
-	editGroupAuth: async function(loginUser, targetGroup) {
-		const isGM = await isGroupManager(loginUser, targetGroup).catch(err => {throw err});
-		const isAd = await isAdmin(loginUser).catch(err => {throw err});
+	editGroupAuth: async function(loginUserId, targetGroupId) {
+		const isGM = await isGroupManager(loginUserId, targetGroupId).catch(err => {throw err});
+		const isAd = await isAdmin(loginUserId).catch(err => {throw err});
 
 		if(!isAd && !isGM){
 			throw new ForbiddenError('not have access');
@@ -154,9 +154,9 @@ module.exports = {
 	},
 
 	//Item 수정 권한 확인
-	editItemAuth: async function(loginUser, targetItem) {
-		const isIE = await isItemEditor(loginUser, targetItem).catch(err => {throw err});
-		const isAd = await isAdmin(loginUser).catch(err => {throw err});
+	editItemAuth: async function(loginUserId, targetItemId) {
+		const isIE = await isItemEditor(loginUserId, targetItemId).catch(err => {throw err});
+		const isAd = await isAdmin(loginUserId).catch(err => {throw err});
 
 		if(!isAd && !isIE){
 			throw new ForbiddenError('not have access');
@@ -165,9 +165,9 @@ module.exports = {
 		return true;
 	},
 
-	readItemAuth: async function(loginUser, targetItem) {
-		const isIR = await isItemReader(loginUser, targetItem).catch(err => {throw err});
-		const isAd = await isAdmin(loginUser).catch(err => {throw err});
+	readItemAuth: async function(loginUserId, targetItemId) {
+		const isIR = await isItemReader(loginUserId, targetItemId).catch(err => {throw err});
+		const isAd = await isAdmin(loginUserId).catch(err => {throw err});
 
 		if(!isAd && !isIR){
 			throw new ForbiddenError('not have access');
