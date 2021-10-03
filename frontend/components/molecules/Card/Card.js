@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 
-import listToCompnent from '_utils/listToComponent';
 import PromiseItemArray from '_utils/promiseArray';
 import NoteHeader from '../NoteHeader';
 import NoteFooter from '../NoteFooter';
 import CardItem from '../CardItem';
+
+function arrayToCardItems(array) {
+  return array.map((elem) => <CardItem value={elem} key={elem.Id} />);
+}
 
 // type takes "card", "document", "cabinet" values
 // rest of the props are self-evident
@@ -31,7 +34,7 @@ export default function Card({
     if (type === 'card') {
       processedContent = contentObject.content;
     } else {
-      processedContent = listToCompnent(CardItem, contentObject.content, 'Id');
+      processedContent = arrayToCardItems(contentObject.content);
     }
   }
   const dateFromNow = '2주 전 수정됨';
