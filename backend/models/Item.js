@@ -16,7 +16,10 @@ const itemSchema = mongoose.Schema({
         required: true
     },
     content: { type: String },
-    files: [{ type: String }], // timestamp.png
+    files: [{
+        originalName: { type: String },
+        fileName: { type: String }      // 1633269573153.png / {timestamp}.ext
+    }],
     tags: [{ type: String }],
     contributors: [{ type: Types.ObjectId, ref: 'User' }],
     accessGroups: {
