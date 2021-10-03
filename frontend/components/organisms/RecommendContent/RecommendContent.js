@@ -1,27 +1,29 @@
 /* eslint-disable react/jsx-filename-extension */
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Card from '_molecules/Card';
 import PropTypes from 'prop-types';
 import HorizontalScroll from 'react-scroll-horizontal';
+import PromiseItemArray from '_utils/promiseArray';
 
-function ArrayToComponent(type, cardArray) {
-  return (cardArray.map(
-    (elem) => (
+function CreateCardArray(cardArray) {
+  return cardArray.map((elem) => {
+    const {
+      type, title, description, content, Id,
+    } = elem;
+    return (
       <Card
         type={type}
-        description={elem.description}
-        children={elem.children}
-        isArchived={elem.isArchived}
+        title={title}
+        description={description}
+        isArchived={false}
+        content={content}
+        Id={Id}
       />
-    ),
-  )
-  );
+    );
+  });
 }
 
-export default function RecommendContent({ type, cardArray }) {
-  // const arrCard = ArrayToComponent(type, cardArray);
-  // const recommendCards = useRef();
-
+export default function RecommendContent({ cardArray }) {
   const recommendCard = useRef();
   // eslint-disable-next-line consistent-return
   useEffect(() => {
@@ -39,18 +41,14 @@ export default function RecommendContent({ type, cardArray }) {
       return () => container.removeEventListener('wheel', onWheel);
     }
   }, []);
-
+  // type = 'card', title, description, children, isArchived = false
   return (
     <div className="recommend-card" ref={recommendCard}>
-      <Card type={type} />
-      <Card type={type} />
-      <Card type={type} />
-      <Card type={type} />
+      {CreateCardArray(cardArray)}
     </div>
   );
 }
 
 RecommendContent.propTypes = {
-  type: PropTypes.string.isRequired,
   cardArray: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

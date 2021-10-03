@@ -68,6 +68,7 @@
     "immutable": "^3.8.2",
     "json-style-converter": "^1.0.3",
     "prop-types": "^15.7.2",
+    "query-string": "^7.0.1",
     "ramda": "^0.27.1",
     "react": "^16.14.0",
     "react-bulma-companion": "0.3.0",

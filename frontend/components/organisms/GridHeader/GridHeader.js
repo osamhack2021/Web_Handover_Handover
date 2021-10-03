@@ -1,58 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { Breadcrumbs } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import { snakeToCamelCase } from 'json-style-converter/es5';
+
 import BreadCrumb from '_molecules/BreadCrumb';
 import listToComponent from '_utils/listToComponent';
+import { getItemByItemId } from '_api/item';
 
-// expecting parameter pathArr to be a type of
-// [
-//   {
-//     _id : 1,
-//     name : '',
-//     url : ''
-//   }
-// ]
-const useStyles = makeStyles({
-  breadcrumbs: `
-    font-family: Inter,
-    font-style: normal,
-    font-weight: 600,
-    font-size: 20px,
-  `,
-});
-
-export default function GridHeader({ pathArr = [], title }) {
-  const classes = useStyles();
-  const dummyTitle = '재고 관리';
-  const dummyPathArr = [
-    {
-      _id: 1,
-      name: 'PX 관리병',
-      url: '/',
-    },
-    {
-      _id: 2,
-      name: '물품 관리',
-      url: '/',
-    },
-  ];
-
+export default function GridHeader({ pathArray = [], title }) {
   return (
     <div className="grid-header">
       <div>
         <Breadcrumbs separator=">">
-          {listToComponent(BreadCrumb, dummyPathArr, '_id')}
+          {listToComponent(BreadCrumb, pathArray, 'Id')}
         </Breadcrumbs>
-        {dummyTitle}
+        {title}
       </div>
     </div>
   );
 }
 
 GridHeader.propTypes = {
-  pathArr: PropTypes.array.isRequired,
+  pathArray: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
 };

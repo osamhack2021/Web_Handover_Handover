@@ -1,26 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { none } from 'ramda';
 
 export default function MenuItem({ value }) {
-  const {
-    name,
-    link,
-    src,
-    alt,
-  } = value;
-  if (src === undefined && alt === undefined) {
-    return (
-      <Link to={link} className="leftpane-item">
-        {name}
-      </Link>
-    );
+  const { title, Id } = value;
+  let link;
+  if (Id === null) {
+    link = value.link;
+  } else {
+    link = `/item/${Id}`;
   }
   return (
-    <Link to={link} className="leftpane-item">
-      <img src={src} alt={alt} />
-      &nbsp; {name}
-    </Link>
+    <Link to={link} className="leftpane-item">{title}</Link>
   );
 }
 

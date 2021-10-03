@@ -7,12 +7,14 @@ import BookmarkFilled from '_assets/svgs/bookmark-filled.svg';
 
 import CustomButton from '_atoms/CustomButton';
 
-export default function NoteHeader({ title, duplicateFunc, bookmarkFunc, isArchived }) {
+export default function NoteHeader({
+  title, duplicateFunc, bookmarkFunc, isArchived, onClick,
+}) {
   const bookmarkRender = isArchived ? '' : 'hidden';
   const bookmarkSrc = isArchived ? BookmarkFilled : Bookmark;
   return (
     <div className="note-header">
-      <div className="main-title">
+      <div className="main-title" onClick={onClick}>
         {title}
       </div>
       <div className="button-group">
@@ -38,4 +40,5 @@ NoteHeader.propTypes = {
   duplicateFunc: PropTypes.func.isRequired,
   bookmarkFunc: PropTypes.func.isRequired,
   isArchived: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
