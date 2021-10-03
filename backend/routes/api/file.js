@@ -5,8 +5,9 @@ const multer = require('multer');
 const storage = multer.diskStorage({
     destination: 'files/',
     filename: function(req, file, callback) {
-        let ext = file.originalname.split('.').slice(-1);
-        callback( null, file.originalname.slice(0, -1) + Date.now() + '.' + ext ); // originalFileName-1633269573153.ext
+        let originalname = file.originalname.split('.');
+        let ext = originalname.slice(-1);
+        callback( null, originalname.slice(0, -1) + Date.now() + '.' + ext ); // originalFileName-1633269573153.ext
     }
 });
 const upload = multer({ storage });
