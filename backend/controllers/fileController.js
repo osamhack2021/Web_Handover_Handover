@@ -1,3 +1,5 @@
+const path = require('path');
+
 const { BusinessError, ForbiddenError, NotFoundError } = require('../services/errors/BusinessError');
 
 const jwt = require('jsonwebtoken');
@@ -8,18 +10,25 @@ module.exports = {
     // GET /file/:file_name
     read: async (req, res) => {
         try {
-            // Todo
-            // Reading files
+            const fileName = req.params.file_name;
+
+            res.sendFile(path.join(__dirname, '../files', fileName));
         } catch(err) {
             res.status(err.status || 500).send(err.message);
         }
     },
 
-    // POST /file
+    // POST /file/upload
     create: async (req, res) => {
         try {
-            // Todo
-            // Saving files
+            let files = req.files.map(data => {
+                return {
+                    originalName: data.originalname,
+                    fileName: data.filename
+                };
+            });
+
+            res.json(files);
         } catch(err) {
             res.status(err.status || 500).send(err.message);
         }
