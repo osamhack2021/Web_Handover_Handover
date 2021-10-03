@@ -159,8 +159,9 @@ async function init() {
 
         // Set Users group
         for(let name in Groups) {
-            let admin = Groups[name].admins[0];
-            Users[admin.serviceNumber] = await User.updateByid(admin, { group: Groups[name]._id });
+            let admin_id = Groups[name].admins[0];
+            let admin = await User.findOne({ _id: admin_id });
+            Users[admin.serviceNumber] = await User.updateByid(admin_id, { group: Groups[name]._id });
         }
 
         // Create Items
