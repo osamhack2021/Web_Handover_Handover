@@ -1,5 +1,6 @@
 const userService = require('./userService.js');
 const groupService = require('./groupService.js');
+const itemService = require('./itemService.js');
 
 const crypto = require('crypto');
 const { RuntimeError } = require('./errors/RuntimeError.js');
@@ -28,17 +29,37 @@ function isSelf(loginUser, targetUser) {
 	return loginUser === targetUser;
 }
 
-function isAdmin(loginUserStatus) {
-	return loginUserStatus === 'admin';
+async function isAdmin(loginUser) {
+	const user = await userService.searchById(loginUser)
+			.catch(err => {throw err});
+	return user.status === 'admin';
 }
 
-async function isGroupAdmin(loginUser, targetUser) {
+async function isHRManager(loginUser, targetUser) {
 	const tu = await userService.searchById(targetUser)
 			.catch(err => {throw err});
 	const targetGroup = await groupService.read({_id: tu.group}, {admins: true})
 			.catch(err => {throw err});
 
 	return targetGroup.admins.includes(loginUser);
+}
+
+async function isGroupManager(loginUser, targetGroup) {
+	const tg = await groupService.read({_id: targetGroup}, {admins: true})
+			.catch(err => {throw err});
+
+	return tg.admins.includes(loginUser);		
+}
+
+async function isItemEditer(loginUser, targetItem) {
+	const user = await userService.searchById(loginUser)
+			.catch(err => {throw err});
+	const ti = await itemService.read({_id: targetItem}, {owner: true, contributors: true, accessGroups: true})
+			.catch(err => {throw err});
+
+	return (ti.owner._id === loginUser ||
+			ti.contributors.includes(user)||
+			accessGroups.edit.includes(user.group));		
 }
 
 
@@ -64,7 +85,6 @@ module.exports = {
 		const token = jwt.sign({
 			_id: loginUser._id,
 			serviceNumber: loginUser.serviceNumber,
-			status: loginUser.status,
 		}, SECRET_KEY, {
 			expiresIn: '1h'
 		});
@@ -76,25 +96,48 @@ module.exports = {
 		return decodeToken(token);
 	},
 
-	authAdmin: function(token) {
+	authAdmin: async function(token) {
 		const result = decodeToken(token);
-		if(result.status !== 'admin') {
+
+		const isAd = await isAdmin(result._id).catch(err => {throw err});
+		if(!isAd) {
 			throw new ForbiddenError('not have access');
 		}
-		return result;	
+		return isAd;	
 	},
 
-	editAuth: async function(loginUser,loginUserStatus , targetUser) {
-		const isGA = await isGroupAdmin(loginUser, targetUser).catch(err => {throw err});
+	userEditAuth: async function(loginUser, targetUser) {
+		const isHRM = await isHRManager(loginUser, targetUser).catch(err => {throw err});
+		const isAd = await isAdmin(loginUser).catch(err => {throw err});
 		
 		if(!isSelf(loginUser, targetUser) &&
-		   !isAdmin(loginUserStatus) &&
-		   !(isGA)){
+		   !isAd && !isHRM){
+			throw new ForbiddenError('not have access');
+		}
+
+		return true;
+	},
+
+	groupEditAuth: async function(loginUser, targetGroup) {
+		const isGM = await isGroupManager(loginUser, targetGroup).catch(err => {throw err});
+		const isAd = await isAdmin(loginUser).catch(err => {throw err});
+
+		if(!isAd && !isGM){
+			throw new ForbiddenError('not have access');
+		}
+
+		return true;
+	},
+
+	itemEditAuth: async function(loginUser, targetItem) {
+		const isIE = await isItemEditer(loginUser, targetItem).catch(err => {throw err});
+		const isAd = await isAdmin(loginUser).catch(err => {throw err});
+
+		if(!isAd && !isIE){
 			throw new ForbiddenError('not have access');
 		}
 
 		return true;
 	}
-
 
 }
