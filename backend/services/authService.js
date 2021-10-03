@@ -35,30 +35,30 @@ async function isAdmin(loginUser) {
 	return user.status === 'admin';
 }
 
-async function isHRManager(loginUser, targetUser) {
-	const tu = await userService.searchById(targetUser)
+async function isHumanResourceManager(loginUser, targetUser) {
+	const user = await userService.searchById(targetUser)
 			.catch(err => {throw err});
-	const targetGroup = await groupService.read({_id: tu.group}, {admins: true})
+	const targetGroup = await groupService.read({_id: user.group}, {admins: true})
 			.catch(err => {throw err});
 
 	return targetGroup.admins.includes(loginUser);
 }
 
 async function isGroupManager(loginUser, targetGroup) {
-	const tg = await groupService.read({_id: targetGroup}, {admins: true})
+	const targetGroup_ = await groupService.read({_id: targetGroup}, {admins: true})
 			.catch(err => {throw err});
 
-	return tg.admins.includes(loginUser);		
+	return targetGroup_.admins.includes(loginUser);		
 }
 
-async function isItemEditer(loginUser, targetItem) {
+async function isItemEditor(loginUser, targetItem) {
 	const user = await userService.searchById(loginUser)
 			.catch(err => {throw err});
-	const ti = await itemService.read({_id: targetItem}, {owner: true, contributors: true, accessGroups: true})
+	const targetItem_ = await itemService.read({_id: targetItem}, {owner: true, contributors: true, accessGroups: true})
 			.catch(err => {throw err});
 
-	return (ti.owner._id === loginUser ||
-			ti.contributors.includes(user)||
+	return (targetItem_.owner._id === loginUser ||
+			targetItem_.contributors.includes(user._id)||
 			accessGroups.edit.includes(user.group));		
 }
 
@@ -97,17 +97,17 @@ module.exports = {
 	},
 
 	authAdmin: async function(token) {
-		const result = decodeToken(token);
+		const decode = decodeToken(token);
 
-		const isAd = await isAdmin(result._id).catch(err => {throw err});
+		const isAd = await isAdmin(decode._id).catch(err => {throw err});
 		if(!isAd) {
 			throw new ForbiddenError('not have access');
 		}
 		return isAd;	
 	},
 
-	userEditAuth: async function(loginUser, targetUser) {
-		const isHRM = await isHRManager(loginUser, targetUser).catch(err => {throw err});
+	editUserAuth: async function(loginUser, targetUser) {
+		const isHRM = await isHumanResourceManager(loginUser, targetUser).catch(err => {throw err});
 		const isAd = await isAdmin(loginUser).catch(err => {throw err});
 		
 		if(!isSelf(loginUser, targetUser) &&
@@ -130,7 +130,7 @@ module.exports = {
 	},
 
 	itemEditAuth: async function(loginUser, targetItem) {
-		const isIE = await isItemEditer(loginUser, targetItem).catch(err => {throw err});
+		const isIE = await isItemEditor(loginUser, targetItem).catch(err => {throw err});
 		const isAd = await isAdmin(loginUser).catch(err => {throw err});
 
 		if(!isAd && !isIE){

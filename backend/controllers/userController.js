@@ -30,7 +30,7 @@ module.exports = {
 
     updateUser: async function(req, res) {
         try {
-            await authService.userEditAuth(res.locals._id.toString(),req.params.id);
+            await authService.editUserAuth(res.locals._id.toString(),req.params.id);
 
             const result = await userService.update(req.params.id,req.body);
             res.status(201).send(result);   // 201 Created
@@ -42,7 +42,7 @@ module.exports = {
 
     deleteUser: async function(req, res) {
         try {
-            await authService.userEditAuth(res.locals._id.toString(),req.params.id);
+            await authService.editUserAuth(res.locals._id.toString(),req.params.id);
 
             const result = await userService.delete(req.params.id);
             res.status(204).send(result);   // 201 Created
