@@ -3,13 +3,11 @@ version: "3.9"
 services:
   # MongoDB
   mongodb:
+    image: mongo:latest
     container_name: db
     command: mongod --quiet --logpath /dev/null # disable mongodb verbose logging
-    image: mongo:latest
     # restart: unless-stopped
     env_file: ./.env
-    ports:
-      - $MONGODB_LOCAL_PORT:$MONGODB_DOCKER_PORT
     volumes:
       - db:/data/db
     networks:
@@ -26,8 +24,6 @@ services:
       context: ./backend
     # restart: unless-stopped
     env_file: ./.env
-    ports:
-      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
     volumes:
       - ./backend:/app/backend
       - node_modules_backend:/app/backend/node_modules
@@ -47,14 +43,28 @@ services:
       context: ./frontend
       args:
         - REACT_APP_API_BASE_URL=$API_BASE_URL
-    ports:
-      - $REACT_LOCAL_PORT:$REACT_DOCKER_PORT
-      - $REACT_DOCKER_PORT:$REACT_DOCKER_PORT # DEV: open 8080 to local to enable hot reload
     volumes:
       - ./frontend:/app/frontend
       - node_modules_frontend:/app/frontend/node_modules
       - node_modules_frontend:/tmp/node_modules
     networks:
+      - frontend
+  
+  # Nginx Reserse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    # command: tail -f /dev/null # DEBUG: uncomment to keep container running
+    depends_on: 
+      - frontend
+    ports:
+      - 80:80
+      - 443:443 # TODO: Add SSL support
+    volumes:
+      - ./nginx/config:/etc/nginx
+      - ./nginx/certs:/etc/ssl/private
+    networks:
+      - backend
       - frontend
 
 volumes:
