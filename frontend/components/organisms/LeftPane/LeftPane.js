@@ -10,7 +10,7 @@ import MenuItem from '_molecules/MenuItem';
 import { attemptGetGroup } from '_thunks/group';
 
 function arrayToMenuItems(array) {
-  return array.map((elem) => <MenuItem key={elem.Id} link={`/item/${elem.Id}`} value={{ title: elem.title, Id: elem.Id }} />);
+  return array.map((elem) => <MenuItem key={elem.Id} value={{ title: elem.title, Id: elem.Id, link: `/item/${elem.Id}` }} />);
 }
 
 export default function LeftPane() {
