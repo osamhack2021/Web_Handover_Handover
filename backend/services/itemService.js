@@ -81,14 +81,14 @@ module.exports = {
     update: async (item, payload) => {
         try {
 
-            // Create before item
-            before_item = item.toObject();
-            before_item = Object.assign(before_item, { status: 'modified' });
-            delete before_item._id;
-            before_item = await Item.create(before_item);
+            // Create previous item
+            previous_item = item.toObject();
+            previous_item = Object.assign(previous_item, { status: 'modified' });
+            delete previous_item._id;
+            previous_item = await Item.create(previous_item);
 
             // Append history
-            payload.history = [...item.history, before_item._id];
+            payload.history = [...item.history, previous_item._id];
 
             // Clear inspection
             payload.inspection = {};
