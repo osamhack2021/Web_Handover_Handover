@@ -23,6 +23,16 @@ import { postCheckServiceNumber } from "_api/users";
 import { validateServiceNumber, validatePassword } from "_utils/validation";
 import { attemptRegister } from "_thunks/auth";
 
+import TextField from "@mui/material/TextField";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import ListSubheader from "@mui/material/ListSubheader";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import LoadingButton from "@mui/lab/LoadingButton";
+import Tooltip from "@mui/material/Tooltip";
+import Container from '@mui/material/Container';
+
 import FormInput from "_molecules/FormInput";
 
 export default function Register() {
@@ -42,15 +52,15 @@ export default function Register() {
   //     mobile: "000-0000-0000"
   //   }
   // }
-  const [serviceNumber, setServiceNumber]     = useState("12-121212");
-  const [name, setName]                       = useState("홍길동");
-  const [password, setPassword]               = useState("");
+  const [serviceNumber, setServiceNumber] = useState("");
+  const [name, setName] = useState("홍길동");
+  const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [rank, setRank]                       = useState("중사");
-  const [title, setTitle]                     = useState("인사담당관");
-  const [email, setEmail]                     = useState("hong@army.mil");
-  const [militaryTel, setMilitaryTel]         = useState("123-1234");
-  const [mobileTel, setMobileTel]             = useState("010-1234-1234");
+  const [rank, setRank] = useState("중사");
+  const [title, setTitle] = useState("인사담당관");
+  const [email, setEmail] = useState("hong@army.mil");
+  const [militaryTel, setMilitaryTel] = useState("123-1234");
+  const [mobileTel, setMobileTel] = useState("010-1234-1234");
 
   // ServiceNumber validation error states
   const [serviceNumberMessage, setServiceNumberMessage] = useState("");
@@ -64,6 +74,10 @@ export default function Register() {
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
   const [passwordConfirmValid, setPasswordConfirmValid] = useState(false);
 
+  // Register POST request status states
+  const [registerStatus, setRegisterStatus] = useState("");
+  const [registerMessage, setRegisterMessage] = useState("");
+
   const checkPassword = (newServiceNumber, newPassword) => {
     const { valid, message } = validatePassword(newServiceNumber, newPassword);
 
@@ -75,7 +89,9 @@ export default function Register() {
     const valid = newPasswordConfirm === password;
 
     setPasswordConfirmValid(valid);
-    setPasswordConfirmMessage(valid ? "비밀번호가 일치합니다" : "비밀번호가 일치하지 않습니다");
+    setPasswordConfirmMessage(
+      valid ? "비밀번호가 일치합니다" : "비밀번호가 일치하지 않습니다"
+    );
   };
 
   const checkServiceNumber = (newServiceNumber) => {
@@ -83,7 +99,7 @@ export default function Register() {
 
     if (valid) {
       setServiceNumberMessage("군번 확인중입니다...");
-      setServiceNumberAvailable(false);
+      setServiceNumberAvailable("loading");
 
       // postCheckServiceNumber(newServiceNumber)
       //   .then((res) => {
@@ -96,20 +112,15 @@ export default function Register() {
       setTimeout(() => {
         setServiceNumberMessage("가입하실 수 있는 군번입니다");
         setServiceNumberAvailable(true);
-      }, 250)
+      }, 250);
     } else {
       setServiceNumberAvailable(valid);
       setServiceNumberMessage(message);
     }
   };
 
-  const updateServiceNumber = (newUserName) => {
-    setServiceNumber(newUserName);
-    checkPassword(newUserName, password);
-  };
-
   const handleServiceNumberChange = (e) => {
-    updateServiceNumber(e.target.value);
+    setServiceNumber(e.target.value);
     checkServiceNumber(e.target.value);
   };
 
@@ -124,21 +135,21 @@ export default function Register() {
   };
 
   const handleInputChange = (event, setter) => {
-    setter(event.target.value)
-  }
+    setter(event.target.value);
+  };
 
   const register = () => {
     if (serviceNumberAvailable && passwordValid) {
       const newUser = {
-        "serviceNumber": serviceNumber,
-        "name": name,
-        "password": password,
-        "rank": rank,
-        "title": title,
-        "email": email,
-        "tel": {
-          "military": militaryTel,
-          "mobile": mobileTel
+        serviceNumber: serviceNumber,
+        name: name,
+        password: password,
+        rank: rank,
+        title: title,
+        email: email,
+        tel: {
+          military: militaryTel,
+          mobile: mobileTel,
         },
       };
 
@@ -146,114 +157,203 @@ export default function Register() {
     }
   };
 
-  useKeyPress("Enter", register);
+  // Creates list of MenuItem components for select input
+  const mapMenuItem = (item) =>
+    item.map((i) => <MenuItem value={i}>{i}</MenuItem>);
+
+  const isInputValid = () => {
+    const isServiceNumberValid =
+      serviceNumber.length > 1 && serviceNumberAvailable;
+    const isPasswordValid = password.length > 1 && passwordValid;
+    const isPasswordConfirmValid =
+      passwordConfirm.length > 1 && !passwordConfirmValid;
+    const isNameValid = name.length > 1;
+    const isRankValid = rank.length > 1;
+    const isTitleValid = title.length > 1;
+    const isEmailValid = email.length > 1;
+
+    return (
+      isServiceNumberValid &&
+      isPasswordValid &&
+      isPasswordConfirmValid &&
+      isNameValid &&
+      isRankValid &&
+      isTitleValid &&
+      isEmailValid
+    );
+  };
 
   return (
-    <div className="register-box">
+    <Container maxWidth="sm">
       <div className="login-logo"></div>
       <Block className="login-title">회원가입</Block>
       <div className="login-subtitle">환영합니다!</div>
-      <hr className="separator" />
-      <div className="forminput-container">
-        <FormInput
-          id="serviceNumber"
-          className="is-fullwidth"
-          onChange={handleServiceNumberChange}
-          value={serviceNumber}
-          placeholder="군번을 입력해주세요"
+      <div>
+        <TextField
+          fullWidth
+          id="input-service-number"
           label="군번"
+          value={serviceNumber}
+          onChange={handleServiceNumberChange}
+          margin="normal"
           color={
-            serviceNumber ? (serviceNumberAvailable ? "success" : "danger") : undefined
+            serviceNumber
+              ? serviceNumberAvailable === "loading"
+                ? "warning" // warning color while checking for availability
+                : serviceNumberAvailable
+                ? "success"
+                : "error" // danger color when serviceName is unavailable
+              : "" // no color on empty string
           }
-          rightIcon={serviceNumberAvailable ? faCheck : faExclamationTriangle}
-          inputIsvalid={serviceNumberAvailable}
-          helpMessage={serviceNumberMessage}
+          error={serviceNumber.length > 1 && !serviceNumberAvailable}
+          helperText={serviceNumberMessage}
         />
-        <FormInput
-          id="password"
-          className="is-fullwidth"
-          placeholder="비밀번호를 입력해주세요"
+        <TextField
+          fullWidth
+          id="input-password"
+          label="비밀번호"
           type="password"
           value={password}
           onChange={handlePasswordChange}
-          label="비밀번호"
-          color={password ? (passwordValid ? "success" : "danger") : undefined}
-          rightIcon={passwordValid ? faCheck : faExclamationTriangle}
-          inputIsvalid={passwordValid}
-          helpMessage={passwordMessage}
+          margin="normal"
+          color={password ? (passwordValid ? "success" : "error") : ""}
+          error={password.length > 1 && !passwordValid}
+          helperText={passwordMessage}
         />
-        <FormInput
-          id="password-check"
-          className="is-fullwidth"
-          placeholder="비밀번호를 다시 입력해주세요"
+        <TextField
+          fullWidth
+          id="input-password-check"
+          label="비밀번호 확인"
           type="password"
           value={passwordConfirm}
           onChange={handlePasswordConfirmChange}
-          label="비밀번호 재입력"
-          color={passwordConfirm ? (passwordConfirmValid ? "success" : "danger") : undefined}
-          rightIcon={passwordConfirmValid ? faCheck : faExclamationTriangle}
-          inputIsvalid={passwordConfirmValid}
-          helpMessage={passwordConfirmMessage}
+          margin="normal"
+          color={
+            passwordConfirm ? (passwordConfirmValid ? "success" : "error") : ""
+          }
+          error={passwordConfirm.length > 1 && !passwordConfirmValid}
+          helperText={passwordConfirmMessage}
         />
-        <FormInput
-          id="name"
-          className="is-fullwidth"
-          placeholder="이름을 입력해주세요"
-          value={name}
-          onChange={event => handleInputChange(event, setName)}
+        <TextField
+          fullWidth
+          id="input-name"
           label="이름"
+          value={name}
+          onChange={(event) => handleInputChange(event, setName)}
+          margin="normal"
         />
-        <FormInput // TODO: Use dropdown
-          id="rank"
-          className="is-fullwidth"
-          placeholder="e.g. 중사, 상병"
-          value={rank}
-          onChange={event => handleInputChange(event, setRank)}
-          label="계급"
-        />
-        <FormInput
-          id="title"
-          className="is-fullwidth"
-          placeholder="e.g. 인사 담당관, 대대장"
-          value={title}
-          onChange={event => handleInputChange(event, setTitle)}
+        <FormControl fullWidth margin="normal">
+          <InputLabel htmlFor="select-rank">계급/등급</InputLabel>
+          <Select defaultValue="" id="select-rank" label="계급/등급">
+            <MenuItem value="" disabled={true}>
+              선택
+            </MenuItem>
+            <ListSubheader>장교</ListSubheader>
+            {mapMenuItem([
+              "대장",
+              "중상",
+              "소장",
+              "준장",
+              "대령",
+              "중령",
+              "소령",
+              "대위",
+              "중위",
+              "소위",
+            ])}
+            <ListSubheader>부사관</ListSubheader>
+            {mapMenuItem(["준위", "원사", "상사", "중사", "하사"])}
+            <ListSubheader>용사</ListSubheader>
+            {mapMenuItem(["병장", "상등병", "일등병", "이등병"])}
+            <ListSubheader>군무원</ListSubheader>
+            {mapMenuItem([
+              "군무원 1급",
+              "군무원 2급",
+              "군무원 3급",
+              "군무원 4급",
+              "군무원 5급",
+              "군무원 6급",
+              "군무원 7급",
+              "군무원 8급",
+              "군무원 9급",
+              "군무원 10급",
+            ])}
+            <ListSubheader>공무원</ListSubheader>
+            {mapMenuItem([
+              "공무원 1급",
+              "공무원 2급",
+              "공무원 3급",
+              "공무원 4급",
+              "공무원 5급",
+              "공무원 6급",
+              "공무원 7급",
+              "공무원 8급",
+              "공무원 9급",
+              "공무원 10급",
+            ])}
+          </Select>
+        </FormControl>
+        <TextField
+          fullWidth
+          id="input-title"
           label="직무명"
+          placeholder="인사 담당관, 대대장, ..."
+          value={title}
+          onChange={(event) => handleInputChange(event, setTitle)}
+          margin="normal"
         />
-        <FormInput
-          id="email"
-          className="is-fullwidth"
-          placeholder="e.g. example@example.com" // TODO: Add email format validation
-          value={email}
-          onChange={event => handleInputChange(event, setEmail)}
+        <TextField
+          fullWidth
+          id="input-email"
           label="군 이메일"
+          type="email"
+          placeholder="example@mnd.mil" // TODO: Add email format validation
+          value={email}
+          onChange={(event) => handleInputChange(event, setEmail)}
+          margin="normal"
         />
-        <FormInput
-          id="tel-military"
-          className="is-fullwidth"
-          placeholder="e.g. 000-0000" // TODO: Add phone number validation
+        <TextField
+          fullWidth
+          id="input-tel-military"
+          label="군 전화번호"
+          type="tel"
+          placeholder="000-0000" // TODO: Add phone number validation
           value={militaryTel}
-          onChange={event => handleInputChange(event, setMilitaryTel)}
-          label="군 연락처"
+          onChange={(event) => handleInputChange(event, setMilitaryTel)}
+          margin="normal"
         />
-        <FormInput
-          id="tel-mobile"
-          className="is-fullwidth"
-          placeholder="e.g. 010-1111-1111" // TODO: Add phone number validation
+        <TextField
+          fullWidth
+          id="input-tel-mobile"
+          label="휴대폰 전화번호"
+          type="tel"
+          placeholder="010-0000-0000" // TODO: Add phone number validation
           value={mobileTel}
-          onChange={event => handleInputChange(event, setMobileTel)}
-          label="휴대폰 번호"
+          onChange={(event) => handleInputChange(event, setMobileTel)}
+          margin="normal"
         />
       </div>
-      <hr className="separator" />
-      <Button
-        className="login-button"
-        onClick={register}
-        size="medium"
-        /*disabled={!passwordValid || !serviceNumberAvailable}*/
-        /*$button-hover-border-color="orange"*/
+      
+      {/* Register button with tooltip */}
+      <Tooltip
+        title={isInputValid() ? "" : "필수 정보를 모두 입력해주세요"}
+        placement="bottom"
       >
-        회원가입
-      </Button>
-    </div>
+        <span style={{width: "100%"}}>
+          <LoadingButton
+            sx={{mt: 2}}
+            fullWidth
+            disabled={!isInputValid()}
+            loading={registerStatus === "loading"}
+            onClick={register}
+            margin="normal"
+            variant="contained"
+            size="large"
+          >
+            회원가입
+          </LoadingButton>
+        </span>
+      </Tooltip>
+    </Container>
   );
 }
