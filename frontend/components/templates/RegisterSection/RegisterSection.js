@@ -5,7 +5,7 @@ import Section from 'react-bulma-companion/lib/Section';
 
 export default function RegisterSection() {
   return (
-    <Section className="register-secction">
+    <Section className="register-section">
       <Register />
     </Section>
   );
