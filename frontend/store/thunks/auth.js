@@ -69,7 +69,7 @@ export const attemptRegister = (newUser) => (dispatch) => postRegister(newUser)
 
     return dispatch(attemptLogin(newUser));
   })
-  .then(() => dispatch(push('/settings')))
+  .then(() => dispatch(push('/'))) // redirect to /
   .catch(dispatchError(dispatch));
 
 export const attemptLogout = () => (dispatch) => postLogout()

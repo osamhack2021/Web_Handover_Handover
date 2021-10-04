@@ -19,8 +19,8 @@ import Label from "react-bulma-companion/lib/Label";
 import Help from "react-bulma-companion/lib/Help";
 
 import useKeyPress from "_hooks/useKeyPress";
-import { postCheckUsername } from "_api/users";
-import { validateUsername, validatePassword } from "_utils/validation";
+import { postCheckServiceNumber } from "_api/users";
+import { validateServiceNumber, validatePassword } from "_utils/validation";
 import { attemptRegister } from "_thunks/auth";
 
 import FormInput from "_molecules/FormInput";
@@ -28,59 +28,118 @@ import FormInput from "_molecules/FormInput";
 export default function Register() {
   const dispatch = useDispatch();
 
-  const [username, setUsername] = useState("");
-  const [usernameMessage, setUsernameMessage] = useState("");
-  const [password, setPassword] = useState("");
+  // User data from input form
+  // API request content would be the following:
+  // {
+  //   serviceNumber: "18-567182",
+  //   name: "홍길동",
+  //   password: "password",
+  //   rank: "중사",
+  //   title: "인사담당관",
+  //   email: "hong@army.mil",      // optional
+  //   tel: {                       // optional
+  //     military: "000-000-0000",
+  //     mobile: "000-0000-0000"
+  //   }
+  // }
+  const [serviceNumber, setServiceNumber]     = useState("12-121212");
+  const [name, setName]                       = useState("홍길동");
+  const [password, setPassword]               = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [rank, setRank]                       = useState("중사");
+  const [title, setTitle]                     = useState("인사담당관");
+  const [email, setEmail]                     = useState("hong@army.mil");
+  const [militaryTel, setMilitaryTel]         = useState("123-1234");
+  const [mobileTel, setMobileTel]             = useState("010-1234-1234");
+
+  // ServiceNumber validation error states
+  const [serviceNumberMessage, setServiceNumberMessage] = useState("");
+  const [serviceNumberAvailable, setServiceNumberAvailable] = useState(false);
+
+  // Password validation error states
   const [passwordMessage, setPasswordMessage] = useState("");
-  const [usernameAvailable, setUsernameAvailable] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
 
-  const checkPassword = (newUsername, newPassword) => {
-    const { valid, message } = validatePassword(newUsername, newPassword);
+  // Password confirmation validation error states
+  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
+  const [passwordConfirmValid, setPasswordConfirmValid] = useState(false);
+
+  const checkPassword = (newServiceNumber, newPassword) => {
+    const { valid, message } = validatePassword(newServiceNumber, newPassword);
 
     setPasswordValid(valid);
     setPasswordMessage(message);
   };
 
-  const checkUsername = (newUsername) => {
-    const { valid, message } = validateUsername(newUsername);
+  const checkPasswordConfirm = (newPasswordConfirm) => {
+    const valid = newPasswordConfirm === password;
+
+    setPasswordConfirmValid(valid);
+    setPasswordConfirmMessage(valid ? "비밀번호가 일치합니다" : "비밀번호가 일치하지 않습니다");
+  };
+
+  const checkServiceNumber = (newServiceNumber) => {
+    const { valid, message } = validateServiceNumber(newServiceNumber);
 
     if (valid) {
-      setUsernameMessage("Checking username...");
-      setUsernameAvailable(false);
+      setServiceNumberMessage("군번 확인중입니다...");
+      setServiceNumberAvailable(false);
 
-      postCheckUsername(newUsername)
-        .then((res) => {
-          setUsernameAvailable(res.available);
-          setUsernameMessage(res.message);
-        })
-        .catch(R.identity);
+      // postCheckServiceNumber(newServiceNumber)
+      //   .then((res) => {
+      //     setServiceNumberAvailable(res.available);
+      //     setServiceNumberMessage(res.message);
+      //   })
+      //   .catch(R.identity);
+
+      // TODO: use code above when service number checking API is implemented
+      setTimeout(() => {
+        setServiceNumberMessage("가입하실 수 있는 군번입니다");
+        setServiceNumberAvailable(true);
+      }, 250)
     } else {
-      setUsernameAvailable(valid);
-      setUsernameMessage(message);
+      setServiceNumberAvailable(valid);
+      setServiceNumberMessage(message);
     }
   };
 
-  const updateUsername = (newUserName) => {
-    setUsername(newUserName);
+  const updateServiceNumber = (newUserName) => {
+    setServiceNumber(newUserName);
     checkPassword(newUserName, password);
   };
 
-  const handleUsernameChange = (e) => {
-    updateUsername(e.target.value);
-    checkUsername(e.target.value);
+  const handleServiceNumberChange = (e) => {
+    updateServiceNumber(e.target.value);
+    checkServiceNumber(e.target.value);
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    checkPassword(username, e.target.value);
+    checkPassword(serviceNumber, e.target.value);
   };
 
+  const handlePasswordConfirmChange = (e) => {
+    setPasswordConfirm(e.target.value);
+    checkPasswordConfirm(e.target.value);
+  };
+
+  const handleInputChange = (event, setter) => {
+    setter(event.target.value)
+  }
+
   const register = () => {
-    if (usernameAvailable && passwordValid) {
+    if (serviceNumberAvailable && passwordValid) {
       const newUser = {
-        username,
-        password,
+        "serviceNumber": serviceNumber,
+        "name": name,
+        "password": password,
+        "rank": rank,
+        "title": title,
+        "email": email,
+        "tel": {
+          "military": militaryTel,
+          "mobile": mobileTel
+        },
       };
 
       dispatch(attemptRegister(newUser)).catch(R.identity);
@@ -97,18 +156,18 @@ export default function Register() {
       <hr className="separator" />
       <div className="forminput-container">
         <FormInput
-          id="username"
+          id="serviceNumber"
           className="is-fullwidth"
-          onChange={handleUsernameChange}
-          value={username}
+          onChange={handleServiceNumberChange}
+          value={serviceNumber}
           placeholder="군번을 입력해주세요"
           label="군번"
           color={
-            username ? (usernameAvailable ? "success" : "danger") : undefined
+            serviceNumber ? (serviceNumberAvailable ? "success" : "danger") : undefined
           }
-          rightIcon={usernameAvailable ? faCheck : faExclamationTriangle}
-          inputIsvalid={usernameAvailable}
-          helpMessage={usernameMessage}
+          rightIcon={serviceNumberAvailable ? faCheck : faExclamationTriangle}
+          inputIsvalid={serviceNumberAvailable}
+          helpMessage={serviceNumberMessage}
         />
         <FormInput
           id="password"
@@ -124,40 +183,64 @@ export default function Register() {
           helpMessage={passwordMessage}
         />
         <FormInput
-          id="password-re"
+          id="password-check"
           className="is-fullwidth"
           placeholder="비밀번호를 다시 입력해주세요"
           type="password"
+          value={passwordConfirm}
+          onChange={handlePasswordConfirmChange}
           label="비밀번호 재입력"
+          color={passwordConfirm ? (passwordConfirmValid ? "success" : "danger") : undefined}
+          rightIcon={passwordConfirmValid ? faCheck : faExclamationTriangle}
+          inputIsvalid={passwordConfirmValid}
+          helpMessage={passwordConfirmMessage}
         />
         <FormInput
           id="name"
           className="is-fullwidth"
           placeholder="이름을 입력해주세요"
+          value={name}
+          onChange={event => handleInputChange(event, setName)}
           label="이름"
         />
-        <FormInput
-          id="job-name"
+        <FormInput // TODO: Use dropdown
+          id="rank"
           className="is-fullwidth"
-          placeholder="e.g. 인사 담당관, 대대장..."
+          placeholder="e.g. 중사, 상병"
+          value={rank}
+          onChange={event => handleInputChange(event, setRank)}
+          label="계급"
+        />
+        <FormInput
+          id="title"
+          className="is-fullwidth"
+          placeholder="e.g. 인사 담당관, 대대장"
+          value={title}
+          onChange={event => handleInputChange(event, setTitle)}
           label="직무명"
         />
         <FormInput
           id="email"
           className="is-fullwidth"
-          placeholder="e.g. example@example.com"
+          placeholder="e.g. example@example.com" // TODO: Add email format validation
+          value={email}
+          onChange={event => handleInputChange(event, setEmail)}
           label="군 이메일"
         />
         <FormInput
-          id="number-army"
+          id="tel-military"
           className="is-fullwidth"
-          placeholder="e.g.  000-0000"
+          placeholder="e.g. 000-0000" // TODO: Add phone number validation
+          value={militaryTel}
+          onChange={event => handleInputChange(event, setMilitaryTel)}
           label="군 연락처"
         />
         <FormInput
-          id="number-phone"
+          id="tel-mobile"
           className="is-fullwidth"
-          placeholder="e.g.  010-1111-1111"
+          placeholder="e.g. 010-1111-1111" // TODO: Add phone number validation
+          value={mobileTel}
+          onChange={event => handleInputChange(event, setMobileTel)}
           label="휴대폰 번호"
         />
       </div>
@@ -166,7 +249,7 @@ export default function Register() {
         className="login-button"
         onClick={register}
         size="medium"
-        /*disabled={!passwordValid || !usernameAvailable}*/
+        /*disabled={!passwordValid || !serviceNumberAvailable}*/
         /*$button-hover-border-color="orange"*/
       >
         회원가입
