@@ -18,7 +18,15 @@
 
     .tabpanel {
         margin-top : 80px;
-    
+        .tabpanel-title {
+            @include setfonts (
+                $font-family : Roboto,
+                $font-weight : $weight-bold,
+                $font-size : $size-3,
+                $line-height : 42px,
+            );
+            margin-bottom : 30px;
+        }
         .forminput-container {
             width : 300px;
         }
