@@ -30,13 +30,13 @@ function isSelf(loginUserId, targetUserId) {
 }
 
 async function isAdmin(loginUserId) {
-	const user = await userService.searchById(loginUserId)
+	const user = await userService.findOne({_id:loginUserId}, {status:true})
 			.catch(err => {throw err});
 	return user.status === 'admin';
 }
 
 async function isHumanResourceManager(loginUserId, targetUserId) {
-	const user = await userService.searchById(targetUserId)
+	const user = await userService.findOne({_id:targetUserId}, {group:true})
 			.catch(err => {throw err});
 	const targetGroup = await groupService.read({_id: user.group}, {admins: true})
 			.catch(err => {throw err});
@@ -52,23 +52,23 @@ async function isGroupManager(loginUserId, targetGroupId) {
 }
 
 async function isItemEditor(loginUserId, targetItemId) {
-	const user = await userService.searchById(loginUserId)
+	const user =  await userService.findOne({_id:loginUserId}, {group:true})
 			.catch(err => {throw err});
 	const targetItem = await itemService.read({_id: targetItemId}, {owner: true, contributors: true, accessGroups: true})
 			.catch(err => {throw err});
 
 	return targetItem.owner._id === loginUserId ||
-			targetItem.contributors.includes(user._id) ||
+			targetItem.contributors.includes(loginUserId) ||
 			accessGroups.edit.includes(user.group);		
 }
 
 async function isItemReader(loginUserId, targetItemId) {
-	const user = await userService.searchById(loginUserId)
+	const user = await userService.findOne({_id:loginUserId}, {group:true})
 			.catch(err => {throw err});
 	const targetItem = await itemService.read({_id: targetItemId}, { contributors: true, accessGroups: true})
 			.catch(err => {throw err});
 
-	return targetItem.contributors.includes(user._id) ||
+	return targetItem.contributors.includes(loginUserId) ||
 			accessGroups.edit.includes(user.group) ||	
 			accessGroups.read.includes(user.group);
 }
@@ -81,8 +81,9 @@ module.exports = {
 		params.password = encode(params.password);
 
 		const loginUser = await userService
-            .searchByServiceNumber(params.serviceNumber)
+            .findOne({serviceNumber:params.serviceNumber}, {_id:true, serviceNumber: true, password:true})
             .catch(err => {
+				console.log(err)
                 if(err instanceof TypeError) {
                     throw new AuthError("LOGIN fail");
                 }
