@@ -3,16 +3,22 @@ const { Types } = require('mongoose');
 const { RuntimeError } = require('./errors/RuntimeError.js');
 
 module.exports = {
-    search: async (query) => {
+    search: async (query = {}) => {
         const projection = { name: true, path: true };
-
-        if(!query) {
-            return await Group.find({}, projection);
-        }
 
         if(query.admin) {
             query.admins = { $eq: query.admin };
             delete query.admin;
+        }
+
+        // Partial Search with Name.
+        if(query.name) {
+            query.name = new RegExp(`${query.name}`);
+        }
+
+        // Partial Search with Path
+        if(query.path) {
+            query.path = new RegExp(`${query.path}`);
         }
         
         return await Group.find(query, projection);
