@@ -10,13 +10,13 @@ export default function SettingsPage() {
   const menulist = [
     'ME',
     [
-      {name: '프로필', src: User, alt: 'user', link: '/setting/profile'},
-      {name: '테마 변경', src: User, alt: 'themechange', link: '/setting/themechange'},
+      {title: '프로필', src: User, alt: 'user', link: '/setting/profile'},
+      {title: '테마 변경', src: User, alt: 'themechange', link: '/setting/themechange'},
     ],
     'TEAM',
     [
-      {name: '문서 권한 수정', src: User, alt: 'auth', link: '/'},
-      {name: '알림', src: User, alt: 'alert', link: '/'},
+      {title: '문서 권한 수정', src: User, alt: 'auth', link: '/'},
+      {title: '알림', src: User, alt: 'alert', link: '/'},
     ],
   ];
   return (
