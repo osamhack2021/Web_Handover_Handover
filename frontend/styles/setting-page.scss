@@ -1,7 +1,6 @@
 @import 'mixins';
 
 .setting-page {
-    
     @include flexBox($display : flex,
         $flex-direction : column,
         $justify-content : flex-start,
@@ -9,7 +8,8 @@
     width: 100%;
     min-width: fit-content;
     background-color: $white;
-    height: 1080px;
+    height: 100%;
+    overflow-y : scroll;
 
     .tabs-container {
         margin: 90px auto 80px auto;
