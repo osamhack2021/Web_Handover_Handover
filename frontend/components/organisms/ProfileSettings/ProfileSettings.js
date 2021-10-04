@@ -1,7 +1,7 @@
 import React from 'react';
-import { Tabs } from '@material-ui/core';
-import { Tab } from '@material-ui/core';
-import { Box } from '@material-ui/core';
+import { Tabs } from '@mui/material';
+import { Tab } from '@mui/material';
+import { Box } from '@mui/material';
 
 import Button from "react-bulma-companion/lib/Button";
 
