@@ -100,5 +100,15 @@ module.exports = {
 			});
 
 		return true;
+	},
+
+	checkExist: async function(params) {
+		
+		const user = await User
+		.findOneByServiceNumber(params.serviceNumber)
+		.catch(err => {	throw new RuntimeError(err.message); });
+	
+		return {exist: user !== null};
 	}
+
 };

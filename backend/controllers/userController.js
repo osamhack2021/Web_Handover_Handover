@@ -49,5 +49,15 @@ module.exports = {
         } catch(err) {
             res.status(err.status).send(err.message);
         }
+    },
+
+    isExist: async function(req, res) {
+        try {
+            const result = await userService.checkExist(req.body);
+            console.log(result);
+            res.status(200).send(result);
+        } catch(err) {
+            res.status(err.status).send(err.message);
+        }
     }
 };
