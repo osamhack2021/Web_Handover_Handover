@@ -29,12 +29,22 @@ module.exports = {
 
     searchDetail: async function(req, res) {
 
-        const projection = {
+        let projection = {
             _id: true,serviceNumber:true, name: true, rank: true, title:true,
             status: true, group: true, email: true, tel: true, lastLogin: true,
             lastLogin: true, firseLogin:true, bookmarks: true, subscriptions: true
         };
+
         try {
+            const auth = await authService.readUserAuth(res.locals._id.toString(), req.params.id);
+            
+            if(auth === 'general') {
+                projection = {
+                    _id: true, name: true, rank: true, status: true,
+                    group: true, email: true, tel: true, lastLogin: true
+                };
+            }
+
             const result = await userService.findOne({_id: req.params.id}, projection);
             res.status(200).send(result);   // 201 Created
         } catch(err) {

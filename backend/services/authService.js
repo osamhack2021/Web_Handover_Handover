@@ -38,17 +38,29 @@ async function isAdmin(loginUserId) {
 async function isHumanResourceManager(loginUserId, targetUserId) {
 	const user = await userService.findOne({_id:targetUserId}, {group:true})
 			.catch(err => {throw err});
-	const targetGroup = await groupService.read({_id: user.group}, {admins: true})
+	const isGroupManager_ = await isGroupManager(loginUserId, user.group)
 			.catch(err => {throw err});
+
+	if(!isGroupManager_) {
+		return false;
+	}
 
 	return targetGroup.admins.includes(loginUserId);
 }
 
 async function isGroupManager(loginUserId, targetGroupId) {
 	const targetGroup = await groupService.read({_id: targetGroupId}, {admins: true})
-			.catch(err => {throw err});
-
-	return targetGroup.admins.includes(loginUserId);		
+			.catch(err => {
+					throw err;
+				});
+	try {
+		return targetGroup.admins.includes(loginUserId);
+	}catch(err) {
+		if(err instanceof TypeError) {
+			return false;
+		}
+	}
+		
 }
 
 async function isItemEditor(loginUserId, targetItemId) {
@@ -83,7 +95,6 @@ module.exports = {
 		const loginUser = await userService
             .findOne({serviceNumber:params.serviceNumber}, {_id:true, serviceNumber: true, password:true})
             .catch(err => {
-				console.log(err)
                 if(err instanceof TypeError) {
                     throw new AuthError("LOGIN fail");
                 }
@@ -120,7 +131,7 @@ module.exports = {
 	//User 수정 권한 확인
 	editUserAuth: async function(loginUserId, targetUserId) {
 		const isHRM = await isHumanResourceManager(loginUserId, targetUserId).catch(err => {throw err});
-		const isAd = await isAdmin(loginUser).catch(err => {throw err});
+		const isAd = await isAdmin(loginUserId).catch(err => {throw err});
 		
 		if(!isSelf(loginUserId, targetUserId) &&
 		   !isAd && !isHRM){
