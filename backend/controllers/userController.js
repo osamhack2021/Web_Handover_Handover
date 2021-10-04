@@ -23,7 +23,7 @@ module.exports = {
             const result = await userService.find(req.query, projection);
             res.status(200).send(result);
         } catch(err) {
-            res.status(err.status).send(err.message);
+            res.status(err.status||500).send(err.message);
         }
     },
 
@@ -36,9 +36,9 @@ module.exports = {
         };
         try {
             const result = await userService.findOne({_id: req.params.id}, projection);
-            res.status(201).send(result);   // 201 Created
+            res.status(200).send(result);   // 201 Created
         } catch(err) {
-            res.status(err.status).send(err.message);
+            res.status(err.status||500).send(err.message);
         }
     },
 
@@ -47,7 +47,7 @@ module.exports = {
             const result = await userService.save(req.body);
             res.status(201).send(result);   // 201 Created
         } catch(err) {
-            res.status(err.status).send(err.message);
+            res.status(err.status||500).send(err.message);
         }
     },
 
@@ -59,7 +59,7 @@ module.exports = {
             res.status(201).send(result);   // 201 Created
         } catch(err) {
             console.log(err);
-            res.status(err.status).send(err.message);
+            res.status(err.status||500).send(err.message);
         }
     },
 
@@ -70,7 +70,7 @@ module.exports = {
             const result = await userService.delete(req.params.id);
             res.status(204).send(result);   // 201 Created
         } catch(err) {
-            res.status(err.status).send(err.message);
+            res.status(err.status||500).send(err.message);
         }
     },
 
@@ -81,7 +81,7 @@ module.exports = {
             res.status(200).send(result);
         } catch(err) {
             console.log(err);
-            res.status(err.status).send(err.message);
+            res.status(err.status||500).send(err.message);
         }
     }
 };
