@@ -1,7 +1,6 @@
 @import 'mixins';
 
 .setting-page {
-    
     @include flexBox($display : flex,
         $flex-direction : column,
         $justify-content : flex-start,
@@ -9,7 +8,8 @@
     width: 100%;
     min-width: fit-content;
     background-color: $white;
-    height: 1080px;
+    height: 100%;
+    overflow-y : scroll;
 
     .tabs-container {
         margin: 90px auto 80px auto;
@@ -18,7 +18,15 @@
 
     .tabpanel {
         margin-top : 80px;
-    
+        .tabpanel-title {
+            @include setfonts (
+                $font-family : Roboto,
+                $font-weight : $weight-bold,
+                $font-size : $size-3,
+                $line-height : 42px,
+            );
+            margin-bottom : 30px;
+        }
         .forminput-container {
             width : 300px;
         }

@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router';
 
 import ProfileSettings from '_organisms/ProfileSettings';
+import GroupSettings from '_organisms/GroupSettings';
 import Drawer from '_organisms/Drawer';
 
 import User from '_assets/svgs/user.svg';
@@ -15,7 +16,7 @@ export default function SettingsPage() {
     ],
     'TEAM',
     [
-      {title: '문서 권한 수정', src: User, alt: 'auth', link: '/'},
+      {title: '그룹 관리', src: User, alt: 'auth', link: '/setting/group'},
       {title: '알림', src: User, alt: 'alert', link: '/'},
     ],
   ];
@@ -27,6 +28,7 @@ export default function SettingsPage() {
       <div className="setting-page">
         <Switch>
           {/* <Route path="/setting/themechange" component={} /> */}
+          <Route path="/setting/group" component={GroupSettings} />
           <Route path="/setting" component={ProfileSettings} />
         </Switch>
       </div>
