@@ -23,6 +23,14 @@ module.exports = {
                 delete query.tag;
             }
 
+            if(query.title) {
+                query.title = new RegExp(`${query.title}`);
+            }
+            
+            if(query.path) {
+                query.path = new RegExp(`${query.path}`);
+            }
+
             // Exclude deleted or modified items
             query.status = {
                 $nin: ['deleted', 'modified']
