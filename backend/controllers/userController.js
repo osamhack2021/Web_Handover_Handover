@@ -4,18 +4,41 @@ module.exports = {
 
     search: async function(req, res) {
 
-        // 활성화 상태의 유저만 조회
-        let query = Object.assign(req.query, { status: 'avail' });
-        let projection = {
-            name: true, rank: true, title: true,
-            group: true, email: true, tel: true
+        const keys = Object.keys(req.query);
+        const valids = ['group', 'name'];
+            
+         // Only allowed fields are Searchable
+        for(let key of keys) {
+            if(!valids.includes(key))
+                throw new BusinessError(`${key} is not allowed param`);
+        }
+
+
+        const projection = {
+            _id: true, name: true, rank: true, status: true,
+            group: true, email: true, tel: true, lastLogin: true
         };
 
         try {
-            const result = await userService.search(query, projection);
+            const result = await userService.find(req.query, projection);
             res.status(200).send(result);
         } catch(err) {
-            res.status(err.status).send(err.message);
+            res.status(err.status||500).send(err.message);
+        }
+    },
+
+    searchDetail: async function(req, res) {
+
+        const projection = {
+            _id: true,serviceNumber:true, name: true, rank: true, title:true,
+            status: true, group: true, email: true, tel: true, lastLogin: true,
+            lastLogin: true, firseLogin:true, bookmarks: true, subscriptions: true
+        };
+        try {
+            const result = await userService.findOne({_id: req.params.id}, projection);
+            res.status(200).send(result);   // 201 Created
+        } catch(err) {
+            res.status(err.status||500).send(err.message);
         }
     },
 
@@ -24,7 +47,7 @@ module.exports = {
             const result = await userService.save(req.body);
             res.status(201).send(result);   // 201 Created
         } catch(err) {
-            res.status(err.status).send(err.message);
+            res.status(err.status||500).send(err.message);
         }
     },
 
@@ -36,7 +59,7 @@ module.exports = {
             res.status(201).send(result);   // 201 Created
         } catch(err) {
             console.log(err);
-            res.status(err.status).send(err.message);
+            res.status(err.status||500).send(err.message);
         }
     },
 
@@ -47,7 +70,7 @@ module.exports = {
             const result = await userService.delete(req.params.id);
             res.status(204).send(result);   // 201 Created
         } catch(err) {
-            res.status(err.status).send(err.message);
+            res.status(err.status||500).send(err.message);
         }
     },
 
@@ -57,7 +80,8 @@ module.exports = {
             console.log(result);
             res.status(200).send(result);
         } catch(err) {
-            res.status(err.status).send(err.message);
+            console.log(err);
+            res.status(err.status||500).send(err.message);
         }
     }
 };

@@ -33,10 +33,6 @@ userSchema.statics.create = function(payload) {
     return user.save();
 };
 
-userSchema.statics.findAll = function(query, projection) {
-    return this.find(query, projection);
-}
-
 userSchema.statics.findOneByid = function(id) {
     return this.findOne({ id });
 };
