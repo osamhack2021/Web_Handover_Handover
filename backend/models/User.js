@@ -49,9 +49,8 @@ userSchema.statics.deleteByid = function(id) {
     return this.deleteOne({ id });
 };
 
-
 userSchema.statics.findOneByServiceNumber = function(serviceNumber) {
     return this.findOne({serviceNumber});
-}
+};
 
 module.exports = mongoose.model('User', userSchema);
