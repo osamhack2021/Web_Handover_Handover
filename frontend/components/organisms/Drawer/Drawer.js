@@ -10,13 +10,13 @@ Example of menulist :
 const menulist = [
   'ME',
   [
-    {name: '프로필', src: User, alt: 'user', link: '/'},
-    {name: '테마 변경', src: ThemeChange, alt: 'themechange', link: '/'},
+    {title: '프로필', src: User, alt: 'user', link: '/'},
+    {title: '테마 변경', src: ThemeChange, alt: 'themechange', link: '/'},
   ]  ,
   'TEAM',
   [
-    {name: '문서 권한 수정', src: Auth, alt: 'auth', link: '/'},
-    {name: '알림', src: Alert, alt: 'alert', link: '/'},
+    {title: '문서 권한 수정', src: Auth, alt: 'auth', link: '/'},
+    {title: '알림', src: Alert, alt: 'alert', link: '/'},
   ],
 ];
 */
