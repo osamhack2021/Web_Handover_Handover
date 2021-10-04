@@ -23,6 +23,15 @@ app.use(cors({
 	credential: true
 }));
 
+/****************
+ * Test Router for Frontend developers
+ * Github Issue #124
+ */
+
+const testRouter = require('./routes/test.js');
+app.use('/api/test', testRouter);
+
+
 const { swaggerUi, specs } = require('./swagger.js');
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(specs));
 
