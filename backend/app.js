@@ -2,6 +2,8 @@ let path = require('path');
 let bodyParser = require('body-parser');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
+const multer = require('multer');
+const upload = multer({ dest: 'files/' });
 
 let express = require('express');
 let app = express();
@@ -38,6 +40,9 @@ app.use('/api/group', groupRouter);
 
 let itemRouter = require('./routes/api/item.js');
 app.use('/api/item', itemRouter);
+
+let fileRouter = require('./routes/api/file.js');
+app.use('/api/file', fileRouter);
 
 app.listen(3000, () => {
   console.log(`API listening at http://localhost:3000`);
