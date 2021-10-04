@@ -5,6 +5,8 @@ import R from 'ramda';
 
 import Register from '_templates/RegisterSection';
 
+import Box from '@mui/material/Box';
+
 export default function RegisterPage() {
   const dispatch = useDispatch();
   const { user } = useSelector(R.pick(['user']));
@@ -16,8 +18,15 @@ export default function RegisterPage() {
   }, []);
 
   return (
-    <div className="register-page page">
+    <Box 
+      className="register-page page"
+      sx={{
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}
+    >
       <Register />
-    </div>
+    </Box>
   );
 }
