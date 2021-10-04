@@ -10,9 +10,7 @@ module.exports = {
             res.cookie('jwt', token);
             res.status(201).send({
                 result: 'OK',
-                _id: user._id,
-                serviceNumber: user.serviceNumber,
-                name: user.name,
+                user,
                 token
             });
 
