@@ -38,30 +38,6 @@ module.exports = {
 		return result;
 	},
 
-	findByServiceNumber: async function(serviceNumber) {
-		const result = await User
-		.findOneByServiceNumber(serviceNumber)
-		.catch(err => {
-			throw new RuntimeError(err.message);
-		});
-
-		if(result === null) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
-
-		return result;
-	},
-
-	findById: async function(id) {
-		const result = await User
-		.findOneByid(id)
-		.catch(err => {
-			throw new RuntimeError(err.message);
-		});
-
-		if(result === null) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
-
-		return result;
-	},
-
 	save: async function(params) {
 
 		params.password = encode(params.password);
