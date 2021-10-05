@@ -5,8 +5,8 @@ module.exports = {
     login: async function(req, res) {
         try {
             const token = await authService.login(req.body);
-            const user = await userService.findOne({userService:req.body.serviceNumber}, {serviceNumber:true,name: true});
-            
+            const user = await userService.findOne({serviceNumber:req.body.serviceNumber}, {serviceNumber:true, name: true});
+
             res.cookie('jwt', token);
             res.status(201).send({
                 result: 'OK',
