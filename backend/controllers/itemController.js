@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const { BusinessError, NotFoundError, ForbiddenError } = require('../services/errors/BusinessError.js');
 const SECRET_KEY = "MY_SECRET_KEY";
 
+const algolia = require('../algolia/index');
+
 module.exports = {
 
     // GET /item
@@ -17,7 +19,7 @@ module.exports = {
             for(let key of keys) {
                 if(!valids.includes(key))
                     throw new BusinessError(`${key} is not allowed param`);
-            }
+            }            
 
             const result = await itemService.search(req.query);
 
@@ -25,6 +27,21 @@ module.exports = {
 
             res.status(200).send(result);
 
+        } catch(err) {
+            res.status(err.status || 500).send(err.message);
+        }
+    },
+
+    // GET /item/algolia
+    algoliaSearch: async (req, res) => {
+        try {
+            const query = req.params.query;
+
+            const result = await algolia.search(query);
+
+            if(result.hits.length < 1) throw new NotFoundError('Not Found');
+
+            res.status(200).send(result.hits);
         } catch(err) {
             res.status(err.status || 500).send(err.message);
         }
@@ -57,6 +74,12 @@ module.exports = {
             body.owner = res.locals._id;
 
             const result = await itemService.create(body);
+
+            let object = result.toObject();
+            object.objectID = object._id;
+            delete object._id;
+
+            algolia.saveObject(object);
 
             res.status(201).send(result);
         } catch(err) {
