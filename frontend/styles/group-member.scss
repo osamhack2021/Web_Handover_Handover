@@ -9,10 +9,11 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    margin-bottom : 20px;
 
     .group-member-profile {
         display: flex;
-
+        width : 230px;
         .profile-img {
             width: 40px;
             height: 40px;
@@ -37,6 +38,7 @@
 
     .group-member-admin,
     .group-member-active{
+        width : 50px;
         @include setfonts($font-weight : $weight-bold,
                 $font-size : $size-6,
                 $line-height : 18px);

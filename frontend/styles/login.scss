@@ -2,60 +2,47 @@
 
 .login-page,
 .register-page,
-.recovery-page {
+.recovery-page > div {
+  .login-box{
+    width : 480px;
+    margin : 185px auto 0 auto;
+  }
+  text-align: center;
 
-  .login-box,
-  .register-box,
-  .recovery-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0px;
+  // dummy logo
+  .login-logo {
+    width : 48px;
+    height : 48px;
+    background-color: $white;
+    margin-bottom : 24px;
+  }
 
-    position: absolute;
-    width: 480px;
-    height: 710px;
-    left: calc(50% - 500px / 2);
-    top: calc(50% - 720px / 2);
+  .login-title {
+    @include setfonts(
+      $font-weight: $weight-semibold,
+      $font-size: $size-4,
+      $line-height: 38px
+    );
+    color: $black;
+    margin-bottom : 12px
+  }
 
-    .login-logo {
-      width: 48px;
-      height: 48px;
-      background-color: white;
-      margin-bottom: 24px;
-    }
+  .login-subtitle {
+    @include setfonts(
+      $font-weight: $weight-normal,
+      $font-size: $size-6,
+      $line-height: 24px
+    );
+    color: $pale-sky;
+    margin-bottom : 32px;
+  }
 
-    .login-title {
-      @include setfonts($font-weight: $weight-semibold,
-        $font-size: $size-4,
-        $line-height: 38px);
-      color: $black;
-    }
+  .login-button {
+    margin : 25px 0px;
+    width : 100%;
+  }
 
-    .login-subtitle {
-      @include setfonts($font-weight: $weight-normal,
-        $font-size: $size-6,
-        $line-height: 24px);
-      color: $pale-sky;
-    }
-
-    .login-button {
-      width: 100%;
-      background-color: $pink;
-      color: $white;
-      @include setfonts($font-size: $size-6, $line-height: 24px);
-    }
-
-    .login-link {
-      color: $pink;
-    }
-
-    .login-register {
-      @include setfonts($line-height: 20px);
-    }
-
-    .forminput-container {
-      width: 100%;
-    }
+  .login-register{
+    margin-bottom : 32px;
   }
 }
