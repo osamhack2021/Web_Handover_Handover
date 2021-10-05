@@ -66,7 +66,7 @@ module.exports = {
             await authService.editUserAuth(res.locals._id.toString(),req.params.id);
 
             const result = await userService.update(req.params.id,req.body);
-            res.status(201).send(result);   // 201 Created
+            res.status(200).send(result);   
         } catch(err) {
             console.log(err);
             res.status(err.status||500).send(err.message);
@@ -78,7 +78,7 @@ module.exports = {
             await authService.editUserAuth(res.locals._id.toString(),req.params.id);
 
             const result = await userService.delete(req.params.id);
-            res.status(204).send(result);   // 201 Created
+            res.status(204).send();
         } catch(err) {
             res.status(err.status||500).send(err.message);
         }
