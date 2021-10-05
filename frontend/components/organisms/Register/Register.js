@@ -166,7 +166,7 @@ export default function Register() {
       serviceNumber.length > 1 && serviceNumberAvailable;
     const isPasswordValid = password.length > 1 && passwordValid;
     const isPasswordConfirmValid =
-      passwordConfirm.length > 1 && !passwordConfirmValid;
+      passwordConfirm.length > 1 && passwordConfirmValid;
     const isNameValid = name.length > 1;
     const isRankValid = rank.length > 1;
     const isTitleValid = title.length > 1;
