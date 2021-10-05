@@ -20,7 +20,7 @@ services:
     depends_on:
       - mongodb
     build: 
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev # DEV: uses separate Dockerfile for development environment
       context: ./backend
     # restart: unless-stopped
     env_file: ./.env
@@ -37,7 +37,7 @@ services:
     depends_on: 
       - backend
     build: 
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev # DEV: uses separate Dockerfile for development environment
       context: ./frontend
       args:
         - REACT_APP_API_BASE_URL=$API_BASE_URL
