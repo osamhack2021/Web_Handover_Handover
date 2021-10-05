@@ -56,7 +56,7 @@ export default function Register() {
   const [name, setName] = useState("홍길동");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [rank, setRank] = useState("중사");
+  const [rank, setRank] = useState("");
   const [title, setTitle] = useState("인사담당관");
   const [email, setEmail] = useState("hong@army.mil");
   const [militaryTel, setMilitaryTel] = useState("123-1234");
@@ -171,7 +171,7 @@ export default function Register() {
     const isRankValid = rank.length > 1;
     const isTitleValid = title.length > 1;
     const isEmailValid = email.length > 1;
-
+    console.log(rank);
     return (
       isServiceNumberValid &&
       isPasswordValid &&
@@ -243,7 +243,7 @@ export default function Register() {
         />
         <FormControl fullWidth margin="normal">
           <InputLabel htmlFor="select-rank">계급/등급</InputLabel>
-          <Select defaultValue="" id="select-rank" label="계급/등급">
+          <Select defaultValue="" id="select-rank" label="계급/등급" onChange={(event) => handleInputChange(event, setRank)}>
             <MenuItem value="" disabled={true}>
               선택
             </MenuItem>
