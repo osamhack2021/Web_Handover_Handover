@@ -13,9 +13,12 @@ const itemSchema = mongoose.Schema({
             },
             message: props => `${props.value} is not a valid path!`
         },
-        required: true
     },
     content: { type: String },
+    files: [{
+        originalName: { type: String },
+        fileName: { type: String }      // 1633269573153.png / {timestamp}.ext
+    }],
     tags: [{ type: String }],
     contributors: [{ type: Types.ObjectId, ref: 'User' }],
     accessGroups: {
@@ -74,10 +77,20 @@ itemSchema.pre('save', function(next) {
     if(this.accessGroups?.edit)
         this.accessGroups.edit = distinctObjectIdArray(this.accessGroups.edit);
 
+
+    // Path
+    if(this.type === 'cabinet') {
+        this.path = `,${this._id},`;
+    } else if(this.type === 'document') {
+        this.path = this.path + this._id + ',';
+    } else if(this.type === 'card') {
+        this.path = this.path + this._id + ',';
+    }
+
     next();
 });
 
-itemSchema.pre('updateOne', function(next) {
+itemSchema.pre('findOneAndUpdate', function(next) {
     const data = this.getUpdate();
 
     let keys = ['contributors', 'history'];

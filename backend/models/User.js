@@ -7,8 +7,10 @@ const userSchema = mongoose.Schema({
     name: { type: String, required: true },
     rank: { type: String, required: true },
     title: { type: String, required: true },
+
     status: { type: String, default: 'avail', enum: ['admin','avail','active', 'inactive', 'retired', 'deleted'] },
     group: { type: Types.ObjectId, ref: 'Group'},
+
     email: { type: String },
     tel: { 
         military: { type: String },

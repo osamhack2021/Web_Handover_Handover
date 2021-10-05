@@ -11,9 +11,9 @@ router.get('/', (req, res) => {
 
 router.get('/favicon.ico', (req, res) => { res.status(200).send('oK') })
 
-router.get('/initDB', (req, res) => {
+router.get('/initDB', async (req, res) => {
     try {
-        init();
+        await init();
         res.status(200).send('OK');
     } catch(e) {
         console.log(e)
