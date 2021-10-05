@@ -7,8 +7,10 @@ const userSchema = mongoose.Schema({
     name: { type: String, required: true },
     rank: { type: String, required: true },
     title: { type: String, required: true },
-    status: { type: String, default: 'avail', enum: ['admin','active', 'inactive', 'retired', 'deleted'] },
-    group: { type: Types.ObjectId, ref: 'Group', /*required: true*/ },
+
+    status: { type: String, default: 'avail', enum: ['admin','avail','active', 'inactive', 'retired', 'deleted'] },
+    group: { type: Types.ObjectId, ref: 'Group'},
+
     email: { type: String },
     tel: { 
         military: { type: String },
@@ -33,10 +35,6 @@ userSchema.statics.create = function(payload) {
     return user.save();
 };
 
-userSchema.statics.findAll = function(query, projection) {
-    return this.find(query, projection);
-}
-
 userSchema.statics.findOneByid = function(id) {
     return this.findOne({ id });
 };
@@ -49,9 +47,8 @@ userSchema.statics.deleteByid = function(id) {
     return this.deleteOne({ id });
 };
 
-
 userSchema.statics.findOneByServiceNumber = function(serviceNumber) {
     return this.findOne({serviceNumber});
-}
+};
 
 module.exports = mongoose.model('User', userSchema);
