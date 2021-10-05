@@ -31,7 +31,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Tooltip from "@mui/material/Tooltip";
-import Container from '@mui/material/Container';
+import Container from "@mui/material/Container";
 
 import FormInput from "_molecules/FormInput";
 
@@ -185,8 +185,7 @@ export default function Register() {
 
   return (
     <Container maxWidth="sm">
-      <div className="login-logo"></div>
-      <Block className="login-title">회원가입</Block>
+      <div className="login-title">회원가입</div>
       <div className="login-subtitle">환영합니다!</div>
       <div>
         <TextField
@@ -333,15 +332,15 @@ export default function Register() {
           margin="normal"
         />
       </div>
-      
+
       {/* Register button with tooltip */}
       <Tooltip
         title={isInputValid() ? "" : "필수 정보를 모두 입력해주세요"}
         placement="bottom"
       >
-        <span style={{width: "100%"}}>
+        <span style={{ width: "100%" }}>
           <LoadingButton
-            sx={{mt: 2}}
+            sx={{ mt: 2 }}
             fullWidth
             disabled={!isInputValid()}
             loading={registerStatus === "loading"}
