@@ -12,7 +12,7 @@ module.exports = {
             const user = await userService.findOne({serviceNumber:req.body.serviceNumber}, projection);
 
             res.cookie('jwt', token);
-            res.status(201).send({
+            res.status(200).send({
                 result: 'OK',
                 user,
                 token
@@ -25,7 +25,7 @@ module.exports = {
 
     logout: async function(req, res) {
         res.cookie('jwt', '');
-        res.status(201).send({
+        res.status(200).send({
             result: 'OK',
         });
     }
