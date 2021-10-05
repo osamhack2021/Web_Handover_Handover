@@ -6,7 +6,7 @@ import { snakeToCamelCase } from 'json-style-converter/es5';
 import GridHeader from '_organisms/GridHeader';
 import GridLayout from '_organisms/GridLayout';
 import Header from '_organisms/Header';
-import { getItemByItemId } from '_api/item';
+import { getItemByItemId, getItemChild } from '_api/item';
 import PromiseItemArray from '_utils/promiseArray';
 
 export default function HomePage({ location }) {
@@ -20,16 +20,20 @@ export default function HomePage({ location }) {
   useEffect(() => {
     console.log(`Home rendering with itemId : ${itemId}`);
     getItemByItemId(itemId).then((data) => {
+      const camelData = snakeToCamelCase(data);
       // setting Item
-      setItem(snakeToCamelCase(data));
+      setItem(camelData);
 
       // setting path array Promise
-      const pathArray = data.path.split('/');
+      const pathArray = camelData.path.split(',');
       PromiseItemArray(pathArray, setPathObject, setLoadingPath, 'pathArray');
 
       // setting children array Promise
-      const childArray = data.content.children;
-      PromiseItemArray(childArray, setChildObject, setLoadingChild, 'childArray');
+      const childArray = [];
+      getItemChild(camelData.path).then((array) => {
+        setChildObject({ childArray: snakeToCamelCase(array) });
+        setLoadingChild(false);
+      });
     });
   }, [location]);
 

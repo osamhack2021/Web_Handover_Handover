@@ -68,8 +68,9 @@ module.exports = {
 		}, SECRET_KEY, {
 			expiresIn: '1h'
 		});
+		const user = loginUser
 
-		return token;		
+		return {user, token};		
 	},
   
 	getLoginUser: function(token) {

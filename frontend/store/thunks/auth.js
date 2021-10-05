@@ -33,12 +33,13 @@ import {
 
 export const attemptLogin = (user) => (dispatch) => postLogin(user)
   .then((data) => {
-    dispatch(login(snakeToCamelCase(data)));
+    const {user, token} = data
+    dispatch(login(snakeToCamelCase(user)));
 
     console.log(`Login successful: response is ${JSON.stringify(data)}`);
     RNC.addNotification({
       title: 'Success!',
-      message: `JWT token = ${data.token}`, // TODO: change to confirmation message
+      message: `JWT token = ${token}`, // TODO: change to confirmation message
       type: 'success',
       container: 'top-right',
       animationIn: ['animated', 'fadeInRight'],

@@ -30,7 +30,7 @@ export default function LeftPane() {
           내 서랍
         </Menu.Label>
         <Menu.List>
-          {arrayToMenuItems(snakeToCamelCase(userItem.cabinet))}
+          {arrayToMenuItems(userItem.filter((elem) => elem.type === 'cabinet'))}
         </Menu.List>
         <Menu.Label className="leftpane-label">
           내 문서

@@ -22,11 +22,11 @@ export default function RoutingPage() {
     if (R.isEmpty(user)) {
       dispatch(push('/login'));
     } else {
-      dispatch(attemptGetGroup())
+      dispatch(attemptGetGroup(user.group))
         .catch(R.identity)
         .then(() => setLoadingGroup(false));
 
-      dispatch(attemptLoadItems())
+      dispatch(attemptLoadItems(user.Id))
         .catch(R.identity)
         .then(() => setLoadingItem(false));
     }
