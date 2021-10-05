@@ -94,10 +94,7 @@ module.exports = {
 
 		const loginUser = await userService
             .findOne({serviceNumber:params.serviceNumber},
-				 {_id:true, serviceNumber: true, password:true, 
-				  name:true, rank:true, title:true, status:true,
-				  group: true, email:true, tel: true, lastLogin:true,
-				  firstLogin:true,bookmarks:true, subscriptions:true})
+				 {_id:true, serviceNumber: true, password:true})
             .catch(err => {
                 if(err instanceof TypeError) {
                     throw new AuthError("LOGIN fail");

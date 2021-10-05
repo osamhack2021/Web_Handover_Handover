@@ -5,7 +5,11 @@ module.exports = {
     login: async function(req, res) {
         try {
             const token = await authService.login(req.body);
-            const user = await userService.findOne({serviceNumber:req.body.serviceNumber}, {serviceNumber:true, name: true});
+            const projection = {_id:true, serviceNumber: true, password:true, 
+                    name:true, rank:true, title:true, status:true,
+                    group: true, email:true, tel: true, lastLogin:true,
+                    firstLogin:true,bookmarks:true, subscriptions:true};
+            const user = await userService.findOne({serviceNumber:req.body.serviceNumber}, projection);
 
             res.cookie('jwt', token);
             res.status(201).send({
