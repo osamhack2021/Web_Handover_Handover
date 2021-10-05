@@ -26,8 +26,6 @@ services:
     env_file: ./.env
     volumes:
       - ./backend:/app/backend
-      - node_modules_backend:/app/backend/node_modules
-      - node_modules_backend:/tmp/node_modules
     networks:
       - backend
       - frontend
@@ -45,8 +43,6 @@ services:
         - REACT_APP_API_BASE_URL=$API_BASE_URL
     volumes:
       - ./frontend:/app/frontend
-      - node_modules_frontend:/app/frontend/node_modules
-      - node_modules_frontend:/tmp/node_modules
     networks:
       - frontend
   
@@ -69,8 +65,6 @@ services:
 
 volumes:
   db:
-  node_modules_backend:
-  node_modules_frontend:
 
 networks:
   backend:
