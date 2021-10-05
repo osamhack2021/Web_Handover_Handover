@@ -7,4 +7,14 @@ const ALGOLIA_INDEX_NAME = process.env.ALGOLIA_INDEX_NAME;
 const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_ADMIN_API_KEY);
 const index = client.initIndex(ALGOLIA_INDEX_NAME);
 
+index.setSettings({
+    searchableAttributes: [
+        'title',
+        'type',
+        'tags',
+        'status',
+        'comments'
+    ]
+});
+
 module.exports = index;

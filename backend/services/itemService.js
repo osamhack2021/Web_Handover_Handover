@@ -101,10 +101,12 @@ module.exports = {
             // Clear inspection
             payload.inspection = {};
 
-            // Update item
-            await Item.findOneAndUpdate(item, payload)
+            delete payload._id;
 
+            // Update item
+            const result = await Item.findOneAndUpdate({ _id: item._id }, payload);
             return result;
+            
         } catch(err) {
             throw new BusinessError(err.message);
         }

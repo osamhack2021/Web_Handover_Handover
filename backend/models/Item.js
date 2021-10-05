@@ -90,7 +90,7 @@ itemSchema.pre('save', function(next) {
     next();
 });
 
-itemSchema.pre('updateOne', function(next) {
+itemSchema.pre('findOneAndUpdate', function(next) {
     const data = this.getUpdate();
 
     let keys = ['contributors', 'history'];
