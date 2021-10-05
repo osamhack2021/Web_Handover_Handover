@@ -2,17 +2,22 @@ import request from 'superagent';
 import { handleSuccess, handleError } from '_utils/api';
 
 // from userID, get all the items the user created
-export const getItemByUserId = (id) => request.get('https://53c78129-9e2a-4ccb-b45b-4b9855417406.mock.pstmn.io/item/')
-  .query({ userId: 1 })
+export const getItemByUserId = (userId) => request.get('/api/item/')
+  .query({ owner: userId })
   .then(handleSuccess)
   .catch(handleError);
 
-export const getItemByItemId = (id) => request.get('https://53c78129-9e2a-4ccb-b45b-4b9855417406.mock.pstmn.io/item/')
-  .query({ itemId: id })
+export const getItemByItemId = (itemId) => request.get(`/api/item/${itemId}`)
+  // .query({ item_id: item_id })
   .then(handleSuccess)
   .catch(handleError);
 
-export const getRecommendItem = (id) => request.get('https://53c78129-9e2a-4ccb-b45b-4b9855417406.mock.pstmn.io/recommend')
+export const getItemChild = (itemPath) => request.get('/api/item')
+  .query({ path: itemPath })
+  .then(handleSuccess)
+  .catch(handleError);
+
+export const getRecommendItem = (id) => request.get('/api/recommend')
   .query({ userId: id })
   .then(handleSuccess)
   .catch(handleError);
