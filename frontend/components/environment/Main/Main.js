@@ -15,6 +15,7 @@ import RegisterPage from '_pages/RegisterPage';
 // import SettingsPage from '_pages/SettingsPage';
 // import LostPage from '_pages/LostPage';
 import RoutingPage from '_pages/RoutingPage';
+import EditorPage from '_pages/EditorPage';
 
 // import Navigation from '_organisms/Navigation';
 // import Footer from '_organisms/Footer';
@@ -46,6 +47,7 @@ export default function Main({ location }) {
           <Route exact path="/" component={WelcomePage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/register" component={RegisterPage} />
+          <Route path="/edit" component={EditorPage} />
           <Route path="*" component={RoutingPage} />
           {/* <Route path="/login" component={LoginPage} />
           <Route path="/register" component={RegisterPage} />
