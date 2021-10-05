@@ -185,6 +185,7 @@ export default function Register() {
 
   return (
     <Container maxWidth="sm">
+      <div className="login-logo mx-auto" />
       <div className="login-title">회원가입</div>
       <div className="login-subtitle">환영합니다!</div>
       <div>

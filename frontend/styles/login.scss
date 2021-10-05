@@ -3,7 +3,19 @@
 .login-page,
 .register-page,
 .recovery-page > div {
+  .login-box{
+    width : 480px;
+    margin : 185px auto 0 auto;
+  }
   text-align: center;
+
+  // dummy logo
+  .login-logo {
+    width : 48px;
+    height : 48px;
+    background-color: $white;
+    margin-bottom : 24px;
+  }
 
   .login-title {
     @include setfonts(
@@ -11,8 +23,8 @@
       $font-size: $size-4,
       $line-height: 38px
     );
-    padding-bottom: .25em;
     color: $black;
+    margin-bottom : 12px
   }
 
   .login-subtitle {
@@ -22,5 +34,15 @@
       $line-height: 24px
     );
     color: $pale-sky;
+    margin-bottom : 32px;
+  }
+
+  .login-button {
+    margin : 25px 0px;
+    width : 100%;
+  }
+
+  .login-register{
+    margin-bottom : 32px;
   }
 }
