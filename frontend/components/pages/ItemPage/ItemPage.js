@@ -9,7 +9,7 @@ import Header from '_organisms/Header';
 import { getItemByItemId, getItemChild } from '_api/item';
 import PromiseItemArray from '_utils/promiseArray';
 
-export default function HomePage({ location }) {
+export default function ItemPage({ location }) {
   const [loadingPath, setLoadingPath] = useState(true);
   const [loadingChild, setLoadingChild] = useState(true);
   const [pathObject, setPathObject] = useState({});
@@ -52,7 +52,7 @@ export default function HomePage({ location }) {
   );
 }
 
-HomePage.propTypes = {
+ItemPage.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }).isRequired,

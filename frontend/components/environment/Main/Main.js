@@ -10,10 +10,6 @@ import { attemptGetUser } from '_thunks/user';
 import WelcomePage from '_pages/WelcomePage';
 import LoginPage from '_pages/LoginPage';
 import RegisterPage from '_pages/RegisterPage';
-// import HomePage from '_pages/HomePage';
-// import TodoPage from '_pages/TodoPage';
-// import SettingsPage from '_pages/SettingsPage';
-// import LostPage from '_pages/LostPage';
 import RoutingPage from '_pages/RoutingPage';
 
 // import Navigation from '_organisms/Navigation';
