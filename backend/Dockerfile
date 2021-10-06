@@ -1,12 +1,24 @@
-FROM node:14
+FROM node:14-alpine AS builder
 
-# following will only run when the package.json is changed
-COPY package.json /tmp/package.json
-RUN cd /tmp && npm install && cd ..
-RUN mkdir -p /app/backend && cp -a /tmp/node_modules /app/backend/
+# Create node_modules directory
+WORKDIR /app
 
-# load applicaton code on top of cache if available
+# Install app dependencies
+# This will only run when the package.json is changed
+COPY package.json .
+RUN npm install
+
+FROM node:14-alpine
+
+# Copy node_modules from previous stage image
+RUN mkdir -p /node_modules
+COPY --from=builder /app/node_modules /app/node_modules
+
+# Create app directory
 WORKDIR /app/backend
+
+# Bundle app source
 COPY . .
 
-CMD npm start
+# Create symlink to /backend/node_modules and start node app
+CMD ln -s /app/node_modules /app/backend/node_modules && npm start

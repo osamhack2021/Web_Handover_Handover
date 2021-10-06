@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import Block from "react-bulma-companion/lib/Block";
-import Button from "react-bulma-companion/lib/Button";
+import TextField from "@mui/material/TextField";
+import Button from '@mui/material/Button';
+
 
 import FormInput from "_molecules/FormInput";
 
@@ -19,38 +20,40 @@ export default function Login() {
   return (
     <div className="recovery-box">
       <div className="login-logo mx-auto"></div>
-      <Block className="login-title">비밀번호 찾기</Block>
-      <hr className="separator" />
+      <div className="login-title">비밀번호 찾기</div>
       <div className="forminput-container">
-        <FormInput
-          onChange={updateUsername}
+        <TextField
+          fullWidth
+          id="input-username"
+          label="군번"
           placeholder="군번을 입력해주세요"
           value={username}
-          className="is-fullwidth"
-          label="군번"
+          onChange={updateUsername}
+          margin="normal"
         />
-        <FormInput
-          /*onChange={}*/
+        <TextField
+          fullWidth
+          id="input-name"
+          label="이름"
           placeholder="이름을 입력해주세요"
           /*value={}*/
-          className="is-fullwidth"
-          label="이름"
+          /*onChange={}*/
+          margin="normal"
         />
-        <FormInput
-          onChange={updateEmail}
-          placeholder="e.g. example@example.com"
-          /*value={password}*/
-          className="is-fullwidth"
+        <TextField
+          fullWidth
+          id="input-username"
           label="군 이메일"
+          placeholder="e.g. example@example.com"
+          value={email}
+          onChange={updateEmail}
+          margin="normal"
         />
       </div>
-      <hr className="separator" />
       <Button
         className="login-button"
-        /*onClick={}*/
         size="medium"
-        /*disabled={!passwordValid || !usernameAvailable}*/
-        /*$button-hover-border-color="orange"*/
+        variant = "contained"
       >
         이메일로 인증번호 받기
       </Button>
