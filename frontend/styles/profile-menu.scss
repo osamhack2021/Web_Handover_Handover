@@ -27,6 +27,8 @@
             @include setfonts($font-weight : $weight-bold,
                 $font-size : $size-5,
             );
+            margin-top : 9px;
+            margin-bottom : 4px;
         }
 
         .profile-string-below {
