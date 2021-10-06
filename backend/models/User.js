@@ -33,20 +33,4 @@ userSchema.statics.create = function(payload) {
     return user.save();
 };
 
-userSchema.statics.findOneByid = function(id) {
-    return this.findOne({ id });
-};
-
-userSchema.statics.updateByid = function(id, payload) {
-    return this.findOneAndUpdate({ id }, payload, { new: true });
-};
-
-userSchema.statics.deleteByid = function(id) {
-    return this.deleteOne({ id });
-};
-
-userSchema.statics.findOneByServiceNumber = function(serviceNumber) {
-    return this.findOne({serviceNumber});
-};
-
 module.exports = mongoose.model('User', userSchema);
