@@ -63,6 +63,17 @@ module.exports = {
 
     updateUser: async function(req, res) {
         try {
+            const keys = Object.keys(req.body);
+            const valids = ['password', 'name','name','rank',
+                    'title','status','group','email','tel', 
+                    'lastLogin', 'firstLogin', 'bookmarks', 'subscriptions' ];
+                
+             // Only allowed fields are Searchable
+            for(let key of keys) {
+                if(!valids.includes(key))
+                    throw new BusinessError(`${key} is not allowed param`);
+            }
+
             await authService.editUserAuth(res.locals._id.toString(),req.params.id);
 
             const result = await userService.update(req.params.id,req.body);
@@ -75,7 +86,7 @@ module.exports = {
 
     deleteUser: async function(req, res) {
         try {
-            await authService.editUserAuth(res.locals._id.toString(),req.params.id);
+            await authService.deleteUserAuth(res.locals._id.toString(),req.params.id);
 
             const result = await userService.delete(req.params.id);
             res.status(204).send(result);   // 201 Created

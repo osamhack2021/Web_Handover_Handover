@@ -142,6 +142,16 @@ module.exports = {
 		return true;
 	},
 
+	deleteUserAuth: async function(loginUserId, targetUserId) {
+		const isHRM = await isHumanResourceManager(loginUserId, targetUserId).catch(err => {throw err});
+		const isAd = await isAdmin(loginUserId).catch(err => {throw err});
+		if(!isAd && !isHRM){
+			throw new ForbiddenError('not have access');
+		}
+
+		return true;
+	},
+
 	readUserAuth: async function(loginUserId, targetUserId) {
 		const isHRM = await isHumanResourceManager(loginUserId, targetUserId).catch(err => {throw err});
 		const isAd = await isAdmin(loginUserId).catch(err => {throw err});
