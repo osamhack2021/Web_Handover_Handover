@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import R from 'ramda';
 
-import RecommendHeader from '_organisms/RecommendHeader';
-import RecommendContent from '_organisms/RecommendContent';
+import HorizontalHeader from '_organisms/HorizontalHeader';
+import HorizontalContent from '_organisms/HorizontalContent';
 import Header from '_organisms/Header';
 import { snakeToCamelCase } from 'json-style-converter/es5';
 import { getRecommendItem } from '_api/item';
@@ -30,19 +30,19 @@ export default function RecommendPage({ location }) {
       </div>
       <div className="recommend-container">
         <div className="recommend-block">
-          <RecommendHeader type="cabinet" />
+          <HorizontalHeader type="cabinet" />
           <hr />
-          <RecommendContent type="cabinet" cardArray={recommendObject.cabinet} />
+          <HorizontalContent type="cabinet" cardArray={recommendObject.cabinet} />
         </div>
         <div className="recommend-block">
-          <RecommendHeader type="document" />
+          <HorizontalHeader type="document" />
           <hr />
-          <RecommendContent type="document" cardArray={recommendObject.document} />
+          <HorizontalContent type="document" cardArray={recommendObject.document} />
         </div>
         <div className="recommend-block">
-          <RecommendHeader type="card" />
+          <HorizontalHeader type="card" />
           <hr />
-          <RecommendContent type="card" cardArray={recommendObject.card} />
+          <HorizontalContent type="card" cardArray={recommendObject.card} />
         </div>
       </div>
     </div>

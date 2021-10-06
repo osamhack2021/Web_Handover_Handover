@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-export default function RecommendHeader({ type, link = '/' }) {
+export default function HorizontalHeader({ type, link = '/' }) {
   let title = '';
   switch (type) {
     case 'cabinet':
@@ -27,7 +27,7 @@ export default function RecommendHeader({ type, link = '/' }) {
   );
 }
 
-RecommendHeader.propTypes = {
+HorizontalHeader.propTypes = {
   type: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
 };

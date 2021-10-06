@@ -2,8 +2,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Card from '_molecules/Card';
 import PropTypes from 'prop-types';
-import HorizontalScroll from 'react-scroll-horizontal';
-import PromiseItemArray from '_utils/promiseArray';
 
 function CreateCardArray(cardArray) {
   return cardArray.map((elem) => {
@@ -23,7 +21,7 @@ function CreateCardArray(cardArray) {
   });
 }
 
-export default function RecommendContent({ cardArray }) {
+export default function HorizontalContent({ cardArray }) {
   const recommendCard = useRef();
   // eslint-disable-next-line consistent-return
   useEffect(() => {
@@ -49,6 +47,6 @@ export default function RecommendContent({ cardArray }) {
   );
 }
 
-RecommendContent.propTypes = {
+HorizontalContent.propTypes = {
   cardArray: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
