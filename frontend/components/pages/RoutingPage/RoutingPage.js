@@ -5,7 +5,7 @@ import { Switch, Route } from 'react-router';
 import R from 'ramda';
 
 import LeftPane from '_organisms/LeftPane';
-import HomePage from '_pages/HomePage';
+import ItemPage from '_pages/ItemPage';
 import RecommendPage from '_pages/RecommendPage';
 import { attemptGetGroup } from '_thunks/group';
 import { attemptLoadItems } from '_thunks/item';
@@ -40,7 +40,7 @@ export default function RoutingPage() {
       <Switch>
         {/* <Route path="/blahblahbalh" component={anything} /> */}
         <Route path="/home" component={RecommendPage} />
-        <Route path="/item/:itemId" component={HomePage} />
+        <Route path="/item/:itemId" component={ItemPage} />
         {/* <Route path="/recommend" component={RecommendPage} /> */}
       </Switch>
     </div>
