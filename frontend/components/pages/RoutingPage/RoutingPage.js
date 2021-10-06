@@ -10,6 +10,7 @@ import ItemPage from '_pages/ItemPage';
 import RecommendPage from '_pages/RecommendPage';
 import { attemptGetGroup } from '_thunks/group';
 import { attemptLoadItems } from '_thunks/item';
+import SearchPage from '_pages/SearchPage';
 
 export default function RoutingPage() {
   const dispatch = useDispatch();
@@ -44,8 +45,10 @@ export default function RoutingPage() {
           {/* <Route path="/blahblahbalh" component={anything} /> */}
           <Route path="/home" component={RecommendPage} />
           <Route path="/item/:itemId" component={ItemPage} />
+          <Route path="/search/:searchQuery" component={SearchPage} />
           {/* <Route path="/recommend" component={RecommendPage} /> */}
         </Switch>
+
       </div>
     </div>
   );
