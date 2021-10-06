@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import R from 'ramda';
 
-import PromiseItemArray from '_utils/promiseArray';
 import { getUser } from '_api/user';
 import { getItemByItemId, getItemChild } from '_api/item';
 import NoteHeader from '../NoteHeader';
 import NoteFooter from '../NoteFooter';
+
 import CardItem from '../CardItem';
 
 function arrayToCardItems(array) {

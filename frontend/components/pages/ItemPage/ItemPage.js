@@ -5,7 +5,6 @@ import { snakeToCamelCase } from 'json-style-converter/es5';
 
 import GridHeader from '_organisms/GridHeader';
 import GridLayout from '_organisms/GridLayout';
-import Header from '_organisms/Header';
 import { getItemByItemId, getItemChild } from '_api/item';
 import PromiseItemArray from '_utils/promiseArray';
 
@@ -38,17 +37,17 @@ export default function ItemPage({ location }) {
   }, [location]);
 
   return !loadingPath && !loadingChild && (
-    <div className="home-page">
-      <Header />
-      <div className="outer-div">
-        <div className="grid-container">
-          <GridHeader title={item.title} pathArray={pathObject.pathArray} />
-          <div className="grid-layout-container">
-            <GridLayout cardArray={childObject.childArray} />
-          </div>
-        </div>
+  // <div className="home-page">
+  // <Header />
+  <div className="outer-div">
+    <div className="grid-container">
+      <GridHeader title={item.title} pathArray={pathObject.pathArray} />
+      <div className="grid-layout-container">
+        <GridLayout cardArray={childObject.childArray} />
       </div>
     </div>
+  </div>
+  // </div>
   );
 }
 
