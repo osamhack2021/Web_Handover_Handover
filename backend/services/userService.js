@@ -51,7 +51,6 @@ module.exports = {
 				throw new RuntimeError(err.message);		
 			});
 
-		result._id = '';
 		result.password = '';
 
 		return result;
@@ -61,23 +60,20 @@ module.exports = {
 		if(params.password) {
 			params.password = encode(params.password);
 		}
-
 		const result = await User
-			.updateByid(id, params)
+			.findOneAndUpdate({_id:id}, params, {new: true})
 			.catch(err => {
 				throw new RuntimeError(err.message);
 			});
-
-		result._id = '';
 		result.password = '';
 	
 		return result;
 	},
 
-	delete: async function(params) {
+	delete: async function(id) {
 		
 		const result = await User
-			.deleteByid(params.id)
+			.deleteOne({_id:id})
 			.catch(err => {
 				throw new RuntimeError(err.message);
 			});
@@ -88,7 +84,7 @@ module.exports = {
 	checkExist: async function(params) {
 		
 		const user = await User
-		.findOneByServiceNumber(params.serviceNumber)
+		.findOne({serviceNumber:params.serviceNumber})
 		.catch(err => {	throw new RuntimeError(err.message); });
 	
 		return {exist: user !== null};
