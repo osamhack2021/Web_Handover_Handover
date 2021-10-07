@@ -21,3 +21,8 @@ export const getRecommendItem = (id) => request.get('/api/recommend')
   .query({ userId: id })
   .then(handleSuccess)
   .catch(handleError);
+
+export const algoliaSearch = (query) => request.get('/api/item/algolia')
+  .query({ query })
+  .then(handleSuccess)
+  .catch(handleError);

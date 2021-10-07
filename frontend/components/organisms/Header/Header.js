@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
+import { SearchBox, Hits } from 'react-instantsearch/dom';
 
 import SearchIcon from '_assets/svgs/search_icon.svg';
 import BellIcon from '_assets/svgs/bell.svg';

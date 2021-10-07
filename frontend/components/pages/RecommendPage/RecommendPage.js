@@ -5,7 +5,6 @@ import R from 'ramda';
 
 import HorizontalHeader from '_organisms/HorizontalHeader';
 import HorizontalContent from '_organisms/HorizontalContent';
-import Header from '_organisms/Header';
 import { snakeToCamelCase } from 'json-style-converter/es5';
 import { getRecommendItem } from '_api/item';
 
@@ -24,7 +23,6 @@ export default function RecommendPage({ location }) {
 
   return !loading && (
     <div className="recommend-page">
-      <Header />
       <div className="recommend-page-header">
         추천 양식
       </div>
