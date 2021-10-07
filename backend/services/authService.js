@@ -131,11 +131,12 @@ module.exports = {
 	},
 	//User 수정 권한 확인
 	editUserAuth: async function(loginUserId, targetUserId) {
-		const isHRM = await isHumanResourceManager(loginUserId, targetUserId).catch(err => {throw err});
-		const isAd = await isAdmin(loginUserId).catch(err => {throw err});
-		
+
+		const results = await Promise.all([isHumanResourceManager(loginUserId, targetUserId), isAdmin(loginUserId)])
+				.catch(err =>{throw err});
+	
 		if(!isSelf(loginUserId, targetUserId) &&
-		   !isAd && !isHRM){
+			!results.includes(true)) {
 			throw new ForbiddenError('not have access');
 		}
 
@@ -143,9 +144,11 @@ module.exports = {
 	},
 
 	deleteUserAuth: async function(loginUserId, targetUserId) {
-		const isHRM = await isHumanResourceManager(loginUserId, targetUserId).catch(err => {throw err});
-		const isAd = await isAdmin(loginUserId).catch(err => {throw err});
-		if(!isAd && !isHRM){
+		
+		const results = await Promise.all([isHumanResourceManager(loginUserId, targetUserId), isAdmin(loginUserId)])
+				.catch(err =>{throw err});
+	
+		if(!results.includes(true)) {
 			throw new ForbiddenError('not have access');
 		}
 
@@ -153,12 +156,12 @@ module.exports = {
 	},
 
 	readUserAuth: async function(loginUserId, targetUserId) {
-		const isHRM = await isHumanResourceManager(loginUserId, targetUserId).catch(err => {throw err});
-		const isAd = await isAdmin(loginUserId).catch(err => {throw err});
-
+		const results = await Promise.all([isHumanResourceManager(loginUserId, targetUserId), isAdmin(loginUserId)])
+				.catch(err =>{throw err});
+	
 		if(!isSelf(loginUserId, targetUserId) &&
-		   !isAd && !isHRM){
-			return 'general';
+			!results.includes(true)) {
+				return 'general';
 		}
 		
 		return 'all';
@@ -166,10 +169,9 @@ module.exports = {
 
 	//Group 수정 권한 확인
 	editGroupAuth: async function(loginUserId, targetGroupId) {
-		const isGM = await isGroupManager(loginUserId, targetGroupId).catch(err => {throw err});
-		const isAd = await isAdmin(loginUserId).catch(err => {throw err});
-
-		if(!isAd && !isGM){
+		const results = await Promise.all([isGroupManager(loginUserId, targetGroupId), isAdmin(loginUserId)])
+				.catch(err =>{throw err});
+		if(!results.includes(true)){
 			throw new ForbiddenError('not have access');
 		}
 
@@ -178,10 +180,9 @@ module.exports = {
 
 	//Item 수정 권한 확인
 	editItemAuth: async function(loginUserId, targetItemId) {
-		const isIE = await isItemEditor(loginUserId, targetItemId).catch(err => {throw err});
-		const isAd = await isAdmin(loginUserId).catch(err => {throw err});
-
-		if(!isAd && !isIE){
+		const results = await Promise.all([isItemEditor(loginUserId, targetItemId), isAdmin(loginUserId)])
+				.catch(err =>{throw err});
+		if(!results.includes(true)){
 			throw new ForbiddenError('not have access');
 		}
 
@@ -189,10 +190,9 @@ module.exports = {
 	},
 
 	readItemAuth: async function(loginUserId, targetItemId) {
-		const isIR = await isItemReader(loginUserId, targetItemId).catch(err => {throw err});
-		const isAd = await isAdmin(loginUserId).catch(err => {throw err});
-
-		if(!isAd && !isIR){
+		const results = await Promise.all([isItemReader(loginUserId, targetItemId), isAdmin(loginUserId)])
+					.catch(err =>{throw err});
+		if(!results){
 			throw new ForbiddenError('not have access');
 		}
 
