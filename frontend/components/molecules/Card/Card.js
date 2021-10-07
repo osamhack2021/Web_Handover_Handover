@@ -26,6 +26,7 @@ export default function Card({ Id }) {
 
   // find current user from store
   const { user } = useSelector(R.pick(['user']));
+  const { group } = useSelector(R.pick(['group']));
 
   // states of item, createdby, and child array
   const [itemObject, setItemObject] = useState({});
@@ -36,11 +37,14 @@ export default function Card({ Id }) {
   const [loadingItem, setLoadingItem] = useState(true);
   const [loadingChild, setLoadingChild] = useState(true);
   const [loadingCreator, setLoadingCreator] = useState(true);
+  const [isAvailable, setIsAvailable] = useState(false);
 
   useEffect(() => {
     getItemByItemId(Id).then((item) => {
       setItemObject(snakeToCamelCase(item));
       setLoadingItem(false);
+      // setting availability of item
+      setIsAvailable(item.accessGroups.read.includes(item.Id));
       getItemChild(item.path).then((childArray) => {
         setchildObjectArray(childArray);
         setLoadingChild(false);
@@ -63,7 +67,7 @@ export default function Card({ Id }) {
     history.push(path);
   };
   const innerContent = (itemObject.type === 'card' ? content : arrayToCardItems(childObjectArray));
-  const boolSum = loadingItem && loadingChild && loadingCreator;
+  const boolSum = loadingItem && loadingChild && loadingCreator && isAvailable;
 
   return !boolSum && (
     <div className={className}>
