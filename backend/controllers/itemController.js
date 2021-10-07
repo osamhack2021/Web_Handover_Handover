@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const { BusinessError, NotFoundError, ForbiddenError } = require('../services/errors/BusinessError.js');
 const SECRET_KEY = "MY_SECRET_KEY";
 
+const algolia = require('../algolia/index');
+
 module.exports = {
 
     // GET /item
@@ -17,7 +19,7 @@ module.exports = {
             for(let key of keys) {
                 if(!valids.includes(key))
                     throw new BusinessError(`${key} is not allowed param`);
-            }
+            }            
 
             const result = await itemService.search(req.query);
 
@@ -25,6 +27,23 @@ module.exports = {
 
             res.status(200).send(result);
 
+        } catch(err) {
+            res.status(err.status || 500).send(err.message);
+        }
+    },
+
+    // GET /item/algolia
+    algoliaSearch: async (req, res) => {
+        try {
+            const query = req.params.query;
+
+            const result = await algolia.search(query, {
+                filters: `status:"modified" AND NOT accessGroups.read:"${res.locals.group}"`
+            });
+
+            if(result.hits.length < 1) throw new NotFoundError('Not Found');
+
+            res.status(200).send(result.hits);
         } catch(err) {
             res.status(err.status || 500).send(err.message);
         }
@@ -58,6 +77,13 @@ module.exports = {
 
             const result = await itemService.create(body);
 
+            // Add object to Algolia
+            let object = result.toObject();
+            object.objectID = object._id;
+            delete object._id;
+
+            algolia.saveObject(object);
+
             res.status(201).send(result);
         } catch(err) {
             res.status(err.status || 500).send(err.message);
@@ -74,14 +100,18 @@ module.exports = {
             if(item === null) throw new NotFoundError(`Not Found: No result is found for item_id: ${item_id}`);
 
             // Check session's edit authority
-            const user = await userService.searchByServiceNumber(res.locals.serviceNumber);
-            //if(!item.accessGroups.edit.some(i => i.equals(user.group)))
-               // throw new ForbiddenError(`Forbidden: You are not in editable group`);
+            if(!item.accessGroups.edit.some(i => i.equals(res.locals.group)))
+                throw new ForbiddenError(`Forbidden: You are not in editable group`);
 
             // Append Contributor
             item = Object.assign(item, { contributors: [...item.contributors, res.locals._id] });
 
-            await itemService.update(item, req.body);
+            const result = await itemService.update(item, req.body);
+
+            // Update object to Algolia
+            let object = result.toObject();
+            object.objectID = object._id;
+            delete object._id;
 
             res.status(204).send();
         } catch(err) {

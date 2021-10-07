@@ -13,7 +13,6 @@ const itemSchema = mongoose.Schema({
             },
             message: props => `${props.value} is not a valid path!`
         },
-        required: true
     },
     content: { type: String },
     files: [{
@@ -78,10 +77,20 @@ itemSchema.pre('save', function(next) {
     if(this.accessGroups?.edit)
         this.accessGroups.edit = distinctObjectIdArray(this.accessGroups.edit);
 
+
+    // Path
+    if(this.type === 'cabinet') {
+        this.path = `,${this._id},`;
+    } else if(this.type === 'document') {
+        this.path = this.path + this._id + ',';
+    } else if(this.type === 'card') {
+        this.path = this.path + this._id + ',';
+    }
+
     next();
 });
 
-itemSchema.pre('updateOne', function(next) {
+itemSchema.pre('findOneAndUpdate', function(next) {
     const data = this.getUpdate();
 
     let keys = ['contributors', 'history'];

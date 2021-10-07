@@ -23,6 +23,14 @@ module.exports = {
                 delete query.tag;
             }
 
+            if(query.title) {
+                query.title = new RegExp(`${query.title}`);
+            }
+            
+            if(query.path) {
+                query.path = new RegExp(`${query.path}`);
+            }
+
             // Exclude deleted or modified items
             query.status = {
                 $nin: ['deleted', 'modified']
@@ -93,10 +101,12 @@ module.exports = {
             // Clear inspection
             payload.inspection = {};
 
-            // Update item
-            await Item.findOneAndUpdate(item, payload)
+            delete payload._id;
 
+            // Update item
+            const result = await Item.findOneAndUpdate({ _id: item._id }, payload);
             return result;
+            
         } catch(err) {
             throw new BusinessError(err.message);
         }

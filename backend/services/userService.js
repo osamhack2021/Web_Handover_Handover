@@ -12,37 +12,26 @@ function encode(rowPassword) {
 
 module.exports = {
 
-	search: async function(query) {
+	find: async function(params, projection = {}) {
+
 		const result = await User
-		.findAll(query)
-		.catch(err => {
-			throw new RuntimeError(err.message);
-		});
-			
-		if(result.length === 0) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
-
-		return result;
-
-	},
-
-	searchByServiceNumber: async function(serviceNumber) {
-		const result = await User
-		.findOneByServiceNumber(serviceNumber)
-		.catch(err => {
-			throw new RuntimeError(err.message);
-		});
+			.find(params, projection)
+			.catch(err => {
+				throw new RuntimeError(err.message);
+			});
 
 		if(result === null) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
 
 		return result;
 	},
 
-	searchById: async function(id) {
+	findOne: async function(params, projection = {}) {
+
 		const result = await User
-		.findOneByid(id)
-		.catch(err => {
-			throw new RuntimeError(err.message);
-		});
+			.findOne(params, projection)
+			.catch(err => {
+				throw new RuntimeError(err.message);
+			});
 
 		if(result === null) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
 
@@ -66,12 +55,6 @@ module.exports = {
 		result.password = '';
 
 		return result;
-	},
-	
-	findAll: async function() {
-		try {
-			return await User.findAll();
-		} catch(err) { throw err; }
 	},
 
 	update: async function(id ,params) {
@@ -100,5 +83,15 @@ module.exports = {
 			});
 
 		return true;
+	},
+
+	checkExist: async function(params) {
+		
+		const user = await User
+		.findOneByServiceNumber(params.serviceNumber)
+		.catch(err => {	throw new RuntimeError(err.message); });
+	
+		return {exist: user !== null};
 	}
+
 };

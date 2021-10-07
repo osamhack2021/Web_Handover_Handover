@@ -12,8 +12,7 @@ const groupSchema = mongoose.Schema({
                 return /^,(.+?,){1,}$/.test(v);
             },
             message: props => `${props.value} is not a valid path!`
-        },
-        required: true
+        }
     },
     admins: {
         type: [{ type: Types.ObjectId, ref: 'User', populate: true }],
@@ -47,6 +46,14 @@ function distinctObjectIdArray(arr) {
 
 groupSchema.pre('save', function(next) {
     this.admins = distinctObjectIdArray(this.admins);
+
+    // Path
+    if(!this.path) {
+        this.path = `,${this._id},`;
+    } else {
+        this.path = this.path + this._id + ',';
+    }
+
     next();
 });
 groupSchema.pre('updateOne', function(next) {
