@@ -31,12 +31,13 @@ import {
   attemptLoadItems,
 } from './item';
 
-export const attemptLogin = (user) => (dispatch) => postLogin(user)
+export const attemptLogin = (userId) => (dispatch) => postLogin(userId)
   .then((data) => {
-    const {user, token} = data
+    console.log(data);
+    const { user, token } = data;
     dispatch(login(snakeToCamelCase(user)));
 
-    console.log(`Login successful: response is ${JSON.stringify(data)}`);
+    console.log(`Login successful: response is ${JSON.stringify(token)}`);
     RNC.addNotification({
       title: 'Success!',
       message: `JWT token = ${token}`, // TODO: change to confirmation message

@@ -4,7 +4,7 @@ const userService = require('../services/userService.js');
 module.exports = {
   async login(req, res) {
     try {
-      const token = await authService.login(req.body);
+      const { user, token } = await authService.login(req.body);
       const projection = {
         _id: true,
         serviceNumber: true,
@@ -21,8 +21,6 @@ module.exports = {
         bookmarks: true,
         subscriptions: true,
       };
-      const user = await userService.findOne({ serviceNumber: req.body.serviceNumber }, projection);
-
       res.cookie('jwt', token);
       res.status(200).send({
         result: 'OK',

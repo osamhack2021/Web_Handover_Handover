@@ -1,97 +1,92 @@
+const crypto = require('crypto');
 const User = require('../models/User.js');
 
-const crypto = require('crypto');
 const { RuntimeError } = require('./errors/RuntimeError.js');
 const { BusinessError, AuthError, NotFoundError } = require('./errors/BusinessError.js');
 
 function encode(rowPassword) {
-	return crypto.createHmac('sha256', 'secret12341234')
-	.update(rowPassword)
-	.digest('hex');
+  return crypto.createHmac('sha256', 'secret12341234')
+    .update(rowPassword)
+    .digest('hex');
 }
 
 module.exports = {
 
-	find: async function(params, projection = {}) {
+  async find(params, projection = {}) {
+    const result = await User
+      .find(params, projection)
+      .catch((err) => {
+        throw new RuntimeError(err.message);
+      });
 
-		const result = await User
-			.find(params, projection)
-			.catch(err => {
-				throw new RuntimeError(err.message);
-			});
+    if (result === null) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
 
-		if(result === null) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
+    return result;
+  },
 
-		return result;
-	},
+  async findOne(params, projection = {}) {
+    const result = await User
+      .findOne(params, projection)
+      .catch((err) => {
+        throw new RuntimeError(err.message);
+      });
 
-	findOne: async function(params, projection = {}) {
+    if (result === null) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
 
-		const result = await User
-			.findOne(params, projection)
-			.catch(err => {
-				throw new RuntimeError(err.message);
-			});
+    return result;
+  },
 
-		if(result === null) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
+  async save(params) {
+    params.password = encode(params.password);
 
-		return result;
-	},
+    const result = await User
+      .create(params)
+      .catch((err) => {
+        if (err.code === 11000) {
+          throw new BusinessError('serviceNumber overlap');
+        }
+        throw new RuntimeError(err.message);
+      });
 
-	save: async function(params) {
+    result._id = '';
+    result.password = '';
 
-		params.password = encode(params.password);
+    return result;
+  },
 
-		let result = await User
-			.create(params)
-			.catch(err => {
-				if(err.code === 11000) {
-					throw new BusinessError('serviceNumber overlap');
-				} 
-				throw new RuntimeError(err.message);		
-			});
+  async update(id, params) {
+    if (params.password) {
+      params.password = encode(params.password);
+    }
 
-		result._id = '';
-		result.password = '';
+    const result = await User
+      .updateByid(id, params)
+      .catch((err) => {
+        throw new RuntimeError(err.message);
+      });
 
-		return result;
-	},
+    result._id = '';
+    result.password = '';
 
-	update: async function(id ,params) {
-		if(params.password) {
-			params.password = encode(params.password);
-		}
+    return result;
+  },
 
-		const result = await User
-			.updateByid(id, params)
-			.catch(err => {
-				throw new RuntimeError(err.message);
-			});
+  async delete(params) {
+    const result = await User
+      .deleteByid(params.id)
+      .catch((err) => {
+        throw new RuntimeError(err.message);
+      });
 
-		result._id = '';
-		result.password = '';
-	
-		return result;
-	},
+    return true;
+  },
 
-	delete: async function(params) {
-		
-		const result = await User
-			.deleteByid(params.id)
-			.catch(err => {
-				throw new RuntimeError(err.message);
-			});
+  async checkExist(params) {
+    const user = await User
+      .findOneByServiceNumber(params.serviceNumber)
+      .catch((err) => {	throw new RuntimeError(err.message); });
 
-		return true;
-	},
-
-	checkExist: async function(params) {
-		
-		const user = await User
-		.findOneByServiceNumber(params.serviceNumber)
-		.catch(err => {	throw new RuntimeError(err.message); });
-	
-		return {exist: user !== null};
-	}
+    return { exist: user !== null };
+  },
 
 };
