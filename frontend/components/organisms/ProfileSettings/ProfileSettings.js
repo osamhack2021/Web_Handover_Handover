@@ -8,6 +8,7 @@ import ListSubheader from "@mui/material/ListSubheader";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
 
 import { validatePassword } from "_utils/validation";
 
@@ -55,7 +56,7 @@ export default function ProfileSettings() {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    checkPassword(serviceNumber, e.target.value);
+    checkPassword('', e.target.value);
   };
 
   const handlePasswordConfirmChange = (e) => {
@@ -78,6 +79,8 @@ export default function ProfileSettings() {
     const isStatusValid = status.length > 1;
     const isTitleValid = title.length > 1;
     const isEmailValid = email.length > 1;
+    const isMilitaryTelValid = militaryTel.length > 1;
+    const isMobileTelValid = mobileTel.length > 1;
     console.log(rank);
     return (
       isPasswordValid &&
@@ -85,7 +88,9 @@ export default function ProfileSettings() {
       isRankValid &&
       isStatusValid &&
       isTitleValid &&
-      isEmailValid
+      isEmailValid &&
+      isMilitaryTelValid &&
+      isMobileTelValid
     );
   };
 
@@ -223,9 +228,22 @@ export default function ProfileSettings() {
         onChange={(event) => handleInputChange(event, setMobileTel)}
         margin="normal"
       />
-      <Button className="profile-setting-button" fullWidth variant="contained" size="large">
-        프로필 수정
-      </Button>
+      <Tooltip
+        title={isInputValid() ? "" : "필수 정보를 모두 입력해주세요"}
+        placement="bottom"
+      >
+        <span style={{ width: "100%" }}>
+          <Button
+            className="profile-setting-button"
+            fullWidth
+            variant="contained"
+            size="large"
+            disabled={!isInputValid()}
+          >
+            프로필 수정
+          </Button>
+        </span>
+      </Tooltip>
     </Box>
   );
 }
