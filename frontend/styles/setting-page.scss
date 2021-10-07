@@ -11,39 +11,15 @@
     height: 100%;
     overflow-y : scroll;
 
-    .tabs-container {
+    .profile-setting-box {
         margin: 90px auto 80px auto;
         width: 720px;
     }
-
-    .tabpanel {
-        margin-top : 80px;
-        .tabpanel-title {
-            @include setfonts (
-                $font-family : Roboto,
-                $font-weight : $weight-bold,
-                $font-size : $size-3,
-                $line-height : 42px,
-            );
-            margin-bottom : 30px;
-        }
-        .forminput-container {
-            width : 300px;
-        }
-        .form-input-label{
-            @include setfonts (
-            $font-weight : $weight-semibold,
-            $font-size : $size-5,
-            $line-height : 24px
-            );
-        margin-bottom : 27px;
-        }
-        .profile-button {
-           width: 100%;
-           background-color: $pink;
-           color: $white;
-           @include setfonts($font-size: $size-6, $line-height: 24px);
-        }
+    .profile-setting-title {
+        @include setfonts($font-size: $size-5, $font-weight: $weight-bold, );
+        margin : 0 auto 20px 10px;
     }
-
+    .profile-setting-button {
+        @include setfonts($font-size: $size-6, $line-height: 24px);
+    }
 }
