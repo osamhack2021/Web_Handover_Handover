@@ -17,9 +17,10 @@
     }
     .profile-setting-title {
         @include setfonts($font-size: $size-5, $font-weight: $weight-bold, );
-        margin : 0 auto 20px 10px;
+        margin-bottom : 20px;
     }
     .profile-setting-button {
         @include setfonts($font-size: $size-6, $line-height: 24px);
+        margin-top : 20px;
     }
 }
