@@ -264,7 +264,7 @@ export default function Register() {
             <ListSubheader>부사관</ListSubheader>
             {mapMenuItem(["준위", "원사", "상사", "중사", "하사"])}
             <ListSubheader>용사</ListSubheader>
-            {mapMenuItem(["병장", "상등병", "일등병", "이등병"])}
+            {mapMenuItem(["병장", "상병", "일병", "이등병"])}
             <ListSubheader>군무원</ListSubheader>
             {mapMenuItem([
               "군무원 1급",
