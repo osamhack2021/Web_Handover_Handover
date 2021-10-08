@@ -8,7 +8,7 @@ import {
 import StarterKit from "@tiptap/starter-kit";
 import MenuBar from "_molecules/MenuBar";
 
-export default function Editor({ itemId = null }) {
+export default function Editor({ content = null }) {
   const [loadingChild, setLoadingChild] = useState(true);
   const [contentObject, setContentObject] = useState({});
 
@@ -20,7 +20,7 @@ export default function Editor({ itemId = null }) {
 
   const editor = useEditor({
     extensions: [StarterKit],
-    content: `
+    content: content ? content :  `
         <h2>
           Hi there,
         </h2>
@@ -55,14 +55,19 @@ export default function Editor({ itemId = null }) {
   return (
     <div>
       <MenuBar editor={editor} />
-      {editor && <BubbleMenu className="bubble-menu" tippyOptions={{ duration: 100 }} editor={editor}>
-        <button
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          className={editor.isActive('bold') ? 'is-active' : ''}
+      {editor && (
+        <BubbleMenu
+          className="bubble-menu"
+          tippyOptions={{ duration: 100 }}
+          editor={editor}
         >
-          Bold
-        </button>
-        <button
+          <button
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            className={editor.isActive("bold") ? "is-active" : ""}
+          >
+            굵게
+          </button>
+          {/* <button
           onClick={() => editor.chain().focus().toggleItalic().run()}
           className={editor.isActive('italic') ? 'is-active' : ''}
         >
@@ -73,29 +78,60 @@ export default function Editor({ itemId = null }) {
           className={editor.isActive('strike') ? 'is-active' : ''}
         >
           Strike
-        </button>
-      </BubbleMenu>}
-
-      {editor && <FloatingMenu className="floating-menu" tippyOptions={{ duration: 100 }} editor={editor}>
-        <button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-          className={editor.isActive('heading', { level: 1 }) ? 'is-active' : ''}
+        </button> */}
+        </BubbleMenu>
+      )}
+      {editor && (
+        <FloatingMenu
+          className="floating-menu"
+          tippyOptions={{ duration: 100 }}
+          editor={editor}
         >
-          H1
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''}
-        >
-          H2
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={editor.isActive('bulletList') ? 'is-active' : ''}
-        >
-          Bullet List
-        </button>
-      </FloatingMenu>}
+          {/* TODO: Change to icons instead of text buttons */}
+          <button
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 1 }).run()
+            }
+            className={
+              editor.isActive("heading", { level: 1 }) ? "is-active" : ""
+            }
+          >
+            <span style={{ fontSize: "1rem", fontWeight: 900 }}>제목 1</span>
+          </button>
+          <button
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 2 }).run()
+            }
+            className={
+              editor.isActive("heading", { level: 2 }) ? "is-active" : ""
+            }
+          >
+            <span style={{ fontSize: "0.95rem", fontWeight: 700 }}>제목 2</span>
+          </button>
+          <button
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 3 }).run()
+            }
+            className={
+              editor.isActive("heading", { level: 3 }) ? "is-active" : ""
+            }
+          >
+            <span style={{ fontSize: "0.9rem", fontWeight: 700 }}>제목 3</span>
+          </button>
+          <button
+            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            className={editor.isActive("orderedList") ? "is-active" : ""}
+          >
+            순서있는 목록
+          </button>
+          <button
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            className={editor.isActive("bulletList") ? "is-active" : ""}
+          >
+            순서없는 목록
+          </button>
+        </FloatingMenu>
+      )}
       <EditorContent editor={editor} />
     </div>
   );
