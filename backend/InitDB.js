@@ -47,7 +47,12 @@ async function init() {
         name: '최우혁',
         rank: '일병',
         title: '프론트 개발자',
-        status: 'active'
+        status: 'active',
+        email: 'cwooh8@gmail.com',
+        tel: {
+            military: "010-1234-1234",
+            mobile: "010-1234-1234",
+        }
     }, {
         serviceNumber: 'holymollyhao',
         password: 'holymollyhao',
