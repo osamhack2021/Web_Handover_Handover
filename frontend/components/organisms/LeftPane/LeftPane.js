@@ -23,8 +23,8 @@ const dummy = [{
 }];
 
 function arrayToMenuItems(array) {
-  return array.map((elem) => (
-    <ListItem disableGutters sx={{ py: 0 }}>
+  return array.map((elem, index) => (
+    <ListItem disableGutters sx={{ py: 0 }} key={index}>
       <ListItemButton disableGutters sx={{ py: 0 }}>
         <MenuItem key={elem.Id} value={{ title: elem.title, Id: elem.Id, link: `/item/${elem.Id}` }} />
       </ListItemButton>
