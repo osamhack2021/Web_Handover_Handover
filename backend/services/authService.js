@@ -104,7 +104,7 @@ module.exports = {
 
 		const loginUser = await userService
             .findOne({serviceNumber:params.serviceNumber},
-				 {_id:true, serviceNumber: true, password:true})
+				 {_id:true, serviceNumber: true, password:true, group:true, status: true})
             .catch(err => {
                 if(err instanceof TypeError) {
                     throw new AuthError("LOGIN fail");
@@ -119,6 +119,8 @@ module.exports = {
 		const token = jwt.sign({
 			_id: loginUser._id,
 			serviceNumber: loginUser.serviceNumber,
+			group: loginUser.group,
+			status: loginUser.status
 		}, SECRET_KEY, {
 			expiresIn: '1h'
 		});
