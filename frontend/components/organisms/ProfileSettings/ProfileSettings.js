@@ -153,11 +153,9 @@ export default function ProfileSettings() {
         <InputLabel htmlFor="select-rank">계정 상태</InputLabel>
         <Select defaultValue={user.status} id="select-status" label="계정 상태" onChange={(event) => handleInputChange(event, setStatus)}>
           <MenuItem value="" disabled={true}>선택</MenuItem>
-          <MenuItem value={'suspended'}>정지</MenuItem>
-          <MenuItem value={'dormant'}>휴면</MenuItem>
+          <MenuItem value={'active'}>활성</MenuItem>
+          <MenuItem value={'inactive'}>비활성</MenuItem>
           <MenuItem value={'discharged'}>전역</MenuItem>
-          <MenuItem value={'active'}>활성화</MenuItem>
-          <MenuItem value={'deleted'}>삭제</MenuItem>
         </Select>
       </FormControl>
       <TextField
