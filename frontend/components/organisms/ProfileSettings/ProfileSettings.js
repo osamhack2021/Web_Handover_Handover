@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
+import R from 'ramda';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { Box } from '@mui/material';
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -12,23 +14,22 @@ import Tooltip from "@mui/material/Tooltip";
 
 import { validatePassword } from "_utils/validation";
 
-import { useDispatch } from 'react-redux';
-
 export default function ProfileSettings() {
   const dispatch = useDispatch();
 
+  const { user } = useSelector(R.pick(['user']));
+  const { group } = useSelector(R.pick(['group']));
+
+  console.log(user);
+
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [rank, setRank] = useState("");
-  const [status, setStatus] = useState("");
-  const [title, setTitle] = useState("인사담당관");
-  const [email, setEmail] = useState("hong@army.mil");
-  const [militaryTel, setMilitaryTel] = useState("123-1234");
-  const [mobileTel, setMobileTel] = useState("010-1234-1234");
-
-  const handleChange = (event, newValue) => {
-    settabNumber(newValue);
-  };
+  const [rank, setRank] = useState(user.rank);
+  const [status, setStatus] = useState(user.status);
+  const [title, setTitle] = useState(user.title);
+  const [email, setEmail] = useState(user.email);
+  const [militaryTel, setMilitaryTel] = useState(user.tel.military);
+  const [mobileTel, setMobileTel] = useState(user.tel.mobile);
 
   // Password validation error states
   const [passwordMessage, setPasswordMessage] = useState("");
@@ -69,7 +70,7 @@ export default function ProfileSettings() {
   };
 
   const mapMenuItem = (item) =>
-    item.map((i) => <MenuItem value={i}>{i}</MenuItem>);
+    item.map((i, index) => <MenuItem value={i} key={index}>{i}</MenuItem>);
 
   const isInputValid = () => {
     const isPasswordValid = password.length > 1 && passwordValid;
@@ -99,7 +100,7 @@ export default function ProfileSettings() {
       <div className="profile-setting-title"> 프로필 설정 </div>
       <FormControl fullWidth margin="normal">
         <InputLabel htmlFor="select-rank">계급/등급</InputLabel>
-        <Select defaultValue="" id="select-rank" label="계급/등급" onChange={(event) => handleInputChange(event, setRank)}>
+        <Select defaultValue={user.rank} id="select-rank" label="계급/등급" onChange={(event) => handleInputChange(event, setRank)}>
           <MenuItem value="" disabled={true}>
             선택
           </MenuItem>
@@ -119,7 +120,7 @@ export default function ProfileSettings() {
           <ListSubheader>부사관</ListSubheader>
           {mapMenuItem(["준위", "원사", "상사", "중사", "하사"])}
           <ListSubheader>용사</ListSubheader>
-          {mapMenuItem(["병장", "상등병", "일등병", "이등병"])}
+          {mapMenuItem(["병장", "상병", "일병", "이등병"])}
           <ListSubheader>군무원</ListSubheader>
           {mapMenuItem([
             "군무원 1급",
@@ -150,17 +151,11 @@ export default function ProfileSettings() {
       </FormControl>
       <FormControl fullWidth margin="normal">
         <InputLabel htmlFor="select-rank">계정 상태</InputLabel>
-        <Select defaultValue="" id="select-status" label="계정 상태" onChange={(event) => handleInputChange(event, setStatus)}>
-          <MenuItem value="" disabled={true}>
-            선택
-          </MenuItem>
-          {mapMenuItem([
-            "정지",
-            "휴면",
-            "전역",
-            "활성화",
-            "삭제"
-          ])}
+        <Select defaultValue={user.status} id="select-status" label="계정 상태" onChange={(event) => handleInputChange(event, setStatus)}>
+          <MenuItem value="" disabled={true}>선택</MenuItem>
+          <MenuItem value={'active'}>활성</MenuItem>
+          <MenuItem value={'inactive'}>비활성</MenuItem>
+          <MenuItem value={'discharged'}>전역</MenuItem>
         </Select>
       </FormControl>
       <TextField

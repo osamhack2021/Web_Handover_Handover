@@ -23,8 +23,8 @@ const dummy = [{
 }];
 
 function arrayToMenuItems(array) {
-  return array.map((elem) => (
-    <ListItem disableGutters sx={{ py: 0 }}>
+  return array.map((elem, index) => (
+    <ListItem disableGutters sx={{ py: 0 }} key={index}>
       <ListItemButton disableGutters sx={{ py: 0 }}>
         <MenuItem key={elem.Id} value={{ title: elem.title, Id: elem.Id, link: `/item/${elem.Id}` }} />
       </ListItemButton>
@@ -76,7 +76,7 @@ export default function LeftPane() {
           <ListSubheader className="leftpane-label"> 기타 </ListSubheader>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: '설정', link: '/', }} />
+              <MenuItem value={{ title: '설정', link: '/setting', }} />
             </ListItemButton>
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>
