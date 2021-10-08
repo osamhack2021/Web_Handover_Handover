@@ -12,6 +12,7 @@ import LoginPage from '_pages/LoginPage';
 import RegisterPage from '_pages/RegisterPage';
 import RoutingPage from '_pages/RoutingPage';
 import EditorPage from '_pages/EditorPage';
+import SettingsPage from '_pages/SettingsPage';
 
 // import Navigation from '_organisms/Navigation';
 // import Footer from '_organisms/Footer';
@@ -44,6 +45,7 @@ export default function Main({ location }) {
           <Route path="/login" component={LoginPage} />
           <Route path="/register" component={RegisterPage} />
           <Route path="/edit" component={EditorPage} />
+          <Route path="/setting" component={SettingsPage} />
           <Route path="*" component={RoutingPage} />
           {/* <Route path="/login" component={LoginPage} />
           <Route path="/register" component={RegisterPage} />
