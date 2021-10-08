@@ -38,14 +38,9 @@ async function isAdmin(loginUserId) {
 async function isHumanResourceManager(loginUserId, targetUserId) {
 	const user = await userService.findOne({_id:targetUserId}, {group:true})
 			.catch(err => {throw err});
-	const isGroupManager_ = await isGroupManager(loginUserId, user.group)
-			.catch(err => {throw err});
 
-	if(!isGroupManager_) {
-		return false;
-	}
-
-	return targetGroup.admins.includes(loginUserId);
+	return await isGroupManager(loginUserId, user.group)
+		.catch(err => {throw err});
 }
 
 async function isGroupManager(loginUserId, targetGroupId) {
@@ -53,14 +48,12 @@ async function isGroupManager(loginUserId, targetGroupId) {
 			.catch(err => {
 					throw err;
 				});
-	try {
-		return targetGroup.admins.includes(loginUserId);
-	}catch(err) {
-		if(err instanceof TypeError) {
-			return false;
-		}
+
+	if(!targetGroup) {
+		return false;
 	}
-		
+
+	return "admins" in targetGroup ? targetGroup.admins.includes(loginUserId) : false;
 }
 
 async function isItemEditor(loginUserId, targetItemId) {
@@ -69,9 +62,17 @@ async function isItemEditor(loginUserId, targetItemId) {
 	const targetItem = await itemService.read({_id: targetItemId}, {owner: true, contributors: true, accessGroups: true})
 			.catch(err => {throw err});
 
-	return targetItem.owner._id === loginUserId ||
-			targetItem.contributors.includes(loginUserId) ||
-			accessGroups.edit.includes(user.group);		
+	if(!targetItem) {
+		return false;
+	}
+
+	const isOwner = 'owner' in targetItem ? targetItem.owner._id === loginUserId : false,
+		isContributor = 'contributors' in targetItem ? targetItem.contributors.includes(loginUserId) : false,
+		isEditAccessGroup = 'accessGroups' in targetItem ?
+				 		('edit' in targetItem.accessGroups ? 
+				 		accessGroups.edit.includes(user.group) : false) : false;
+
+	return isOwner || isContributor || isEditAccessGroup;
 }
 
 async function isItemReader(loginUserId, targetItemId) {
@@ -79,12 +80,21 @@ async function isItemReader(loginUserId, targetItemId) {
 			.catch(err => {throw err});
 	const targetItem = await itemService.read({_id: targetItemId}, { contributors: true, accessGroups: true})
 			.catch(err => {throw err});
+			
+	if(!targetItem) {
+		return false;
+	}
 
-	return targetItem.contributors.includes(loginUserId) ||
-			accessGroups.edit.includes(user.group) ||	
-			accessGroups.read.includes(user.group);
+	const isContributor = 'contributors' in targetItem ? targetItem.contributors.includes(loginUserId) : false,
+		isEditAccessGroup = 'accessGroups' in targetItem ?
+				 		('edit' in targetItem.accessGroups ? 
+				 		accessGroups.edit.includes(user.group) : false) : false,
+		isReadAccessGroup = 'accessGroups' in targetItem ?
+				 		('read' in targetItem.accessGroups ? 
+				 		accessGroups.read.includes(user.group) : false) : false;
+
+		return isContributor || isEditAccessGroup || isReadAccessGroup;
 }
-
 
 module.exports = {
 
@@ -109,8 +119,6 @@ module.exports = {
 		const token = jwt.sign({
 			_id: loginUser._id,
 			serviceNumber: loginUser.serviceNumber,
-			group: loginUser.group,
-			status: loginUser.status,
 		}, SECRET_KEY, {
 			expiresIn: '1h'
 		});
