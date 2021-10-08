@@ -59,7 +59,7 @@ module.exports = {
             if(item === null) throw new NotFoundError(`Not Found: No result is found for item_id: ${item_id}`);
 
             // Check session's read authority
-            const user = await userService.searchByServiceNumber(res.locals.serviceNumber);
+            const user = await userService.findOne({ serviceNumber: res.locals.serviceNumber });
             if(!item.accessGroups.read.some(i => i.equals(user.group)))
                 throw new ForbiddenError(`Forbidden: You are not in readable group`);
 
