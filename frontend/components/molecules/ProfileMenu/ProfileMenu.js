@@ -1,26 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import PinkTrapezoid from '_assets/svgs/pink_trapezoid.svg';
 
-export default function ProfileMenu({ name = '', rank = '', division = '', title = '', profilePic = ''}) {
+export default function ProfileMenu({ name = '', rank = '', division = '', title = '', profilePic = '' }) {
   const aboveString = `${rank} ${name}`;
   const belowString = `${division} ${title}`;
 
   return (
     <div className="profile-menu">
       <div className="profile-menu-content">
-        <img
-          className="profile-img"
-          src={profilePic || '/images/default-profile.png'}
-          alt="profile"
-        />
+        <Link to="/profile">
+          <img
+            className="profile-img"
+            src={profilePic || '/images/default-profile.png'}
+            alt="profile"
+          />
+        </Link>
         <div>
           <div className="profile-string-above">
-            {aboveString}
+            <Link to="/profile" style={{color: 'black'}}>{aboveString}</Link>
           </div>
           <div className="profile-string-below">
-            {belowString}
+            <Link to="/profile" style={{color: 'black'}}> {belowString} </Link>
           </div>
         </div>
       </div>
