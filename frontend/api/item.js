@@ -26,3 +26,8 @@ export const algoliaSearch = (query) => request.get('/api/item/algolia')
   .query({ query })
   .then(handleSuccess)
   .catch(handleError);
+
+export const updateItem = (itemId, object) => request.put(`/api/item/${itemId}`)
+  .send(object)
+  .then(handleSuccess)
+  .catch(handleError);
