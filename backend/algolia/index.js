@@ -13,7 +13,8 @@ index.setSettings({
         'type',
         'tags',
         'status',
-        'comments'
+        'comments',
+        'content'
     ]
 });
 
