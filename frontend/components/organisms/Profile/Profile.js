@@ -36,7 +36,7 @@ export default function Profile() {
         <div className="profile-value">{user.rank}</div>
         <div className="profile-value">{user.title}</div>
         <div className="profile-value">{status}</div>
-        <div className="profile-value">{group.division}</div>
+        <div className="profile-value">{group.division === undefined ? "소속 없음" : group.division}</div>
         <div className="profile-value">{user.email}</div>
         <div className="profile-value">{user.tel.military}</div>
         <div className="profile-value">{user.tel.mobile}</div>
