@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import R from 'ramda';
+
+import { useDispatch, useSelector } from 'react-redux';
 
 import Menu from 'react-bulma-companion/lib/Menu';
 import DrawerProfile from '_molecules/DrawerProfile';
@@ -20,27 +23,31 @@ const menulist = [
   ],
 ];
 */
-export default function Drawer({
-  name, rank, title, division, menulist,
-}) {
+export default function Drawer({ menulist }) {
+  const dispatch = useDispatch();
+
+  const { user } = useSelector(R.pick(['user']));
+  const { group } = useSelector(R.pick(['group']));
+
+
   return (
     <div className="drawer">
-      <DrawerProfile name={name} rank={rank} division={division} title={title} />
+      <DrawerProfile name={user.name} rank={user.rank} division={group.name} title={user.title} />
       <Menu className="drawer-menu">
         {
-          menulist.map((list) => {
+          menulist.map((list, index) => {
             if (typeof list === 'string') {
               return (
-                <Menu.Label className="drawer-label">
+                <Menu.Label className="drawer-label" key={index} >
                   {list}
                 </Menu.Label>
               );
             }
             return (
-              <Menu.List className="drawer-list">
+              <Menu.List className="drawer-list" key={index}>
                 {
-                  list.map((item) => (
-                    <MenuItem value={item} />
+                  list.map((item, listIndex) => (
+                    <MenuItem value={item} key={listIndex} />
                   ))
                 }
               </Menu.List>
@@ -53,9 +60,5 @@ export default function Drawer({
 }
 
 Drawer.propTypes = {
-  name: PropTypes.string.isRequired,
-  rank: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  division: PropTypes.string.isRequired,
   menulist: PropTypes.array.isRequired,
 };
