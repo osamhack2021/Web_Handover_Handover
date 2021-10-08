@@ -20,10 +20,11 @@ export default function SettingsPage() {
       {title: '알림', src: User, alt: 'alert', link: '/'},
     ],
   ];
+  
   return (
     <div className="page-template">
       <div className="drawer-container">
-        <Drawer name="야옹이" rank="이병" title="짬타이거" division="0사단 00연대" menulist={menulist} />
+        <Drawer menulist={menulist} />
       </div>
       <div className="setting-page">
         <Switch>
