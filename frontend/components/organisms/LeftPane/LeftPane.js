@@ -76,7 +76,7 @@ export default function LeftPane() {
           <ListSubheader className="leftpane-label"> 기타 </ListSubheader>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: '설정', link: '/', }} />
+              <MenuItem value={{ title: '설정', link: '/setting', }} />
             </ListItemButton>
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>
