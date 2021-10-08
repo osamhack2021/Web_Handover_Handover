@@ -69,7 +69,7 @@ export default function ProfileSettings() {
   };
 
   const mapMenuItem = (item) =>
-    item.map((i) => <MenuItem value={i}>{i}</MenuItem>);
+    item.map((i, index) => <MenuItem value={i} key={index}>{i}</MenuItem>);
 
   const isInputValid = () => {
     const isPasswordValid = password.length > 1 && passwordValid;
