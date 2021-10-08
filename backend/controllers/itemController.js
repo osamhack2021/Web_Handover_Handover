@@ -74,6 +74,14 @@ module.exports = {
         try {
             let body = req.body;
             body.owner = res.locals._id;
+            
+            // Add accessGroups if body.accessGroups is undefined
+            if(!body.accessGroups.read || body.accessGroups.read.length < 1) {
+                body.accessGroups.read = [res.locals.group];
+            }
+            if(!body.accessGroups.edit || body.accessGroups.edit.length < 1) {
+                body.accessGroups.edit = [res.locals.group];
+            }
 
             const result = await itemService.create(body);
 
