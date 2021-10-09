@@ -25,4 +25,4 @@ ARG REACT_APP_API_BASE_URL
 ENV REACT_APP_API_BASE_URL=$API_BASE_URL
 
 # Create symlink to /backend/node_modules and start app.js
-CMD ln -s /app/node_modules /app/frontend/node_modules && npm start
+CMD ln -sfn /app/node_modules /app/frontend/node_modules && npm start
