@@ -11,6 +11,27 @@ $grey-darker : #363636;
 $black-ter : #242424;
 $black: #000;
 
+// Material Design Palette from https://codepen.io/jonrohan/pen/NNGaBO
+$red: #F44336;
+// $pink: #E91E63;
+$purple: #9C27B0;
+$deep-purple: #673AB7;
+$indigo: #3F51B5;
+$blue: #2196F3;
+$light-blue: #03A9F4;
+$cyan: #00BCD4;
+$teal: #009688;
+$green: #4CAF50;
+$light-green: #8BC34A;
+$lime: #CDDC39;
+$yellow: #FFEB3B;
+$amber: #FFC107;
+$orange: #FF9800;
+$deep-orange: #FF5722;
+$brown: #795548;
+$grey: #9E9E9E;
+$blue-grey: #607D8B;
+
 $black-b25 : rgba(0,0,0,0.25);
 $black-b50 : rgba(0, 0, 0, 0.5);
 $black-b70 : rgba(0,0,0,0.7);
@@ -31,7 +52,7 @@ $mern-hover: #323232;
 $light-opacity: rgba(0, 0, 0, 0.4);
 
 // Primary Colors
-$primary: $turquoise;
+$primary: $pink;
 $info: $blue;
 $success: $green;
 $warning: $yellow;
