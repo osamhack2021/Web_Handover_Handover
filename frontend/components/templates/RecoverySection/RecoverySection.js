@@ -7,6 +7,6 @@ export default function RecoverySection() {
   return (
     <Container className="recovery-secction">
       <Recovery />
-    </Containe>
+    </Container>
   );
 }
