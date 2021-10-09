@@ -1,10 +1,5 @@
 const path = require('path');
 
-const { BusinessError, ForbiddenError, NotFoundError } = require('../services/errors/BusinessError');
-
-const jwt = require('jsonwebtoken');
-const SECRET_KEY = "MY_SECRET_KEY";
-
 module.exports = {
 
     // GET /file/:file_name

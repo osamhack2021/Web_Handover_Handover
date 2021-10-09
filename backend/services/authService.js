@@ -7,17 +7,18 @@ const itemService = require('./itemService.js');
 const { RuntimeError } = require('./errors/RuntimeError.js');
 const { AuthError, ForbiddenError } = require('./errors/BusinessError.js');
 
-const SECRET_KEY = 'MY_SECRET_KEY';
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+const PASSWORD_HASH_KEY = process.env.PASSWORD_HASH_KEY;
 
 function encode(rawPassword) {
-  return crypto.createHmac('sha256', 'secret12341234')
+  return crypto.createHmac('sha256', PASSWORD_HASH_KEY)
     .update(rawPassword)
     .digest('hex');
 }
 
 function decodeToken(token) {
   try {
-    const decoded = jwt.verify(token, SECRET_KEY);
+    const decoded = jwt.verify(token, JWT_SECRET_KEY);
 
     return decoded;
   } catch (err) {
@@ -121,7 +122,7 @@ module.exports = {
 			serviceNumber: loginUser.serviceNumber,
 			group: loginUser.group,
 			status: loginUser.status
-		}, SECRET_KEY, {
+		}, JWT_SECRET_KEY, {
 			expiresIn: '1h'
 		});
 
