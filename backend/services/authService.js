@@ -22,7 +22,7 @@ function decodeToken(token) {
 
     return decoded;
   } catch (err) {
-    throw new ForbiddenError(err.message);
+    throw new ForbiddenError('로그인이 필요한 서비스입니다.');
   }
 }
 
