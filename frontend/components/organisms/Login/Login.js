@@ -14,22 +14,22 @@ export default function Login() {
   const dispatch = useDispatch();
 
   const [remember, setRemember] = useState(false);
-  const [username, setUsername] = useState('');
+  const [serviceNumber, setServiceNumber] = useState('');
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    const username = localStorage.getItem('username');
-    if (username) {
+    const serviceNumber = localStorage.getItem('serviceNumber');
+    if (serviceNumber) {
       setRemember(true);
-      setUsername(username);
+      setServiceNumber(serviceNumber);
     }
   }, []);
 
   const login = () => {
-    const userCredentials = { serviceNumber: username, password };
+    const userCredentials = { serviceNumber: serviceNumber, password };
 
     if (remember) {
-      localStorage.setItem("serviceNumber", username);
+      localStorage.setItem("serviceNumber", serviceNumber);
     }
 
     dispatch(attemptLogin(userCredentials)).catch(R.identity);
@@ -38,11 +38,11 @@ export default function Login() {
   useKeyPress('Enter', login);
 
   const rememberMe = () => {
-    localStorage.removeItem('username');
+    localStorage.removeItem('serviceNumber');
     setRemember(!remember);
   };
 
-  const updateUsername = (e) => setUsername(e.target.value);
+  const updateServiceNumber = (e) => setServiceNumber(e.target.value);
   const updatePassword = (e) => setPassword(e.target.value);
 
   return (
@@ -56,8 +56,8 @@ export default function Login() {
           id="input-id"
           label="군번"
           placeholder="군번을 입력해주세요"
-          value={username}
-          onChange={updateUsername}
+          value={serviceNumber}
+          onChange={updateServiceNumber}
           margin="normal"
         />
         <TextField
