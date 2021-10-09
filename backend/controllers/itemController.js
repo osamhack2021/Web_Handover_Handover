@@ -73,12 +73,18 @@ module.exports = {
             let body = req.body;
             body.owner = res.locals._id;
             
+            console.log(body)
+
             // Add accessGroups if body.accessGroups is undefined
-            if(!body.accessGroups.read || body.accessGroups.read.length < 1) {
-                body.accessGroups.read = [res.locals.group];
-            }
-            if(!body.accessGroups.edit || body.accessGroups.edit.length < 1) {
-                body.accessGroups.edit = [res.locals.group];
+            if(!body.accessGroups) {
+                body.accessGroups = { read: [res.locals.group], edit: [res.locals.group] };
+            } else {
+                if(!body.accessGroups.read || body.accessGroups.read.length < 1) {
+                    body.accessGroups.read = [res.locals.group];
+                }
+                if(!body.accessGroups.edit || body.accessGroups.edit.length < 1) {
+                    body.accessGroups.edit = [res.locals.group];
+                }
             }
 
             const result = await itemService.create(body);
@@ -92,6 +98,7 @@ module.exports = {
 
             res.status(201).send(result);
         } catch(err) {
+            console.log(err);
             res.status(err.status || 500).send(err.message);
         }
     },
@@ -134,13 +141,18 @@ module.exports = {
 
             if(item === null)
                 throw new NotFoundError(`Not Found: No result is found for item_id: ${item_id}`);
+
             
+            // Algolia
+            await algolia.deleteObject(item_id);
+
+            // Delete item
             let promises = [itemService.delete(item_id)];
+
+            // Removing all items
             for(let historyItem of item.history) {
                 promises.push(itemService.delete(historyItem));
             }
-
-            // Waiting for removing all items;
             await Promise.all(promises);
 
             res.status(204).send();
