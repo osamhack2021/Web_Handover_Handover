@@ -1,0 +1,24 @@
+{
+  // This file is required for VSCode to understand webpack aliases
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "_frontend/*": ["./*"],
+      "_assets/*": ["./assets/*"],
+      "_styles/*": ["./styles/*"],
+      "_utils/*": ["./utils/*"],
+      "_api/*": ["./api/*"],
+      "_hooks/*": ["./hooks/*"],
+      "_atoms/*": ["./components/atoms/*"],
+      "_molecules/*": ["./components/molecules/*"],
+      "_organisms/*": ["./components/organisms/*"],
+      "_templates/*": ["./components/templates/*"],
+      "_pages/*": ["./components/pages/*"],
+      "_environment/*": ["./components/environment/*"],
+      "_store/*": ["./store/*"],
+      "_actions/*": ["./store/actions/*"],
+      "_reducers/*": ["./store/reducers/*"],
+      "_thunks/*": ["./store/thunks/*"],
+    }
+  }
+}

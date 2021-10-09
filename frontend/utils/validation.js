@@ -1,20 +1,17 @@
 import R from 'ramda';
 
-export const validateUsername = username => {
+export const validateServiceNumber = username => {
   let valid = true;
-  let message = 'Username Valid';
+  let message = '올바른 군번 형식입니다';
 
-  if (!R.match(/^[a-zA-Z0-9_]+$/, username).length) {
-    message = 'Invalid character used';
+  if (!R.match(/^[0-9-]+$/, username).length) {
+    message = '숫자와 -로 구성된 군번을 입력해주세요';
     valid = false;
   } else if (username.length < 4) {
-    message = 'Username must be at least four characters';
+    message = '4자리 이상의 군번을 입력해주세요';
     valid = false;
   } else if (username.length > 20) {
-    message = 'Username must be 20 characters or less';
-    valid = false;
-  } else if (R.match(/[a-zA-Z]/g, username).length < 4) {
-    message = 'Username must include at least four letters';
+    message = '올바른 형식의 군번을 입력해주세요';
     valid = false;
   }
   return { valid, message };
@@ -22,20 +19,17 @@ export const validateUsername = username => {
 
 export const validatePassword = (username, password) => {
   let valid = true;
-  let message = 'Password valid';
+  let message = '사용할 수 있는 비밀번호입니다';
 
-  if (password.length < 6) {
+  if (password.length < 8) {
     valid = false;
-    message = 'Password must be at least six characters';
-  } else if (password.length > 16) {
-    valid = false;
-    message = 'Password must be 16 characters or less';
+    message = '8자리 이상의 비밀번호를 사용해주세요';
   } else if (username === password) {
     valid = false;
-    message = 'Username and password must be different';
+    message = '사용자 이릅과 동일한 비밀번호는 사용할 수 없습니다';
   } else if (!R.match(/[0-9]/, password).length) {
     valid = false;
-    message = 'Password must include at least one number';
+    message = '한자리 이상의 숫자를 포함한 비밀번호를 사용해주세요';
   }
 
   return { valid, message };

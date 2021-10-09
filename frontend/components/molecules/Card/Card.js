@@ -1,51 +1,84 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { snakeToCamelCase } from 'json-style-converter/es5';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
+import R from 'ramda';
 
+import { getUser } from '_api/user';
+import { getItemByItemId, getItemChild } from '_api/item';
 import NoteHeader from '../NoteHeader';
 import NoteFooter from '../NoteFooter';
+
 import CardItem from '../CardItem';
 
-import listToCompnent from '../../../utils/listToComponent';
+function arrayToCardItems(array) {
+  return array.map((elem) => <CardItem value={elem} key={elem.Id} />);
+}
 
 // type takes "card", "document", "cabinet" values
-// rest of the props are self-evident
+// refactoring due to change in item schema,
+// require sole prop, the item object itself
+// Reason : In calling Cards, the Parent already possesses the item array of card from api calls
 
-export default function Card({ type = 'card', title, description, children, isArchived = false }) {
-  // const mainTitle = item.title;
-  // const description = item.content.description;
-  // const children = item.content.children;
+export default function Card({ Id }) {
+  const history = useHistory();
 
-  const className = `note--${type}`;
-  const dummyTitle = '물품 관리';
-  const dummyDescription = '대위 이순신';
-  const dummyChildren = [
-    {
-      _id: 1,
-      title: '문서 제목 1',
-    },
-    {
-      _id: 2,
-      title: '문서 제목 2',
-    },
-    {
-      _id: 3,
-      title: '문서 제목 3',
-    },
-  ];
+  // find current user from store
+  const { user } = useSelector(R.pick(['user']));
+  const { group } = useSelector(R.pick(['group']));
 
-  const dummyIsArchived = true;
-  const arrayRender = listToCompnent(CardItem, dummyChildren, '_id');
+  // states of item, createdby, and child array
+  const [itemObject, setItemObject] = useState({});
+  const [createdBy, setCreatedBy] = useState('');
+  const [childObjectArray, setchildObjectArray] = useState([]);
+
+  // set boolean states to handle asynchronous requests
+  const [loadingItem, setLoadingItem] = useState(true);
+  const [loadingChild, setLoadingChild] = useState(true);
+  const [loadingCreator, setLoadingCreator] = useState(true);
+  const [isAvailable, setIsAvailable] = useState(false);
+
+  useEffect(() => {
+    getItemByItemId(Id).then((item) => {
+      setItemObject(snakeToCamelCase(item));
+      setLoadingItem(false);
+      // setting availability of item
+      setIsAvailable(item.accessGroups.read.includes(item.Id));
+      getItemChild(item.path).then((childArray) => {
+        setchildObjectArray(childArray);
+        setLoadingChild(false);
+      });
+    });
+
+    getUser(Id).then((data) => {
+      setCreatedBy(data.name);
+      setLoadingCreator(false);
+    });
+  }, []);
+
+  // setting appropriate values to constants
+  const { title, content } = itemObject;
+  const className = `note--${itemObject.type}`;
+  const isArchived = user.bookmarks.includes(Id);
   const dateFromNow = '2주 전 수정됨';
+  const routeChange = () => {
+    const path = `item/${Id}`;
+    history.push(path);
+  };
+  const innerContent = (itemObject.type === 'card' ? content : arrayToCardItems(childObjectArray));
+  const boolSum = loadingItem && loadingChild && loadingCreator && isAvailable;
 
-  return (
+  return !boolSum && (
     <div className={className}>
       <div>
-        <NoteHeader title={dummyTitle} isArchived={isArchived} />
+        {/* passing NoteHeader onClick element, so that upon clicking title can be redirected */}
+        <NoteHeader title={title} isArchived={isArchived} onClick={routeChange} />
         <div className="description">
-          {dummyDescription}
+          {createdBy}
         </div>
         <div className="container-child">
-          {arrayRender}
+          {innerContent}
         </div>
       </div>
       <NoteFooter dateFromNow={dateFromNow} />
@@ -54,9 +87,5 @@ export default function Card({ type = 'card', title, description, children, isAr
 }
 
 Card.propTypes = {
-  type: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  children: PropTypes.array.isRequired,
-  isArchived: PropTypes.bool.isRequired,
+  Id: PropTypes.string.isRequired,
 };

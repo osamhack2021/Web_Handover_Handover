@@ -4,7 +4,7 @@
   margin-left : 240px;
   @include flexBox(
     $display : flex, 
-    $justify-content : center,
+    $justify-content : flex-start,
     $flex-direction : column
   );
   width: calc(100% - 240px);

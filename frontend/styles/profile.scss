@@ -1,0 +1,37 @@
+@import 'mixins';
+
+.profile{
+    .profile-title {
+        margin-bottom : 50px;    
+        @include setfonts($font-family : Roboto, $font-size: $size-3, $font-weight: $weight-bold, $line-height: 42px);
+    }   
+
+    .profile-labels{
+        display:inline-block;
+        margin-right: 100px;
+
+        @include setfonts(
+            $font-weight : $weight-bold,
+            $font-size : $size-5,
+            $line-height : 24px
+        );
+        
+        .profile-label{
+            margin-bottom : 50px;
+        }
+    }
+    .profile-values{
+        display:inline-block;
+        color: $black-b50;
+
+        @include setfonts(
+            $font-weight : $weight-bold,
+            $font-size : $size-5,
+            $line-height : 24px
+        );
+
+        .profile-value{
+            margin-bottom : 50px;
+        }
+    }
+}

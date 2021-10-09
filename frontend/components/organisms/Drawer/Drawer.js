@@ -1,53 +1,64 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import R from 'ramda';
+
+import { useDispatch, useSelector } from 'react-redux';
 
 import Menu from 'react-bulma-companion/lib/Menu';
 import DrawerProfile from '_molecules/DrawerProfile';
 import MenuItem from '_molecules/MenuItem';
 
-export default function Drawer({name, rank, title, division,}) {
+/*
+Example of menulist :
+const menulist = [
+  'ME',
+  [
+    {title: '프로필', src: User, alt: 'user', link: '/'},
+    {title: '테마 변경', src: ThemeChange, alt: 'themechange', link: '/'},
+  ]  ,
+  'TEAM',
+  [
+    {title: '문서 권한 수정', src: Auth, alt: 'auth', link: '/'},
+    {title: '알림', src: Alert, alt: 'alert', link: '/'},
+  ],
+];
+*/
+export default function Drawer({ menulist }) {
+  const dispatch = useDispatch();
+
+  const { user } = useSelector(R.pick(['user']));
+  const { group } = useSelector(R.pick(['group']));
+
+
   return (
     <div className="drawer">
-      <DrawerProfile name="야옹이" rank="하사" division="0사단 00연대" title="짬타이거" />
+      <DrawerProfile name={user.name} rank={user.rank} division={group.name} title={user.title} />
       <Menu className="drawer-menu">
-        <Menu.Label className="drawer-label">
-          ME
-        </Menu.Label>
-        <Menu.List className="drawer-list">
-          <MenuItem value={{
-            name: '프로필',
-            link: '/',
-          }}
-          />
-          <MenuItem value={{
-            name: '테마 변경',
-            link: '/',
-          }}
-          />
-        </Menu.List>
-        <Menu.Label className="drawer-label">
-          TEAM
-        </Menu.Label>
-        <Menu.List className="drawer-list">
-          <MenuItem value={{
-            name: '문서 권한 수정',
-            link: '/',
-          }}
-          />
-          <MenuItem value={{
-            name: '알림',
-            link: '/',
-          }}
-          />
-        </Menu.List>
+        {
+          menulist.map((list, index) => {
+            if (typeof list === 'string') {
+              return (
+                <Menu.Label className="drawer-label" key={index} >
+                  {list}
+                </Menu.Label>
+              );
+            }
+            return (
+              <Menu.List className="drawer-list" key={index}>
+                {
+                  list.map((item, listIndex) => (
+                    <MenuItem value={item} key={listIndex} />
+                  ))
+                }
+              </Menu.List>
+            );
+          })
+        }
       </Menu>
     </div>
   );
 }
 
 Drawer.propTypes = {
-  name: PropTypes.string.isRequired,
-  rank: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  division: PropTypes.string.isRequired,
+  menulist: PropTypes.array.isRequired,
 };

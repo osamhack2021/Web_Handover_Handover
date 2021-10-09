@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-export default function BreadCrumb({ value }) {
-  console.log(value);
-	const {url, name} = value;
+export default function BreadCrumb({ value, link }) {
+  const { Id, title } = value;
   return (
-    <Link to={url} className="breadcrumb">{name}</Link>
+    <Link to={link} className="breadcrumb">{title}</Link>
   );
 }
 
 BreadCrumb.propTypes = {
   value: PropTypes.object.isRequired,
+  link: PropTypes.string.isRequired,
 };

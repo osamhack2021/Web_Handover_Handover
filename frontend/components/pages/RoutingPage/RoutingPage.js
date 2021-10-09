@@ -1,49 +1,55 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { push } from 'connected-react-router';
 import { Switch, Route } from 'react-router';
+import R from 'ramda';
 
 import LeftPane from '_organisms/LeftPane';
-// import GridLayout from '_organisms/GridLayout';
-import HomePage from '_pages/HomePage';
+import Header from '_organisms/Header';
+import ItemPage from '_pages/ItemPage';
 import RecommendPage from '_pages/RecommendPage';
-import LoginPage from '_pages/LoginPage';
-import RegisterPage from '_pages/RegisterPage';
+import { attemptGetGroup } from '_thunks/group';
+import { attemptLoadItems } from '_thunks/item';
+import SearchPage from '_pages/SearchPage';
 
 export default function RoutingPage() {
-  const dummyGroupData = [
-    {
-      _id: 1,
-      name: '인사과',
-      anthing: 'else is possible',
-    },
-    {
-      _id: 2,
-      name: '00대대',
-    },
-    {
-      _id: 3,
-      name: '창업동아리',
-    },
-  ];
+  const dispatch = useDispatch();
+  const { user } = useSelector(R.pick(['user']));
 
-  return (
+  // to identify whether all contents are loaded or not
+  const [loadingGroup, setLoadingGroup] = useState(true);
+  const [loadingItem, setLoadingItem] = useState(true);
 
+  useEffect(() => {
+    if (R.isEmpty(user)) {
+      dispatch(push('/login'));
+    } else {
+      dispatch(attemptGetGroup(user.group))
+        .catch(R.identity)
+        .then(() => setLoadingGroup(false));
+
+      dispatch(attemptLoadItems(user.Id))
+        .catch(R.identity)
+        .then(() => setLoadingItem(false));
+    }
+  }, []);
+
+  return !loadingGroup && !loadingItem && (
     <div className="page-template">
       <div className="left-pane-container">
-        <LeftPane
-          name="홍길동"
-          rank="하사"
-          division="00부대"
-          title="인사담당관"
-          groupData={dummyGroupData}
-        />
+        <LeftPane />
       </div>
-      <Switch>
-        {/* <Route path="/blahblahbalh" component={anything} /> */}
-        <Route path="/home" component={HomePage} />
-        <Route path="/recommend" component={RecommendPage} />
-        <Route path="/login" component={LoginPage} />
-        <Route path="/register" component={RegisterPage} />
-      </Switch>
+      <div className="home-page">
+        <Header />
+        <Switch>
+          {/* <Route path="/blahblahbalh" component={anything} /> */}
+          <Route path="/home" component={RecommendPage} />
+          <Route path="/item/:itemId" component={ItemPage} />
+          <Route path="/search/:searchQuery" component={SearchPage} />
+          {/* <Route path="/recommend" component={RecommendPage} /> */}
+        </Switch>
+
+      </div>
     </div>
   );
 }

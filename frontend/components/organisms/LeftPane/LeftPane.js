@@ -1,70 +1,96 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import R from 'ramda';
 import PropTypes from 'prop-types';
-
-import Menu from 'react-bulma-companion/lib/Menu';
+import { snakeToCamelCase } from 'json-style-converter/es5';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListSubheader from '@mui/material/ListSubheader';
 
 import ProfileMenu from '_molecules/ProfileMenu';
 import MenuItem from '_molecules/MenuItem';
-import listToCompnent from '../../../utils/listToComponent';
+import { attemptGetGroup } from '_thunks/group';
 
-export default function LeftPane({
-  name, rank, title, division, groupData,
-}) {
-  // const { user } = useSelector(R.pick(['user']));
-  // const {name, rank, title, groups} = user;
-  // const groupData = CreateGroupData(groups);
+const dummy = [{
+  Id: 1,
+  title: '군수과',
+  type: 'cabinet',
+},
+{
+  Id: 2,
+  title: '00대대',
+  type: 'cabinet',
+}];
+
+function arrayToMenuItems(array) {
+  return array.map((elem, index) => (
+    <ListItem disableGutters sx={{ py: 0 }} key={index}>
+      <ListItemButton disableGutters sx={{ py: 0 }}>
+        <MenuItem key={elem.Id} value={{ title: elem.title, Id: elem.Id, link: `/item/${elem.Id}` }} />
+      </ListItemButton>
+    </ListItem>
+  ));
+}
+
+export default function LeftPane() {
+  const dispatch = useDispatch();
+  // if user exists, means a user has logged in, i.e. item, group items are available
+  const { user } = useSelector(R.pick(['user']));
+  const { group } = useSelector(R.pick(['group']));
+  const { userItem } = useSelector(R.pick(['userItem']));
 
   return (
     <div className="leftpane">
       <div className="leftpane-header">
-        <ProfileMenu name={name} rank={rank} title={title} division={division} position="인사담당관" />
+        <ProfileMenu name={user.name} rank={user.rank} title={user.title} division={group.name} />
       </div>
-      <Menu className="leftpane-menu">
-        <Menu.Label className="leftpane-label">
-          내 서랍
-        </Menu.Label>
-        <Menu.List>
-          {listToCompnent(MenuItem, groupData, '_id')}
-        </Menu.List>
-        <Menu.Label className="leftpane-label">
-          내 문서
-        </Menu.Label>
-        <Menu.List>
-          <MenuItem value={{
-            name: '최근에 본',
-            link: '/',
-          }}
-          />
-          <MenuItem value={{
-            name: '북마크',
-            link: '/',
-          }}
-          />
-          <MenuItem value={{
-            name: '임시저장',
-            link: '/',
-          }}
-          />
-        </Menu.List>
-        <Menu.Label className="leftpane-label">
-          기타
-        </Menu.Label>
-        <Menu.List>
-          <MenuItem value={{
-            name: '도움말',
-            link: '/',
-          }}
-          />
-        </Menu.List>
-      </Menu>
-    </div>
+      <div className="leftpane-menu">
+        <div className="leftpane-menu1">
+          <ListSubheader className="leftpane-label"> 내 서랍 </ListSubheader>
+          {arrayToMenuItems(dummy.filter((elem) => elem.type === 'cabinet'))}
+        </div>
+        <div className="leftpane-menu2">
+          <ListSubheader className="leftpane-label"> 내 문서 </ListSubheader>
+          <ListItem disableGutters sx={{ py: 0 }}>
+            <ListItemButton disableGutters sx={{ py: 0 }}>
+              <MenuItem value={{ title: '북마크', link: '/' }} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disableGutters sx={{ py: 0 }}>
+            <ListItemButton disableGutters sx={{ py: 0 }}>
+              <MenuItem value={{ title: '최근에 본 문서', link: '/', }} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disableGutters sx={{ py: 0 }}>
+            <ListItemButton disableGutters sx={{ py: 0 }}>
+              <MenuItem value={{ title: '내가 작성한 문서', link: '/', }} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disableGutters sx={{ py: 0 }}>
+            <ListItemButton disableGutters sx={{ py: 0 }}>
+              <MenuItem value={{ title: '임시저장한 문서', link: '/', }} />
+            </ListItemButton>
+          </ListItem>
+        </div>
+        <div className="leftpane-menu3">
+          <ListSubheader className="leftpane-label"> 기타 </ListSubheader>
+          <ListItem disableGutters sx={{ py: 0 }}>
+            <ListItemButton disableGutters sx={{ py: 0 }}>
+              <MenuItem value={{ title: '설정', link: '/setting', }} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disableGutters sx={{ py: 0 }}>
+            <ListItemButton disableGutters sx={{ py: 0 }}>
+              <MenuItem value={{ title: '도움말', link: '/', }} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disableGutters sx={{ py: 0 }}>
+            <ListItemButton disableGutters sx={{ py: 0 }}>
+              <MenuItem value={{ title: '서비스 페이지', link: '/', }} />
+            </ListItemButton>
+          </ListItem>
+        </div>
+      </div>
+    </div >
   );
 }
-
-LeftPane.propTypes = {
-  name: PropTypes.string.isRequired,
-  rank: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  division: PropTypes.string.isRequired,
-  groupData: PropTypes.arrayOf(PropTypes.object).isRequired,
-};

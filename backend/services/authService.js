@@ -1,38 +1,38 @@
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 const userService = require('./userService.js');
 const groupService = require('./groupService.js');
 const itemService = require('./itemService.js');
 
-const crypto = require('crypto');
 const { RuntimeError } = require('./errors/RuntimeError.js');
 const { AuthError, ForbiddenError } = require('./errors/BusinessError.js');
 
-const jwt = require('jsonwebtoken');
-const SECRET_KEY = "MY_SECRET_KEY";
+const SECRET_KEY = 'MY_SECRET_KEY';
 
 function encode(rawPassword) {
-	return crypto.createHmac('sha256', 'secret12341234')
-	.update(rawPassword)
-	.digest('hex');
+  return crypto.createHmac('sha256', 'secret12341234')
+    .update(rawPassword)
+    .digest('hex');
 }
 
 function decodeToken(token) {
-	try{
-		const decoded = jwt.verify(token, SECRET_KEY);
-		
-		return decoded;
-	}catch(err) {
-		throw new ForbiddenError(err.message);
-	}	
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+
+    return decoded;
+  } catch (err) {
+    throw new ForbiddenError(err.message);
+  }
 }
 
 function isSelf(loginUserId, targetUserId) {
-	return loginUserId === targetUserId;
+  return loginUserId === targetUserId;
 }
 
 async function isAdmin(loginUserId) {
-	const user = await userService.findOne({_id:loginUserId}, {status:true})
-			.catch(err => {throw err});
-	return user.status === 'admin';
+  const user = await userService.findOne({ _id: loginUserId }, { status: true })
+    .catch((err) => { throw err; });
+  return user.status === 'admin';
 }
 
 async function isHumanResourceManager(loginUserId, targetUserId) {

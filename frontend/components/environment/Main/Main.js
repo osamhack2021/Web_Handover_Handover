@@ -7,14 +7,13 @@ import R from 'ramda';
 
 import { attemptGetUser } from '_thunks/user';
 
-// import WelcomePage from '_pages/WelcomePage';
-// import LoginPage from '_pages/LoginPage';
-// import RegisterPage from '_pages/RegisterPage';
-// import HomePage from '_pages/HomePage';
-// import TodoPage from '_pages/TodoPage';
-// import SettingsPage from '_pages/SettingsPage';
-// import LostPage from '_pages/LostPage';
+import WelcomePage from '_pages/WelcomePage';
+import LoginPage from '_pages/LoginPage';
+import RegisterPage from '_pages/RegisterPage';
 import RoutingPage from '_pages/RoutingPage';
+import EditorPage from '_pages/EditorPage';
+import SettingsPage from '_pages/SettingsPage';
+import ProfilePage from '_pages/ProfilePage';
 
 // import Navigation from '_organisms/Navigation';
 // import Footer from '_organisms/Footer';
@@ -43,6 +42,12 @@ export default function Main({ location }) {
       {/* <Navigation pathname={location.pathname} /> */}
       <div className="main">
         <Switch>
+          <Route exact path="/" component={WelcomePage} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/register" component={RegisterPage} />
+          <Route path="/edit" component={EditorPage} />
+          <Route path="/setting" component={SettingsPage} />
+          <Route path="/profile" component={ProfilePage} />
           <Route path="*" component={RoutingPage} />
           {/* <Route path="/login" component={LoginPage} />
           <Route path="/register" component={RegisterPage} />

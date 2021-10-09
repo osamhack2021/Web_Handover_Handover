@@ -3,9 +3,19 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 export default function MenuItem({ value }) {
-  const { name, link } = value;
+  const { title, link, src, alt } = value;
+  if (src === undefined && alt === undefined) {
+    return (
+      <Link to={link} className="leftpane-item">
+        {title}
+      </Link>
+    );
+  }
   return (
-    <Link to={link} className="leftpane-item">{name}</Link>
+    <Link to={link} className="leftpane-item">
+      <img src={src} alt={alt} />
+      &nbsp; {title}
+    </Link>
   );
 }
 
