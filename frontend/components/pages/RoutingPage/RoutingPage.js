@@ -7,6 +7,7 @@ import R from 'ramda';
 import LeftPane from '_organisms/LeftPane';
 import Header from '_organisms/Header';
 import ItemPage from '_pages/ItemPage';
+import TestPage from '_pages/TestPage';
 import RecommendPage from '_pages/RecommendPage';
 import { attemptGetGroup } from '_thunks/group';
 import { attemptLoadItems } from '_thunks/item';
@@ -43,7 +44,8 @@ export default function RoutingPage() {
         <Header />
         <Switch>
           {/* <Route path="/blahblahbalh" component={anything} /> */}
-          <Route path="/home" component={RecommendPage} />
+          <Route path="/home" component={TestPage} />
+          {/* <Route path="/home" component={RecommendPage} /> */}
           <Route path="/item/:itemId" component={ItemPage} />
           <Route path="/search/:searchQuery" component={SearchPage} />
           {/* <Route path="/recommend" component={RecommendPage} /> */}

@@ -16,6 +16,9 @@ function arrayToCardItems(array) {
   return array.map((elem) => <CardItem value={elem} key={elem.Id} />);
 }
 
+function match(array, Id) {
+  return array.filter((elem) => elem.Id === Id).length;
+}
 // type takes "card", "document", "cabinet" values
 // refactoring due to change in item schema,
 // require sole prop, the item object itself
@@ -36,24 +39,20 @@ export default function Card({ Id }) {
   // set boolean states to handle asynchronous requests
   const [loadingItem, setLoadingItem] = useState(true);
   const [loadingChild, setLoadingChild] = useState(true);
-  const [loadingCreator, setLoadingCreator] = useState(true);
   const [isAvailable, setIsAvailable] = useState(false);
 
   useEffect(() => {
     getItemByItemId(Id).then((item) => {
-      setItemObject(snakeToCamelCase(item));
+      const camelItem = snakeToCamelCase(item);
+      setItemObject(camelItem);
+      setCreatedBy(camelItem.owner.name);
       setLoadingItem(false);
       // setting availability of item
-      setIsAvailable(item.accessGroups.read.includes(item.Id));
-      getItemChild(item.path).then((childArray) => {
+      setIsAvailable(match(camelItem.accessGroups.read, group.Id));
+      getItemChild(camelItem.path).then((childArray) => {
         setchildObjectArray(childArray);
         setLoadingChild(false);
       });
-    });
-
-    getUser(Id).then((data) => {
-      setCreatedBy(data.name);
-      setLoadingCreator(false);
     });
   }, []);
 
@@ -67,9 +66,9 @@ export default function Card({ Id }) {
     history.push(path);
   };
   const innerContent = (itemObject.type === 'card' ? content : arrayToCardItems(childObjectArray));
-  const boolSum = loadingItem && loadingChild && loadingCreator && isAvailable;
+  const boolSum = loadingItem || loadingChild;
 
-  return !boolSum && (
+  return !boolSum && isAvailable && (
     <div className={className}>
       <div>
         {/* passing NoteHeader onClick element, so that upon clicking title can be redirected */}
