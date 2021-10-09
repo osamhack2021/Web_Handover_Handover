@@ -21,4 +21,4 @@ WORKDIR /app/backend
 COPY . .
 
 # Create symlink to /backend/node_modules and start node app
-CMD ln -s /app/node_modules /app/backend/node_modules && npm start
+CMD ln -sf /app/node_modules /app/backend/node_modules && npm start

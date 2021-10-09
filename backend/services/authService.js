@@ -7,17 +7,18 @@ const itemService = require('./itemService.js');
 const { RuntimeError } = require('./errors/RuntimeError.js');
 const { AuthError, ForbiddenError } = require('./errors/BusinessError.js');
 
-const SECRET_KEY = 'MY_SECRET_KEY';
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+const PASSWORD_HASH_KEY = process.env.PASSWORD_HASH_KEY;
 
 function encode(rawPassword) {
-  return crypto.createHmac('sha256', 'secret12341234')
+  return crypto.createHmac('sha256', PASSWORD_HASH_KEY)
     .update(rawPassword)
     .digest('hex');
 }
 
 function decodeToken(token) {
   try {
-    const decoded = jwt.verify(token, SECRET_KEY);
+    const decoded = jwt.verify(token, JWT_SECRET_KEY);
 
     return decoded;
   } catch (err) {
@@ -86,106 +87,117 @@ async function isItemReader(loginUserId, targetItemId) {
 
 module.exports = {
 
-  async login(params) {
-    params.password = encode(params.password);
+    login: async function(params) {
+		
+		params.password = encode(params.password);
 
-    const loginUser = await userService
-      .findOne({ serviceNumber: params.serviceNumber })
-      .catch((err) => {
-        if (err instanceof TypeError) {
-          throw new AuthError('LOGIN fail');
-        }
-        throw new RuntimeError(err.message);
-      });
+		const loginUser = await userService
+            .findOne({serviceNumber:params.serviceNumber},
+				 {_id:true, serviceNumber: true, password:true, group:true, status: true})
+            .catch(err => {
+                if(err instanceof TypeError) {
+                    throw new AuthError("LOGIN fail");
+                }
+                throw new RuntimeError(err.message);
+            });
 
-    if (loginUser === null || loginUser.password !== params.password) {
-      throw new AuthError('LOGIN fail');
-    }
+		if(loginUser === null|| loginUser.password !== params.password) {
+			throw new AuthError('LOGIN fail');
+		}
 
-    const token = jwt.sign({
-      _id: loginUser._id,
-      serviceNumber: loginUser.serviceNumber,
-      group: loginUser.group,
-      status: loginUser.status,
-    }, SECRET_KEY, {
-      expiresIn: '1h',
-    });
-    const user = loginUser;
+		const token = jwt.sign({
+			_id: loginUser._id,
+			serviceNumber: loginUser.serviceNumber,
+			group: loginUser.group,
+			status: loginUser.status
+		}, JWT_SECRET_KEY, {
+			expiresIn: '1h'
+		});
 
-    return { user, token };
-  },
+		return token;		
+	},
+  
+	getLoginUser: function(token) {
+		return decodeToken(token);
+	},
 
-  getLoginUser(token) {
-    return decodeToken(token);
-  },
+	authAdmin: async function(token) {
+		const decode = decodeToken(token);
 
-  async authAdmin(token) {
-    const decode = decodeToken(token);
+		const isAd = await isAdmin(decode._id).catch(err => {throw err});
+		if(!isAd) {
+			throw new ForbiddenError('not have access');
+		}
+		return isAd;	
+	},
+	//User 수정 권한 확인
+	editUserAuth: async function(loginUserId, targetUserId) {
 
-    const isAd = await isAdmin(decode._id).catch((err) => { throw err; });
-    if (!isAd) {
-      throw new ForbiddenError('not have access');
-    }
-    return isAd;
-  },
-  // User 수정 권한 확인
-  async editUserAuth(loginUserId, targetUserId) {
-    const isHRM = await isHumanResourceManager(loginUserId, targetUserId).catch((err) => { throw err; });
-    const isAd = await isAdmin(loginUserId).catch((err) => { throw err; });
+		const results = await Promise.all([isHumanResourceManager(loginUserId, targetUserId), isAdmin(loginUserId)])
+				.catch(err =>{throw err});
+	
+		if(!isSelf(loginUserId, targetUserId) &&
+			!results.includes(true)) {
+			throw new ForbiddenError('not have access');
+		}
 
-    if (!isSelf(loginUserId, targetUserId)
-		   && !isAd && !isHRM) {
-      throw new ForbiddenError('not have access');
-    }
+		return true;
+	},
 
-    return true;
-  },
+	deleteUserAuth: async function(loginUserId, targetUserId) {
+		
+		const results = await Promise.all([isHumanResourceManager(loginUserId, targetUserId), isAdmin(loginUserId)])
+				.catch(err =>{throw err});
+	
+		if(!results.includes(true)) {
+			throw new ForbiddenError('not have access');
+		}
 
-  async readUserAuth(loginUserId, targetUserId) {
-    const isHRM = await isHumanResourceManager(loginUserId, targetUserId).catch((err) => { throw err; });
-    const isAd = await isAdmin(loginUserId).catch((err) => { throw err; });
+		return true;
+	},
 
-    if (!isSelf(loginUserId, targetUserId)
-		   && !isAd && !isHRM) {
-      return 'general';
-    }
+	readUserAuth: async function(loginUserId, targetUserId) {
+		const results = await Promise.all([isHumanResourceManager(loginUserId, targetUserId), isAdmin(loginUserId)])
+				.catch(err =>{throw err});
+	
+		if(!isSelf(loginUserId, targetUserId) &&
+			!results.includes(true)) {
+				return 'general';
+		}
+		
+		return 'all';
+	},
 
-    return 'all';
-  },
+	//Group 수정 권한 확인
+	editGroupAuth: async function(loginUserId, targetGroupId) {
+		const results = await Promise.all([isGroupManager(loginUserId, targetGroupId), isAdmin(loginUserId)])
+				.catch(err =>{throw err});
+		if(!results.includes(true)){
+			throw new ForbiddenError('not have access');
+		}
 
-  // Group 수정 권한 확인
-  async editGroupAuth(loginUserId, targetGroupId) {
-    const isGM = await isGroupManager(loginUserId, targetGroupId).catch((err) => { throw err; });
-    const isAd = await isAdmin(loginUserId).catch((err) => { throw err; });
+		return true;
+	},
 
-    if (!isAd && !isGM) {
-      throw new ForbiddenError('not have access');
-    }
+	//Item 수정 권한 확인
+	editItemAuth: async function(loginUserId, targetItemId) {
+		const results = await Promise.all([isItemEditor(loginUserId, targetItemId), isAdmin(loginUserId)])
+				.catch(err =>{throw err});
+		if(!results.includes(true)){
+			throw new ForbiddenError('not have access');
+		}
 
-    return true;
-  },
+		return true;
+	},
 
-  // Item 수정 권한 확인
-  async editItemAuth(loginUserId, targetItemId) {
-    const isIE = await isItemEditor(loginUserId, targetItemId).catch((err) => { throw err; });
-    const isAd = await isAdmin(loginUserId).catch((err) => { throw err; });
+	readItemAuth: async function(loginUserId, targetItemId) {
+		const results = await Promise.all([isItemReader(loginUserId, targetItemId), isAdmin(loginUserId)])
+					.catch(err =>{throw err});
+		if(!results){
+			throw new ForbiddenError('not have access');
+		}
 
-    if (!isAd && !isIE) {
-      throw new ForbiddenError('not have access');
-    }
+		return true;
+	},
 
-    return true;
-  },
-
-  async readItemAuth(loginUserId, targetItemId) {
-    const isIR = await isItemReader(loginUserId, targetItemId).catch((err) => { throw err; });
-    const isAd = await isAdmin(loginUserId).catch((err) => { throw err; });
-
-    if (!isAd && !isIR) {
-      throw new ForbiddenError('not have access');
-    }
-
-    return true;
-  },
-
-};
+}

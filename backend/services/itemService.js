@@ -1,5 +1,4 @@
 const Item = require('../models/Item.js');
-const { MongoError, Types } = require('mongoose');
 const { BusinessError } = require('./errors/BusinessError.js');
 
 const LIMIT = 20;

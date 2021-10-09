@@ -1,9 +1,7 @@
 const itemService = require('../services/itemService.js');
 const userService = require('../services/userService.js');
 
-const jwt = require('jsonwebtoken');
 const { BusinessError, NotFoundError, ForbiddenError } = require('../services/errors/BusinessError.js');
-const SECRET_KEY = "MY_SECRET_KEY";
 
 const algolia = require('../algolia/index');
 
