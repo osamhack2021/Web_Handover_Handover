@@ -4,10 +4,12 @@ import R from 'ramda';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import Menu from 'react-bulma-companion/lib/Menu';
 import DrawerProfile from '_molecules/DrawerProfile';
 import MenuItem from '_molecules/MenuItem';
 
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListSubheader from '@mui/material/ListSubheader';
 /*
 Example of menulist :
 const menulist = [
@@ -23,6 +25,17 @@ const menulist = [
   ],
 ];
 */
+
+function arrayToMenuItems(array) {
+  return array.map((elem, index) => (
+    <ListItem disableGutters sx={{ py: 0 }} key={index}>
+      <ListItemButton disableGutters sx={{ py: 0 }}>
+        <MenuItem key={elem.Id} value={{ title: elem.title, Id: elem.Id, link: `/item/${elem.Id}` }} />
+      </ListItemButton>
+    </ListItem>
+  ));
+}
+
 export default function Drawer({ menulist }) {
   const dispatch = useDispatch();
 
@@ -33,28 +46,26 @@ export default function Drawer({ menulist }) {
   return (
     <div className="drawer">
       <DrawerProfile name={user.name} rank={user.rank} division={group.name} title={user.title} />
-      <Menu className="drawer-menu">
+      <div className="drawer-menu">
         {
           menulist.map((list, index) => {
             if (typeof list === 'string') {
               return (
-                <Menu.Label className="drawer-label" key={index} >
-                  {list}
-                </Menu.Label>
+                <ListSubheader className="drawer-label" key={index}> {list} </ListSubheader>
               );
             }
             return (
-              <Menu.List className="drawer-list" key={index}>
-                {
-                  list.map((item, listIndex) => (
-                    <MenuItem value={item} key={listIndex} />
-                  ))
-                }
-              </Menu.List>
+              list.map((item, listIndex) => (
+                <ListItem disableGutters sx={{ py: 0 }} key={index}>
+                  <ListItemButton disableGutters sx={{ py: 0 }}>
+                    <MenuItem key={listIndex} value={item} />
+                  </ListItemButton>
+                </ListItem>
+              ))
             );
           })
         }
-      </Menu>
+      </div>
     </div>
   );
 }
