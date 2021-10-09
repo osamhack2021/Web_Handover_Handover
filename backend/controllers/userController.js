@@ -10,7 +10,7 @@ module.exports = {
          // Only allowed fields are Searchable
         for(let key of keys) {
             if(!valids.includes(key))
-                throw new BusinessError(`${key} is not allowed param`);
+                throw new BusinessError(`${key} 는 User에 존재하지 않는 속성입니다`);
         }
 
 
@@ -71,7 +71,7 @@ module.exports = {
              // Only allowed fields are Searchable
             for(let key of keys) {
                 if(!valids.includes(key))
-                    throw new BusinessError(`${key} is not allowed param`);
+                    throw new BusinessError(`${key} 는 User에 존재하지 않는 속성입니다`);
             }
 
             await authService.editUserAuth(res.locals._id.toString(),req.params.id);
