@@ -47,7 +47,7 @@ export default function Login() {
 
   return (
     <div className="login-box">
-      <div className="login-logo mx-auto" />
+      <div className="login-logo" />
       <div className="login-title">로그인</div>
       <div className="login-subtitle">환영합니다!</div>
       <div className="forminput-container">
