@@ -46,7 +46,7 @@ module.exports = {
 			.create(params)
 			.catch(err => {
 				if(err.code === 11000) {
-					throw new BusinessError('ServiceNumber가 이미 존재합니다');
+					throw new BusinessError('군번이 이미 존재합니다');
 				} 
 				throw new RuntimeError(err.message);		
 			});
