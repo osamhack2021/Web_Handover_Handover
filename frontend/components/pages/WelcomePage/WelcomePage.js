@@ -3,9 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'connected-react-router';
 import R from 'ramda';
 
-import Section from 'react-bulma-companion/lib/Section';
-import Container from 'react-bulma-companion/lib/Container';
-import Title from 'react-bulma-companion/lib/Title';
+import Container from '@mui/material/Container';
 
 export default function WelcomePage() {
   const dispatch = useDispatch();
@@ -19,13 +17,9 @@ export default function WelcomePage() {
 
   return (
     <div className="welcome-page page">
-      <Section>
-        <Container>
-          <Title size="1">
-            Welcome Page2!
-          </Title>
-        </Container>
-      </Section>
+      <Container>
+        Welcome!
+      </Container>
     </div>
   );
 }
