@@ -16,7 +16,6 @@ router.all('', (req, res, next) => {
 
         next();
     } catch(err) {
-        console.log(err);
         res.status(err.status).send(err.message);
     }
 });
@@ -31,7 +30,6 @@ router.all('/admin/*', (req, res, next) => {
 
         next();
     } catch(err) {
-        console.log(err);
         res.status(err.status).send(err.message);
     }
 });
