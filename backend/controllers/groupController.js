@@ -1,10 +1,6 @@
 const groupService = require('../services/groupService.js');
-const { Types } = require('mongoose');
 
 const { BusinessError, ForbiddenError, NotFoundError } = require('../services/errors/BusinessError');
-
-const jwt = require('jsonwebtoken');
-const SECRET_KEY = "MY_SECRET_KEY";
 
 module.exports = {
 
