@@ -9,7 +9,6 @@ module.exports = {
             const projection = {
                 _id:true,
                 serviceNumber: true,
-                password:true,
                 name:true,
                 rank:true,
                 title:true,
