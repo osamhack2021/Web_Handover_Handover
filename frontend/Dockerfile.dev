@@ -25,4 +25,4 @@ ARG REACT_APP_API_BASE_URL
 ENV REACT_APP_API_BASE_URL=$API_BASE_URL
 
 # Create symlink to /backend/node_modules and start webpack-dev-server with hot reload
-CMD ln -sfn /app/node_modules /app/frontend/node_modules && npm run serve
+CMD ln -sf /app/node_modules /app/frontend/node_modules && npm run serve
