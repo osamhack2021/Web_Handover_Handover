@@ -16,10 +16,7 @@ const userSchema = mongoose.Schema({
         military: { type: String },
         mobile: { type: String }
     },
-    profileImage:  [{
-        originalName: { type: String },
-        fileName: { type: String }      // 1633269573153.png / {timestamp}.ext
-    }],
+    profileImageUrl: { type: String },
     lastLogin: { type: Date },
     firstLogin: { type: Date },
     bookmarks: [{ type: Types.ObjectId, ref: 'Item' }],
