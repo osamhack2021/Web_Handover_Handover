@@ -1,12 +1,12 @@
 import React from "react";
 import Recovery from "_organisms/Recovery";
 
-import Section from "react-bulma-companion/lib/Section";
+import Container from '@mui/material/Container';
 
 export default function RecoverySection() {
   return (
-    <Section className="recovery-secction">
+    <Container className="recovery-secction">
       <Recovery />
-    </Section>
+    </Containe>
   );
 }
