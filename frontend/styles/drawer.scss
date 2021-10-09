@@ -22,8 +22,9 @@
             @include setfonts($font-weight : $weight-semibold,
                 $font-size : $size-5,
                 $line-height : 24px);
+            text-decoration : none;
             margin : 15px 0 15px 0;
-            color: black;
+            color: $black;
             img {
                 position: relative;
                 top: 2px;

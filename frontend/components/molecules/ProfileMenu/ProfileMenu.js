@@ -20,10 +20,10 @@ export default function ProfileMenu({ name = '', rank = '', division = '', title
         </Link>
         <div>
           <div className="profile-string-above">
-            <Link to="/profile" style={{color: 'black'}}>{aboveString}</Link>
+            <Link to="/profile" style={{ textDecoration: 'none', color: 'black' }}>{aboveString}</Link>
           </div>
           <div className="profile-string-below">
-            <Link to="/profile" style={{color: 'black'}}> {belowString} </Link>
+            <Link to="/profile" style={{ textDecoration: 'none', color: 'black' }}> {belowString} </Link>
           </div>
         </div>
       </div>
