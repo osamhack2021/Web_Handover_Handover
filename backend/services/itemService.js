@@ -1,5 +1,5 @@
 const Item = require('../models/Item.js');
-const { BusinessError } = require('./errors/BusinessError.js');
+const { RuntimeError } = require('./errors/RuntimeError.js');
 
 const LIMIT = 20;
 
@@ -49,7 +49,7 @@ module.exports = {
             return await query_.exec();
 
         } catch(err) {
-            throw new BusinessError(err.message);
+            throw new RuntimeError(err.message);
         }
     },
 
@@ -72,7 +72,7 @@ module.exports = {
 
             return await query.exec();
         } catch(err) {
-            throw new BusinessError(err.message);
+            throw new RuntimeError(err.message);
         }
     },
 
@@ -81,7 +81,7 @@ module.exports = {
             const result = await Item.create(payload);
             return result;
         } catch(err) {
-            throw new BusinessError(err.message);
+            throw new RuntimeError(err.message);
         }
     },
 
@@ -107,7 +107,7 @@ module.exports = {
             return result;
             
         } catch(err) {
-            throw new BusinessError(err.message);
+            throw new RuntimeError(err.message);
         }
     },
 
@@ -115,7 +115,7 @@ module.exports = {
         try {
             return Item.findOneAndDelete({ _id });
         } catch(err) {
-            throw new BusinessError(err.message);
+            throw new RuntimeError(err.message);
         }
     }
 };

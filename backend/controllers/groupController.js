@@ -13,12 +13,12 @@ module.exports = {
             // Only allowed fields are Searchable
             for(let key of keys) {
                 if(!valids.includes(key))
-                    throw new BusinessError(`${key} is not allowed param`);
+                    throw new BusinessError(`Invalid: ${key}로는 검색할 수 없습니다!`);
             }
 
             const result = await groupService.search(req.query);
 
-            if(result.length < 1) throw new NotFoundError(`Not Found: No results were found for your search`);
+            if(result.length < 1) throw new NotFoundError(`NotFound: 검색결과가 없습니다.`);
 
             res.status(200).send(result);
         } catch(err) {
@@ -33,7 +33,7 @@ module.exports = {
 
             const result = await groupService.read({ _id: group_id });
 
-            if(result === null) throw new NotFoundError(`Not Found: No result is found for group_id: ${group_id}`);
+            if(result === null) throw new NotFoundError(`NotFound: 검색결과가 없습니다.`);
 
             res.status(200).send(result);
         } catch(err) {
@@ -70,10 +70,10 @@ module.exports = {
             const group = await groupService.read({ _id: group_id }, projection);
 
             // Invalid group_id
-            if(group === null) throw new NotFoundError(`Not Found: No result is found for group_id: ${group_id}`);
+            if(group === null) throw new NotFoundError(`NotFound: 검색결과가 없습니다.`);
 
             // Admin check
-            if(!group.admins.some(admin => admin.equals(res.locals._id))) throw new ForbiddenError(`Forbidden: You are not admin of this group`);
+            if(!group.admins.some(admin => admin.equals(res.locals._id))) throw new ForbiddenError(`Forbidden: 그룹의 관리자만 수정할 수 있습니다.`);
 
             await groupService.update(group_id, req.body);
 
@@ -90,7 +90,7 @@ module.exports = {
             
             let result = await groupService.delete(group_id);
 
-            if(result === null) throw new NotFoundError(`Not Found: No result is found for group_id: ${group_id}`);
+            if(result === null) throw new NotFoundError(`Not Found: 검색결과가 없습니다.`);
 
             res.status(204).send();
         } catch(err) {

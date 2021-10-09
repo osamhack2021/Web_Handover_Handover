@@ -16,12 +16,12 @@ module.exports = {
             // Only allowed fields are Searchable
             for(let key of keys) {
                 if(!valids.includes(key))
-                    throw new BusinessError(`${key} is not allowed param`);
+                    throw new BusinessError(`Invalid: ${key}로는 검색할 수 없습니다!`);
             }            
 
             const result = await itemService.search(req.query);
 
-            if(result.length < 1) throw new NotFoundError(`Not Found: No results were found for your search`);
+            if(result.length < 1) throw new NotFoundError(`Not Found: 검색결과가 없습니다.`);
 
             res.status(200).send(result);
 
@@ -39,7 +39,7 @@ module.exports = {
                 filters: `status:"modified" AND NOT accessGroups.read:"${res.locals.group}"`
             });
 
-            if(result.hits.length < 1) throw new NotFoundError('Not Found');
+            if(result.hits.length < 1) throw new NotFoundError(`NotFound: 검색결과가 없습니다.`);
 
             res.status(200).send(result.hits);
         } catch(err) {
@@ -54,12 +54,12 @@ module.exports = {
 
             const item = await itemService.read({ _id: item_id });
 
-            if(item === null) throw new NotFoundError(`Not Found: No result is found for item_id: ${item_id}`);
+            if(item === null) throw new NotFoundError(`NotFound: 검색결과가 없습니다.`);
 
             // Check session's read authority
             const user = await userService.findOne({ serviceNumber: res.locals.serviceNumber });
             if(!item.accessGroups.read.some(i => i.equals(user.group)))
-                throw new ForbiddenError(`Forbidden: You are not in readable group`);
+                throw new ForbiddenError(`Forbidden: 읽기 권한이 없습니다.`);
 
             res.status(200).send(item);
         } catch(err) {
@@ -103,11 +103,11 @@ module.exports = {
 
             let item = await itemService.read({ _id: item_id }, { populate: false });
 
-            if(item === null) throw new NotFoundError(`Not Found: No result is found for item_id: ${item_id}`);
+            if(item === null) throw new NotFoundError(`Not Found: 검색 결과가 없습니다.`);
 
             // Check session's edit authority
             if(!item.accessGroups.edit.some(i => i.equals(res.locals.group)))
-                throw new ForbiddenError(`Forbidden: You are not in editable group`);
+                throw new ForbiddenError(`Forbidden: 수정 권한이 없습니다.`);
 
             // Append Contributor
             item = Object.assign(item, { contributors: [...item.contributors, res.locals._id] });
@@ -133,7 +133,7 @@ module.exports = {
             let item = await itemService.read({ _id: item_id }, { populate: false });
 
             if(item === null)
-                throw new NotFoundError(`Not Found: No result is found for item_id: ${item_id}`);
+                throw new NotFoundError(`Not Found: 검색 결과가 없습니다.`);
             
             let promises = [itemService.delete(item_id)];
             for(let historyItem of item.history) {
