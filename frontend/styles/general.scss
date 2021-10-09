@@ -4,6 +4,10 @@ html, body, #app, #app>div {
   overflow: auto;
 }
 
+body {
+  margin : 0;
+}
+
 a {
   color: $info;
 }
