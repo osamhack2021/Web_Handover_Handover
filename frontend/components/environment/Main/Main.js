@@ -14,6 +14,7 @@ import RoutingPage from '_pages/RoutingPage';
 import EditorPage from '_pages/EditorPage';
 import SettingsPage from '_pages/SettingsPage';
 import ProfilePage from '_pages/ProfilePage';
+import RecoveryPage from '_pages/RecoveryPage';
 
 // import Navigation from '_organisms/Navigation';
 // import Footer from '_organisms/Footer';
@@ -48,6 +49,7 @@ export default function Main({ location }) {
           <Route path="/edit" component={EditorPage} />
           <Route path="/setting" component={SettingsPage} />
           <Route path="/profile" component={ProfilePage} />
+          <Route path="/recovery" component={RecoveryPage} />
           <Route path="*" component={RoutingPage} />
           {/* <Route path="/login" component={LoginPage} />
           <Route path="/register" component={RegisterPage} />
