@@ -1,11 +1,6 @@
-import React, { useState } from "react";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import NativeSelect from "@mui/material/NativeSelect";
+import React from "react";
 import Stack from "@mui/material/Stack";
-import Divider from '@mui/material/Divider';
+import Divider from "@mui/material/Divider";
 
 import Icon from "@mdi/react";
 import {
@@ -28,7 +23,9 @@ import {
 import Button from "@mui/material/Button";
 import "_styles/editor.scss";
 
-const VerticalDivider = () => <Divider orientation="vertical" sx={{mx: 0.5}} />
+const VerticalDivider = () => (
+  <Divider orientation="vertical" sx={{ mx: 0.5 }} />
+);
 
 const MenuButton = ({ icon, size = 32, ...props }) => (
   <Button
@@ -38,7 +35,7 @@ const MenuButton = ({ icon, size = 32, ...props }) => (
       minWidth: 0,
       width: size,
       height: size,
-      height: '100%',
+      height: "100%",
     }}
     {...props}
   >
@@ -76,7 +73,7 @@ const StyleMenuButton = ({
   );
 };
 
-export default function MenuBar({ editor, size = 32 }) {
+export default function MenuBar({ editor, size = 42, ...props }) {
   if (!editor) {
     return null;
   }
@@ -87,8 +84,8 @@ export default function MenuBar({ editor, size = 32 }) {
   // Menu is modified from: https://github.com/ueberdosis/tiptap/blob/main/demos/src/Examples/Default/React/index.jsx
 
   return (
-    <>
-      <Stack direction="row" spacing={0.25} sx={{height: size}}>
+    <Stack direction="row" spacing={0.25} sx={{ ...props.sx, height: size }} divider={<VerticalDivider/>}>
+      <Stack direction="row" spacing={0.25} sx={{ p: 0.5 }}>
         <StyleMenuButton
           onClick={() => editor.chain().focus().undo().run()}
           isEnabled={editor.can().undo()}
@@ -101,7 +98,8 @@ export default function MenuBar({ editor, size = 32 }) {
           icon={mdiRedo}
           editor={editor}
         />
-        <VerticalDivider/>
+      </Stack>
+      <Stack direction="row" spacing={0.25} sx={{ p: 0.5 }}>
         {[
           { level: 1, icon: mdiFormatHeader1 },
           { level: 2, icon: mdiFormatHeader2 },
@@ -117,19 +115,21 @@ export default function MenuBar({ editor, size = 32 }) {
             key={e.level}
           />
         ))}
-        <VerticalDivider/>
+      </Stack>
+      <Stack direction="row" spacing={0.25} sx={{ p: 0.5 }}>
         <StyleMenuButton
           onClick={() => editor.chain().focus().unsetAllMarks().run()}
           icon={mdiFormatClear}
           editor={editor}
         />
         <StyleMenuButton
-          onClick={editor.chain().focus().toggleBold().run}
+          onClick={() => editor.chain().focus().toggleBold().run}
           activeOn="bold"
           icon={mdiFormatBold}
           editor={editor}
         />
-        <VerticalDivider/>
+      </Stack>
+      <Stack direction="row" spacing={0.25} sx={{ p: 0.5 }}>
         <StyleMenuButton
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           icon={mdiFormatListBulleted}
@@ -142,7 +142,8 @@ export default function MenuBar({ editor, size = 32 }) {
           activeOn="orderedList"
           editor={editor}
         />
-        <VerticalDivider/>
+      </Stack>
+      <Stack direction="row" spacing={0.25} sx={{ p: 0.5 }}>
         <StyleMenuButton
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           icon={mdiFormatQuoteClose}
@@ -161,9 +162,10 @@ export default function MenuBar({ editor, size = 32 }) {
           activeOn="codeBlock"
           editor={editor}
         />
-        {/* H4 ~ H6 style buttons, unused as they won't be used often by all users. 
+      </Stack>
+      {/* H4 ~ H6 style buttons, unused as they won't be used often by all users. 
             Pro users can use Markdown heading syntaxes with #. */}
-        {/* <MenuButton
+      {/* <MenuButton
           icon={mdiChevronDoubleRight}
           onMouseEnter={() => setHeadingOptionsOpen(true)}
           onMouseLeave={() => setHeadingOptionsOpen(false)}
@@ -195,8 +197,7 @@ export default function MenuBar({ editor, size = 32 }) {
             />
           ))}
         </div> */}
-      </Stack>
-    </>
+    </Stack>
   );
 }
 

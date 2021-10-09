@@ -7,8 +7,11 @@ import {
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import MenuBar from "_molecules/MenuBar";
+import Stack from "@mui/material/Stack";
+import Divider from "@mui/material/Divider";
+import Box from "@mui/material/Box";
 
-export default function Editor({ content = null }) {
+export default function Editor({ content = null, onContentChange = null }) {
   const [loadingChild, setLoadingChild] = useState(true);
   const [contentObject, setContentObject] = useState({});
 
@@ -20,7 +23,9 @@ export default function Editor({ content = null }) {
 
   const editor = useEditor({
     extensions: [StarterKit],
-    content: content ? content :  `
+    content: content
+      ? content
+      : `
         <h2>
           Hi there,
         </h2>
@@ -52,9 +57,18 @@ export default function Editor({ content = null }) {
       `,
   });
 
+  if (onContentChange != null && editor != null)
+    onContentChange(editor.getHTML()); // TODO: Resolve https://reactjs.org/link/setstate-in-render warning
+
   return (
-    <div>
-      <MenuBar editor={editor} />
+    <Stack
+      spacing={0.5}
+      sx={{ border: "2px solid #0d0d0d20", borderRadius: 2 }}
+    >
+      <Stack sx={{ mb: 1 }}>
+        <MenuBar editor={editor} sx={{ px: 1 }} />
+        <Divider flexItem />
+      </Stack>
       {editor && (
         <BubbleMenu
           className="bubble-menu"
@@ -132,8 +146,10 @@ export default function Editor({ content = null }) {
           </button>
         </FloatingMenu>
       )}
-      <EditorContent editor={editor} />
-    </div>
+      <Box sx={{ p: 2 }}>
+        <EditorContent editor={editor} />
+      </Box>
+    </Stack>
   );
 }
 
