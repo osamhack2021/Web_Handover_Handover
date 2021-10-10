@@ -7,14 +7,20 @@ import { updateUser } from "_actions/user";
 import { dispatchError } from "_utils/api";
 
 export const attemptGetUser = () => (dispatch) => {
-  const currentUserId = JSON.parse(localStorage.getItem('user'))._id;
+  try {
+    const currentUserId = JSON.parse(localStorage.getItem("user"))._id;
 
-  return getUser(currentUserId)
-    .then((data) => {
-      dispatch(updateUser(snakeToCamelCase(data)));
-      return data;
+    return getUser(currentUserId)
+      .then((data) => {
+        dispatch(updateUser(snakeToCamelCase(data)));
+        return data;
+      })
+      .catch(dispatchError(dispatch));
+  } catch (error) {
+    return new Promise((resolve, reject) => {
+      reject("Error: User not logged in")
     })
-    .catch(dispatchError(dispatch));
+  }
 };
 
 export const attemptUpdateUser = (updatedUser) => (dispatch) =>
