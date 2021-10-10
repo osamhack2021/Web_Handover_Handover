@@ -5,15 +5,7 @@ const groupSchema = mongoose.Schema({
     name: { type: String, required: true },
 
     // ,{ObjectId},{ObjectId},...
-    path: {
-        type: String,
-        validate: {
-            validator: function(v) {
-                return /^,(.+?,){1,}$/.test(v);
-            },
-            message: props => `${props.value} is not a valid path!`
-        }
-    },
+    path: { type: String },
     admins: {
         type: [{ type: Types.ObjectId, ref: 'User', populate: true }],
         validate: {
