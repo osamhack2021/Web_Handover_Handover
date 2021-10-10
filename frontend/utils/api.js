@@ -1,7 +1,7 @@
-import { push } from 'connected-react-router';
-import { store as RNC } from 'react-notifications-component';
+import { push } from "connected-react-router";
+import { store as RNC } from "react-notifications-component";
 
-import { logout } from '_actions/user';
+import { logout } from "_actions/user";
 
 export const handleSuccess = (resp) => {
   return resp.body;
@@ -11,7 +11,10 @@ export const handleError = (error) => {
   if (error.response) {
     throw error.response;
   } else {
-    const response = { status: 500, body: { message: 'Internal Server error' } };
+    const response = {
+      status: 500,
+      body: { message: "Internal Server error" },
+    };
     throw response;
   }
 };
@@ -19,16 +22,16 @@ export const handleError = (error) => {
 export const dispatchError = (dispatch) => (res) => {
   if (res.status === 401) {
     dispatch(logout());
-    dispatch(push('/login'));
+    dispatch(push("/login"));
   }
 
   RNC.addNotification({
-    title: `Error: ${res.status}`,
-    message: res.body.message,
-    type: 'danger',
-    container: 'top-right',
-    animationIn: ['animated', 'fadeInRight'],
-    animationOut: ['animated', 'fadeOutRight'],
+    title: `Error: ${res}`,
+    message: res,
+    type: "danger",
+    container: "top-center",
+    animationIn: ["animated", "fadeInRight"],
+    animationOut: ["animated", "fadeOutRight"],
     dismiss: {
       duration: 5000,
     },
