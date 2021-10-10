@@ -104,7 +104,7 @@ module.exports = {
 			throw new AuthError('로그인에 실패했습니다.');
 		}
 
-		const token = jwt.sign({
+		const user = jwt.sign({
 			_id: loginUser._id,
 			serviceNumber: loginUser.serviceNumber,
 			group: loginUser.group,
@@ -113,7 +113,8 @@ module.exports = {
 			expiresIn: '1h'
 		});
 
-		return { user: loginUser, token };	},
+		return user;	
+	},
   
 	getLoginUser: function(token) {
 		return decodeToken(token);
