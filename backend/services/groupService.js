@@ -23,9 +23,17 @@ module.exports = {
         return await Group.find(query, projection);
     },
 
-	read: async (query, projection = { name: true, path: true }) => {
+	read: async (query, projection = {}) => {
         try {
-            return await Group.findOne(query, projection);
+            return await Group
+                        .findOne(query, projection)
+                        .populate([{
+                            path: 'admins',
+                            select: ['rank', 'name']
+                        }, {
+                            path: 'inspectors',
+                            select: ['rank', 'name']
+                        }]);
         } catch(err) {
             throw new RuntimeError(err.message);
         }
