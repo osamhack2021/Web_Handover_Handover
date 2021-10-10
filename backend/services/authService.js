@@ -22,7 +22,7 @@ function decodeToken(token) {
 
     return decoded;
   } catch (err) {
-    throw new ForbiddenError(err.message);
+    throw new ForbiddenError('로그인이 필요한 서비스입니다.');
   }
 }
 
@@ -108,13 +108,13 @@ module.exports = {
 				 {_id:true, serviceNumber: true, password:true, group:true, status: true})
             .catch(err => {
                 if(err instanceof TypeError) {
-                    throw new AuthError("LOGIN fail");
+                    throw new AuthError("로그인에 실패했습니다.");
                 }
-                throw new RuntimeError(err.message);
+                throw new RuntimeError('로그인에 실패했습니다.');
             });
 
 		if(loginUser === null|| loginUser.password !== params.password) {
-			throw new AuthError('LOGIN fail');
+			throw new AuthError('로그인에 실패했습니다.');
 		}
 
 		const token = jwt.sign({
@@ -138,7 +138,7 @@ module.exports = {
 
 		const isAd = await isAdmin(decode._id).catch(err => {throw err});
 		if(!isAd) {
-			throw new ForbiddenError('not have access');
+			throw new ForbiddenError('접근 권한이 존재하지 않습니다');
 		}
 		return isAd;	
 	},
@@ -150,7 +150,7 @@ module.exports = {
 	
 		if(!isSelf(loginUserId, targetUserId) &&
 			!results.includes(true)) {
-			throw new ForbiddenError('not have access');
+			throw new ForbiddenError('접근 권한이 존재하지 않습니다');
 		}
 
 		return true;
@@ -162,7 +162,7 @@ module.exports = {
 				.catch(err =>{throw err});
 	
 		if(!results.includes(true)) {
-			throw new ForbiddenError('not have access');
+			throw new ForbiddenError('접근 권한이 존재하지 않습니다');
 		}
 
 		return true;
@@ -185,7 +185,7 @@ module.exports = {
 		const results = await Promise.all([isGroupManager(loginUserId, targetGroupId), isAdmin(loginUserId)])
 				.catch(err =>{throw err});
 		if(!results.includes(true)){
-			throw new ForbiddenError('not have access');
+			throw new ForbiddenError('접근 권한이 존재하지 않습니다');
 		}
 
 		return true;
@@ -196,7 +196,7 @@ module.exports = {
 		const results = await Promise.all([isItemEditor(loginUserId, targetItemId), isAdmin(loginUserId)])
 				.catch(err =>{throw err});
 		if(!results.includes(true)){
-			throw new ForbiddenError('not have access');
+			throw new ForbiddenError('접근 권한이 존재하지 않습니다');
 		}
 
 		return true;
@@ -206,7 +206,7 @@ module.exports = {
 		const results = await Promise.all([isItemReader(loginUserId, targetItemId), isAdmin(loginUserId)])
 					.catch(err =>{throw err});
 		if(!results){
-			throw new ForbiddenError('not have access');
+			throw new ForbiddenError('접근 권한이 존재하지 않습니다');
 		}
 
 		return true;

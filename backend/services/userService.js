@@ -17,7 +17,7 @@ module.exports = {
 		const result = await User
 			.find(params, projection)
 			.catch(err => {
-				throw new RuntimeError(err.message);
+				throw new RuntimeError(params + '를 불러올 수 없습니다.');
 			});
 
 		if(result === null) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
@@ -30,7 +30,7 @@ module.exports = {
 		const result = await User
 			.findOne(params, projection)
 			.catch(err => {
-				throw new RuntimeError(err.message);
+				throw new RuntimeError(params + '를 불러올 수 없습니다.');
 			});
 
 		if(result === null) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
@@ -46,7 +46,7 @@ module.exports = {
 			.create(params)
 			.catch(err => {
 				if(err.code === 11000) {
-					throw new BusinessError('serviceNumber overlap');
+					throw new BusinessError('군번이 이미 존재합니다');
 				} 
 				throw new RuntimeError(err.message);		
 			});
@@ -63,7 +63,7 @@ module.exports = {
 		const result = await User
 			.findOneAndUpdate({_id:id}, params, {new: true})
 			.catch(err => {
-				throw new RuntimeError(err.message);
+				throw new RuntimeError("update를 진행할 수 없습니다.");
 			});
 		result.password = '';
 	
@@ -75,7 +75,7 @@ module.exports = {
 		const result = await User
 			.deleteOne({_id:id})
 			.catch(err => {
-				throw new RuntimeError(err.message);
+				throw new RuntimeError("delete를 진행할 수 없습니다.");
 			});
 
 		return true;
