@@ -24,7 +24,7 @@ export default function WrittenCards({ cardArray }) {
     setTabNumber(newValue);
   };
 
-  const { Id } = useParams();
+  const { id } = useParams();
   const itemArray = getItemByUserId(Id);
 
   return (

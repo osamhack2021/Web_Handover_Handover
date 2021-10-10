@@ -9,7 +9,7 @@ import Drawer from '_organisms/Drawer';
 import User from '_assets/svgs/user.svg';
 
 export default function ProfilePage() {
-  const {Id} = useParams();
+  const {id} = useParams();
   console.log("ProfilePage에서 Id: " + Id);
   const menulist = [
     '사용자 정보',
@@ -27,8 +27,8 @@ export default function ProfilePage() {
       <div className="profile-page">
         <Switch>
           {/* parameter을 통해 보여줄 profile의 id를 넘겨줌 */}
-          <Route path="/profile/:Id/writtencards" component={WrittenCards} />
-          <Route path="/profile/:Id" component={Profile} />
+          <Route path="/profile/:id/writtencards" component={WrittenCards} />
+          <Route path="/profile/:id" component={Profile} />
         </Switch>
       </div>
     </div>

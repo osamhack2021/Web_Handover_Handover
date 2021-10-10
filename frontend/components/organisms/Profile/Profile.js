@@ -12,7 +12,7 @@ const status = {
 };
 
 export default function Profile() {
-  const { Id } = useParams();
+  const { id } = useParams();
 
   const [user, setUser] = useState(null);
   const [group, setGroup] = useState(null);
