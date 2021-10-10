@@ -63,11 +63,7 @@ module.exports = {
         try {
             const group_id = req.params.group_id;
 
-            const projection = {
-                name: true, path: true,
-                admins: true
-            };
-            const group = await groupService.read({ _id: group_id }, projection);
+            const group = await groupService.read({ _id: group_id });
 
             // Invalid group_id
             if(group === null) throw new NotFoundError(`NotFound: 검색결과가 없습니다.`);

@@ -6,13 +6,7 @@ const itemSchema = mongoose.Schema({
     type: { type: String, required: true, enum: [ 'cabinet', 'document', 'card' ] },
     owner: { type: Types.ObjectId, ref: 'User', required: true },
     path: {
-        type: String,
-        validate: {
-            validator: function(v) {
-                return /^,(.+?,){1,}$/.test(v);     // ,{objid},{objid},{objid},...
-            },
-            message: props => `${props.value} is not a valid path!`
-        },
+        type: String
     },
     content: { type: String },
     files: [{
