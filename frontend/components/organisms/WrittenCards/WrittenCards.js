@@ -1,4 +1,7 @@
 import React from 'react';
+import { useParams } from 'react-router';
+import { getItemByUserId } from '_frontend/api/item';
+
 import { Tabs } from '@mui/material';
 import { Tab } from '@mui/material';
 import { Box } from '@mui/material';
@@ -8,146 +11,50 @@ import Card from '_molecules/Card';
 
 function CreateCardArray(cardArray) {
   return cardArray.map((elem) => {
-    const {
-      type, title, description, content, Id,
-    } = elem;
-    return (
-      <Card
-        type={type}
-        title={title}
-        description={description}
-        isArchived={false}
-        content={content}
-        Id={Id}
-      />
-    );
+    const { _id } = elem;
+    return <Card Id={_id} />;
   });
 }
 
-const dummy = [{
-  _id: '6156d6413334eb865afc2d7b',
-  title: 'Handover',
-  type: 'cabinet',
-  content: {
-    description: '',
-    children: [],
-  },
-},{
-  _id: '6156d6413334eb865afc2d7b',
-  title: 'Handover',
-  type: 'cabinet',
-  content: {
-    description: '',
-    children: [],
-  },
-},{
-  _id: '6156d6413334eb865afc2d7b',
-  title: 'Handover',
-  type: 'cabinet',
-  content: {
-    description: '',
-    children: [],
-  },
-},{
-  _id: '6156d6413334eb865afc2d7b',
-  title: 'Handover',
-  type: 'cabinet',
-  content: {
-    description: '',
-    children: [],
-  },
-},{
-  _id: '6156d6413334eb865afc2d7b',
-  title: 'Handover',
-  type: 'cabinet',
-  content: {
-    description: '',
-    children: [],
-  },
-},{
-  _id: '6156d6413334eb865afc2d7b',
-  title: 'Handover',
-  type: 'cabinet',
-  content: {
-    description: '',
-    children: [],
-  },
-},{
-  _id: '6156d6413334eb865afc2d7b',
-  title: 'Handover',
-  type: 'document',
-  content: {
-    description: '',
-    children: [],
-  },
-},{
-  _id: '6156d6413334eb865afc2d7b',
-  title: 'Handover',
-  type: 'document',
-  content: {
-    description: '',
-    children: [],
-  },
-},{
-  _id: '6156d6413334eb865afc2d7b',
-  title: 'Handover',
-  type: 'document',
-  content: {
-    description: '',
-    children: [],
-  },
-},
-{
-  _id: '6156d6413334eb865afc2d7b',
-  title: 'Handover',
-  type: 'card',
-  content: '안녕하세요',
-},
-{
-  _id: '6156d6413334eb865afc2d7b',
-  title: 'Handover',
-  type: 'card',
-  content: '안녕하세요',
-},{
-  _id: '6156d6413334eb865afc2d7b',
-  title: 'Handover',
-  type: 'card',
-  content: '안녕하세요',
-},{
-  _id: '6156d6413334eb865afc2d7b',
-  title: 'Handover',
-  type: 'card',
-  content: '안녕하세요',
-},
-];
-
+// Todo
+// Item을 어떻게 받아올지 알아내고 적용
 export default function WrittenCards({ cardArray }) {
-  const [value, setValue] = React.useState(0);
+  const [tabNumber, setTabNumber] = React.useState(0);
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setTabNumber(newValue);
   };
+
+  const { Id } = useParams();
+  const itemArray = getItemByUserId(Id);
+
   return (
     <Box className="tabs-container">
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" TabIndicatorProps={{ style: { background: 'black' } }} variant="fullWidth" >
+        <Tabs
+          value={tabNumber}
+          onChange={handleChange}
+          TabIndicatorProps={{ style: { background: 'black' } }}
+          variant="scrollable"
+          scrollButtons="auto"
+        >
           <Tab label="작성한 서랍" />
           <Tab label="작성한 문서" />
           <Tab label="작성한 카드" />
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={tabNumber} index={0}>
         <div className="tabpanel">
-          {CreateCardArray(dummy.slice(0, 6))}
+          {CreateCardArray(itemArray.filter((item) => item.type === "cabinet"))}
         </div>
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel value={tabNumber} index={1}>
         <div className="tabpanel">
-          {CreateCardArray(dummy.slice(6, 9))}
+          {CreateCardArray(itemArray.filter((item) => item.type === "document"))}
         </div>
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      <TabPanel value={tabNumber} index={2}>
         <div className="tabpanel">
-          {CreateCardArray(dummy.slice(9, 12))}
+          {CreateCardArray(itemArray.filter((item) => item.type === "card"))}
         </div>
       </TabPanel>
     </Box>

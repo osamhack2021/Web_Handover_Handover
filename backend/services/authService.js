@@ -92,8 +92,7 @@ module.exports = {
 		params.password = encode(params.password);
 
 		const loginUser = await userService
-            .findOne({serviceNumber:params.serviceNumber},
-				 {_id:true, serviceNumber: true, password:true, group:true, status: true})
+            .findOne({serviceNumber:params.serviceNumber})
             .catch(err => {
                 if(err instanceof TypeError) {
                     throw new AuthError("로그인에 실패했습니다.");
@@ -114,8 +113,7 @@ module.exports = {
 			expiresIn: '1h'
 		});
 
-		return token;		
-	},
+		return { user: loginUser, token };	},
   
 	getLoginUser: function(token) {
 		return decodeToken(token);
