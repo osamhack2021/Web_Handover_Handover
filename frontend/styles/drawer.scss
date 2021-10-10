@@ -18,13 +18,13 @@
         }
 
         .leftpane-item {
-            padding-left: 52px;
             @include setfonts($font-weight : $weight-semibold,
                 $font-size : $size-5,
                 $line-height : 24px);
             text-decoration : none;
-            margin : 15px 0 15px 0;
+            padding : 15px 0 15px 52px;
             color: $black;
+            width: 100%;
             img {
                 position: relative;
                 top: 2px;
