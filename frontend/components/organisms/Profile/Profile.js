@@ -1,34 +1,45 @@
-import React from 'react';
-import { useParams } from 'react-router';
-import { getUser } from '_api/user';
-import { getGroupByGroupId } from '_api/group';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import { getUser } from "_api/user";
+import { getGroupByGroupId } from "_api/group";
+
+const status = {
+  admin: "관리자",
+  inactive: "비활성",
+  deleted: "삭제",
+  retired: "전역",
+  active: "활성",
+};
 
 export default function Profile() {
   const { Id } = useParams();
-  console.log("Profile에서 Id: " + Id);
-  const user = getUser(Id).then(
-    data => data //😵
-  ).catch(
-    error => console.log(error)
-  );
-  console.log(user);
-  const group = getGroupByGroupId(user.group);
-  console.log(group);
 
-  let status = "활성";
-  switch (user.status) {
-    case "admin": status = "관리자"
-    case "inactive": status = "비활성";
-    case "deleted": status = "삭제";
-    case "retired": status = "전역";
-    default: status = "활성";
-  }
+  const [user, setUser] = useState(null);
+  const [group, setGroup] = useState(null);
 
-  return (
+  // Get user information
+  useEffect(() => {
+    getUser(Id)
+      .then((data) => {
+        setUser(data);
+      });
+  }, []);
+
+  // Get group information after user information is fetched
+  useEffect(() => {
+    if (user != null) {
+      getGroupByGroupId(user.group)
+        .then((data) => {
+          setGroup(data);
+        });
+    }
+  }, [user]);
+
+  return user == null || group == null ? (
+    <div>Loading...</div>
+  ) : (
     <div className="profile">
-      <div className="profile-title">
-        사용자 정보
-      </div>
+      <div className="profile-title">사용자 정보</div>
       <div className="profile-labels">
         <div className="profile-label">이름</div>
         <div className="profile-label">계급</div>
@@ -43,8 +54,10 @@ export default function Profile() {
         <div className="profile-value">{user.name}</div>
         <div className="profile-value">{user.rank}</div>
         <div className="profile-value">{user.title}</div>
-        <div className="profile-value">{status}</div>
-        <div className="profile-value">{group.division === undefined ? "소속 없음" : group.division}</div>
+        <div className="profile-value">{status[user.status]}</div>
+        <div className="profile-value">
+          {group.name === undefined ? "소속 없음" : group.name}
+        </div>
         <div className="profile-value">{user.email}</div>
         <div className="profile-value">{user.tel.military}</div>
         <div className="profile-value">{user.tel.mobile}</div>
