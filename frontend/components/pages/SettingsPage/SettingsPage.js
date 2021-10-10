@@ -1,5 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import R from 'ramda';
 
 import ProfileSettings from '_organisms/ProfileSettings';
 import GroupSettings from '_organisms/GroupSettings';
@@ -8,6 +10,7 @@ import Drawer from '_organisms/Drawer';
 import User from '_assets/svgs/user.svg';
 
 export default function SettingsPage() {
+  const { user } = useSelector(R.pick(['user']));
   const menulist = [
     'ME',
     [
@@ -24,7 +27,8 @@ export default function SettingsPage() {
   return (
     <div className="page-template">
       <div className="drawer-container">
-        <Drawer menulist={menulist} />
+        {/*이곳의 drawer에는 현재 User의 Id가 들어가면 됨*/}
+        <Drawer menulist={menulist} Id={user.Id} />
       </div>
       <div className="setting-page">
         <Switch>

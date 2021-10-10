@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import R from 'ramda';
-
-import { useDispatch, useSelector } from 'react-redux';
+import { getGroupByGroupId } from '_api/group';
+import { getUser } from '_api/user';
 
 import DrawerProfile from '_molecules/DrawerProfile';
 import MenuItem from '_molecules/MenuItem';
@@ -26,23 +25,20 @@ const menulist = [
 ];
 */
 
-function arrayToMenuItems(array) {
-  return array.map((elem, index) => (
-    <ListItem disableGutters sx={{ py: 0 }} key={index}>
-      <ListItemButton disableGutters sx={{ py: 0 }}>
-        <MenuItem key={elem.Id} value={{ title: elem.title, Id: elem.Id, link: `/item/${elem.Id}` }} />
-      </ListItemButton>
-    </ListItem>
-  ));
-}
-
-export default function Drawer({ menulist }) {
-  const dispatch = useDispatch();
-
-  const { user } = useSelector(R.pick(['user']));
-  const { group } = useSelector(R.pick(['group']));
-
-
+export default function Drawer({ Id, menulist }) {
+  console.log("Drawer에서 Id: " + Id);
+  const user = getUser(Id).then(
+    data => data
+  ).catch(
+    error => console.log(error)
+  );
+  console.log(user);
+  const group = getGroupByGroupId(user.group).then(
+    data => data
+  ).catch(
+    error => console.log(error)
+  );
+  console.log(group);
   return (
     <div className="drawer">
       <DrawerProfile name={user.name} rank={user.rank} division={group.name} title={user.title} />
@@ -71,5 +67,6 @@ export default function Drawer({ menulist }) {
 }
 
 Drawer.propTypes = {
+  Id: PropTypes.string.isRequired,
   menulist: PropTypes.array.isRequired,
 };

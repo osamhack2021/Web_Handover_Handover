@@ -15,12 +15,8 @@ import Tooltip from "@mui/material/Tooltip";
 import { validatePassword } from "_utils/validation";
 
 export default function ProfileSettings() {
-  const dispatch = useDispatch();
-
   const { user } = useSelector(R.pick(['user']));
   const { group } = useSelector(R.pick(['group']));
-
-  console.log(user);
 
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -82,7 +78,6 @@ export default function ProfileSettings() {
     const isEmailValid = email.length > 1;
     const isMilitaryTelValid = militaryTel.length > 1;
     const isMobileTelValid = mobileTel.length > 1;
-    console.log(rank);
     return (
       isPasswordValid &&
       isPasswordConfirmValid &&
@@ -98,6 +93,16 @@ export default function ProfileSettings() {
   return (
     <Box className="profile-setting-box">
       <div className="profile-setting-title"> 프로필 설정 </div>
+      <div className="profile-img-label"> 사진 </div>
+      <div>
+        <img
+          className="profile-img"
+          /*src={profilePic || '/images/default-profile.png'}*/
+          src={'/images/default-profile.png'}
+          alt="profile"
+        />
+      </div>
+      <Button className="profile-setting-button" variant = "contained" > 프로필 이미지 수정 </Button>
       <FormControl fullWidth margin="normal">
         <InputLabel htmlFor="select-rank">계급/등급</InputLabel>
         <Select defaultValue={user.rank} id="select-rank" label="계급/등급" onChange={(event) => handleInputChange(event, setRank)}>

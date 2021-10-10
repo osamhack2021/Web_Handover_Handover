@@ -1,19 +1,27 @@
 import React from 'react';
-import R from 'ramda';
-import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
+import { getUser } from '_api/user';
+import { getGroupByGroupId } from '_api/group';
 
 export default function Profile() {
-  const dispatch = useDispatch();
-  const { user } = useSelector(R.pick(['user']));
-  const { group } = useSelector(R.pick(['group']));
+  const { Id } = useParams();
+  console.log("Profile에서 Id: " + Id);
+  const user = getUser(Id).then(
+    data => data //😵
+  ).catch(
+    error => console.log(error)
+  );
+  console.log(user);
+  const group = getGroupByGroupId(user.group);
+  console.log(group);
 
   let status = "활성";
-  switch(user.status){
-    case "admin" : status="관리자;"
-    case "inactive" : status="비활성";
-    case "deleted" : status="삭제";
-    case "retired" : status="전역";
-    default : status="활성";
+  switch (user.status) {
+    case "admin": status = "관리자"
+    case "inactive": status = "비활성";
+    case "deleted": status = "삭제";
+    case "retired": status = "전역";
+    default: status = "활성";
   }
 
   return (
