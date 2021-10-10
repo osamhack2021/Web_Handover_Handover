@@ -17,10 +17,8 @@ module.exports = {
 		const result = await User
 			.find(params, projection)
 			.catch(err => {
-				throw new RuntimeError(params + '를 불러올 수 없습니다.');
+				throw new RuntimeError('조회를 진행할 수 없습니다.');
 			});
-
-		if(result === null) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
 
 		return result;
 	},
@@ -30,11 +28,9 @@ module.exports = {
 		const result = await User
 			.findOne(params, projection)
 			.catch(err => {
-				throw new RuntimeError(params + '를 불러올 수 없습니다.');
+				throw new NotFoundError('Not Found: '+ params._id +  '에 대한 검색 결과가 없습니다.');
 			});
-
-		if(result === null) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
-
+			
 		return result;
 	},
 
