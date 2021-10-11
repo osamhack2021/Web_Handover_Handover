@@ -48,9 +48,9 @@ async function init() {
     let admin = {
         serviceNumber: 'admin',
         password: 'admin',
-        name: 'admin',
-        rank: '관리자',
-        title: '관리자',
+        name: '김길동',
+        rank: '중령',
+        title: '대대장',
         status: 'admin',
         email: 'admin@osam.com',
         tel: {
@@ -68,7 +68,7 @@ async function init() {
 
     // Create group
     groups.osam = await post('/group', {
-        name: 'OSAM',
+        name: '11사단',
         path: '',
         admins: [users.admin._id]
     });
@@ -83,8 +83,8 @@ async function init() {
     let ntcho = {
         serviceNumber: 'ntcho',
         password: 'ntcho',
-        name: 'ntcho',
-        rank: '팀장',
+        name: '조나단',
+        rank: '상병',
         title: '팀장',
         status: 'active',
         email: 'ntcho@github.com',
@@ -102,17 +102,22 @@ async function init() {
     })).token;
 
     groups.handover = await post('/group', {
-        name: 'Handover',
+        name: '111대대',
         path: groups.osam.path,
         admins: [users.ntcho._id]
     });
+
+    // Update ntcho's group
+    users.ntcho = await post(`/user/${users.ntcho._id}`, {
+        group: groups.handover._id
+    }, 'PUT');
 
     /****** Create phjppo ******/
     let phjppo = {
         serviceNumber: 'phjppo',
         password: 'phjppo',
-        name: 'phjppo',
-        rank: '백엔드',
+        name: '박현준',
+        rank: '중사',
         title: '백엔드',
         status: 'active',
         email: 'phjppo@github.com',
@@ -130,7 +135,7 @@ async function init() {
     })).token;
 
     groups.backend = await post('/group', {
-        name: 'backend',
+        name: '인사과',
         path: groups.handover.path,
         admins: [users.phjppo._id]
     });
@@ -139,8 +144,8 @@ async function init() {
     let ahnavocado = {
         serviceNumber: 'ahnavocado',
         password: 'ahnavocado',
-        name: 'ahnavocado',
-        rank: '프론트',
+        name: '안수겸',
+        rank: '병장',
         title: '프론트',
         status: 'active',
         email: 'ahnavocado@github.com',
@@ -158,7 +163,7 @@ async function init() {
     })).token;
 
     groups.frontend = await post('/group', {
-        name: 'frontend',
+        name: '군수과',
         path: groups.handover.path,
         admins: [users.ahnavocado._id]
     });
