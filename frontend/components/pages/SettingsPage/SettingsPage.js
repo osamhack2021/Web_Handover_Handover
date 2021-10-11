@@ -10,19 +10,20 @@ import User from '_assets/svgs/user.svg';
 
 export default function SettingsPage() {
   const { user } = useSelector(R.pick(['user']));
+
   const menulist = [
     'ME',
     [
-      {title: '프로필', src: User, alt: 'user', link: '/account/settings'},
-      {title: '테마 변경', src: User, alt: 'themechange', link: '/account/settings/theme'},
+      { title: '프로필', src: User, alt: 'user', link: '/account/settings' },
+      { title: '테마 변경', src: User, alt: 'themechange', link: '/account/settings/theme' },
     ],
     'TEAM',
     [
-      {title: '그룹 관리', src: User, alt: 'auth', link: '/account/settings/groups'},
-      {title: '알림', src: User, alt: 'alert', link: '/account/settings/alerts'},
+      { title: '그룹 관리', src: User, alt: 'auth', link: '/account/settings/group' },
+      { title: '알림', src: User, alt: 'alert', link: '/account/settings/alerts' },
     ],
   ];
-  
+
   return (
     <div className="page-template">
       <div className="drawer-container">
@@ -32,8 +33,8 @@ export default function SettingsPage() {
       <div className="setting-page">
         <Switch>
           {/* <Route path="/setting/themechange" component={} /> */}
-          <Route path="/setting/group" component={GroupSettings} />
-          <Route path="/setting" component={ProfileSettings} />
+          <Route path="/account/settings/group" component={GroupSettings} />
+          <Route path="/account/settings" exact component={ProfileSettings} />
         </Switch>
       </div>
     </div>
