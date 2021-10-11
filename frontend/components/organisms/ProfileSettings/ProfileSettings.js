@@ -16,12 +16,13 @@ import Tab from '@mui/material/Tab';
 
 import TabPanel from '_molecules/TabPanel';
 
+import { attemptUpdateUser } from '_thunks/user';
 import { validatePassword } from "_utils/validation";
 
 export default function ProfileSettings() {
+  const dispatch = useDispatch();
+
   const { user } = useSelector(R.pick(['user']));
-  console.log(user);
-  const { group } = useSelector(R.pick(['group']));
 
   const [tabNumber, setTabNumber] = useState(0);
   const [password, setPassword] = useState("");
@@ -101,7 +102,27 @@ export default function ProfileSettings() {
     );
   };
 
-  return (<div>
+  const update = () => {
+    if(passwordValid) {
+      const updatedUser = {
+        serviceNumber: user.serviceNumber,
+        name: user.name,
+        password: password,
+        rank: rank,
+        title: title,
+        email: email,
+        tel: {
+          military: militaryTel,
+          mobile: mobileTel,
+        },
+        profileImageUrl: profileImageUrl,
+      };
+      console.log(updatedUser);
+      dispatch(attemptUpdateUser(updatedUser)).catch(R.identity);
+    }
+  }
+
+  return (
     <Box className="tabs-container">
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
@@ -255,7 +276,7 @@ export default function ProfileSettings() {
               id="input-tel-mobile"
               label="휴대폰 전화번호"
               type="tel"
-              placeholder="010-0000-0000" // TODO: Add phone number validation
+              placeholder="010-0000-0000"
               value={mobileTel}
               onChange={(event) => handleInputChange(event, setMobileTel)}
               margin="normal"
@@ -271,6 +292,7 @@ export default function ProfileSettings() {
                   variant="contained"
                   size="large"
                   disabled={!isInputValid()}
+                  onClick={update}
                 >
                   프로필 수정
                 </Button>
@@ -280,7 +302,5 @@ export default function ProfileSettings() {
         </div>
       </TabPanel>
     </Box>
-
-  </div>
   );
 }
