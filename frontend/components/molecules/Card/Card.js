@@ -10,7 +10,6 @@ import { getItemByItemId, getItemChild } from '_api/item';
 import { attemptUpdatePermission } from '_thunks/item';
 import { getGroupByGroupId } from '_api/group';
 import CardDropdown from '_molecules/CardDropdown';
-import NoteHeader from '../NoteHeader';
 import NoteFooter from '../NoteFooter';
 import CardItem from '../CardItem';
 
