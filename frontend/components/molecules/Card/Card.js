@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { snakeToCamelCase } from 'json-style-converter/es5';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import R from 'ramda';
 
-import { PromiseGroupArray } from '_utils/promiseArray';
 import { getItemByItemId, getItemChild } from '_api/item';
-import { attemptUpdatePermission } from '_thunks/item';
+import { attemptUpdatePermission, attemptDeleteItem } from '_thunks/item';
 import { getGroupByGroupId } from '_api/group';
 import CardDropdown from '_molecules/CardDropdown';
-import NoteHeader from '../NoteHeader';
 import NoteFooter from '../NoteFooter';
 import CardItem from '../CardItem';
 
@@ -44,10 +42,12 @@ function DetermineInitPermission(accessGroups, groupObjectArray, readOrEdit) {
 export default function Card({ Id }) {
   console.log(`rendering card with ${Id}`);
   const history = useHistory();
+  const dispatch = useDispatch();
 
   // find current user from store
   const { user } = useSelector(R.pick(['user']));
   const { group } = useSelector(R.pick(['group']));
+  const { userItem } = useSelector(R.pick(['userItem']));
 
   // states of item, createdby, and child array
   const [itemObject, setItemObject] = useState({});
@@ -63,6 +63,7 @@ export default function Card({ Id }) {
   const [loadingChild, setLoadingChild] = useState(true);
   const [loadingGroup, setLoadingGroup] = useState(true);
   const [isAvailable, setIsAvailable] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const groupIdArray = group.path.split(',').filter((elem) => elem !== '');
 
@@ -107,11 +108,12 @@ export default function Card({ Id }) {
   };
   const innerContent = (itemObject.type === 'card' ? content : ArrayToCardItems(childObjectArray));
 
-  const onDeleteCard = (event) => {
-    console.log('Deleting Card with onDeleteCard');
+  const onDeleteCard = () => {
+    dispatch(attemptDeleteItem(Id, userItem.find((elem) => elem.Id === Id)));
+    setIsDeleted(true);
   };
 
-  // fires when change of permission from mui-select occurs
+  // fires when change of p ermission from mui-select occurs
   const onChangePermission = (event) => {
     console.log('Changing Permissions with onChangePermission');
 
@@ -145,10 +147,10 @@ export default function Card({ Id }) {
     };
 
     // actual api request
-    attemptUpdatePermission(itemObject.Id, newReadPermission);
+    dispatch(attemptUpdatePermission(itemObject.Id, newReadPermission));
   };
 
-  return !boolSum && (
+  return !isDeleted && !boolSum && (
     <div className={className}>
       <div>
         {/* passing NoteHeader onClick element, so that upon clicking title can be redirected */}
@@ -160,6 +162,7 @@ export default function Card({ Id }) {
             <CardDropdown
               groupObjectArray={groupObjectArray.groupObjectArray}
               onChangePermission={onChangePermission}
+              onDeleteCard={onDeleteCard}
               permissionId={permissionId}
             />
           </div>

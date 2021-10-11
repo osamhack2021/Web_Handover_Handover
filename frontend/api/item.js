@@ -31,3 +31,7 @@ export const updateItem = (itemId, object) => request.put(`/api/item/${itemId}`)
   .send(object)
   .then(handleSuccess)
   .catch(handleError);
+
+export const deleteItem = (itemId) => request.delete(`/api/item/${itemId}`)
+  .then(handleSuccess)
+  .catch(handleError);

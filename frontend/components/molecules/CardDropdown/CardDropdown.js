@@ -28,6 +28,7 @@ export default function CardDropdown({
   groupObjectArray,
   onChangePermission,
   permissionId,
+  onDeleteCard,
 }) {
   const { group } = useSelector(R.pick(['group']));
   // create an array of {value : , string : } in which its
@@ -60,7 +61,7 @@ export default function CardDropdown({
         }}
       >
         <List component="nav" aria-label="mailbox folders">
-          <ListItem button>
+          <ListItem button onClick={onDeleteCard}>
             <ListItemText primary="삭제" />
           </ListItem>
           <Divider />
@@ -89,4 +90,5 @@ CardDropdown.propTypes = {
   groupObjectArray: PropTypes.arrayOf(Object).isRequired,
   onChangePermission: PropTypes.func.isRequired,
   permissionId: PropTypes.string.isRequired,
+  onDeleteCard: PropTypes.func.isRequired,
 };
