@@ -1,45 +1,113 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import R from 'ramda';
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import R from "ramda";
 
-import PinkTrapezoid from '_assets/svgs/pink_trapezoid.svg';
+import Box from "@mui/material/Box";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Stack from "@mui/material/Stack";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ButtonBase from "@mui/material/ButtonBase";
+import Icon from "@mdi/react";
+import { mdiAccount, mdiCog, mdiLogoutVariant, mdiMenuDown } from "@mdi/js";
 
-export default function ProfileMenu({ name = '', rank = '', division = '', title = '', profilePic = '' }) {
-  const { user } = useSelector(R.pick(['user']));
+import { attemptLogout } from "_frontend/store/thunks/auth";
 
-  const aboveString = `${rank} ${name}`;
-  const belowString = `${division} ${title}`;
+export default function ProfileMenu() {
+  const dispatch = useDispatch();
+  const { user } = useSelector(R.pick(["user"]));
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    // Click on <ButtonBase> targets <Stack> element
+    // Sets anchor to bottom right of the <Stack> element
+    setAnchorEl(event.currentTarget.childNodes[0]);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
-    <div className="profile-menu">
-      <div className="profile-menu-content">
-        <Link to={`/profile/${user.Id}`}>
+    <Box sx={{ width: "100%" }}>
+      <ButtonBase
+        onClick={handleClick}
+        sx={{ width: "100%", py: "16px", px: "24px" }}
+        className="profile-menu"
+      >
+        <Stack direction="row" sx={{ alignItems: "center", width: "100%" }}>
           <img
-            className="profile-img"
-            src={profilePic || '/images/default-profile.png'}
-            alt="profile"
+            style={{
+              width: "36px",
+              height: "36px",
+              marginRight: "12px",
+              borderRadius: "50%",
+            }}
+            src={user.profileImageUrl || "/images/default-profile.png"}
           />
-        </Link>
-        <div>
-          <div className="profile-string-above">
-            <Link to={`/profile/${user.Id}`} style={{ textDecoration: 'none', color: 'black' }}>{aboveString}</Link>
+          <div
+            style={{
+              flexGrow: 1,
+              fontSize: "1.4em",
+              fontWeight: 700,
+              textAlign: "start",
+              paddingTop: "1px",
+            }}
+          >
+            {user.rank} {user.name}
           </div>
-          <div className="profile-string-below">
-            <Link to={`/profile/${user.Id}`} style={{ textDecoration: 'none', color: 'black' }}> {belowString} </Link>
-          </div>
-        </div>
-      </div>
-      <img alt="pink_trapezoid" className="profile-menu-background" src={PinkTrapezoid} draggable="false" />
-    </div>
+          <Icon path={mdiMenuDown} size={1} />
+        </Stack>
+      </ButtonBase>
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        onClick={handleClose}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: "visible",
+            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+            ml: "7px",
+            mt: 0.5,
+            "&:before": {
+              content: '""',
+              display: "block",
+              position: "absolute",
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: "background.paper",
+              transform: "translateY(-50%) rotate(45deg)",
+              zIndex: 0,
+            },
+          },
+        }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      >
+        <MenuItem component="a" href={"/account" + user.Id}>
+          <ListItemIcon>
+            <Icon path={mdiAccount} size={1} />
+          </ListItemIcon>
+          내 프로필
+        </MenuItem>
+        <MenuItem component="a" href={"/account/settings"}>
+          <ListItemIcon>
+            <Icon path={mdiCog} size={1} />
+          </ListItemIcon>
+          계정 설정
+        </MenuItem>
+        <MenuItem onClick={() => dispatch(attemptLogout()).catch(R.identity)}>
+          <ListItemIcon>
+            <Icon path={mdiLogoutVariant} size={1} />
+          </ListItemIcon>
+          로그아웃
+        </MenuItem>
+      </Menu>
+    </Box>
   );
 }
-
-ProfileMenu.propTypes = {
-  name: PropTypes.string.isRequired,
-  rank: PropTypes.string.isRequired,
-  division: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  profilePic: PropTypes.string.isRequired,
-};

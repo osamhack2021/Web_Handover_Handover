@@ -76,11 +76,15 @@ export const attemptRegister = (newUser) => (dispatch) => postRegister(newUser)
 
 export const attemptLogout = () => (dispatch) => postLogout()
   .then((data) => {
+    dispatch(push('/'));
     dispatch(logout());
 
+    // Remove user information from localStorage
+    localStorage.clear();
+
     RNC.addNotification({
-      title: 'Success!',
-      message: data.message,
+      title: '로그아웃',
+      message: "정상적으로 로그아웃 되었습니다.",
       type: 'success',
       container: 'top-center',
       animationIn: ['animated', 'fadeInRight'],
@@ -89,8 +93,6 @@ export const attemptLogout = () => (dispatch) => postLogout()
         duration: 5000,
       },
     });
-
-    dispatch(push('/login'));
     return data;
   })
   .catch(dispatchError(dispatch));
