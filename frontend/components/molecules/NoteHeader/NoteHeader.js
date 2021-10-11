@@ -6,9 +6,11 @@ import Bookmark from '_assets/svgs/bookmark.svg';
 import BookmarkFilled from '_assets/svgs/bookmark-filled.svg';
 
 import CustomButton from '_atoms/CustomButton';
+import CardDropdown from '_molecules/CardDropdown';
 
+// access groups is an object
 export default function NoteHeader({
-  title, duplicateFunc, bookmarkFunc, isArchived, onClick,
+  title, duplicateFunc, bookmarkFunc, accessGroups, isArchived, onClick, groupObjectArray, permissionId, onChangePermission,
 }) {
   const bookmarkRender = isArchived ? '' : 'hidden';
   const bookmarkSrc = isArchived ? BookmarkFilled : Bookmark;
@@ -18,18 +20,12 @@ export default function NoteHeader({
         {title}
       </div>
       <div className="button-group">
-        <div className="hidden">
-          <CustomButton imgSrc={Duplicate} alt="duplicate" type="button" onClick={duplicateFunc} />
-        </div>
-        <div className={bookmarkRender}>
-          <CustomButton
-            imgSrc={bookmarkSrc}
-            alt="bookmark"
-            className={bookmarkRender}
-            type="button"
-            onClick={bookmarkFunc}
-          />
-        </div>
+        <CardDropdown
+          accessGroups={accessGroups}
+          groupObjectArray={groupObjectArray}
+          onChangePermission={onChangePermission}
+          permissionId={permissionId}
+        />
       </div>
     </div>
   );
@@ -41,4 +37,5 @@ NoteHeader.propTypes = {
   bookmarkFunc: PropTypes.func.isRequired,
   isArchived: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
+  accessGroups: PropTypes.object.isRequired,
 };

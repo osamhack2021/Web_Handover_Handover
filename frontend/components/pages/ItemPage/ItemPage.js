@@ -6,7 +6,7 @@ import { snakeToCamelCase } from 'json-style-converter/es5';
 import GridHeader from '_organisms/GridHeader';
 import GridLayout from '_organisms/GridLayout';
 import { getItemByItemId, getItemChild } from '_api/item';
-import PromiseItemArray from '_utils/promiseArray';
+import { PromiseItemArray } from '_utils/promiseArray';
 
 export default function ItemPage({ location }) {
   const [loadingPath, setLoadingPath] = useState(true);
