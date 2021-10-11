@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import R from 'ramda';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import R from "ramda";
 
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
-import useKeyPress from '_hooks/useKeyPress';
-import { attemptLogin } from '_thunks/auth';
+import useKeyPress from "_hooks/useKeyPress";
+import { attemptLogin } from "_thunks/auth";
 // import { attemptDummyLogin } from '_thunks/auth';
 
 export default function Login() {
   const dispatch = useDispatch();
 
   const [remember, setRemember] = useState(false);
-  const [serviceNumber, setServiceNumber] = useState('');
-  const [password, setPassword] = useState('');
+  const [serviceNumber, setServiceNumber] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
-    const serviceNumber = localStorage.getItem('serviceNumber');
+    const serviceNumber = localStorage.getItem("serviceNumber");
     if (serviceNumber) {
       setRemember(true);
       setServiceNumber(serviceNumber);
@@ -35,10 +35,10 @@ export default function Login() {
     dispatch(attemptLogin(userCredentials)).catch(R.identity);
   };
 
-  useKeyPress('Enter', login);
+  useKeyPress("Enter", login);
 
   const rememberMe = () => {
-    localStorage.removeItem('serviceNumber');
+    localStorage.removeItem("serviceNumber");
     setRemember(!remember);
   };
 
@@ -55,7 +55,6 @@ export default function Login() {
           fullWidth
           id="input-id"
           label="군번"
-          placeholder="군번을 입력해주세요"
           value={serviceNumber}
           onChange={updateServiceNumber}
           margin="normal"
@@ -64,14 +63,19 @@ export default function Login() {
           fullWidth
           id="input-password"
           label="비밀번호"
-          placeholder="군번을 입력해주세요"
           value={password}
           type="password"
           onChange={updatePassword}
           margin="normal"
         />
       </div>
-      <Button className="login-button mb-5" variant = "contained" onClick={login}>
+      <Button
+        fullWidth
+        sx={{ my: 2 }}
+        variant="contained"
+        onClick={login}
+        size="large"
+      >
         로그인
       </Button>
       <div className="login-register">

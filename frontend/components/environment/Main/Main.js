@@ -48,7 +48,7 @@ export default function Main({ location }) {
           <Route path="/register" component={RegisterPage} />
           <Route path="/edit" component={EditorPage} />
           <Route path="/setting" component={SettingsPage} />
-          <Route path="/profile" component={ProfilePage} />
+          <Route path="/profile/:id" component={ProfilePage} />
           <Route path="/recovery" component={RecoveryPage} />
           <Route path="*" component={RoutingPage} />
           {/* <Route path="/login" component={LoginPage} />

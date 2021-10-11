@@ -87,8 +87,117 @@ async function isItemReader(loginUserId, targetItemId) {
 
 module.exports = {
 
-  async login(params) {
-    params.password = encode(params.password);
+    login: async function(params) {
+		
+		params.password = encode(params.password);
+
+		const loginUser = await userService
+            .findOne({serviceNumber:params.serviceNumber})
+            .catch(err => {
+                if(err instanceof TypeError) {
+                    throw new AuthError("로그인에 실패했습니다.");
+                }
+                throw new RuntimeError('로그인에 실패했습니다.');
+            });
+
+		if(loginUser === null|| loginUser.password !== params.password) {
+			throw new AuthError('로그인에 실패했습니다.');
+		}
+
+		const user = jwt.sign({
+			_id: loginUser._id,
+			serviceNumber: loginUser.serviceNumber,
+			group: loginUser.group,
+			status: loginUser.status
+		}, JWT_SECRET_KEY, {
+			expiresIn: '1h'
+		});
+
+		return user;	
+	},
+  
+	getLoginUser: function(token) {
+		return decodeToken(token);
+	},
+
+	authAdmin: async function(token) {
+		const decode = decodeToken(token);
+
+		const isAd = await isAdmin(decode._id).catch(err => {throw err});
+		if(!isAd) {
+			throw new ForbiddenError('접근 권한이 존재하지 않습니다');
+		}
+		return isAd;	
+	},
+	//User 수정 권한 확인
+	editUserAuth: async function(loginUserId, targetUserId) {
+
+		const results = await Promise.all([isHumanResourceManager(loginUserId, targetUserId), isAdmin(loginUserId)])
+				.catch(err =>{throw err});
+	
+		if(!isSelf(loginUserId, targetUserId) &&
+			!results.includes(true)) {
+			throw new ForbiddenError('접근 권한이 존재하지 않습니다');
+		}
+
+		return true;
+	},
+
+	deleteUserAuth: async function(loginUserId, targetUserId) {
+		
+		const results = await Promise.all([isHumanResourceManager(loginUserId, targetUserId), isAdmin(loginUserId)])
+				.catch(err =>{throw err});
+	
+		if(!results.includes(true)) {
+			throw new ForbiddenError('접근 권한이 존재하지 않습니다');
+		}
+
+		return true;
+	},
+
+	readUserAuth: async function(loginUserId, targetUserId) {
+		const results = await Promise.all([isHumanResourceManager(loginUserId, targetUserId), isAdmin(loginUserId)])
+				.catch(err =>{throw err});
+	
+		if(!isSelf(loginUserId, targetUserId) &&
+			!results.includes(true)) {
+				return 'general';
+		}
+		
+		return 'all';
+	},
+
+	//Group 수정 권한 확인
+	editGroupAuth: async function(loginUserId, targetGroupId) {
+		const results = await Promise.all([isGroupManager(loginUserId, targetGroupId), isAdmin(loginUserId)])
+				.catch(err =>{throw err});
+		if(!results.includes(true)){
+			throw new ForbiddenError('접근 권한이 존재하지 않습니다');
+		}
+
+		return true;
+	},
+
+	//Item 수정 권한 확인
+	editItemAuth: async function(loginUserId, targetItemId) {
+		const results = await Promise.all([isItemEditor(loginUserId, targetItemId), isAdmin(loginUserId)])
+				.catch(err =>{throw err});
+		if(!results.includes(true)){
+			throw new ForbiddenError('접근 권한이 존재하지 않습니다');
+		}
+
+		return true;
+	},
+
+	readItemAuth: async function(loginUserId, targetItemId) {
+		const results = await Promise.all([isItemReader(loginUserId, targetItemId), isAdmin(loginUserId)])
+					.catch(err =>{throw err});
+		if(!results){
+			throw new ForbiddenError('접근 권한이 존재하지 않습니다');
+		}
+
+		return true;
+	},
 
     const loginUser = await userService
       .findOne({ serviceNumber: params.serviceNumber })

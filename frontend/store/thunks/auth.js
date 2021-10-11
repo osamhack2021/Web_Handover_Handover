@@ -33,16 +33,16 @@ import {
 
 export const attemptLogin = (userId) => (dispatch) => postLogin(userId)
   .then((data) => {
-    console.log(data);
-    const { user, token } = data;
-    dispatch(login(snakeToCamelCase(user)));
+    dispatch(login(snakeToCamelCase(data.user)));
 
-    console.log(`Login successful: response is ${JSON.stringify(token)}`);
+    // Save user information to localStorage to note the user is logged in
+    localStorage.setItem("user", JSON.stringify(data.user));
+    
     RNC.addNotification({
-      title: 'Success!',
-      message: `JWT token = ${token}`, // TODO: change to confirmation message
+      title: '로그인 성공',
+      message: `${data.user.name}님 환영합니다!`,
       type: 'success',
-      container: 'top-right',
+      container: 'top-center',
       animationIn: ['animated', 'fadeInRight'],
       animationOut: ['animated', 'fadeOutRight'],
       dismiss: {
@@ -50,7 +50,7 @@ export const attemptLogin = (userId) => (dispatch) => postLogin(userId)
       },
     });
 
-    dispatch(push('/'));
+    dispatch(push('/home'));
     return data;
   })
   .catch(dispatchError(dispatch));
@@ -61,7 +61,7 @@ export const attemptRegister = (newUser) => (dispatch) => postRegister(newUser)
       title: 'Success!',
       message: data.message,
       type: 'success',
-      container: 'top-right',
+      container: 'top-center',
       animationIn: ['animated', 'fadeInRight'],
       animationOut: ['animated', 'fadeOutRight'],
       dismiss: {
@@ -82,7 +82,7 @@ export const attemptLogout = () => (dispatch) => postLogout()
       title: 'Success!',
       message: data.message,
       type: 'success',
-      container: 'top-right',
+      container: 'top-center',
       animationIn: ['animated', 'fadeInRight'],
       animationOut: ['animated', 'fadeOutRight'],
       dismiss: {
