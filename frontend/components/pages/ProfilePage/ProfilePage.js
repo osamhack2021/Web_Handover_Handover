@@ -5,7 +5,7 @@ import R from "ramda";
 import { push } from "connected-react-router";
 
 import Profile from "_organisms/Profile";
-import WrittenCards from "_organisms/WrittenCards";
+import UserItems from "_organisms/UserItems";
 
 import Tabs from "@mui/material/Tabs";
 import Badge from "@mui/material/Badge";
@@ -117,7 +117,7 @@ export default function ProfilePage() {
           <Profile user={user} group={group} />
         </Route>
         <Route exact path={baseURL + "/items"}>
-          <WrittenCards userItem={userItem} />
+          <UserItems userItem={userItem} />
         </Route>
       </Switch>
     </Box>

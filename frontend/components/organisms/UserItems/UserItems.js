@@ -15,7 +15,7 @@ function CreateCardArray(cardArray) {
   });
 }
 
-export default function WrittenCards({ userItem }) {
+export default function UserItems({ userItem }) {
   const [tabNumber, setTabNumber] = React.useState(0);
   const handleChange = (event, newValue) => {
     setTabNumber(newValue);
