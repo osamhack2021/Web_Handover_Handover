@@ -39,8 +39,8 @@ export const attemptLogin = (userId) => (dispatch) => postLogin(userId)
     localStorage.setItem("user", JSON.stringify(data.user));
     
     RNC.addNotification({
-      title: '로그인 성공',
-      message: `${data.user.name}님 환영합니다!`,
+      title: '로그인',
+      message: `${data.user.name}님 환영합니다.`,
       type: 'success',
       container: 'top-center',
       animationIn: ['animated', 'fadeInRight'],
@@ -58,8 +58,8 @@ export const attemptLogin = (userId) => (dispatch) => postLogin(userId)
 export const attemptRegister = (newUser) => (dispatch) => postRegister(newUser)
   .then((data) => {
     RNC.addNotification({
-      title: 'Success!',
-      message: data.message,
+      title: '프로필 수정',
+      message: "변경사항이 저장되었습니다.",
       type: 'success',
       container: 'top-center',
       animationIn: ['animated', 'fadeInRight'],
@@ -76,11 +76,15 @@ export const attemptRegister = (newUser) => (dispatch) => postRegister(newUser)
 
 export const attemptLogout = () => (dispatch) => postLogout()
   .then((data) => {
+    dispatch(push('/'));
     dispatch(logout());
 
+    // Remove user information from localStorage
+    localStorage.clear();
+
     RNC.addNotification({
-      title: 'Success!',
-      message: data.message,
+      title: '로그아웃',
+      message: "정상적으로 로그아웃 되었습니다.",
       type: 'success',
       container: 'top-center',
       animationIn: ['animated', 'fadeInRight'],
@@ -89,8 +93,6 @@ export const attemptLogout = () => (dispatch) => postLogout()
         duration: 5000,
       },
     });
-
-    dispatch(push('/login'));
     return data;
   })
   .catch(dispatchError(dispatch));
