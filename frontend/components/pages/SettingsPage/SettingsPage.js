@@ -5,7 +5,6 @@ import R from 'ramda';
 
 import ProfileSettings from '_organisms/ProfileSettings';
 import GroupSettings from '_organisms/GroupSettings';
-import Drawer from '_organisms/Drawer';
 
 import User from '_assets/svgs/user.svg';
 
@@ -28,7 +27,7 @@ export default function SettingsPage() {
     <div className="page-template">
       <div className="drawer-container">
         {/*이곳의 drawer에는 현재 User의 Id가 들어가면 됨*/}
-        <Drawer menulist={menulist} Id={user.Id} />
+        {/* <Drawer menulist={menulist} Id={user.Id} /> */}
       </div>
       <div className="setting-page">
         <Switch>
