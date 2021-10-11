@@ -1,4 +1,6 @@
 import React from 'react';
+import { useSelector } from "react-redux";
+import R from "ramda";
 import { Switch, Route } from 'react-router';
 import { useParams } from 'react-router';
 
@@ -10,19 +12,19 @@ import User from '_assets/svgs/user.svg';
 
 export default function ProfilePage() {
   const {id} = useParams();
-  console.log("ProfilePage에서 Id: " + Id);
+  console.log("ProfilePage에서 Id: " + id);
   const menulist = [
     '사용자 정보',
     [
-      { title: '사용자 정보', src: User, alt: 'user', link: `/user/${Id}` },
-      { title: '작성한 문서', src: User, alt: 'documents', link: `/user/${Id}/items` },
+      { title: '사용자 정보', src: User, alt: 'user', link: `/user/${id}` },
+      { title: '작성한 문서', src: User, alt: 'documents', link: `/user/${id}/items` },
     ],
   ];
   return (
     <div className="page-template">
       <div className="drawer-container">
         {/*이 곳의 Drawer에는 보여줄 프로필의 주인의 Id가 들어가면 됨*/}
-        <Drawer menulist={menulist} Id={Id} />
+        <Drawer menulist={menulist} id={id} />
       </div>
       <div className="profile-page">
         <Switch>
