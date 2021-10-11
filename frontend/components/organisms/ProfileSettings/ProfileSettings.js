@@ -105,7 +105,6 @@ export default function ProfileSettings() {
   const update = () => {
     if(passwordValid) {
       const updatedUser = {
-        serviceNumber: user.serviceNumber,
         name: user.name,
         password: password,
         rank: rank,
