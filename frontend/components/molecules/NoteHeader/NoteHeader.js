@@ -10,7 +10,7 @@ import CardDropdown from '_molecules/CardDropdown';
 
 // access groups is an object
 export default function NoteHeader({
-  title, duplicateFunc, bookmarkFunc, accessGroups, isArchived, onClick, groupObjectArray, permissionId, onChangePermission,
+  title, isArchived, onClick, groupObjectArray, permissionId, onChangePermission,
 }) {
   const bookmarkRender = isArchived ? '' : 'hidden';
   const bookmarkSrc = isArchived ? BookmarkFilled : Bookmark;
@@ -21,7 +21,6 @@ export default function NoteHeader({
       </div>
       <div className="button-group">
         <CardDropdown
-          accessGroups={accessGroups}
           groupObjectArray={groupObjectArray}
           onChangePermission={onChangePermission}
           permissionId={permissionId}
@@ -33,9 +32,9 @@ export default function NoteHeader({
 
 NoteHeader.propTypes = {
   title: PropTypes.string.isRequired,
-  duplicateFunc: PropTypes.func.isRequired,
-  bookmarkFunc: PropTypes.func.isRequired,
   isArchived: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
-  accessGroups: PropTypes.object.isRequired,
+  groupObjectArray: PropTypes.arrayOf(Object).isRequired,
+  permissionId: PropTypes.string.isRequired,
+  onChangePermission: PropTypes.func.isRequired,
 };

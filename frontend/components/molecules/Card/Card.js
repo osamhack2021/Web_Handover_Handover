@@ -21,6 +21,7 @@ function Match(array, Id) {
   return array.filter((elem) => elem.Id === Id).length;
 }
 
+// find the initial permisison setting
 function DetermineInitPermission(accessGroups, groupObjectArray, readOrEdit) {
   const access = (readOrEdit === 'read') ? accessGroups.read.map((elem) => elem.Id) : accessGroups.edit.map((elem) => elem.Id);
   let i = 0;

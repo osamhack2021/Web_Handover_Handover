@@ -25,14 +25,11 @@ function CreateMenuItemArray(groupObjectArray) {
 }
 
 export default function CardDropdown({
-  accessGroups,
   groupObjectArray,
   onChangePermission,
   permissionId,
 }) {
   const { group } = useSelector(R.pick(['group']));
-  const groupIdArray = group.path.split(',').filter((elem) => elem !== '');
-
   // create an array of {value : , string : } in which its
   // value is used for value in MenuIten
   // string is used for inner string in MenuItem
@@ -89,5 +86,7 @@ export default function CardDropdown({
 }
 
 CardDropdown.propTypes = {
-  accessGroups: PropTypes.array.isRequired,
+  groupObjectArray: PropTypes.arrayOf(Object).isRequired,
+  onChangePermission: PropTypes.func.isRequired,
+  permissionId: PropTypes.string.isRequired,
 };

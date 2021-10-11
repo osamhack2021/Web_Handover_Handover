@@ -12,6 +12,10 @@ function CreateComponentArray(menuItemArray) {
 
 // path Array is of form [{}, {}, {Item Object} ...]
 export default function CustomSelect({ menuItemArray, permissionId, onChangePermission }) {
+  console.log('CustomSelect');
+  console.log(menuItemArray);
+  console.log(permissionId);
+  console.log(onChangePermission);
   const menuComponentArray = CreateComponentArray(menuItemArray);
   return (
     <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
@@ -27,6 +31,7 @@ export default function CustomSelect({ menuItemArray, permissionId, onChangePerm
 }
 
 CustomSelect.propTypes = {
-  groupIdArray: PropTypes.array.isRequired,
-  indexRead: PropTypes.number.isRequired,
+  menuItemArray: PropTypes.arrayOf(Object).isRequired,
+  onChangePermission: PropTypes.func.isRequired,
+  permissionId: PropTypes.string.isRequired,
 };
