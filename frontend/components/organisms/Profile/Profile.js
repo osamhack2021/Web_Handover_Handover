@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
-import { getUser } from "_api/user";
-import { getGroupByGroupId } from "_api/group";
+import { Container, LinearProgress } from "@mui/material";
+import React from "react";
 
 const status = {
   admin: "관리자",
@@ -11,35 +9,54 @@ const status = {
   active: "활성",
 };
 
-export default function Profile({user, group}) {
+export default function Profile({ user, group }) {
+  if (user == null || group == null) return <LinearProgress />;
+
+  const entry = [
+    {
+      label: "계급",
+      value: user.rank,
+    },
+    {
+      label: "이름",
+      value: user.name,
+    },
+    {
+      label: "직무",
+      value: user.title,
+    },
+    {
+      label: "사용자 상태",
+      value: status[user.status],
+    },
+    {
+      label: "소속",
+      value: group.name == null ? "소속 없음" : group.name,
+    },
+    {
+      label: "이메일",
+      value: user.email,
+    },
+    {
+      label: "군 연락처",
+      value: user.tel.military,
+    },
+    {
+      label: "일반 연락처",
+      value: user.tel.mobile,
+    },
+  ];
 
   return user == null || group == null ? (
-    <div>Loading...</div>
+    <LinearProgress />
   ) : (
-    <div className="profile">
-      <div className="profile-title">사용자 정보</div>
-      <div className="profile-labels">
-        <div className="profile-label">이름</div>
-        <div className="profile-label">계급</div>
-        <div className="profile-label">직무</div>
-        <div className="profile-label">사용자 계정 상태</div>
-        <div className="profile-label">소속</div>
-        <div className="profile-label">군 이메일</div>
-        <div className="profile-label">군 연락처</div>
-        <div className="profile-label">일반 연락처</div>
-      </div>
-      <div className="profile-values">
-        <div className="profile-value">{user.name}</div>
-        <div className="profile-value">{user.rank}</div>
-        <div className="profile-value">{user.title}</div>
-        <div className="profile-value">{status[user.status]}</div>
-        <div className="profile-value">
-          {group.name === undefined ? "소속 없음" : group.name}
+    <Container maxWidth="sm" minWidth="xs" sx={{ pt: 4 }} className="profile">
+      {entry.map((e, index) => (
+        <div key={index}>
+          <div className="profile-label">{e.label}</div>
+          <div className="profile-value">{e.value != null ? e.value : ""}</div>
         </div>
-        <div className="profile-value">{user.email}</div>
-        <div className="profile-value">{user.tel.military}</div>
-        <div className="profile-value">{user.tel.mobile}</div>
-      </div>
-    </div>
+      ))}
+    </Container>
   );
 }
