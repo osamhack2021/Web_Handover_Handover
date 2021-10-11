@@ -89,7 +89,7 @@ export default function ProfileMenu() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem component="a" href={"/account" + user.Id}>
+        <MenuItem component="a" href={"/account"}>
           <ListItemIcon>
             <Icon path={mdiAccount} size={1} />
           </ListItemIcon>
