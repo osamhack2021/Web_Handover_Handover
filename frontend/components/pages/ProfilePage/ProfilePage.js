@@ -14,8 +14,8 @@ export default function ProfilePage() {
   const menulist = [
     '사용자 정보',
     [
-      { title: '사용자 정보', src: User, alt: 'user', link: `/profile/${Id}` },
-      { title: '작성한 문서', src: User, alt: 'documents', link: `/profile/${Id}/writtencards` },
+      { title: '사용자 정보', src: User, alt: 'user', link: `/user/${Id}` },
+      { title: '작성한 문서', src: User, alt: 'documents', link: `/user/${Id}/items` },
     ],
   ];
   return (
@@ -27,8 +27,8 @@ export default function ProfilePage() {
       <div className="profile-page">
         <Switch>
           {/* parameter을 통해 보여줄 profile의 id를 넘겨줌 */}
-          <Route path="/profile/:id/writtencards" component={WrittenCards} />
-          <Route path="/profile/:id" component={Profile} />
+          <Route path="/user/:id/items" component={WrittenCards} />
+          <Route path="/user/:id" component={Profile} />
         </Switch>
       </div>
     </div>
