@@ -48,15 +48,16 @@ async function init() {
     let admin = {
         serviceNumber: 'admin',
         password: 'admin',
-        name: '김길동',
-        rank: '중령',
-        title: '대대장',
+        name: 'admin',
+        rank: '대위',
+        title: '관리자',
         status: 'admin',
         email: 'admin@osam.com',
         tel: {
             military: '0000',
             mobile: '010-0000-0000'
-        }
+        },
+        profileImageUrl: 'https://t1.daumcdn.net/liveboard/holapet/0e5f90af436e4c218343073164a5f657.JPG'
     };
     users.admin = await post('/user', admin);
     
