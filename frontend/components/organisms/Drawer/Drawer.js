@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import { getGroupByGroupId } from '_api/group';
 import { getUser } from '_api/user';
@@ -25,23 +25,35 @@ const menulist = [
 ];
 */
 
-export default function Drawer({ Id, menulist }) {
-  console.log("Drawer에서 Id: " + Id);
-  const user = getUser(Id).then(
-    data => data
-  ).catch(
-    error => console.log(error)
-  );
-  console.log(user);
-  const group = getGroupByGroupId(user.group).then(
-    data => data
-  ).catch(
-    error => console.log(error)
-  );
-  console.log(group);
-  return (
+export default function Drawer({ id, menulist }) {
+  console.log("Drawer에서 id: " + id);
+  const [user, setUser] = useState(null);
+  const [group, setGroup] = useState(null);
+
+  // Get user information
+  useEffect(() => {
+    getUser(id)
+      .then((data) => {
+        setUser(data);
+      });
+  }, []);
+
+  // Get group information after user information is fetched
+  useEffect(() => {
+    console.log(user);
+    if (user != null && user.group != null) {
+      getGroupByGroupId(user.group)
+        .then((data) => {
+          setGroup(data);
+        });
+    }
+  }, [user]);
+
+  return user == null ? (
+    <div>Loading...</div>
+  ) : (
     <div className="drawer">
-      <DrawerProfile name={user.name} rank={user.rank} division={group.name} title={user.title} />
+      <DrawerProfile name={user.name} rank={user.rank} division={group === null ? "" : group.name} title={user.title} profilePic={user.profileImageUrl} />
       <div className="drawer-menu">
         {
           menulist.map((list, index) => {
@@ -67,6 +79,6 @@ export default function Drawer({ Id, menulist }) {
 }
 
 Drawer.propTypes = {
-  Id: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   menulist: PropTypes.array.isRequired,
 };
