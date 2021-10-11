@@ -5,7 +5,7 @@ export const getUser = (userId) => request.get(`/api/user/${userId}`)
   .then(handleSuccess)
   .catch(handleError);
 
-export const putUser = (info) => request.put('/api/user')
+export const putUser = (userId, info) => request.put(`/api/user/${userId}`)
   .send(info)
   .then(handleSuccess)
   .catch(handleError);

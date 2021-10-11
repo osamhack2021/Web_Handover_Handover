@@ -28,8 +28,10 @@ export const attemptGetUser = () => (dispatch) => {
   }
 };
 
-export const attemptUpdateUser = (updatedUser) => (dispatch) =>
-  putUser(updatedUser)
+export const attemptUpdateUser = (updatedUser) => (dispatch) => {
+  const currentUserId = JSON.parse(localStorage.getItem("user"))._id;
+
+  return putUser(currentUserId, updatedUser)
     .then((data) => {
       dispatch(updateUser(snakeToCamelCase(data)));
 
@@ -48,6 +50,7 @@ export const attemptUpdateUser = (updatedUser) => (dispatch) =>
       return data;
     })
     .catch(dispatchError(dispatch));
+};
 
 export const attemptUpdatePassword = (passwordInfo) => (dispatch) =>
   putUserPassword(passwordInfo)
