@@ -49,14 +49,15 @@ async function init() {
         serviceNumber: 'admin',
         password: 'admin',
         name: 'admin',
-        rank: '관리자',
+        rank: '대위',
         title: '관리자',
         status: 'admin',
         email: 'admin@osam.com',
         tel: {
             military: '0000',
             mobile: '010-0000-0000'
-        }
+        },
+        profileImageUrl: 'https://t1.daumcdn.net/liveboard/holapet/0e5f90af436e4c218343073164a5f657.JPG'
     };
     users.admin = await post('/user', admin);
     
@@ -84,7 +85,7 @@ async function init() {
         serviceNumber: 'ntcho',
         password: 'ntcho',
         name: 'ntcho',
-        rank: '팀장',
+        rank: '상병',
         title: '팀장',
         status: 'active',
         email: 'ntcho@github.com',
