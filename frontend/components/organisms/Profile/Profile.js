@@ -11,29 +11,7 @@ const status = {
   active: "활성",
 };
 
-export default function Profile() {
-  const { id } = useParams();
-
-  const [user, setUser] = useState(null);
-  const [group, setGroup] = useState(null);
-
-  // Get user information
-  useEffect(() => {
-    getUser(Id)
-      .then((data) => {
-        setUser(data);
-      });
-  }, []);
-
-  // Get group information after user information is fetched
-  useEffect(() => {
-    if (user != null) {
-      getGroupByGroupId(user.group)
-        .then((data) => {
-          setGroup(data);
-        });
-    }
-  }, [user]);
+export default function Profile({user, group}) {
 
   return user == null || group == null ? (
     <div>Loading...</div>

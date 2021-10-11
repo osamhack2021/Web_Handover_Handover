@@ -12,6 +12,7 @@ import Icon from "@mdi/react";
 import { mdiAccount, mdiCog, mdiLogoutVariant, mdiMenuDown } from "@mdi/js";
 
 import { attemptLogout } from "_frontend/store/thunks/auth";
+import { LinkComponent } from "_atoms/LinkComponent/LinkComponent";
 
 export default function ProfileMenu() {
   const dispatch = useDispatch();
@@ -89,13 +90,13 @@ export default function ProfileMenu() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem component="a" href={"/account"}>
+        <MenuItem component={LinkComponent} to={"/account"}>
           <ListItemIcon>
             <Icon path={mdiAccount} size={1} />
           </ListItemIcon>
           내 프로필
         </MenuItem>
-        <MenuItem component="a" href={"/account/settings"}>
+        <MenuItem component={LinkComponent} to={"/account/settings"}>
           <ListItemIcon>
             <Icon path={mdiCog} size={1} />
           </ListItemIcon>

@@ -58,20 +58,21 @@ export default function RoutingPage() {
             {/* Search Page */}
             <Route path="/search/:searchQuery" component={SearchPage} />
 
-            {/* Account Page */}
-            <Route path="/account" component={ProfilePage} />
-            <Route path="/account/settings" component={SettingsPage} />
-            <Route path="/account/recovery" component={RecoveryPage} />
-
             {/* Item Page */}
             <Route path="/create" component={EditorPage} />
             <Route path="/item/:itemId" component={ItemPage} />
             <Route path="/item/:itemId/edit" component={EditorPage} />
             <Route path="/item/:itemId/settings" component={EditorPage} />
+
+            {/* Account Page */}
+            <Route exact path="/account" component={ProfilePage} />
+            <Route exact path="/account/items" component={ProfilePage} />
+            <Route exact path="/account/settings" component={SettingsPage} />
+            <Route exact path="/account/recovery" component={RecoveryPage} />
             
             {/* User Profile Page */}
-            <Route path="/user/:id" component={ProfilePage} />
-            <Route path="/user/:id/items" component={ProfilePage} />
+            <Route exact path="/user/:userId" component={ProfilePage} />
+            <Route exact path="/user/:userId/items" component={ProfilePage} />
 
             {/* Not Found Page */}
             <Route path="*">

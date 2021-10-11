@@ -51,9 +51,9 @@ export default function Main({ location }) {
             {/* Following routes are with LeftPane and require authentication */}
             <Route path="/home" component={RoutingPage} />
             <Route path="/search" component={RoutingPage} />
-            <Route path="/account" component={RoutingPage} />
             <Route path="/create" component={RoutingPage} />
             <Route path="/item" component={RoutingPage} />
+            <Route path="/account" component={RoutingPage} />
             <Route path="/user" component={RoutingPage} />
 
             {/* 404 Fallback page */}

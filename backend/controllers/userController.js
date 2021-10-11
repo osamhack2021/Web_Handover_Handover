@@ -1,5 +1,8 @@
 const userService = require('../services/userService.js');
 const authService = require('../services/authService.js');
+
+const { BusinessError } = require('../services/errors/BusinessError.js');
+
 module.exports = {
 
     search: async function(req, res) {

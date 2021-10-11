@@ -1,4 +1,7 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import R from 'ramda';
+
 import { Tabs } from '@mui/material';
 import { Tab } from '@mui/material';
 import { Box } from '@mui/material';
@@ -6,7 +9,17 @@ import { Box } from '@mui/material';
 import TabPanel from '_molecules/TabPanel';
 import GroupMember from '_molecules/GroupMember';
 
-export default function ProfileSettings() {
+export default function GroupSettings() {
+  const { user } = useSelector(R.pick(['user']));
+  const { group } = useSelector(R.pick(['group']));
+  //그룹이 A > B > C > D 있을 때
+  // A -> B -> C -> D 순회하면서 어디서부터 admin인지 체크
+  //만약 B부터 admin이라고 치면 B, C, D를 array에 넣기
+  //B의 그룹원 렌더링
+  //C의 그룹원 렌더링
+  //D의 그룹원 렌더링
+  //특정 그룹원의 권한 바꾸기 (일반 그룹원 / 그룹 관리자 / 보안 관리자) -> update group
+
   const [tabNumber, setTabNumber] = React.useState(0);
 
   const handleChange = (event, newValue) => {

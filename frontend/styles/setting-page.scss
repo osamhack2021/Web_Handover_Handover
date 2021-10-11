@@ -11,7 +11,7 @@
     height: 100%;
     overflow-y : scroll;
     .profile-img-label {
-        @include setfonts($font-size: $size-5, $font-weight: $weight-bold, $line-height: 24px);
+        @include setfonts($font-size: $size-6, $font-weight: $weight-bold, $line-height: 24px);
         margin : 80px 0 20px 0;
     }
     .profile-img{
