@@ -1,13 +1,12 @@
-import React from 'react';
-import { useParams } from 'react-router';
-import { getItemByUserId } from '_frontend/api/item';
+import React from "react";
+import LinearProgress from '@mui/material/LinearProgress';
 
-import { Tabs } from '@mui/material';
-import { Tab } from '@mui/material';
-import { Box } from '@mui/material';
+import { Tabs } from "@mui/material";
+import { Tab } from "@mui/material";
+import { Box } from "@mui/material";
 
-import TabPanel from '_molecules/TabPanel';
-import Card from '_molecules/Card';
+import TabPanel from "_molecules/TabPanel";
+import Card from "_molecules/Card";
 
 function CreateCardArray(cardArray) {
   return cardArray.map((elem) => {
@@ -16,24 +15,23 @@ function CreateCardArray(cardArray) {
   });
 }
 
-// Todo
-// Item을 어떻게 받아올지 알아내고 적용
-export default function WrittenCards({ cardArray }) {
+export default function WrittenCards({ userItem }) {
   const [tabNumber, setTabNumber] = React.useState(0);
   const handleChange = (event, newValue) => {
     setTabNumber(newValue);
   };
 
-  const { id } = useParams();
-  const itemArray = getItemByUserId(Id);
-
-  return (
-    <Box className="tabs-container">
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+  return userItem == null ? (
+    <LinearProgress />
+  ) : userItem.length == 0 ? (
+    <div>작성한 항목이 없습니다.</div>
+  ) : (
+    <Box>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={tabNumber}
           onChange={handleChange}
-          TabIndicatorProps={{ style: { background: 'black' } }}
+          TabIndicatorProps={{ style: { background: "black" } }}
           variant="scrollable"
           scrollButtons="auto"
         >
@@ -43,19 +41,13 @@ export default function WrittenCards({ cardArray }) {
         </Tabs>
       </Box>
       <TabPanel value={tabNumber} index={0}>
-        <div className="tabpanel">
-          {CreateCardArray(itemArray.filter((item) => item.type === "cabinet"))}
-        </div>
+          {CreateCardArray(userItem.filter((item) => item.type === "cabinet"))}
       </TabPanel>
       <TabPanel value={tabNumber} index={1}>
-        <div className="tabpanel">
-          {CreateCardArray(itemArray.filter((item) => item.type === "document"))}
-        </div>
+          {CreateCardArray(userItem.filter((item) => item.type === "document"))}
       </TabPanel>
       <TabPanel value={tabNumber} index={2}>
-        <div className="tabpanel">
-          {CreateCardArray(itemArray.filter((item) => item.type === "card"))}
-        </div>
+          {CreateCardArray(userItem.filter((item) => item.type === "card"))}
       </TabPanel>
     </Box>
   );
