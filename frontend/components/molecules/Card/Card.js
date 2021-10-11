@@ -9,9 +9,9 @@ import { PromiseGroupArray } from '_utils/promiseArray';
 import { getItemByItemId, getItemChild } from '_api/item';
 import { attemptUpdatePermission } from '_thunks/item';
 import { getGroupByGroupId } from '_api/group';
+import CardDropdown from '_molecules/CardDropdown';
 import NoteHeader from '../NoteHeader';
 import NoteFooter from '../NoteFooter';
-
 import CardItem from '../CardItem';
 
 function ArrayToCardItems(array) {
@@ -107,6 +107,10 @@ export default function Card({ Id }) {
   };
   const innerContent = (itemObject.type === 'card' ? content : ArrayToCardItems(childObjectArray));
 
+  const onDeleteCard = (event) => {
+    console.log('Deleting Card with onDeleteCard');
+  };
+
   // fires when change of permission from mui-select occurs
   const onChangePermission = (event) => {
     console.log('Changing Permissions with onChangePermission');
@@ -148,15 +152,18 @@ export default function Card({ Id }) {
     <div className={className}>
       <div>
         {/* passing NoteHeader onClick element, so that upon clicking title can be redirected */}
-        <NoteHeader
-          title={title}
-          isArchived={isArchived}
-          onClick={routeChange}
-          accessGroups={group.accessGroups}
-          groupObjectArray={groupObjectArray.groupObjectArray}
-          permissionId={permissionId}
-          onChangePermission={onChangePermission}
-        />
+        <div className="note-header">
+          <div className="main-title" onClick={routeChange}>
+            {title}
+          </div>
+          <div className="button-group">
+            <CardDropdown
+              groupObjectArray={groupObjectArray.groupObjectArray}
+              onChangePermission={onChangePermission}
+              permissionId={permissionId}
+            />
+          </div>
+        </div>
         <div className="description">
           {createdBy}
         </div>

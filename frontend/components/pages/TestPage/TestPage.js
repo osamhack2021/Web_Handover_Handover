@@ -17,7 +17,6 @@ export default function TestPage() {
     <div>
       <Card Id={userItem[2].Id} />
       <Card Id={userItem[3].Id} />
-      <button type="button" onClick={logout}>logout</button>
     </div>
   );
 }
