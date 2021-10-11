@@ -1,5 +1,6 @@
 import { snakeToCamelCase } from "json-style-converter/es5";
 import { store as RNC } from "react-notifications-component";
+import { push } from "connected-react-router";
 
 import { getUser, putUser, putUserPassword } from "_api/user";
 import { updateUser } from "_actions/user";
@@ -15,11 +16,15 @@ export const attemptGetUser = () => (dispatch) => {
         dispatch(updateUser(snakeToCamelCase(data)));
         return data;
       })
-      .catch(dispatchError(dispatch));
+      .catch(() => {
+        // Redirect to /login if there is no user logged in
+        dispatch(push("/login"));
+        dispatchError(dispatch);
+      });
   } catch (error) {
     return new Promise((resolve, reject) => {
-      reject("Error: User not logged in")
-    })
+      reject("Error: User not logged in");
+    });
   }
 };
 
