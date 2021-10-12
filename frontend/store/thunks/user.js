@@ -36,8 +36,8 @@ export const attemptUpdateUser = (updatedUser) => (dispatch) => {
       dispatch(updateUser(snakeToCamelCase(data)));
 
       RNC.addNotification({
-        title: "Success!",
-        message: data.message,
+        title: "프로필 수정",
+        message: "변경사항이 저장되었습니다.",
         type: "success",
         container: "top-center",
         animationIn: ["animated", "fadeInRight"],
