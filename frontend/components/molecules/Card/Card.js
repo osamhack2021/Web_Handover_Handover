@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import R from 'ramda';
 
 import { getItemByItemId, getItemChild } from '_api/item';
-import { attemptUpdatePermission, attemptDeleteItem } from '_thunks/item';
+import { attemptUpdatePermission, attemptDeleteItem, attemptDuplicateItem } from '_thunks/item';
 import { getGroupByGroupId } from '_api/group';
 import CardDropdown from '_molecules/CardDropdown';
 import NoteFooter from '../NoteFooter';
@@ -113,6 +113,28 @@ export default function Card({ Id }) {
     setIsDeleted(true);
   };
 
+  const onDuplicateCard = () => {
+    console.log('Duplicating card with onDuplicateCard');
+    console.log(itemObject.path);
+    const newString = itemObject.path.split(',').filter((elem) => elem !== '').splice(-1).join(',');
+    let newPathString;
+    switch (itemObject.type) {
+      case 'Cabinet':
+        newPathString = '';
+        break;
+      default:
+        newPathString = `,${newString},`;
+    }
+    const dupObject = {
+      type: itemObject.type,
+      title: itemObject.title,
+      path: newPathString,
+      content: itemObject.content,
+      tags: itemObject.tags,
+      status: itemObject.status,
+    };
+    dispatch(attemptDuplicateItem(dupObject));
+  };
   // fires when change of p ermission from mui-select occurs
   const onChangePermission = (event) => {
     console.log('Changing Permissions with onChangePermission');
@@ -163,6 +185,7 @@ export default function Card({ Id }) {
               groupObjectArray={groupObjectArray.groupObjectArray}
               onChangePermission={onChangePermission}
               onDeleteCard={onDeleteCard}
+              onDuplicateCard={onDuplicateCard}
               permissionId={permissionId}
             />
           </div>
