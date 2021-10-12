@@ -7,6 +7,7 @@ import R from 'ramda';
 
 import { getItemByItemId, getItemChild } from '_api/item';
 import { attemptUpdatePermission, attemptDeleteItem, attemptDuplicateItem } from '_thunks/item';
+import { attemptUpdateUser } from '_thunks/user';
 import { getGroupByGroupId } from '_api/group';
 import CardDropdown from '_molecules/CardDropdown';
 import NoteFooter from '../NoteFooter';
@@ -59,6 +60,7 @@ export default function Card({ Id }) {
   const [itemObject, setItemObject] = useState({});
   const [createdBy, setCreatedBy] = useState('');
   const [childObjectArray, setchildObjectArray] = useState([]);
+  const [bookmarkBoolean, setBookmarkBoolean] = useState(user.bookmarks.includes(Id));
 
   // states used for permission
   const [permissionId, setPermissionId] = useState('');
@@ -106,13 +108,26 @@ export default function Card({ Id }) {
   // setting appropriate values to constants
   const { title, content } = itemObject;
   const className = `note--${itemObject.type}`;
-  const isArchived = user.bookmarks.includes(Id);
   const dateFromNow = '2주 전 수정됨';
   const routeChange = () => {
     const path = `/item/${Id}`;
     history.push(path);
   };
   const innerContent = (itemObject.type === 'card' ? convertToPlain(content) : ArrayToCardItems(childObjectArray));
+
+  const onBookmarkCard = () => {
+    console.log('bookmarking Card');
+    let bookmarkArray = user.bookmarks;
+    if (bookmarkBoolean) {
+      // deleting from bookmark array
+      bookmarkArray = bookmarkArray.filter((elem) => elem !== Id);
+    } else {
+      // adding to bookmark array
+      bookmarkArray = [...bookmarkArray, Id];
+    }
+    dispatch(attemptUpdateUser({ bookmarks: bookmarkArray }));
+    setBookmarkBoolean(!bookmarkBoolean);
+  };
 
   const onDeleteCard = () => {
     dispatch(attemptDeleteItem(Id, userItem.find((elem) => elem.Id === Id)));
@@ -203,7 +218,11 @@ export default function Card({ Id }) {
           {innerContent}
         </div>
       </div>
-      <NoteFooter dateFromNow={dateFromNow} />
+      <NoteFooter
+        dateFromNow={dateFromNow}
+        bookmarkBoolean={bookmarkBoolean}
+        onBookmarkCard={onBookmarkCard}
+      />
     </div>
   );
 }
