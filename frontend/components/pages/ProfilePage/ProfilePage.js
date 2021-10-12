@@ -1,43 +1,67 @@
-import React, { useEffect, useState } from "react";
-import { Switch, Route, useLocation, Redirect } from "react-router";
-import { useParams } from "react-router";
+import {
+  mdiAccount,
+  mdiAccountMultiplePlus,
+  mdiCog,
+  mdiNoteEdit
+} from "@mdi/js";
+import Icon from "@mdi/react";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import ButtonBase from "@mui/material/ButtonBase";
+import Stack from "@mui/material/Stack";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import Tooltip from "@mui/material/Tooltip";
 import R from "ramda";
-import { push } from "connected-react-router";
-
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Route, Switch, useLocation, useParams } from "react-router";
+import { getGroupByGroupId } from "_frontend/api/group";
+import { getItemByUserId } from "_frontend/api/item";
+import { getUser } from "_frontend/api/user";
+import { LinkComponent } from "_frontend/components/atoms/LinkComponent/LinkComponent";
+import GroupSettings from "_frontend/components/organisms/GroupSettings";
+import ProfileSettings from "_frontend/components/organisms/ProfileSettings";
 import Profile from "_organisms/Profile";
 import UserItems from "_organisms/UserItems";
 
-import Tabs from "@mui/material/Tabs";
-import Badge from "@mui/material/Badge";
-import ButtonBase from "@mui/material/ButtonBase";
-import Tab from "@mui/material/Tab";
-import Tooltip from "@mui/material/Tooltip";
-import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
-import Icon from "@mdi/react";
-import { mdiPencil } from "@mdi/js";
+const LinkTab = ({ content }) => (
+  <Tab
+    label={content.label}
+    icon={<Icon path={content.icon} size={1} />}
+    component={LinkComponent}
+    to={content.link}
+  />
+);
 
-import User from "_assets/svgs/user.svg";
-import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "_frontend/api/user";
-import { getGroupByGroupId } from "_frontend/api/group";
-import { getItemByUserId } from "_frontend/api/item";
-import Avatar from "@mui/material/Avatar";
-import { Link } from "react-router-dom";
-import { LinkComponent } from "_frontend/components/atoms/LinkComponent/LinkComponent";
+const getTabIndex = (url) => {
+  if (url.endsWith("/items")) return 1;
+  if (url.endsWith("/settings")) return 2;
+  if (url.endsWith("/settings/group")) return 2;
+  return 0;
+};
 
 export default function ProfilePage() {
   // const dispatch = useDispatch();
   const location = useLocation();
+  const params = useParams();
 
   // Attempt to get current user
   // Should work since ProfilePage is only accessble when logged in
-  const userId = useParams().hasOwnProperty("userId")
-    ? useParams().userId // userId from URL params (/user/:userId)
-    : useSelector(R.pick(["user"])).user.Id; // userId from redux state (/account)
+
+  // userId from URL params (/user/:userId)
+  const userIdFromParams = params.hasOwnProperty("userId")
+    ? params.userId
+    : null;
+  // userId from redux state (/account)
+  const userIdFromLocal = useSelector(R.pick(["user"])).user.Id;
+
+  const userId = userIdFromParams == null ? userIdFromLocal : userIdFromParams;
 
   // Base URL to redirect with tab selection
-  const baseURL = location.pathname.replace("/items", "");
+  const baseURL = location.pathname.startsWith("/account")
+    ? "/account"
+    : location.pathname.match("/user/[0-9a-fA-F]{24}")[0];
 
   const [user, setUser] = useState(null);
   const [group, setGroup] = useState(null);
@@ -64,23 +88,43 @@ export default function ProfilePage() {
     if (location.pathname.endsWith("/items")) {
       getItemByUserId(userId).then((data) => {
         setUserItem(data);
-        console.log("userItem = " + JSON.stringify(data));
       });
     }
   }, [location]);
 
-  const [tabIndex, setTabIndex] = useState(
-    location.pathname.endsWith("/items") ? 1 : 0
-  );
+  const defaultURLs = [
+    {
+      label: "사용자 정보",
+      icon: mdiAccount,
+      link: baseURL,
+    },
+    {
+      label: "작성한 항목",
+      icon: mdiNoteEdit,
+      link: baseURL + "/items",
+    },
+  ];
 
-  const handleChange = (event, newValue) => {
-    setTabIndex(newValue);
-  };
+  const accountURLs = [
+    {
+      label: "계정 관리",
+      icon: mdiCog,
+      link: baseURL + "/settings",
+    },
+    {
+      label: "그룹 관리",
+      icon: mdiAccountMultiplePlus,
+      link: baseURL + "/settings/group",
+    },
+  ];
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Stack direction="row" sx={{ p: 4 }}>
-        <Tooltip title={baseURL.endsWith("/account") ? "프로필 사진 변경" : ""} arrow>
+      <Stack direction="row" sx={{ py: 4, px: 8 }}>
+        <Tooltip
+          title={baseURL.endsWith("/account") ? "프로필 사진 변경" : ""}
+          arrow
+        >
           <Avatar
             component={ButtonBase}
             src={
@@ -92,7 +136,7 @@ export default function ProfilePage() {
           />
         </Tooltip>
         {user == null || group == null ? null : (
-          <Stack sx={{px: 4, justifyContent: 'center'}}>
+          <Stack sx={{ px: 4, justifyContent: "center" }}>
             <strong style={{ fontSize: "2.5em" }}>
               {user.rank} {user.name}
             </strong>
@@ -102,14 +146,14 @@ export default function ProfilePage() {
           </Stack>
         )}
       </Stack>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs value={tabIndex} onChange={handleChange}>
-          <Tab label="사용자 정보" component={LinkComponent} to={baseURL} />
-          <Tab
-            label="작성한 항목"
-            component={LinkComponent}
-            to={baseURL + "/items"}
-          />
+      <Box sx={{ borderBottom: 1, borderColor: "divider", px: 8 }}>
+        <Tabs value={getTabIndex(location.pathname)}>
+          {defaultURLs.map((e, index) => (
+            <LinkTab content={e} key={index} />
+          ))}
+          {baseURL.startsWith("/account")
+            ? accountURLs.map((e, index) => <LinkTab content={e} key={index} />)
+            : null}
         </Tabs>
       </Box>
       <Switch>
@@ -118,6 +162,12 @@ export default function ProfilePage() {
         </Route>
         <Route exact path={baseURL + "/items"}>
           <UserItems userItem={userItem} />
+        </Route>
+        <Route exact path={baseURL + "/settings"}>
+          <ProfileSettings />
+        </Route>
+        <Route exact path={baseURL + "/settings/group"}>
+          <GroupSettings />
         </Route>
       </Switch>
     </Box>
