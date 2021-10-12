@@ -85,7 +85,7 @@ export default function ProfilePage() {
 
   // Get user item information on /items
   useEffect(() => {
-    if (location.pathname.endsWith("/items")) {
+    if (location.pathname.endsWith("/items") && userItem == null) {
       getItemByUserId(userId).then((data) => {
         setUserItem(data);
       });
@@ -120,7 +120,7 @@ export default function ProfilePage() {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Stack direction="row" sx={{ py: 4, px: 8 }}>
+      <Stack direction="row" sx={{ pt: 4, pb: 2, px: 8 }}>
         <Tooltip
           title={baseURL.endsWith("/account") ? "프로필 사진 변경" : ""}
           arrow
@@ -147,7 +147,11 @@ export default function ProfilePage() {
         )}
       </Stack>
       <Box sx={{ borderBottom: 1, borderColor: "divider", px: 8 }}>
-        <Tabs value={getTabIndex(location.pathname)}>
+        <Tabs
+          value={getTabIndex(location.pathname)}
+          variant="scrollable"
+          scrollButtons="auto"
+        >
           {defaultURLs.map((e, index) => (
             <LinkTab content={e} key={index} />
           ))}
