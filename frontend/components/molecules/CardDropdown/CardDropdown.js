@@ -29,6 +29,7 @@ export default function CardDropdown({
   onChangePermission,
   permissionId,
   onDeleteCard,
+  onDuplicateCard,
 }) {
   const { group } = useSelector(R.pick(['group']));
   // create an array of {value : , string : } in which its
@@ -65,9 +66,10 @@ export default function CardDropdown({
             <ListItemText primary="삭제" />
           </ListItem>
           <Divider />
-          <ListItem button divider>
+          <ListItem button onClick={onDuplicateCard}>
             <ListItemText primary="복제" />
           </ListItem>
+          <Divider />
           <ListItem button>
             <ListItemText primary="내용 수정" />
           </ListItem>
@@ -91,4 +93,5 @@ CardDropdown.propTypes = {
   onChangePermission: PropTypes.func.isRequired,
   permissionId: PropTypes.string.isRequired,
   onDeleteCard: PropTypes.func.isRequired,
+  onDuplicateCard: PropTypes.func.isRequired,
 };

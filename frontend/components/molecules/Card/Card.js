@@ -6,7 +6,8 @@ import { useHistory } from 'react-router-dom';
 import R from 'ramda';
 
 import { getItemByItemId, getItemChild } from '_api/item';
-import { attemptUpdatePermission, attemptDeleteItem } from '_thunks/item';
+import { attemptUpdatePermission, attemptDeleteItem, attemptDuplicateItem } from '_thunks/item';
+import { attemptUpdateUser } from '_thunks/user';
 import { getGroupByGroupId } from '_api/group';
 import CardDropdown from '_molecules/CardDropdown';
 import NoteFooter from '../NoteFooter';
@@ -34,6 +35,12 @@ function DetermineInitPermission(accessGroups, groupObjectArray, readOrEdit) {
   }
   return groupObjectArray[i].Id;
 }
+
+function convertToPlain(html) {
+  const tempDivElement = document.createElement('div');
+  tempDivElement.innerHTML = html;
+  return tempDivElement.textContent || tempDivElement.innerText || '';
+}
 // type takes "card", "document", "cabinet" values
 // refactoring due to change in item schema,
 // require sole prop, the item object itself
@@ -53,6 +60,7 @@ export default function Card({ Id }) {
   const [itemObject, setItemObject] = useState({});
   const [createdBy, setCreatedBy] = useState('');
   const [childObjectArray, setchildObjectArray] = useState([]);
+  const [bookmarkBoolean, setBookmarkBoolean] = useState(user.bookmarks.includes(Id));
 
   // states used for permission
   const [permissionId, setPermissionId] = useState('');
@@ -100,19 +108,54 @@ export default function Card({ Id }) {
   // setting appropriate values to constants
   const { title, content } = itemObject;
   const className = `note--${itemObject.type}`;
-  const isArchived = user.bookmarks.includes(Id);
   const dateFromNow = '2주 전 수정됨';
   const routeChange = () => {
     const path = `/item/${Id}`;
     history.push(path);
   };
-  const innerContent = (itemObject.type === 'card' ? content : ArrayToCardItems(childObjectArray));
+  const innerContent = (itemObject.type === 'card' ? convertToPlain(content) : ArrayToCardItems(childObjectArray));
+
+  const onBookmarkCard = () => {
+    console.log('bookmarking Card');
+    let bookmarkArray = user.bookmarks;
+    if (bookmarkBoolean) {
+      // deleting from bookmark array
+      bookmarkArray = bookmarkArray.filter((elem) => elem !== Id);
+    } else {
+      // adding to bookmark array
+      bookmarkArray = [...bookmarkArray, Id];
+    }
+    dispatch(attemptUpdateUser({ bookmarks: bookmarkArray }));
+    setBookmarkBoolean(!bookmarkBoolean);
+  };
 
   const onDeleteCard = () => {
     dispatch(attemptDeleteItem(Id, userItem.find((elem) => elem.Id === Id)));
     setIsDeleted(true);
   };
 
+  const onDuplicateCard = () => {
+    console.log('Duplicating card with onDuplicateCard');
+    console.log(itemObject.path);
+    const newString = itemObject.path.split(',').filter((elem) => elem !== '').splice(-1).join(',');
+    let newPathString;
+    switch (itemObject.type) {
+      case 'Cabinet':
+        newPathString = '';
+        break;
+      default:
+        newPathString = `,${newString},`;
+    }
+    const dupObject = {
+      type: itemObject.type,
+      title: itemObject.title,
+      path: newPathString,
+      content: itemObject.content,
+      tags: itemObject.tags,
+      status: itemObject.status,
+    };
+    dispatch(attemptDuplicateItem(dupObject));
+  };
   // fires when change of p ermission from mui-select occurs
   const onChangePermission = (event) => {
     console.log('Changing Permissions with onChangePermission');
@@ -163,6 +206,7 @@ export default function Card({ Id }) {
               groupObjectArray={groupObjectArray.groupObjectArray}
               onChangePermission={onChangePermission}
               onDeleteCard={onDeleteCard}
+              onDuplicateCard={onDuplicateCard}
               permissionId={permissionId}
             />
           </div>
@@ -174,7 +218,11 @@ export default function Card({ Id }) {
           {innerContent}
         </div>
       </div>
-      <NoteFooter dateFromNow={dateFromNow} />
+      <NoteFooter
+        dateFromNow={dateFromNow}
+        bookmarkBoolean={bookmarkBoolean}
+        onBookmarkCard={onBookmarkCard}
+      />
     </div>
   );
 }
