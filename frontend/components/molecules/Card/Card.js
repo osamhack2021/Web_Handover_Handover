@@ -34,6 +34,12 @@ function DetermineInitPermission(accessGroups, groupObjectArray, readOrEdit) {
   }
   return groupObjectArray[i].Id;
 }
+
+function convertToPlain(html) {
+  const tempDivElement = document.createElement('div');
+  tempDivElement.innerHTML = html;
+  return tempDivElement.textContent || tempDivElement.innerText || '';
+}
 // type takes "card", "document", "cabinet" values
 // refactoring due to change in item schema,
 // require sole prop, the item object itself
@@ -106,7 +112,7 @@ export default function Card({ Id }) {
     const path = `/item/${Id}`;
     history.push(path);
   };
-  const innerContent = (itemObject.type === 'card' ? content : ArrayToCardItems(childObjectArray));
+  const innerContent = (itemObject.type === 'card' ? convertToPlain(content) : ArrayToCardItems(childObjectArray));
 
   const onDeleteCard = () => {
     dispatch(attemptDeleteItem(Id, userItem.find((elem) => elem.Id === Id)));
