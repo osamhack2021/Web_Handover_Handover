@@ -1,22 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { push } from "connected-react-router";
-import { Switch, Route, Redirect } from "react-router";
 import R from "ramda";
-
-import LeftPane from "_organisms/LeftPane";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect, Route, Switch } from "react-router";
+import { login } from "_frontend/store/actions/user";
 import Header from "_organisms/Header";
-import ItemPage from "_pages/ItemPage";
-import TestPage from "_pages/TestPage";
+import LeftPane from "_organisms/LeftPane";
 import EditorPage from "_pages/EditorPage";
-import SettingsPage from "_pages/SettingsPage";
-import RecoveryPage from "_pages/RecoveryPage";
+import ItemPage from "_pages/ItemPage";
 import ProfilePage from "_pages/ProfilePage";
-import RecommendPage from "_pages/RecommendPage";
+import RecoveryPage from "_pages/RecoveryPage";
+import SearchPage from "_pages/SearchPage";
+import TestPage from "_pages/TestPage";
 import { attemptGetGroup } from "_thunks/group";
 import { attemptLoadItems } from "_thunks/item";
-import SearchPage from "_pages/SearchPage";
-import { login } from "_frontend/store/actions/user";
+
 
 export default function RoutingPage() {
   const dispatch = useDispatch();
@@ -67,7 +65,8 @@ export default function RoutingPage() {
             {/* Account Page */}
             <Route exact path="/account" component={ProfilePage} />
             <Route exact path="/account/items" component={ProfilePage} />
-            <Route exact path="/account/settings" component={SettingsPage} />
+            <Route exact path="/account/settings" component={ProfilePage} />
+            <Route exact path="/account/settings/group" component={ProfilePage} />
             <Route exact path="/account/recovery" component={RecoveryPage} />
             
             {/* User Profile Page */}
