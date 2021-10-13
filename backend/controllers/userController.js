@@ -19,7 +19,7 @@ module.exports = {
 
         const projection = {
             _id: true, name: true, rank: true, status: true,
-            group: true, email: true, tel: true, lastLogin: true
+            group: true, email: true, tel: true, lastLogin: true, profileImageUrl: true, title: true
         };
 
         try {
@@ -35,7 +35,7 @@ module.exports = {
         let projection = {
             _id: true,serviceNumber:true, name: true, rank: true, title:true,
             status: true, group: true, email: true, tel: true, lastLogin: true,
-            lastLogin: true, firseLogin:true, bookmarks: true, subscriptions: true
+            lastLogin: true, firseLogin:true, bookmarks: true, subscriptions: true, profileImageUrl: true
         };
 
         try {
