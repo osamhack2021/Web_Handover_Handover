@@ -16,6 +16,7 @@ module.exports = {
                 group: true,
                 email:true,
                 tel: true,
+                profileImageUrl:true,
                 lastLogin:true,
                 firstLogin:true,
                 bookmarks:true,

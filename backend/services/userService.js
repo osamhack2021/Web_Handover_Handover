@@ -21,7 +21,7 @@ module.exports = {
 			});
 
 		if(result === null) throw new NotFoundError('User not found: 존재하지 않는 사용자입니다.');
-
+    
 		return result;
 	},
 
