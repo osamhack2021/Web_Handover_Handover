@@ -18,8 +18,6 @@ module.exports = {
 
             const result = await groupService.search(req.query);
 
-            if(result.length < 1) throw new NotFoundError(`NotFound: 검색결과가 없습니다.`);
-
             res.status(200).send(result);
         } catch(err) {
             res.status(err.status || 500).send(err.message);
