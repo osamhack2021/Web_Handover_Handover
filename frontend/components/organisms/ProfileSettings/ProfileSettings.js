@@ -212,7 +212,7 @@ export default function ProfileSettings() {
                 <MenuItem value="" disabled={true}>선택</MenuItem>
                 <MenuItem value={'active'}>활성</MenuItem>
                 <MenuItem value={'inactive'}>비활성</MenuItem>
-                <MenuItem value={'discharged'}>전역</MenuItem>
+                <MenuItem value={'retired'}>전역</MenuItem>
               </Select>
             </FormControl>
             <TextField
