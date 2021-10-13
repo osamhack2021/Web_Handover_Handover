@@ -50,9 +50,9 @@ export default function Profile({ user, group }) {
   return user == null || group == null ? (
     <LinearProgress />
   ) : (
-    <Container maxWidth="sm" minWidth="xs" sx={{ pt: 4 }} className="profile">
+    <Container maxWidth="sm" minWidth="sm" sx={{ pt: 4, ml: 6 }} className="profile">
       {entry.map((e, index) => (
-        <div key={index}>
+        <div className="profile-item" key={index}>
           <div className="profile-label">{e.label}</div>
           <div className="profile-value">{e.value != null ? e.value : ""}</div>
         </div>

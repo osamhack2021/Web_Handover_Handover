@@ -17,10 +17,10 @@ module.exports = {
 		const result = await User
 			.find(params, projection)
 			.catch(err => {
-				throw new RuntimeError(params + '를 불러올 수 없습니다.');
+				throw new RuntimeError("Runtime error: " + params + '를 불러올 수 없습니다.');
 			});
 
-		if(result === null) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
+		if(result === null) throw new NotFoundError('User not found: 존재하지 않는 사용자입니다.');
 
 		return result;
 	},
@@ -30,10 +30,10 @@ module.exports = {
 		const result = await User
 			.findOne(params, projection)
 			.catch(err => {
-				throw new RuntimeError(params + '를 불러올 수 없습니다.');
+				throw new RuntimeError("Runtime error: " + params + '를 불러올 수 없습니다.');
 			});
 
-		if(result === null) throw new NotFoundError('Not Found: 검색 결과가 없습니다.');
+		if(result === null) throw new NotFoundError('User not found: 존재하지 않는 사용자입니다.');
 
 		return result;
 	},
@@ -46,7 +46,7 @@ module.exports = {
 			.create(params)
 			.catch(err => {
 				if(err.code === 11000) {
-					throw new BusinessError('군번이 이미 존재합니다');
+					throw new BusinessError('Duplicate found: 이미 가입된 군번입니다.');
 				} 
 				throw new RuntimeError(err.message);		
 			});
@@ -63,7 +63,7 @@ module.exports = {
 		const result = await User
 			.findOneAndUpdate({_id:id}, params, {new: true})
 			.catch(err => {
-				throw new RuntimeError("update를 진행할 수 없습니다.");
+				throw new RuntimeError("Runtime error: 사용자 정보 수정에 오류가 발생했습니다.");
 			});
 		result.password = '';
 	
@@ -75,7 +75,7 @@ module.exports = {
 		const result = await User
 			.deleteOne({_id:id})
 			.catch(err => {
-				throw new RuntimeError("delete를 진행할 수 없습니다.");
+				throw new RuntimeError("Runtime error: 사용자 삭제에 오류가 발생했습니다.");
 			});
 
 		return true;
@@ -85,7 +85,9 @@ module.exports = {
 		
 		const user = await User
 		.findOne({serviceNumber:params.serviceNumber})
-		.catch(err => {	throw new RuntimeError(err.message); });
+		.catch(err => {	
+			throw new RuntimeError("Runtime error: 알수없는 오류가 발생했습니다."); 
+		});
 	
 		return {exist: user !== null};
 	}

@@ -1,12 +1,26 @@
+import { Box, Container, LinearProgress, Tab, Tabs } from "@mui/material";
 import React from "react";
-import LinearProgress from '@mui/material/LinearProgress';
-
-import { Tabs } from "@mui/material";
-import { Tab } from "@mui/material";
-import { Box } from "@mui/material";
-
-import TabPanel from "_molecules/TabPanel";
 import Card from "_molecules/Card";
+import TabPanel from "_molecules/TabPanel";
+
+const CardGrid = ({ cards }) => {
+  if (cards == null || cards.length == 0) {
+    return <div>작성한 항목이 없습니다.</div>;
+  }
+
+  return (
+    <Container
+      component={Container}
+      maxWidth="md"
+      minWidth="sm"
+      sx={{ pt: 4, ml: 6, flexDirection: 'row', flexWrap: 'wrap' }}
+    >
+      {cards.map((e) => (
+          <Card Id={e._id} />
+      ))}
+    </Container>
+  );
+};
 
 function CreateCardArray(cardArray) {
   return cardArray.map((elem) => {
@@ -23,15 +37,13 @@ export default function UserItems({ userItem }) {
 
   return userItem == null ? (
     <LinearProgress />
-  ) : userItem.length == 0 ? (
-    <div>작성한 항목이 없습니다.</div>
   ) : (
     <Box>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider", px: 8 }}>
         <Tabs
           value={tabNumber}
           onChange={handleChange}
-          TabIndicatorProps={{ style: { background: "black" } }}
+          // TabIndicatorProps={{ style: { background: "black" } }}
           variant="scrollable"
           scrollButtons="auto"
         >
@@ -41,13 +53,13 @@ export default function UserItems({ userItem }) {
         </Tabs>
       </Box>
       <TabPanel value={tabNumber} index={0}>
-          {CreateCardArray(userItem.filter((item) => item.type === "cabinet"))}
+        <CardGrid cards={userItem.filter((item) => item.type === "cabinet")} />
       </TabPanel>
       <TabPanel value={tabNumber} index={1}>
-          {CreateCardArray(userItem.filter((item) => item.type === "document"))}
+        <CardGrid cards={userItem.filter((item) => item.type === "document")} />
       </TabPanel>
       <TabPanel value={tabNumber} index={2}>
-          {CreateCardArray(userItem.filter((item) => item.type === "card"))}
+        <CardGrid cards={userItem.filter((item) => item.type === "card")} />
       </TabPanel>
     </Box>
   );
