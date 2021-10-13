@@ -6,3 +6,8 @@ export const getGroupByGroupId = (id) => request.get(`/api/group/${id}`)
   // .send(id)
   .then(handleSuccess)
   .catch(handleError);
+
+export const searchGroupByAdmin = (adminId) => request.get(`/api/group`)
+  .query({ admin: adminId })
+  .then(handleSuccess)
+  .catch(handleError);
