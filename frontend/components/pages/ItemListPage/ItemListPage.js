@@ -19,6 +19,7 @@ export default function ItemListPage() {
   const { path } = useParams();
 
   useEffect(() => {
+    // setting the array w.r.t. the path given
     let array;
     switch (path) {
       case 'bookmarks':
@@ -29,9 +30,18 @@ export default function ItemListPage() {
         setTitle('내가 작성한 문서');
         array = userItem;
         break;
+      case 'recents':
+        setTitle('최근 문서');
+        array = JSON.parse(localStorage.getItem('recents'));
+        console.log('recents');
+        console.log(array);
+        break;
       default:
         array = [];
     }
+
+    // the array can be either an array of item objectss we wish to render
+    // or the array of item ids
     Promise.all(array.map((elem) => {
       if (typeof elem === 'object') {
         return elem;

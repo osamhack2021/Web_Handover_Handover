@@ -33,6 +33,16 @@ export default function ItemPage({ location }) {
         setLoadingChild(false);
       });
     });
+
+    // setting recents of localstorage
+    const recentArray = JSON.parse(localStorage.getItem('recents'));
+    if (!recentArray.includes(itemId)) {
+      if (recentArray.length > 20) {
+        localStorage.setItem('recents', JSON.stringify([...recentArray, itemId].shift()));
+      } else {
+        localStorage.setItem('recents', JSON.stringify([...recentArray, itemId]));
+      }
+    }
   }, [location]);
 
   return !loadingPath && !loadingChild && (

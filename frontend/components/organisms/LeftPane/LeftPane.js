@@ -58,7 +58,7 @@ export default function LeftPane() {
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: '최근에 본 문서', link: '/' }} />
+              <MenuItem value={{ title: '최근에 본 문서', link: '/leftpane/recents' }} />
             </ListItemButton>
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>

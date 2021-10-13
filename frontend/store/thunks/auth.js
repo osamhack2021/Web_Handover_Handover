@@ -36,8 +36,8 @@ export const attemptLogin = (userId) => (dispatch) => postLogin(userId)
     dispatch(login(snakeToCamelCase(data.user)));
 
     // Save user information to localStorage to note the user is logged in
-    localStorage.setItem("user", JSON.stringify(data.user));
-    
+    localStorage.setItem('user', JSON.stringify(data.user));
+    localStorage.setItem('recents', JSON.stringify([]));
     RNC.addNotification({
       title: '로그인',
       message: `${data.user.name}님 환영합니다.`,
@@ -59,7 +59,7 @@ export const attemptRegister = (newUser) => (dispatch) => postRegister(newUser)
   .then((data) => {
     RNC.addNotification({
       title: '프로필 수정',
-      message: "변경사항이 저장되었습니다.",
+      message: '변경사항이 저장되었습니다.',
       type: 'success',
       container: 'top-center',
       animationIn: ['animated', 'fadeInRight'],
@@ -84,7 +84,7 @@ export const attemptLogout = () => (dispatch) => postLogout()
 
     RNC.addNotification({
       title: '로그아웃',
-      message: "정상적으로 로그아웃 되었습니다.",
+      message: '정상적으로 로그아웃 되었습니다.',
       type: 'success',
       container: 'top-center',
       animationIn: ['animated', 'fadeInRight'],
