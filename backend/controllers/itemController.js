@@ -21,8 +21,6 @@ module.exports = {
 
             const result = await itemService.search(req.query);
 
-            // if(result.length < 1) throw new NotFoundError(`Not Found: 검색결과가 없습니다.`);
-
             res.status(200).send(result);
 
         } catch(err) {
@@ -38,8 +36,6 @@ module.exports = {
             const result = await algolia.search(query, {
                 filters: `status:"modified" AND NOT accessGroups.read:"${res.locals.group}"`
             });
-
-            // if(result.hits.length < 1) throw new NotFoundError(`NotFound: 검색결과가 없습니다.`);
 
             res.status(200).send(result.hits);
         } catch(err) {

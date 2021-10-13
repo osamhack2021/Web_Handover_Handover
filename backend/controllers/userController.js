@@ -43,8 +43,8 @@ module.exports = {
             
             if(auth === 'general') {
                 projection = {
-                    _id: true, name: true, rank: true, status: true,
-                    group: true, email: true, tel: true, lastLogin: true
+                    _id: true, name: true, rank: true, status: true, 
+                    group: true, email: true, tel: true, lastLogin: true, profileImageUrl: true,
                 };
             }
 
@@ -69,7 +69,7 @@ module.exports = {
             const keys = Object.keys(req.body);
             const valids = ['password', 'name','name','rank',
                     'title','status','group','email','tel', 
-                    'lastLogin', 'firstLogin', 'bookmarks', 'subscriptions' ];
+                    'lastLogin', 'firstLogin', 'bookmarks', 'subscriptions' , 'profileImageUrl'];
                 
              // Only allowed fields are Searchable
             for(let key of keys) {
