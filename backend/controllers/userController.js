@@ -13,7 +13,7 @@ module.exports = {
          // Only allowed fields are Searchable
         for(let key of keys) {
             if(!valids.includes(key))
-                throw new BusinessError(`${key} 는 검색할 수는 없는 속성입니다.`);
+                throw new BusinessError(`Query invalid: ${key} 는 검색할 수는 없는 속성입니다.`);
         }
 
 
@@ -74,7 +74,7 @@ module.exports = {
              // Only allowed fields are Searchable
             for(let key of keys) {
                 if(!valids.includes(key))
-                    throw new BusinessError(`${key} 는 User에 존재하지 않거나, 변경할 수 없는 속성입니다`);
+                    throw new BusinessError(`Query invalid: ${key} 는 User에 존재하지 않거나, 변경할 수 없는 속성입니다`);
             }
 
             await authService.editUserAuth(res.locals._id.toString(),req.params.id);
