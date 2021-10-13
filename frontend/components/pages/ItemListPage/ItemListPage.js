@@ -33,8 +33,10 @@ export default function ItemListPage() {
       case 'recents':
         setTitle('최근 문서');
         array = JSON.parse(localStorage.getItem('recents'));
-        console.log('recents');
-        console.log(array);
+        break;
+      case 'drafts':
+        setTitle('임시저장 문서');
+        array = userItem.filter((elem) => elem.status === 'draft');
         break;
       default:
         array = [];

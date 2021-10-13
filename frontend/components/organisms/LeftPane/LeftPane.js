@@ -68,7 +68,7 @@ export default function LeftPane() {
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: '임시저장한 문서', link: '/' }} />
+              <MenuItem value={{ title: '임시저장한 문서', link: '/leftpane/drafts' }} />
             </ListItemButton>
           </ListItem>
         </div>
