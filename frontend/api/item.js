@@ -22,12 +22,21 @@ export const getRecommendItem = (id) => request.get('/api/recommend')
   .then(handleSuccess)
   .catch(handleError);
 
-export const algoliaSearch = (query) => request.get('/api/item/algolia')
-  .query({ query })
+export const algoliaSearch = (query) => request.get(`/api/item/algolia/${query}`)
+  // .query({ query })
   .then(handleSuccess)
   .catch(handleError);
 
 export const updateItem = (itemId, object) => request.put(`/api/item/${itemId}`)
+  .send(object)
+  .then(handleSuccess)
+  .catch(handleError);
+
+export const deleteItem = (itemId) => request.delete(`/api/item/${itemId}`)
+  .then(handleSuccess)
+  .catch(handleError);
+
+export const createItem = (object) => request.post('api/item')
   .send(object)
   .then(handleSuccess)
   .catch(handleError);

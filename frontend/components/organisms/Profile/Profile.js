@@ -1,46 +1,62 @@
-import React from 'react';
-import R from 'ramda';
-import { useDispatch, useSelector } from 'react-redux';
+import { Container, LinearProgress } from "@mui/material";
+import React from "react";
 
-export default function Profile() {
-  const dispatch = useDispatch();
-  const { user } = useSelector(R.pick(['user']));
-  const { group } = useSelector(R.pick(['group']));
+const status = {
+  admin: "관리자",
+  inactive: "비활성",
+  deleted: "삭제",
+  retired: "전역",
+  active: "활성",
+};
 
-  let status = "활성";
-  switch(user.status){
-    case "admin" : status="관리자;"
-    case "inactive" : status="비활성";
-    case "deleted" : status="삭제";
-    case "retired" : status="전역";
-    default : status="활성";
-  }
+export default function Profile({ user, group }) {
+  if (user == null || group == null) return <LinearProgress />;
 
-  return (
-    <div className="profile">
-      <div className="profile-title">
-        사용자 정보
-      </div>
-      <div className="profile-labels">
-        <div className="profile-label">이름</div>
-        <div className="profile-label">계급</div>
-        <div className="profile-label">직무</div>
-        <div className="profile-label">사용자 계정 상태</div>
-        <div className="profile-label">소속</div>
-        <div className="profile-label">군 이메일</div>
-        <div className="profile-label">군 연락처</div>
-        <div className="profile-label">일반 연락처</div>
-      </div>
-      <div className="profile-values">
-        <div className="profile-value">{user.name}</div>
-        <div className="profile-value">{user.rank}</div>
-        <div className="profile-value">{user.title}</div>
-        <div className="profile-value">{status}</div>
-        <div className="profile-value">{group.division === undefined ? "소속 없음" : group.division}</div>
-        <div className="profile-value">{user.email}</div>
-        <div className="profile-value">{user.tel.military}</div>
-        <div className="profile-value">{user.tel.mobile}</div>
-      </div>
-    </div>
+  const entry = [
+    {
+      label: "계급",
+      value: user.rank,
+    },
+    {
+      label: "이름",
+      value: user.name,
+    },
+    {
+      label: "직무",
+      value: user.title,
+    },
+    {
+      label: "사용자 상태",
+      value: status[user.status],
+    },
+    {
+      label: "소속",
+      value: group.name == null ? "소속 없음" : group.name,
+    },
+    {
+      label: "이메일",
+      value: user.email,
+    },
+    {
+      label: "군 연락처",
+      value: user.tel.military,
+    },
+    {
+      label: "일반 연락처",
+      value: user.tel.mobile,
+    },
+  ];
+
+  return user == null || group == null ? (
+    <LinearProgress />
+  ) : (
+    <Container maxWidth="sm" minWidth="sm" sx={{ pt: 4, ml: 6 }} className="profile">
+      {entry.map((e, index) => (
+        <div className="profile-item" key={index}>
+          <div className="profile-label">{e.label}</div>
+          <div className="profile-value">{e.value != null ? e.value : ""}</div>
+        </div>
+      ))}
+    </Container>
   );
 }

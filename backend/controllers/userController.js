@@ -1,5 +1,8 @@
 const userService = require('../services/userService.js');
 const authService = require('../services/authService.js');
+
+const { BusinessError } = require('../services/errors/BusinessError.js');
+
 module.exports = {
 
     search: async function(req, res) {
@@ -10,13 +13,13 @@ module.exports = {
          // Only allowed fields are Searchable
         for(let key of keys) {
             if(!valids.includes(key))
-                throw new BusinessError(`${key} 는 검색할 수는 없는 속성입니다.`);
+                throw new BusinessError(`Query invalid: ${key} 는 검색할 수는 없는 속성입니다.`);
         }
 
 
         const projection = {
-            _id: true, name: true, rank: true, status: true, profileImageUrl: true,
-            group: true, email: true, tel: true, lastLogin: true
+            _id: true, name: true, rank: true, status: true,
+            group: true, email: true, tel: true, lastLogin: true, profileImageUrl: true, title: true
         };
 
         try {
@@ -31,8 +34,8 @@ module.exports = {
 
         let projection = {
             _id: true,serviceNumber:true, name: true, rank: true, title:true,
-            status: true, group: true, email: true, tel: true, profileImageUrl: true,
-            lastLogin: true, firseLogin:true, bookmarks: true, subscriptions: true
+            status: true, group: true, email: true, tel: true, lastLogin: true,
+            lastLogin: true, firseLogin:true, bookmarks: true, subscriptions: true, profileImageUrl: true
         };
 
         try {
@@ -71,7 +74,7 @@ module.exports = {
              // Only allowed fields are Searchable
             for(let key of keys) {
                 if(!valids.includes(key))
-                    throw new BusinessError(`${key} 는 User에 존재하지 않거나, 변경할 수 없는 속성입니다`);
+                    throw new BusinessError(`Query invalid: ${key} 는 User에 존재하지 않거나, 변경할 수 없는 속성입니다`);
             }
 
             await authService.editUserAuth(res.locals._id.toString(),req.params.id);

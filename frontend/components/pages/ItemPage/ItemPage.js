@@ -28,7 +28,6 @@ export default function ItemPage({ location }) {
       PromiseItemArray(pathArray, setPathObject, setLoadingPath, 'pathArray');
 
       // setting children array Promise
-      const childArray = [];
       getItemChild(camelData.path).then((array) => {
         setChildObject({ childArray: snakeToCamelCase(array) });
         setLoadingChild(false);

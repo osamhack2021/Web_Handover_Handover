@@ -1,5 +1,7 @@
 import update from 'immutability-helper';
-import { LOAD_ALL_USER_ITEM, UPDATE_PERMISSION } from '_actions/userItem';
+import {
+  LOAD_ALL_USER_ITEM, UPDATE_PERMISSION, DELETE_USER_ITEM, ADD_USER_ITEM,
+} from '_actions/userItem';
 
 export default function item(state = [], action) {
   switch (action.type) {
@@ -13,6 +15,10 @@ export default function item(state = [], action) {
           },
         },
       });
+    case DELETE_USER_ITEM:
+      return state.filter((elem) => elem.Id !== action.itemId);
+    case ADD_USER_ITEM:
+      return [...state, action.itemObject];
     default:
       return state;
   }

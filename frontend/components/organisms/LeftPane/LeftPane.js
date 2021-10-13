@@ -53,22 +53,22 @@ export default function LeftPane() {
           <ListSubheader className="leftpane-label"> 내 문서 </ListSubheader>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: '북마크', link: '/' }} />
+              <MenuItem value={{ title: '북마크', link: '/leftpane/bookmarks' }} />
             </ListItemButton>
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: '최근에 본 문서', link: '/', }} />
+              <MenuItem value={{ title: '최근에 본 문서', link: '/' }} />
             </ListItemButton>
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: '내가 작성한 문서', link: '/', }} />
+              <MenuItem value={{ title: '내가 작성한 문서', link: '/leftpane/myitems' }} />
             </ListItemButton>
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: '임시저장한 문서', link: '/', }} />
+              <MenuItem value={{ title: '임시저장한 문서', link: '/' }} />
             </ListItemButton>
           </ListItem>
         </div>
@@ -76,21 +76,21 @@ export default function LeftPane() {
           <ListSubheader className="leftpane-label"> 기타 </ListSubheader>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: '설정', link: '/setting', }} />
+              <MenuItem value={{ title: '설정', link: '/setting' }} />
             </ListItemButton>
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: '도움말', link: '/', }} />
+              <MenuItem value={{ title: '도움말', link: '/' }} />
             </ListItemButton>
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: '서비스 페이지', link: '/', }} />
+              <MenuItem value={{ title: '서비스 페이지', link: '/' }} />
             </ListItemButton>
           </ListItem>
         </div>
       </div>
-    </div >
+    </div>
   );
 }

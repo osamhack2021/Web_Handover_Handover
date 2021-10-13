@@ -16,7 +16,7 @@ module.exports = {
             // Only allowed fields are Searchable
             for(let key of keys) {
                 if(!valids.includes(key))
-                    throw new BusinessError(`Invalid: ${key}로는 검색할 수 없습니다!`);
+                    throw new BusinessError(`Query invalid: ${key}로는 검색할 수 없습니다!`);
             }            
 
             const result = await itemService.search(req.query);
@@ -50,12 +50,12 @@ module.exports = {
 
             const item = await itemService.read({ _id: item_id });
 
-            if(item === null) throw new NotFoundError(`NotFound: 검색결과가 없습니다.`);
+            if(item === null) throw new NotFoundError(`Item not found: 존재하지 않는 항목입니다.`);
 
             // Check session's read authority
             const user = await userService.findOne({ serviceNumber: res.locals.serviceNumber });
             if(!item.accessGroups.read.some(i => i.equals(user.group)))
-                throw new ForbiddenError(`Forbidden: 읽기 권한이 없습니다.`);
+                throw new ForbiddenError(`Access denied: 열람 권한이 없습니다.`);
 
             res.status(200).send(item);
         } catch(err) {
@@ -106,11 +106,11 @@ module.exports = {
 
             let item = await itemService.read({ _id: item_id }, { populate: false });
 
-            if(item === null) throw new NotFoundError(`Not Found: 검색 결과가 없습니다.`);
+            if(item === null) throw new NotFoundError(`Item not Found: 존재하지 않는 항목입니다.`);
 
             // Check session's edit authority
             if(!item.accessGroups.edit.some(i => i.equals(res.locals.group)))
-                throw new ForbiddenError(`Forbidden: 수정 권한이 없습니다.`);
+                throw new ForbiddenError(`Access denied: 수정 권한이 없습니다.`);
 
             // Append Contributor
             item = Object.assign(item, { contributors: [...item.contributors, res.locals._id] });
@@ -136,7 +136,7 @@ module.exports = {
             let item = await itemService.read({ _id: item_id }, { populate: false });
 
             if(item === null)
-                throw new NotFoundError(`Not Found: 검색 결과가 없습니다.`);
+                throw new NotFoundError(`Item not Found: 존재하지 않는 항목입니다.`);
             
             // Algolia
             await algolia.deleteObject(item_id);

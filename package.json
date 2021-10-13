@@ -32,7 +32,6 @@
     "redux",
     "webpack",
     "express",
-    "bulma",
     "ramda",
     "eslint",
     "jest",

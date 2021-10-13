@@ -1,79 +1,216 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { snakeToCamelCase } from 'json-style-converter/es5';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import R from 'ramda';
 
-import { getUser } from '_api/user';
 import { getItemByItemId, getItemChild } from '_api/item';
-import NoteHeader from '../NoteHeader';
+import { attemptUpdatePermission, attemptDeleteItem, attemptDuplicateItem } from '_thunks/item';
+import { attemptUpdateUser } from '_thunks/user';
+import { getGroupByGroupId } from '_api/group';
+import CardDropdown from '_molecules/CardDropdown';
 import NoteFooter from '../NoteFooter';
-
 import CardItem from '../CardItem';
 
-function arrayToCardItems(array) {
+function ArrayToCardItems(array) {
   return array.map((elem) => <CardItem value={elem} key={elem.Id} />);
 }
 
+function Match(array, Id) {
+  return array.filter((elem) => elem.Id === Id).length;
+}
+
+// find the initial permisison setting
+function DetermineInitPermission(accessGroups, groupObjectArray, readOrEdit) {
+  const access = (readOrEdit === 'read') ? accessGroups.read.map((elem) => elem.Id) : accessGroups.edit.map((elem) => elem.Id);
+  let i = 0;
+  for (i = 0; i < groupObjectArray.length; i++) {
+    if (access.includes(groupObjectArray[i].Id)) {
+      break;
+    }
+  }
+  if (i === groupObjectArray.length) {
+    return groupObjectArray[i - 1].Id;
+  }
+  return groupObjectArray[i].Id;
+}
+
+function convertToPlain(html) {
+  const tempDivElement = document.createElement('div');
+  tempDivElement.innerHTML = html;
+  return tempDivElement.textContent || tempDivElement.innerText || '';
+}
 // type takes "card", "document", "cabinet" values
 // refactoring due to change in item schema,
 // require sole prop, the item object itself
 // Reason : In calling Cards, the Parent already possesses the item array of card from api calls
 
 export default function Card({ Id }) {
+  console.log(`rendering card with ${Id}`);
   const history = useHistory();
+  const dispatch = useDispatch();
 
   // find current user from store
   const { user } = useSelector(R.pick(['user']));
   const { group } = useSelector(R.pick(['group']));
+  const { userItem } = useSelector(R.pick(['userItem']));
 
   // states of item, createdby, and child array
   const [itemObject, setItemObject] = useState({});
   const [createdBy, setCreatedBy] = useState('');
   const [childObjectArray, setchildObjectArray] = useState([]);
+  const [bookmarkBoolean, setBookmarkBoolean] = useState(user.bookmarks.includes(Id));
+
+  // states used for permission
+  const [permissionId, setPermissionId] = useState('');
+  const [groupObjectArray, setGroupObjectArray] = useState({ groupObjectArray: [] });
 
   // set boolean states to handle asynchronous requests
   const [loadingItem, setLoadingItem] = useState(true);
   const [loadingChild, setLoadingChild] = useState(true);
-  const [loadingCreator, setLoadingCreator] = useState(true);
+  const [loadingGroup, setLoadingGroup] = useState(true);
   const [isAvailable, setIsAvailable] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
+
+  const groupIdArray = group.path.split(',').filter((elem) => elem !== '');
 
   useEffect(() => {
     getItemByItemId(Id).then((item) => {
-      setItemObject(snakeToCamelCase(item));
+      console.log(`rendering item of ${Id}`);
+      const camelItem = snakeToCamelCase(item);
+      setItemObject(camelItem);
+      setCreatedBy(camelItem.owner.name);
       setLoadingItem(false);
       // setting availability of item
-      setIsAvailable(item.accessGroups.read.includes(item.Id));
-      getItemChild(item.path).then((childArray) => {
+      setIsAvailable(Match(camelItem.accessGroups.read, group.Id));
+      getItemChild(camelItem.path).then((childArray) => {
         setchildObjectArray(childArray);
         setLoadingChild(false);
       });
-    });
-
-    getUser(Id).then((data) => {
-      setCreatedBy(data.name);
-      setLoadingCreator(false);
+      Promise.all(groupIdArray.map((elem) => getGroupByGroupId(elem))).then((elemItem) => {
+        setGroupObjectArray((prevState) => ({
+          ...prevState,
+          groupObjectArray: snakeToCamelCase(elemItem),
+        }
+        ));
+        console.log(`calling setPermission Id : ${Id}`);
+        console.log(camelItem.accessGroups);
+        console.log(snakeToCamelCase(elemItem));
+        setPermissionId(DetermineInitPermission(camelItem.accessGroups, snakeToCamelCase(elemItem), 'read'));
+        setLoadingGroup(false);
+      });
     });
   }, []);
+
+  const boolSum = loadingItem || loadingChild || loadingGroup;
 
   // setting appropriate values to constants
   const { title, content } = itemObject;
   const className = `note--${itemObject.type}`;
-  const isArchived = user.bookmarks.includes(Id);
   const dateFromNow = '2주 전 수정됨';
   const routeChange = () => {
-    const path = `item/${Id}`;
+    const path = `/item/${Id}`;
     history.push(path);
   };
-  const innerContent = (itemObject.type === 'card' ? content : arrayToCardItems(childObjectArray));
-  const boolSum = loadingItem && loadingChild && loadingCreator && isAvailable;
+  const innerContent = (itemObject.type === 'card' ? convertToPlain(content) : ArrayToCardItems(childObjectArray));
 
-  return !boolSum && (
+  const onBookmarkCard = () => {
+    console.log('bookmarking Card');
+    let bookmarkArray = user.bookmarks;
+    if (bookmarkBoolean) {
+      // deleting from bookmark array
+      bookmarkArray = bookmarkArray.filter((elem) => elem !== Id);
+    } else {
+      // adding to bookmark array
+      bookmarkArray = [...bookmarkArray, Id];
+    }
+    dispatch(attemptUpdateUser({ bookmarks: bookmarkArray }));
+    setBookmarkBoolean(!bookmarkBoolean);
+  };
+
+  const onDeleteCard = () => {
+    dispatch(attemptDeleteItem(Id, userItem.find((elem) => elem.Id === Id)));
+    setIsDeleted(true);
+  };
+
+  const onDuplicateCard = () => {
+    console.log('Duplicating card with onDuplicateCard');
+    console.log(itemObject.path);
+    const newString = itemObject.path.split(',').filter((elem) => elem !== '').splice(-1).join(',');
+    let newPathString;
+    switch (itemObject.type) {
+      case 'Cabinet':
+        newPathString = '';
+        break;
+      default:
+        newPathString = `,${newString},`;
+    }
+    const dupObject = {
+      type: itemObject.type,
+      title: itemObject.title,
+      path: newPathString,
+      content: itemObject.content,
+      tags: itemObject.tags,
+      status: itemObject.status,
+    };
+    dispatch(attemptDuplicateItem(dupObject));
+  };
+  // fires when change of p ermission from mui-select occurs
+  const onChangePermission = (event) => {
+    console.log('Changing Permissions with onChangePermission');
+
+    // sets the permission state
+    setPermissionId(event.target.value);
+    let index = 0;
+    for (index = 0; index < groupIdArray.length; index++) {
+      if (groupIdArray[index] === event.target.value) {
+        break;
+      }
+    }
+    // list of denied / allowed groupIds along the path of group
+    const deniedList = groupIdArray.slice(0, index);
+    const accessList = groupObjectArray.slice(index);
+
+    // temporary object
+    let tempAccessReadGroups = itemObject.accessGroups.read;
+
+    // from given accessGroups, deletes the "denied" groups while adding the "allowed" groups
+    tempAccessReadGroups = tempAccessReadGroups.filter((elem) => !deniedList.includes(elem.Id));
+    accessList.map((groupObject) => {
+      if (!tempAccessReadGroups.read.map((elem) => elem.Id).includes(groupObject.Id)) {
+        tempAccessReadGroups.push(groupObject);
+      }
+      return groupObject;
+    });
+
+    const newReadPermission = {
+      read: tempAccessReadGroups,
+      edit: itemObject.accessGroups.edit,
+    };
+
+    // actual api request
+    dispatch(attemptUpdatePermission(itemObject.Id, newReadPermission));
+  };
+
+  return !isDeleted && !boolSum && (
     <div className={className}>
       <div>
         {/* passing NoteHeader onClick element, so that upon clicking title can be redirected */}
-        <NoteHeader title={title} isArchived={isArchived} onClick={routeChange} />
+        <div className="note-header">
+          <div className="main-title" onClick={routeChange}>
+            {title}
+          </div>
+          <div className="button-group">
+            <CardDropdown
+              groupObjectArray={groupObjectArray.groupObjectArray}
+              onChangePermission={onChangePermission}
+              onDeleteCard={onDeleteCard}
+              onDuplicateCard={onDuplicateCard}
+              permissionId={permissionId}
+            />
+          </div>
+        </div>
         <div className="description">
           {createdBy}
         </div>
@@ -81,7 +218,11 @@ export default function Card({ Id }) {
           {innerContent}
         </div>
       </div>
-      <NoteFooter dateFromNow={dateFromNow} />
+      <NoteFooter
+        dateFromNow={dateFromNow}
+        bookmarkBoolean={bookmarkBoolean}
+        onBookmarkCard={onBookmarkCard}
+      />
     </div>
   );
 }

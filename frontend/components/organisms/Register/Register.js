@@ -1,25 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import R from "ramda";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
-import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExclamationTriangle";
-
-import Box from "react-bulma-companion/lib/Box";
-import Button from "react-bulma-companion/lib/Button";
-import Block from "react-bulma-companion/lib/Block";
-import Title from "react-bulma-companion/lib/Title";
-import Field from "react-bulma-companion/lib/Field";
-import Control from "react-bulma-companion/lib/Control";
-import Icon from "react-bulma-companion/lib/Icon";
-import Input from "react-bulma-companion/lib/Input";
-import Label from "react-bulma-companion/lib/Label";
-import Help from "react-bulma-companion/lib/Help";
-
-import useKeyPress from "_hooks/useKeyPress";
-import { postCheckServiceNumber } from "_api/users";
 import { validateServiceNumber, validatePassword } from "_utils/validation";
 import { attemptRegister } from "_thunks/auth";
 
@@ -33,7 +15,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Tooltip from "@mui/material/Tooltip";
 import Container from "@mui/material/Container";
 
-import FormInput from "_molecules/FormInput";
 
 export default function Register() {
   const dispatch = useDispatch();
