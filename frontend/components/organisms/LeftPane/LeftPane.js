@@ -53,7 +53,7 @@ export default function LeftPane() {
           <ListSubheader className="leftpane-label"> 내 문서 </ListSubheader>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: '북마크', link: '/bookmark' }} />
+              <MenuItem value={{ title: '북마크', link: '/leftpane/bookmarks' }} />
             </ListItemButton>
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>
@@ -63,7 +63,7 @@ export default function LeftPane() {
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: '내가 작성한 문서', link: '/' }} />
+              <MenuItem value={{ title: '내가 작성한 문서', link: '/leftpane/myitems' }} />
             </ListItemButton>
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>

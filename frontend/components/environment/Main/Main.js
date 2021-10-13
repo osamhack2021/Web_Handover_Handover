@@ -55,7 +55,7 @@ export default function Main({ location }) {
             <Route path="/item" component={RoutingPage} />
             <Route path="/account" component={RoutingPage} />
             <Route path="/user" component={RoutingPage} />
-            <Route path="/bookmark" component={RoutingPage} />
+            <Route path="/leftpane" component={RoutingPage} />
 
             {/* 404 Fallback page */}
             <Route path="/error">

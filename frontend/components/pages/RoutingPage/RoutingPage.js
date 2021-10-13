@@ -12,7 +12,7 @@ import ProfilePage from '_pages/ProfilePage';
 import RecoveryPage from '_pages/RecoveryPage';
 import SearchPage from '_pages/SearchPage';
 import TestPage from '_pages/TestPage';
-import BookmarkPage from '_pages/BookmarkPage';
+import ItemListPage from '_pages/ItemListPage';
 import { attemptGetGroup } from '_thunks/group';
 import { attemptLoadItems } from '_thunks/item';
 
@@ -57,8 +57,8 @@ export default function RoutingPage() {
             {/* Search Page */}
             <Route path="/search/:searchQuery" component={SearchPage} />
 
-            {/* Bookmark Page */}
-            <Route path="/bookmark" component={BookmarkPage} />
+            {/* LeftPane Pages */}
+            <Route path="/leftpane/:path" component={ItemListPage} />
 
             {/* Item Page */}
             <Route path="/create" component={EditorPage} />
