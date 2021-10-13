@@ -37,7 +37,7 @@ export default function GroupMember({
         </div>
       </div>
       <div className="group-member-admin">
-        {admin === 'admin' ? '관리자' : '그룹원'}
+        {admin === "admin" ? '관리자' : admin === "inspector" ? '보안 검수자' : '그룹원'}
       </div>
       <div className="group-member-active">
         {status === 'active' ? '활동중' : '비활성'}
@@ -74,5 +74,5 @@ GroupMember.propTypes = {
   title: PropTypes.string.isRequired,
   profilePic: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
-  admin: PropTypes.string.isRequired,
+  admin: PropTypes.bool.isRequired,
 };

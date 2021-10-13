@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import R from 'ramda';
 
@@ -8,17 +8,43 @@ import { Box } from '@mui/material';
 
 import TabPanel from '_molecules/TabPanel';
 import GroupMember from '_molecules/GroupMember';
+import { getGroupByGroupId, searchGroupByAdmin } from "_api/group";
+import { searchUserByGroupId } from "_api/user";
 
 export default function GroupSettings() {
   const { user } = useSelector(R.pick(['user']));
   const { group } = useSelector(R.pick(['group']));
-  //그룹이 A > B > C > D 있을 때
-  // A -> B -> C -> D 순회하면서 어디서부터 admin인지 체크
-  //만약 B부터 admin이라고 치면 B, C, D를 array에 넣기
-  //B의 그룹원 렌더링
-  //C의 그룹원 렌더링
-  //D의 그룹원 렌더링
-  //특정 그룹원의 권한 바꾸기 (일반 그룹원 / 그룹 관리자 / 보안 관리자) -> update group
+
+  const [managingGroup, setManagingGroup] = useState(null);
+  const [managingMembers, setManagingMembers] = useState([]); // Nested array composed of members of each managing group.
+
+  // Get managing groups
+  useEffect(() => {
+    searchGroupByAdmin(user.Id)
+      .then(result => setManagingGroup(result));
+  }, [user]);
+
+  // Get group members of each groups after managing groups are fetched & Set division and admin field of each members
+  useEffect(() => {
+    if (managingGroup != null) {
+      managingGroup.forEach((group) => {
+        let adminIdArray = [];
+        let inspectorIdArray = [];
+        getGroupByGroupId(group._id).then(result => {
+          result.admins.forEach(admin => adminIdArray.push(admin._id));
+          result.inspectors.forEach(inspector => inspectorIdArray.push(inspector._id));
+        })
+        searchUserByGroupId(group._id).then(result => {
+          result.forEach((member) => {
+            // member.admin : 그룹에서 admin이면 admin, inspector이면 inspector, 둘 다 아니면 member (필드 이름 수정이 필요..) 
+            member.admin = (adminIdArray.includes(member._id)) ? "admin" : (inspectorIdArray.includes(member._id) ? "inspector" : "member");
+            getGroupByGroupId(member.group).then((group) => { member.division = group.name }); // Set member's division (정의가 안되는 중..)
+          })
+          setManagingMembers([...managingMembers, result])
+        });
+      });
+    }
+  }, [managingGroup]);
 
   const [tabNumber, setTabNumber] = React.useState(0);
 
@@ -26,51 +52,26 @@ export default function GroupSettings() {
     setTabNumber(newValue);
   };
 
-  const mapGroupMember = (members) =>
-    members.map((i) => <GroupMember name={i.name} rank={i.rank} division={i.division} title={i.title} status={i.status} admin={i.admin} />);
+  const mapGroupMember = (members) => {
+    return members.map((member) => {
+      console.log("member: " + JSON.stringify(member));
+      console.log(member.division); // I'm not sure why member.division is output as undefined.. 😢
+      return <GroupMember name={member.name} rank={member.rank} title={member.title} status={member.status} division={member.division} admin={member.admin} />
+    });
+  }
 
-  const mapTabPanel = (groups) =>
-    groups.map((i, index) => (
+  const mapTabPanel = (membersArray) =>
+    membersArray.map((members, index) => (
       <TabPanel value={tabNumber} index={index} className="tabpanel">
         <div className="tabpanel-title">그룹원</div>
-        {mapGroupMember(i.members)}
+        {mapGroupMember(members)}
       </TabPanel>
     ));
 
   const mapTab = (groups) =>
-    groups.map((i) => <Tab label={i.title} />);
+    groups.map((i) => <Tab label={i.name} />);
 
-  const dummymembers = [{
-    name: '최우혁',
-    rank: '일병',
-    division: '31사단 95여단',
-    title: 'TOD운용병',
-    status: 'active',
-    admin: 'admin',
-  },
-  {
-    name: '조나단',
-    rank: '일병',
-    division: '1사단 22여단',
-    title: '팀장',
-    status: 'active',
-    admin: 'admin',
-  },
-  {
-    name: '김태원',
-    rank: '일병',
-    division: '2사단 33여단',
-    title: '프론트엔드',
-    status: '비활성',
-    admin: '그룹원',
-  },
-  ];
-  const dummygroups = [
-    { title: "00사단", members: dummymembers },
-    { title: "00연대", members: [...dummymembers, ...dummymembers] },
-    { title: "인사과", members: [...dummymembers, ...dummymembers, ...dummymembers] },
-  ];
-  return (
+  return managingGroup == null ? ("Loading...") : (
     <Box className="tabs-container">
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
@@ -80,10 +81,10 @@ export default function GroupSettings() {
           variant="scrollable"
           scrollButtons="auto"
         >
-          {mapTab([...dummygroups,...dummygroups,...dummygroups,])}
+          {mapTab(managingGroup)}
         </Tabs>
       </Box>
-      {mapTabPanel([...dummygroups,...dummygroups,...dummygroups,])}
+      {mapTabPanel(managingMembers)}
     </Box>
   );
 }
