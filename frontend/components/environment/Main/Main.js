@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import { Switch, Route, Redirect } from "react-router";
-import ReactNotification from "react-notifications-component";
-import { useDispatch } from "react-redux";
-import R from "ramda";
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { Switch, Route, Redirect } from 'react-router';
+import ReactNotification from 'react-notifications-component';
+import { useDispatch } from 'react-redux';
+import R from 'ramda';
 
-import { attemptGetUser } from "_thunks/user";
+import { attemptGetUser } from '_thunks/user';
 
-import WelcomePage from "_pages/WelcomePage";
-import LoginPage from "_pages/LoginPage";
-import RegisterPage from "_pages/RegisterPage";
-import RoutingPage from "_pages/RoutingPage";
+import WelcomePage from '_pages/WelcomePage';
+import LoginPage from '_pages/LoginPage';
+import RegisterPage from '_pages/RegisterPage';
+import RoutingPage from '_pages/RoutingPage';
 
 // import Navigation from '_organisms/Navigation';
 // import Footer from '_organisms/Footer';
@@ -55,6 +55,7 @@ export default function Main({ location }) {
             <Route path="/item" component={RoutingPage} />
             <Route path="/account" component={RoutingPage} />
             <Route path="/user" component={RoutingPage} />
+            <Route path="/bookmark" component={RoutingPage} />
 
             {/* 404 Fallback page */}
             <Route path="/error">

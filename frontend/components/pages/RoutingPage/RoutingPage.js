@@ -1,24 +1,24 @@
-import { push } from "connected-react-router";
-import R from "ramda";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Route, Switch } from "react-router";
-import { login } from "_frontend/store/actions/user";
-import Header from "_organisms/Header";
-import LeftPane from "_organisms/LeftPane";
-import EditorPage from "_pages/EditorPage";
-import ItemPage from "_pages/ItemPage";
-import ProfilePage from "_pages/ProfilePage";
-import RecoveryPage from "_pages/RecoveryPage";
-import SearchPage from "_pages/SearchPage";
-import TestPage from "_pages/TestPage";
-import { attemptGetGroup } from "_thunks/group";
-import { attemptLoadItems } from "_thunks/item";
-
+import { push } from 'connected-react-router';
+import R from 'ramda';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect, Route, Switch } from 'react-router';
+import { login } from '_frontend/store/actions/user';
+import Header from '_organisms/Header';
+import LeftPane from '_organisms/LeftPane';
+import EditorPage from '_pages/EditorPage';
+import ItemPage from '_pages/ItemPage';
+import ProfilePage from '_pages/ProfilePage';
+import RecoveryPage from '_pages/RecoveryPage';
+import SearchPage from '_pages/SearchPage';
+import TestPage from '_pages/TestPage';
+import BookmarkPage from '_pages/BookmarkPage';
+import { attemptGetGroup } from '_thunks/group';
+import { attemptLoadItems } from '_thunks/item';
 
 export default function RoutingPage() {
   const dispatch = useDispatch();
-  const { user } = useSelector(R.pick(["user"]));
+  const { user } = useSelector(R.pick(['user']));
 
   // to identify whether all contents are loaded or not
   const [loadingGroup, setLoadingGroup] = useState(true);
@@ -26,9 +26,9 @@ export default function RoutingPage() {
 
   useEffect(() => {
     if (R.isEmpty(user)) {
-      const user = localStorage.getItem("user");
+      const user = localStorage.getItem('user');
 
-      if (user == null) dispatch(push("/login"));
+      if (user == null) dispatch(push('/login'));
       else dispatch(login(JSON.parse(user)));
     } else {
       dispatch(attemptGetGroup(user.group))
@@ -42,8 +42,8 @@ export default function RoutingPage() {
   }, []);
 
   return (
-    !loadingGroup &&
-    !loadingItem && (
+    !loadingGroup
+    && !loadingItem && (
       <div className="page-template">
         <div className="left-pane-container">
           <LeftPane />
@@ -53,8 +53,12 @@ export default function RoutingPage() {
           <Switch>
             {/* Home Page */}
             <Route path="/home" component={TestPage} />
+
             {/* Search Page */}
             <Route path="/search/:searchQuery" component={SearchPage} />
+
+            {/* Bookmark Page */}
+            <Route path="/bookmark" component={BookmarkPage} />
 
             {/* Item Page */}
             <Route path="/create" component={EditorPage} />
@@ -68,7 +72,7 @@ export default function RoutingPage() {
             <Route exact path="/account/settings" component={ProfilePage} />
             <Route exact path="/account/settings/group" component={ProfilePage} />
             <Route exact path="/account/recovery" component={RecoveryPage} />
-            
+
             {/* User Profile Page */}
             <Route exact path="/user/:userId" component={ProfilePage} />
             <Route exact path="/user/:userId/items" component={ProfilePage} />
