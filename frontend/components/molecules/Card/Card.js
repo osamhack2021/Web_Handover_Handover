@@ -231,8 +231,7 @@ export default function Card({ Id: itemId }) {
   // const onDeleteCard = () => {
   //   dispatch(
   //     attemptDeleteItem(
-  //       itemId,
-  //       userItem.find((elem) => elem.Id === itemId)
+  //       itemId
   //     )
   //   );
   //   setIsDeleted(true);
