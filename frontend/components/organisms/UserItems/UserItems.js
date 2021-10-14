@@ -13,10 +13,17 @@ const CardGrid = ({ cards }) => {
       component={Container}
       maxWidth="md"
       minWidth="sm"
-      sx={{ pt: 4, ml: 6, flexDirection: 'row', flexWrap: 'wrap' }}
+      sx={{
+        pt: 4,
+        ml: 6,
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: "12px"
+      }}
     >
       {cards.map((e) => (
-          <Card Id={e._id} />
+        <Card Id={e._id} />
       ))}
     </Container>
   );
