@@ -12,7 +12,7 @@ import Icon from "@mdi/react";
 import { mdiAccount, mdiCog, mdiLogoutVariant, mdiMenuDown } from "@mdi/js";
 
 import { attemptLogout } from "_frontend/store/thunks/auth";
-import { LinkComponent } from "_atoms/LinkComponent/LinkComponent";
+import LinkComponent from "_atoms/LinkComponent";
 
 export default function ProfileMenu() {
   const dispatch = useDispatch();

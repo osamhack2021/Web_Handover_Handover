@@ -19,7 +19,7 @@ import { Route, Switch, useLocation, useParams } from "react-router";
 import { getGroupByGroupId } from "_frontend/api/group";
 import { getItemByUserId } from "_frontend/api/item";
 import { getUser } from "_frontend/api/user";
-import { LinkComponent } from "_frontend/components/atoms/LinkComponent/LinkComponent";
+import LinkComponent from "_atoms/LinkComponent";
 import GroupSettings from "_frontend/components/organisms/GroupSettings";
 import ProfileSettings from "_frontend/components/organisms/ProfileSettings";
 import Profile from "_organisms/Profile";

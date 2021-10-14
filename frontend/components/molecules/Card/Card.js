@@ -7,16 +7,7 @@ import R from "ramda";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getItemByItemId, getItemChild } from "_api/item";
-import CardItem from "../CardItem";
-import { LinkComponent } from "./../../atoms/LinkComponent/LinkComponent";
-
-function ArrayToCardItems(array) {
-  return array.map((elem) => <CardItem value={elem} key={elem.Id} />);
-}
-
-function Match(array, Id) {
-  return array.filter((elem) => elem.Id === Id).length;
-}
+import LinkComponent from "_atoms/LinkComponent";
 
 const borderRadius = {
   cabinet: "0px 0px 16px 16px",
