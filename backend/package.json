@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "nodemon --watch . app.js"
+    "start": "npm run start:linux",
+    "start:linux": "nodemon --watch . app.js",
+    "start:windows": "nodemon --legacy-watch app.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
