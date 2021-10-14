@@ -6,7 +6,7 @@ import { attemptLogout } from '_thunks/auth';
 
 export default function TestPage() {
   const { userItem } = useSelector(R.pick(['userItem']));
-  const render = userItem.map((elem) => <Card Id={elem.Id} />);
+  const render = userItem.map((elem) => <Card item={elem} />);
   return (
     <div>
       {render}

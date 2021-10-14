@@ -23,7 +23,7 @@ const CardGrid = ({ cards }) => {
       }}
     >
       {cards.map((e) => (
-        <Card Id={e._id} />
+        <Card id={e._id} />
       ))}
     </Container>
   );
@@ -32,7 +32,7 @@ const CardGrid = ({ cards }) => {
 function CreateCardArray(cardArray) {
   return cardArray.map((elem) => {
     const { _id } = elem;
-    return <Card Id={_id} />;
+    return <Card id={_id} />;
   });
 }
 

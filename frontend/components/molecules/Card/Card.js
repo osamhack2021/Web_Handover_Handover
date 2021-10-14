@@ -102,9 +102,8 @@ const statusTooltipText = {
   public: "공개된 항목",
 };
 
-// TODO: refactor <Card Id="..." /> to <Card itemId="..." />
 export default function Card({
-  Id: itemId,
+  id = null,
   item: itemObject = null,
   itemChildren: itemChildrenObject = null,
 }) {
@@ -113,8 +112,25 @@ export default function Card({
   // find current user from store
   const { user } = useSelector(R.pick(["user"]));
 
+  const itemId =
+    itemObject != null
+      ? itemObject.hasOwnProperty("Id")
+        ? itemObject.Id // id from local store
+        : itemObject.hasOwnProperty("_id")
+        ? itemObject._id // id from API response
+        : id
+      : id; // id from props
+
   // will try to use object passed as props if exists
-  const [item, setItem] = useState(itemObject);
+  const [item, setItem] = useState(
+    itemObject
+      ? {
+          ...itemObject,
+          _id: itemId, // if itemObject is passed as props, append _id
+          id: itemId,
+        }
+      : null
+  );
   const [itemChildren, setItemChildren] = useState(itemChildrenObject);
 
   const [isBookmarked, setBookmarked] = useState(

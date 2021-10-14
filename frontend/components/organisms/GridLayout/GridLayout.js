@@ -5,18 +5,8 @@ import Card from '_molecules/Card';
 
 function CreateCardArray(cardArray) {
   return cardArray.map((elem) => {
-    const {
-      type, title, description, content, Id,
-    } = elem;
     return (
-      <Card
-        type={type}
-        title={title}
-        description={description}
-        isArchived={false}
-        content={content}
-        Id={Id}
-      />
+      <Card item={elem}/>
     );
   });
 }
