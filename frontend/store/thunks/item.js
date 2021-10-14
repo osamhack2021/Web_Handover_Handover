@@ -56,6 +56,46 @@ export const attemptDeleteItem = (itemId) => (dispatch) => {
   });
 };
 
+// archive item
+export const attemptArchiveItem = (itemId) => (dispatch) => {
+  return archiveItem(itemId).then(() => {
+    // remove locally stored item
+    dispatch(archiveUserItem(itemId));
+
+    RNC.addNotification({
+      title: "보관 완료",
+      type: "success",
+      message: "항목을 보관하였습니다",
+      container: "top-center",
+      animationIn: ["animated", "fadeInRight"],
+      animationOut: ["animated", "fadeOutRight"],
+      dismiss: {
+        duration: 5000,
+      },
+    });
+  });
+};
+
+// unarchive item
+export const attemptPublishItem = (itemId) => (dispatch) => {
+  return publishItem(itemId).then(() => {
+    // remove locally stored item
+    dispatch(publishUserItem(itemId));
+
+    RNC.addNotification({
+      title: "게시 완료",
+      type: "success",
+      message: "항목을 게시하였습니다",
+      container: "top-center",
+      animationIn: ["animated", "fadeInRight"],
+      animationOut: ["animated", "fadeOutRight"],
+      dismiss: {
+        duration: 5000,
+      },
+    });
+  });
+};
+
 export const attemptDuplicateItem = (object) => (dispatch) => {
   console.log(`attemptDuplicateItem Item with ${JSON.stringify(object)}`);
   return createItem(object).then((itemObject) => {

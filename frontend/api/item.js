@@ -1,5 +1,5 @@
 import request from 'superagent';
-import { handleSuccess, handleError } from '_utils/api';
+import { handleError, handleSuccess } from '_utils/api';
 
 // from userID, get all the items the user created
 export const getItemByUserId = (userId) => request.get('/api/item/')
@@ -29,6 +29,16 @@ export const algoliaSearch = (query) => request.get(`/api/item/algolia/${query}`
 
 export const updateItem = (itemId, object) => request.put(`/api/item/${itemId}`)
   .send(object)
+  .then(handleSuccess)
+  .catch(handleError);
+
+export const archiveItem = (itemId) => request.put(`/api/item/${itemId}`)
+  .send({status: 'archived'})
+  .then(handleSuccess)
+  .catch(handleError);
+
+export const publishItem = (itemId) => request.put(`/api/item/${itemId}`)
+  .send({status: 'published'})
   .then(handleSuccess)
   .catch(handleError);
 
