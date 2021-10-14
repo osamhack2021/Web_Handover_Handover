@@ -26,7 +26,7 @@ const MenuButton = ({ icon, size = 32, ...props }) => (
     size="small"
     sx={{
       ...props.sx,
-      minWidth: 0,
+      minWidth: '0px',
       width: size,
       height: size,
       height: "100%",
