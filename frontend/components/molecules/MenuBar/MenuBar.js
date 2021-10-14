@@ -1,14 +1,6 @@
-import React from "react";
-import Stack from "@mui/material/Stack";
-import Divider from "@mui/material/Divider";
-
-import Icon from "@mdi/react";
 import {
-  mdiUndo,
-  mdiRedo,
-  mdiFormatClear,
-  mdiFormatBold,
-  mdiFormatHeader1,
+  mdiCodeBraces,
+  mdiCodeBracesBox, mdiFormatBold, mdiFormatClear, mdiFormatHeader1,
   mdiFormatHeader2,
   mdiFormatHeader3,
   // mdiFormatHeader4,
@@ -16,11 +8,13 @@ import {
   // mdiFormatHeader6,
   mdiFormatListBulleted,
   mdiFormatListNumbered,
-  mdiFormatQuoteClose,
-  mdiCodeBraces,
-  mdiCodeBracesBox,
+  mdiFormatQuoteClose, mdiRedo, mdiUndo
 } from "@mdi/js";
+import Icon from "@mdi/react";
 import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import Stack from "@mui/material/Stack";
+import React from "react";
 import "_styles/editor.scss";
 
 const VerticalDivider = () => (
