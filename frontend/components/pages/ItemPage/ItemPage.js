@@ -7,6 +7,8 @@ import GridHeader from '_organisms/GridHeader';
 import GridLayout from '_organisms/GridLayout';
 import { getItemByItemId, getItemChild } from '_api/item';
 import PromiseItemArray from '_utils/promiseArray';
+import Comment from '_organisms/Comment';
+import user from '_frontend/store/reducers/user';
 
 export default function ItemPage({ location }) {
   const [loadingPath, setLoadingPath] = useState(true);
@@ -48,15 +50,17 @@ export default function ItemPage({ location }) {
   return !loadingPath && !loadingChild && (
   // <div className="home-page">
   // <Header />
-  <div className="outer-div">
-    <div className="grid-container">
-      <GridHeader title={item.title} pathArray={pathObject.pathArray} />
-      <div className="grid-layout-container">
-        <GridLayout cardArray={childObject.childArray} />
+  <div>
+    <div className="outer-div">
+      <div className="grid-container">
+        <GridHeader title={item.title} pathArray={pathObject.pathArray} />
+        <div className="grid-layout-container">
+          <GridLayout cardArray={childObject.childArray} />
+        </div>
       </div>
     </div>
+    {item.comments.map((elem) => <Comment key={item.comments.indexOf(elem)} commentObject={elem} />)}
   </div>
-  // </div>
   );
 }
 
