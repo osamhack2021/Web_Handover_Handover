@@ -3,10 +3,9 @@ import R from "ramda";
 import { store as RNC } from "react-notifications-component";
 import { useSelector } from "react-redux";
 import {
-  addUserItem, deleteUserItem, loadUserItem,
-  updatePermission
+  addUserItem, archiveUserItem, deleteUserItem, loadUserItem, publishUserItem, updatePermission
 } from "_actions/userItem";
-import { createItem, deleteItem, getItemByUserId, updateItem } from "_api/item";
+import { archiveItem, createItem, deleteItem, getItemByUserId, publishItem, updateItem } from "_api/item";
 import { dispatchError } from "_utils/api";
 
 // upon success dispatches the user data in camelToSnakeCase.
@@ -24,15 +23,10 @@ export const attemptLoadItems = (userId) => (dispatch) =>
 export const attemptUpdatePermission =
   (itemId, accessGroupObject) => (dispatch) => {
     const userItem = useSelector(R.pick(["userItem"]));
-    const targetItem = userItem.find((elem) => elem.Id === itemId);
 
     return updateItem(itemId, { accessGroup: accessGroupObject }).then(() => {
       // if the item being managed is also stored in userItem, needs to update store
-      if (targetItem) {
-        dispatch(
-          updatePermission(userItem.indexOf(targetItem), accessGroupObject)
-        );
-      }
+      dispatch(updatePermission(itemId, accessGroupObject));
     });
   };
 
