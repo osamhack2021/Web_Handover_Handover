@@ -10,6 +10,7 @@ function CreateCardArray(cardArray) {
     } = elem;
     return (
       <Card
+        key={Id}
         type={type}
         title={title}
         description={description}
@@ -25,6 +26,7 @@ export default function HorizontalContent({ cardArray }) {
   const recommendCard = useRef();
   // eslint-disable-next-line consistent-return
   useEffect(() => {
+    console.log(`loading with cardArray ${cardArray}`);
     const container = recommendCard.current;
     if (container) {
       const onWheel = (e) => {
@@ -38,7 +40,7 @@ export default function HorizontalContent({ cardArray }) {
       container.addEventListener('wheel', onWheel);
       return () => container.removeEventListener('wheel', onWheel);
     }
-  }, []);
+  }, [cardArray]);
   // type = 'card', title, description, children, isArchived = false
   return (
     <div className="recommend-card" ref={recommendCard}>

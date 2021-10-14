@@ -20,6 +20,7 @@ export default function ItemListPage() {
 
   useEffect(() => {
     // setting the array w.r.t. the path given
+    console.log(`loading bookmarks with :${user.bookmarks}`);
     let array;
     switch (path) {
       case 'bookmarks':

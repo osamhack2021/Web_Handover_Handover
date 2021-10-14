@@ -14,7 +14,6 @@ export default function RecommendPage({ location }) {
   const { user } = useSelector(R.pick(['user']));
 
   useEffect(() => {
-    console.log(`Recommend rendering with userId : ${user.Id}`);
     getRecommendItem(user.Id).then((data) => {
       setRecommendObject(snakeToCamelCase(data));
       setLoading(false);
