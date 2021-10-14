@@ -1,26 +1,26 @@
 import {
-    mdiAccountMultipleCheck,
-    mdiContentDuplicate,
-    mdiDelete,
-    mdiDotsVertical,
-    mdiEarth,
-    mdiFileEditOutline,
-    mdiPackageDown,
-    mdiShare,
-    mdiStar,
-    mdiStarOutline,
-    mdiUpload
+  mdiAccountMultipleCheck,
+  mdiContentDuplicate,
+  mdiDelete,
+  mdiDotsVertical,
+  mdiEarth,
+  mdiFileEditOutline,
+  mdiPackageDown,
+  mdiShare,
+  mdiStar,
+  mdiStarOutline,
+  mdiUpload
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import {
-    ButtonBase,
-    Divider,
-    IconButton,
-    ListItemIcon,
-    Menu,
-    MenuItem,
-    Skeleton,
-    Tooltip
+  ButtonBase,
+  Divider,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Skeleton,
+  Tooltip
 } from "@mui/material";
 import humanizeDuration from "humanize-duration";
 import R from "ramda";
@@ -28,7 +28,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getItemByItemId, getItemChild } from "_api/item";
 import LinkComponent from "_atoms/LinkComponent";
-import { attemptArchiveItem, attemptDeleteItem, attemptPublishItem } from "_thunks/item";
+import {
+  attemptArchiveItem,
+  attemptDeleteItem,
+  attemptPublishItem
+} from "_thunks/item";
 import { attemptAddBookmark, attemptRemoveBookmark } from "_thunks/user";
 
 const borderRadius = {
@@ -41,7 +45,7 @@ const borderRadius = {
 const LINE_CLAMP = 4;
 
 const content = (item, itemChildren) => {
-  if (item == null) return null;
+  if (item == null || !item.hasOwnProperty("content")) return null;
 
   if (item.type === "card") {
     // Card directly hold content, display summary of it
@@ -149,7 +153,11 @@ export default function Item({
 
   useEffect(() => {
     // retrieve item and its children from API if there were no item object passed
-    if (item == null) {
+    if (
+      item == null ||
+      !item.hasOwnProperty("accessGroups") || // item must have accessGroups property
+      !item.hasOwnProperty("content")         // item must have content property
+    ) {
       getItemByItemId(itemId)
         .then((item) => {
           setItem(item);
@@ -206,7 +214,9 @@ export default function Item({
   };
 
   const status =
-    item == null
+    item == null ||
+    !item.hasOwnProperty("status") ||
+    !item.hasOwnProperty("accessGroups")
       ? null
       : item.status === "archived"
       ? "archived"
@@ -215,9 +225,10 @@ export default function Item({
       : null;
 
   const isCurrentUserOwner = item ? item.owner._id === user.Id : false;
-  const isCurrentUserEditor = item
-    ? item.accessGroups.edit.includes(user.group)
-    : false;
+  const isCurrentUserEditor =
+    item != null && item.hasOwnProperty("accessGroups")
+      ? item.accessGroups.edit.includes(user.group)
+      : false;
 
   // Item object schema
   // {
