@@ -1,13 +1,37 @@
-import { mdiDotsVertical, mdiStar, mdiStarOutline } from "@mdi/js";
+import {
+  mdiAccountMultipleCheck,
+  mdiContentDuplicate,
+  mdiDelete,
+  mdiDotsVertical,
+  mdiEarth,
+  mdiFileEditOutline,
+  mdiPackageDown,
+  mdiShare,
+  mdiStar,
+  mdiStarOutline,
+  mdiUpload
+} from "@mdi/js";
 import Icon from "@mdi/react";
-import { ButtonBase, IconButton, Skeleton } from "@mui/material";
+import {
+  ButtonBase,
+  Divider,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Skeleton,
+  Tooltip
+} from "@mui/material";
 import humanizeDuration from "humanize-duration";
-import PropTypes from "prop-types";
 import R from "ramda";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getItemByItemId, getItemChild } from "_api/item";
 import LinkComponent from "_atoms/LinkComponent";
+import { attemptArchiveItem, attemptDeleteItem } from "_thunks/item";
+import { attemptRemoveBookmark } from "_thunks/user";
+import { attemptPublishItem } from "./../../../store/thunks/item";
+import { attemptAddBookmark } from "./../../../store/thunks/user";
 
 const borderRadius = {
   cabinet: "0px 0px 16px 16px",
@@ -15,25 +39,7 @@ const borderRadius = {
   card: "16px",
 };
 
-// find the initial permisison setting
-function DetermineInitPermission(accessGroups, groupObjectArray, readOrEdit) {
-  const access =
-    readOrEdit === "read"
-      ? accessGroups.read.map((elem) => elem.Id)
-      : accessGroups.edit.map((elem) => elem.Id);
-  let i = 0;
-  for (i = 0; i < groupObjectArray.length; i++) {
-    if (access.includes(groupObjectArray[i].Id)) {
-      break;
-    }
-  }
-  if (i === groupObjectArray.length) {
-    return groupObjectArray[i - 1].Id;
-  }
-  return groupObjectArray[i].Id;
-}
-
-// Maximum number o
+// Maximum number of line of the content
 const LINE_CLAMP = 4;
 
 const content = (item, itemChildren) => {
@@ -41,7 +47,18 @@ const content = (item, itemChildren) => {
 
   if (item.type === "card") {
     // Card directly hold content, display summary of it
-    return item.content;
+    return (
+      <div className="item-content-html">
+        {
+          item.content
+            .replace(/[ ]{2,}/g, "") // remove HTML indentation spaces
+            .replace(/<\/[h\d|p|br]>/g, "\n") // replace HTML closing tags to newline
+            .replace(/\n+/, "") // remove starting newline
+            .replace(/[\s]{2,}/g, "") // remove multiple whitespace characters
+            .replace(/<[^>]+>/g, "") // remove all HTML tags
+        }
+      </div>
+    );
   } else {
     if (itemChildren == null) return null;
     else {
@@ -70,60 +87,54 @@ const dateElapsed = (date) => {
       language: "ko",
       largest: 1,
       spacer: "",
+      round: true,
     }) + " 전"
   );
 };
 
-function convertToPlain(html) {
-  const tempDivElement = document.createElement("div");
-  tempDivElement.innerHTML = html;
-  return tempDivElement.textContent || tempDivElement.innerText || "";
-}
-// type takes "card", "document", "cabinet" values
-// refactoring due to change in item schema,
-// require sole prop, the item object itself
-// Reason : In calling Cards, the Parent already possesses the item array of card from api calls
+const statusIcon = {
+  archived: mdiPackageDown,
+  public: mdiEarth,
+};
+
+const statusTooltipText = {
+  archived: "보관된 항목",
+  public: "공개된 항목",
+};
 
 // TODO: refactor <Card Id="..." /> to <Card itemId="..." />
-export default function Card({ Id: itemId }) {
-  console.log(`rendering card with ${itemId}`);
+export default function Card({
+  Id: itemId,
+  item: itemObject = null,
+  itemChildren: itemChildrenObject = null,
+}) {
   const dispatch = useDispatch();
 
   // find current user from store
   const { user } = useSelector(R.pick(["user"]));
-  const { group } = useSelector(R.pick(["group"]));
-  const { userItem } = useSelector(R.pick(["userItem"]));
 
-  // states of item, createdby, and child array
-  const [item, setItem] = useState(null);
-  const [itemChildren, setItemChildren] = useState(null);
+  // will try to use object passed as props if exists
+  const [item, setItem] = useState(itemObject);
+  const [itemChildren, setItemChildren] = useState(itemChildrenObject);
+
   const [isBookmarked, setBookmarked] = useState(
     user.bookmarks.includes(itemId)
   );
+  // visibility of the component; used on delete and unauthorized items
+  const [visible, setVisible] = useState(true);
 
-  // const [itemObject, setItemObject] = useState({});
-  // const [createdBy, setCreatedBy] = useState("");
-  // const [childObjectArray, setchildObjectArray] = useState([]);
-  // const [bookmarkBoolean, setBookmarkBoolean] = useState(
-  //   user.bookmarks.includes(itemId)
-  // );
-
-  // // states used for permission
-  // const [permissionId, setPermissionId] = useState("");
-  // const [groupObjectArray, setGroupObjectArray] = useState({
-  //   groupObjectArray: [],
-  // });
-
-  // // set boolean states to handle asynchronous requests
-  // const [loadingItem, setLoadingItem] = useState(true);
-  // const [loadingChild, setLoadingChild] = useState(true);
-  // const [loadingGroup, setLoadingGroup] = useState(true);
-  // const [isAvailable, setIsAvailable] = useState(false);
-  // const [isDeleted, setIsDeleted] = useState(false);
-
-  // const groupIdArray = group.path.split(",").filter((elem) => elem !== "");
+  // states for menu component
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   useEffect(() => {
+    // retrieve item and its children from API if there were no item object passed
     if (item == null) {
       getItemByItemId(itemId)
         .then((item) => {
@@ -135,47 +146,64 @@ export default function Card({ Id: itemId }) {
           }
         })
         .catch((response) => {
-          setItem({ error: response.text });
+          setVisible(false);
+          // setItem({ error: response.text });
+          if (!response.text.startsWith("Access denied"))
+            console.error(response);
         });
+    } else {
+      if (item.type !== "card" && itemChildren == null) {
+        getItemChild(item.path).then((children) => {
+          setItemChildren(children);
+        });
+      }
     }
-
-    // getItemByItemId(itemId).then((item) => {
-    //   console.log(`rendering item of ${itemId}`);
-    //   const camelItem = snakeToCamelCase(item);
-    //   setItemObject(camelItem);
-    //   setCreatedBy(camelItem.owner.name);
-    //   setLoadingItem(false);
-    //   // setting availability of item
-    //   setIsAvailable(Match(camelItem.accessGroups.read, group.Id));
-    //   getItemChild(camelItem.path).then((childArray) => {
-    //     setchildObjectArray(childArray);
-    //     setLoadingChild(false);
-    //   });
-    //   Promise.all(groupIdArray.map((elem) => getGroupByGroupId(elem))).then(
-    //     (elemItem) => {
-    //       setGroupObjectArray((prevState) => ({
-    //         ...prevState,
-    //         groupObjectArray: snakeToCamelCase(elemItem),
-    //       }));
-    //       console.log(`calling setPermission Id : ${itemId}`);
-    //       console.log(camelItem.accessGroups);
-    //       console.log(snakeToCamelCase(elemItem));
-    //       setPermissionId(
-    //         DetermineInitPermission(
-    //           camelItem.accessGroups,
-    //           snakeToCamelCase(elemItem),
-    //           "read"
-    //         )
-    //       );
-    //       setLoadingGroup(false);
-    //     }
-    //   );
-    // });
   }, []);
 
-  if (item != null && item.hasOwnProperty("error")) {
-    if (item.error.startsWith("Access denied")) return null; // don't render items without permission
-  }
+  const deleteItem = () => {
+    dispatch(attemptDeleteItem(itemId));
+    setVisible(false);
+  };
+
+  const archiveItem = () => {
+    dispatch(attemptArchiveItem(itemId));
+    setItem({ ...item, status: "archived" });
+  };
+
+  const publishItem = () => {
+    dispatch(attemptPublishItem(itemId));
+    setItem({ ...item, status: "published" });
+  };
+
+  const toggleBookmark = () => {
+    let bookmarkArray = user.bookmarks;
+
+    if (isBookmarked) {
+      // previously was bookmarked, delete from bookmark array
+      bookmarkArray = bookmarkArray.filter((elem) => elem !== itemId);
+      dispatch(attemptRemoveBookmark({ bookmarks: bookmarkArray }));
+    } else {
+      // previously wasn't bookmarked, add to bookmark array
+      bookmarkArray = [...bookmarkArray, itemId];
+      dispatch(attemptAddBookmark({ bookmarks: bookmarkArray }));
+    }
+
+    setBookmarked(!isBookmarked);
+  };
+
+  const status =
+    item == null
+      ? null
+      : item.status === "archived"
+      ? "archived"
+      : item.accessGroups.read === "all"
+      ? "public"
+      : null;
+
+  const isCurrentUserOwner = item ? item.owner._id === user.Id : false;
+  const isCurrentUserEditor = item
+    ? item.accessGroups.edit.includes(user.group)
+    : false;
 
   // Item object schema
   // {
@@ -193,7 +221,7 @@ export default function Card({ Id: itemId }) {
   //     edit: [group._id]
   //   },
   //   history: [item._id]
-  //   status: String
+  //   status: "draft"|"archived"|"published"
   //   inspection: {
   //     result: String,
   //     by: user._id,
@@ -207,97 +235,8 @@ export default function Card({ Id: itemId }) {
   //   }]
   // }
 
-  console.log(item);
-
-  // const boolSum = loadingItem || loadingChild || loadingGroup;
-
-  // // setting appropriate values to constants
-  // const { title, content } = itemObject;
-  // const className = `item-${itemObject.type}`;
-  // const isArchived = user.bookmarks.includes(itemId);
-  // const dateFromNow = "2주 전 수정됨";
-  // const innerContent =
-  //   itemObject.type === "card" ? content : ArrayToCardItems(childObjectArray);
-
-  // const onDeleteCard = () => {
-  //   dispatch(
-  //     attemptDeleteItem(
-  //       itemId
-  //     )
-  //   );
-  //   setIsDeleted(true);
-  // };
-
-  // const onDuplicateCard = () => {
-  //   console.log("Duplicating card with onDuplicateCard");
-  //   console.log(itemObject.path);
-  //   const newString = itemObject.path
-  //     .split(",")
-  //     .filter((elem) => elem !== "")
-  //     .splice(-1)
-  //     .join(",");
-  //   let newPathString;
-  //   switch (itemObject.type) {
-  //     case "Cabinet":
-  //       newPathString = "";
-  //       break;
-  //     default:
-  //       newPathString = `,${newString},`;
-  //   }
-  //   const dupObject = {
-  //     type: itemObject.type,
-  //     title: itemObject.title,
-  //     path: newPathString,
-  //     content: itemObject.content,
-  //     tags: itemObject.tags,
-  //     status: itemObject.status,
-  //   };
-  //   dispatch(attemptDuplicateItem(dupObject));
-  // };
-  // // fires when change of p ermission from mui-select occurs
-  // const onChangePermission = (event) => {
-  //   console.log("Changing Permissions with onChangePermission");
-
-  //   // sets the permission state
-  //   setPermissionId(event.target.value);
-  //   let index = 0;
-  //   for (index = 0; index < groupIdArray.length; index++) {
-  //     if (groupIdArray[index] === event.target.value) {
-  //       break;
-  //     }
-  //   }
-  //   // list of denied / allowed groupIds along the path of group
-  //   const deniedList = groupIdArray.slice(0, index);
-  //   const accessList = groupObjectArray.slice(index);
-
-  //   // temporary object
-  //   let tempAccessReadGroups = itemObject.accessGroups.read;
-
-  //   // from given accessGroups, deletes the "denied" groups while adding the "allowed" groups
-  //   tempAccessReadGroups = tempAccessReadGroups.filter(
-  //     (elem) => !deniedList.includes(elem.Id)
-  //   );
-  //   accessList.map((groupObject) => {
-  //     if (
-  //       !tempAccessReadGroups.read
-  //         .map((elem) => elem.Id)
-  //         .includes(groupObject.Id)
-  //     ) {
-  //       tempAccessReadGroups.push(groupObject);
-  //     }
-  //     return groupObject;
-  //   });
-
-  //   const newReadPermission = {
-  //     read: tempAccessReadGroups,
-  //     edit: itemObject.accessGroups.edit,
-  //   };
-
-  //   // actual api request
-  //   dispatch(attemptUpdatePermission(itemObject.Id, newReadPermission));
-  // };
-
-  console.log(content(item, itemChildren));
+  // don't render if visible is false
+  if (visible == false) return null;
 
   return item == null ? (
     <div className="item" key={itemId}>
@@ -342,7 +281,7 @@ export default function Card({ Id: itemId }) {
         sx={{
           width: "100%",
           height: "100%",
-          backgroundColor: "white",
+          backgroundColor: item.status === "archived" ? "WhiteSmoke" : "white",
           border: "0.5px solid rgba(0, 0, 0, 0.25)",
           padding: "24px",
           display: "flex",
@@ -354,43 +293,117 @@ export default function Card({ Id: itemId }) {
         component={LinkComponent}
         to={`/item/${itemId}`}
       >
-        <div className="item-title">{item.title}</div>
+        <div className="item-header">
+          <div className="item-title">{item.title}</div>
+          {status != null ? (
+            <Tooltip title={statusTooltipText[status]} arrow>
+              <Icon size={1} path={statusIcon[status]} />
+            </Tooltip>
+          ) : (
+            <div></div>
+          )}
+        </div>
         <div className="item-content">{content(item, itemChildren)}</div>
       </ButtonBase>
       <div className="item-footer">
         <div className="item-description">
-          {item.owner.rank} {item.owner.name} · {dateElapsed(item.created)}
+          {item.owner.rank} {item.owner.name} · {dateElapsed(item.created)}
         </div>
-        <IconButton>
-          <Icon size={1} path={isBookmarked ? mdiStar : mdiStarOutline} />
-        </IconButton>
-        <IconButton>
+        <Tooltip title="북마크에 추가" arrow>
+          <IconButton onClick={toggleBookmark}>
+            <Icon size={1} path={isBookmarked ? mdiStar : mdiStarOutline} />
+          </IconButton>
+        </Tooltip>
+        <IconButton onClick={handleClick}>
           <Icon size={1} path={mdiDotsVertical} />
         </IconButton>
       </div>
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        onClick={handleClose}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: "visible",
+            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+            ml: "6px",
+            mt: 0.5,
+            "&:before": {
+              content: '""',
+              display: "block",
+              position: "absolute",
+              top: 0,
+              right: 18,
+              width: 10,
+              height: 10,
+              bgcolor: "background.paper",
+              transform: "translateY(-50%) rotate(45deg)",
+              zIndex: 0,
+            },
+          },
+        }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      >
+        {isCurrentUserOwner || isCurrentUserEditor ? ( // only show edit menu to owner and editor
+          <MenuItem component={LinkComponent} to={`/item/${itemId}/edit`}>
+            <ListItemIcon>
+              <Icon path={mdiFileEditOutline} size={1} />
+            </ListItemIcon>
+            수정
+          </MenuItem>
+        ) : (
+          <div></div>
+        )}
+        <MenuItem component={LinkComponent} to={`/item/${itemId}/duplicate`}>
+          <ListItemIcon>
+            <Icon path={mdiContentDuplicate} size={1} />
+          </ListItemIcon>
+          복제
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <Icon path={mdiShare} size={1} />
+          </ListItemIcon>
+          공유
+        </MenuItem>
+        {isCurrentUserOwner ? (
+          <div>
+            <MenuItem component={LinkComponent} to={`/item/${itemId}/settings`}>
+              <ListItemIcon>
+                <Icon path={mdiAccountMultipleCheck} size={1} />
+              </ListItemIcon>
+              권한 설정
+            </MenuItem>
+            <Divider light />
+            {item.status !== "archived" ? (
+              <MenuItem onClick={archiveItem}>
+                <ListItemIcon>
+                  <Icon path={mdiPackageDown} size={1} />
+                </ListItemIcon>
+                보관
+              </MenuItem>
+            ) : (
+              <MenuItem onClick={publishItem}>
+                <ListItemIcon>
+                  <Icon path={mdiUpload} size={1} />
+                </ListItemIcon>
+                게시
+              </MenuItem>
+            )}
+            <MenuItem onClick={deleteItem}>
+              <ListItemIcon>
+                <Icon path={mdiDelete} size={1} />
+              </ListItemIcon>
+              삭제
+            </MenuItem>
+          </div>
+        ) : (
+          <div></div>
+        )}
+      </Menu>
     </div>
   );
 }
-
-// <div className="item-title">{title}</div>
-// <div className="item-description">{createdBy}</div>
-// <div>
-//   {/* passing NoteHeader onClick element, so that upon clicking title can be redirected */}
-//   <div className="note-header">
-//     <div className="button-group">
-//       <CardDropdown
-//         groupObjectArray={groupObjectArray.groupObjectArray}
-//         onChangePermission={onChangePermission}
-//         onDeleteCard={onDeleteCard}
-//         permissionId={permissionId}
-//       />
-//     </div>
-//   </div>
-//   <div className="description">{createdBy}</div>
-//   <div className="container-child">{innerContent}</div>
-// </div>
-// <NoteFooter dateFromNow={dateFromNow} />
-
-Card.propTypes = {
-  Id: PropTypes.string.isRequired,
-};
