@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { snakeToCamelCase } from 'json-style-converter/es5';
-import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
-import R from 'ramda';
-
-import { getItemByItemId, getItemChild } from '_api/item';
-import { attemptUpdatePermission, attemptDeleteItem, attemptDuplicateItem } from '_thunks/item';
-import { attemptUpdateUser } from '_thunks/user';
-import { getGroupByGroupId } from '_api/group';
-import CardDropdown from '_molecules/CardDropdown';
-import NoteFooter from '../NoteFooter';
-import CardItem from '../CardItem';
+import { mdiDotsVertical, mdiStar, mdiStarOutline } from "@mdi/js";
+import Icon from "@mdi/react";
+import { ButtonBase, IconButton, Skeleton } from "@mui/material";
+import humanizeDuration from "humanize-duration";
+import PropTypes from "prop-types";
+import R from "ramda";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getItemByItemId, getItemChild } from "_api/item";
+import CardItem from "../CardItem";
+import { LinkComponent } from "./../../atoms/LinkComponent/LinkComponent";
 
 function ArrayToCardItems(array) {
   return array.map((elem) => <CardItem value={elem} key={elem.Id} />);
@@ -21,9 +18,18 @@ function Match(array, Id) {
   return array.filter((elem) => elem.Id === Id).length;
 }
 
+const borderRadius = {
+  cabinet: "0px 0px 16px 16px",
+  document: "0px 16px 16px 0px",
+  card: "16px",
+};
+
 // find the initial permisison setting
 function DetermineInitPermission(accessGroups, groupObjectArray, readOrEdit) {
-  const access = (readOrEdit === 'read') ? accessGroups.read.map((elem) => elem.Id) : accessGroups.edit.map((elem) => elem.Id);
+  const access =
+    readOrEdit === "read"
+      ? accessGroups.read.map((elem) => elem.Id)
+      : accessGroups.edit.map((elem) => elem.Id);
   let i = 0;
   for (i = 0; i < groupObjectArray.length; i++) {
     if (access.includes(groupObjectArray[i].Id)) {
@@ -36,196 +42,364 @@ function DetermineInitPermission(accessGroups, groupObjectArray, readOrEdit) {
   return groupObjectArray[i].Id;
 }
 
+// Maximum number o
+const LINE_CLAMP = 4;
+
+const content = (item, itemChildren) => {
+  if (item == null) return null;
+
+  if (item.type === "card") {
+    // Card directly hold content, display summary of it
+    return item.content;
+  } else {
+    if (itemChildren == null) return null;
+    else {
+      // Join titles of child items with new line
+      return itemChildren.map((child, i) => {
+        if (i < LINE_CLAMP) {
+          return <div key={i}>{child.title}</div>;
+        }
+        if (i == LINE_CLAMP) {
+          return (
+            <div className="item-content-ellipsis" key={i}>
+              외 {itemChildren.length - LINE_CLAMP}건
+            </div>
+          );
+        }
+      });
+    }
+  }
+};
+
+const dateElapsed = (date) => {
+  const created = new Date(date);
+  const now = new Date();
+  return (
+    humanizeDuration(now - created, {
+      language: "ko",
+      largest: 1,
+      spacer: "",
+    }) + " 전"
+  );
+};
+
 function convertToPlain(html) {
-  const tempDivElement = document.createElement('div');
+  const tempDivElement = document.createElement("div");
   tempDivElement.innerHTML = html;
-  return tempDivElement.textContent || tempDivElement.innerText || '';
+  return tempDivElement.textContent || tempDivElement.innerText || "";
 }
 // type takes "card", "document", "cabinet" values
 // refactoring due to change in item schema,
 // require sole prop, the item object itself
 // Reason : In calling Cards, the Parent already possesses the item array of card from api calls
 
-export default function Card({ Id }) {
-  console.log(`rendering card with ${Id}`);
-  const history = useHistory();
+// TODO: refactor <Card Id="..." /> to <Card itemId="..." />
+export default function Card({ Id: itemId }) {
+  console.log(`rendering card with ${itemId}`);
   const dispatch = useDispatch();
 
   // find current user from store
-  const { user } = useSelector(R.pick(['user']));
-  const { group } = useSelector(R.pick(['group']));
-  const { userItem } = useSelector(R.pick(['userItem']));
+  const { user } = useSelector(R.pick(["user"]));
+  const { group } = useSelector(R.pick(["group"]));
+  const { userItem } = useSelector(R.pick(["userItem"]));
 
   // states of item, createdby, and child array
-  const [itemObject, setItemObject] = useState({});
-  const [createdBy, setCreatedBy] = useState('');
-  const [childObjectArray, setchildObjectArray] = useState([]);
-  const [bookmarkBoolean, setBookmarkBoolean] = useState(user.bookmarks.includes(Id));
+  const [item, setItem] = useState(null);
+  const [itemChildren, setItemChildren] = useState(null);
+  const [isBookmarked, setBookmarked] = useState(
+    user.bookmarks.includes(itemId)
+  );
 
-  // states used for permission
-  const [permissionId, setPermissionId] = useState('');
-  const [groupObjectArray, setGroupObjectArray] = useState({ groupObjectArray: [] });
+  // const [itemObject, setItemObject] = useState({});
+  // const [createdBy, setCreatedBy] = useState("");
+  // const [childObjectArray, setchildObjectArray] = useState([]);
+  // const [bookmarkBoolean, setBookmarkBoolean] = useState(
+  //   user.bookmarks.includes(itemId)
+  // );
 
-  // set boolean states to handle asynchronous requests
-  const [loadingItem, setLoadingItem] = useState(true);
-  const [loadingChild, setLoadingChild] = useState(true);
-  const [loadingGroup, setLoadingGroup] = useState(true);
-  const [isAvailable, setIsAvailable] = useState(false);
-  const [isDeleted, setIsDeleted] = useState(false);
+  // // states used for permission
+  // const [permissionId, setPermissionId] = useState("");
+  // const [groupObjectArray, setGroupObjectArray] = useState({
+  //   groupObjectArray: [],
+  // });
 
-  const groupIdArray = group.path.split(',').filter((elem) => elem !== '');
+  // // set boolean states to handle asynchronous requests
+  // const [loadingItem, setLoadingItem] = useState(true);
+  // const [loadingChild, setLoadingChild] = useState(true);
+  // const [loadingGroup, setLoadingGroup] = useState(true);
+  // const [isAvailable, setIsAvailable] = useState(false);
+  // const [isDeleted, setIsDeleted] = useState(false);
+
+  // const groupIdArray = group.path.split(",").filter((elem) => elem !== "");
 
   useEffect(() => {
-    getItemByItemId(Id).then((item) => {
-      console.log(`rendering item of ${Id}`);
-      const camelItem = snakeToCamelCase(item);
-      setItemObject(camelItem);
-      setCreatedBy(camelItem.owner.name);
-      setLoadingItem(false);
-      // setting availability of item
-      setIsAvailable(Match(camelItem.accessGroups.read, group.Id));
-      getItemChild(camelItem.path).then((childArray) => {
-        setchildObjectArray(childArray);
-        setLoadingChild(false);
-      });
-      Promise.all(groupIdArray.map((elem) => getGroupByGroupId(elem))).then((elemItem) => {
-        setGroupObjectArray((prevState) => ({
-          ...prevState,
-          groupObjectArray: snakeToCamelCase(elemItem),
-        }
-        ));
-        console.log(`calling setPermission Id : ${Id}`);
-        console.log(camelItem.accessGroups);
-        console.log(snakeToCamelCase(elemItem));
-        setPermissionId(DetermineInitPermission(camelItem.accessGroups, snakeToCamelCase(elemItem), 'read'));
-        setLoadingGroup(false);
-      });
-    });
+    if (item == null) {
+      getItemByItemId(itemId)
+        .then((item) => {
+          setItem(item);
+          if (item.type !== "card") {
+            getItemChild(item.path).then((children) => {
+              setItemChildren(children);
+            });
+          }
+        })
+        .catch((response) => {
+          setItem({ error: response.text });
+        });
+    }
+
+    // getItemByItemId(itemId).then((item) => {
+    //   console.log(`rendering item of ${itemId}`);
+    //   const camelItem = snakeToCamelCase(item);
+    //   setItemObject(camelItem);
+    //   setCreatedBy(camelItem.owner.name);
+    //   setLoadingItem(false);
+    //   // setting availability of item
+    //   setIsAvailable(Match(camelItem.accessGroups.read, group.Id));
+    //   getItemChild(camelItem.path).then((childArray) => {
+    //     setchildObjectArray(childArray);
+    //     setLoadingChild(false);
+    //   });
+    //   Promise.all(groupIdArray.map((elem) => getGroupByGroupId(elem))).then(
+    //     (elemItem) => {
+    //       setGroupObjectArray((prevState) => ({
+    //         ...prevState,
+    //         groupObjectArray: snakeToCamelCase(elemItem),
+    //       }));
+    //       console.log(`calling setPermission Id : ${itemId}`);
+    //       console.log(camelItem.accessGroups);
+    //       console.log(snakeToCamelCase(elemItem));
+    //       setPermissionId(
+    //         DetermineInitPermission(
+    //           camelItem.accessGroups,
+    //           snakeToCamelCase(elemItem),
+    //           "read"
+    //         )
+    //       );
+    //       setLoadingGroup(false);
+    //     }
+    //   );
+    // });
   }, []);
 
-  const boolSum = loadingItem || loadingChild || loadingGroup;
+  if (item != null && item.hasOwnProperty("error")) {
+    if (item.error.startsWith("Access denied")) return null; // don't render items without permission
+  }
 
-  // setting appropriate values to constants
-  const { title, content } = itemObject;
-  const className = `note--${itemObject.type}`;
-  const dateFromNow = '2주 전 수정됨';
-  const routeChange = () => {
-    const path = `/item/${Id}`;
-    history.push(path);
-  };
-  const innerContent = (itemObject.type === 'card' ? convertToPlain(content) : ArrayToCardItems(childObjectArray));
+  // Item object schema
+  // {
+  //   _id: ObjectId,
+  //   title: String,
+  //   type: "cabinet"|"document"|"card",
+  //   owner: user._id,
+  //   path: String,
+  //   content: String,
+  //   tags: [String],
+  //   createdDate: Date,
+  //   contributor: [user._id],
+  //   accessGroups: {
+  //     read: [group._id],
+  //     edit: [group._id]
+  //   },
+  //   history: [item._id]
+  //   status: String
+  //   inspection: {
+  //     result: String,
+  //     by: user._id,
+  //     date: Date
+  //   }
+  //   comments: [{
+  //     content: String,
+  //     by: user._id,
+  //     date: Date,
+  //     isEdited: Boolean
+  //   }]
+  // }
 
-  const onBookmarkCard = () => {
-    console.log('bookmarking Card');
-    let bookmarkArray = user.bookmarks;
-    if (bookmarkBoolean) {
-      // deleting from bookmark array
-      bookmarkArray = bookmarkArray.filter((elem) => elem !== Id);
-    } else {
-      // adding to bookmark array
-      bookmarkArray = [...bookmarkArray, Id];
-    }
-    dispatch(attemptUpdateUser({ bookmarks: bookmarkArray }));
-    setBookmarkBoolean(!bookmarkBoolean);
-  };
+  console.log(item);
 
-  const onDeleteCard = () => {
-    dispatch(attemptDeleteItem(Id, userItem.find((elem) => elem.Id === Id)));
-    setIsDeleted(true);
-  };
+  // const boolSum = loadingItem || loadingChild || loadingGroup;
 
-  const onDuplicateCard = () => {
-    console.log('Duplicating card with onDuplicateCard');
-    console.log(itemObject.path);
-    const newString = itemObject.path.split(',').filter((elem) => elem !== '').splice(-1).join(',');
-    let newPathString;
-    switch (itemObject.type) {
-      case 'Cabinet':
-        newPathString = '';
-        break;
-      default:
-        newPathString = `,${newString},`;
-    }
-    const dupObject = {
-      type: itemObject.type,
-      title: itemObject.title,
-      path: newPathString,
-      content: itemObject.content,
-      tags: itemObject.tags,
-      status: itemObject.status,
-    };
-    dispatch(attemptDuplicateItem(dupObject));
-  };
-  // fires when change of p ermission from mui-select occurs
-  const onChangePermission = (event) => {
-    console.log('Changing Permissions with onChangePermission');
+  // // setting appropriate values to constants
+  // const { title, content } = itemObject;
+  // const className = `item-${itemObject.type}`;
+  // const isArchived = user.bookmarks.includes(itemId);
+  // const dateFromNow = "2주 전 수정됨";
+  // const innerContent =
+  //   itemObject.type === "card" ? content : ArrayToCardItems(childObjectArray);
 
-    // sets the permission state
-    setPermissionId(event.target.value);
-    let index = 0;
-    for (index = 0; index < groupIdArray.length; index++) {
-      if (groupIdArray[index] === event.target.value) {
-        break;
-      }
-    }
-    // list of denied / allowed groupIds along the path of group
-    const deniedList = groupIdArray.slice(0, index);
-    const accessList = groupObjectArray.slice(index);
+  // const onDeleteCard = () => {
+  //   dispatch(
+  //     attemptDeleteItem(
+  //       itemId,
+  //       userItem.find((elem) => elem.Id === itemId)
+  //     )
+  //   );
+  //   setIsDeleted(true);
+  // };
 
-    // temporary object
-    let tempAccessReadGroups = itemObject.accessGroups.read;
+  // const onDuplicateCard = () => {
+  //   console.log("Duplicating card with onDuplicateCard");
+  //   console.log(itemObject.path);
+  //   const newString = itemObject.path
+  //     .split(",")
+  //     .filter((elem) => elem !== "")
+  //     .splice(-1)
+  //     .join(",");
+  //   let newPathString;
+  //   switch (itemObject.type) {
+  //     case "Cabinet":
+  //       newPathString = "";
+  //       break;
+  //     default:
+  //       newPathString = `,${newString},`;
+  //   }
+  //   const dupObject = {
+  //     type: itemObject.type,
+  //     title: itemObject.title,
+  //     path: newPathString,
+  //     content: itemObject.content,
+  //     tags: itemObject.tags,
+  //     status: itemObject.status,
+  //   };
+  //   dispatch(attemptDuplicateItem(dupObject));
+  // };
+  // // fires when change of p ermission from mui-select occurs
+  // const onChangePermission = (event) => {
+  //   console.log("Changing Permissions with onChangePermission");
 
-    // from given accessGroups, deletes the "denied" groups while adding the "allowed" groups
-    tempAccessReadGroups = tempAccessReadGroups.filter((elem) => !deniedList.includes(elem.Id));
-    accessList.map((groupObject) => {
-      if (!tempAccessReadGroups.read.map((elem) => elem.Id).includes(groupObject.Id)) {
-        tempAccessReadGroups.push(groupObject);
-      }
-      return groupObject;
-    });
+  //   // sets the permission state
+  //   setPermissionId(event.target.value);
+  //   let index = 0;
+  //   for (index = 0; index < groupIdArray.length; index++) {
+  //     if (groupIdArray[index] === event.target.value) {
+  //       break;
+  //     }
+  //   }
+  //   // list of denied / allowed groupIds along the path of group
+  //   const deniedList = groupIdArray.slice(0, index);
+  //   const accessList = groupObjectArray.slice(index);
 
-    const newReadPermission = {
-      read: tempAccessReadGroups,
-      edit: itemObject.accessGroups.edit,
-    };
+  //   // temporary object
+  //   let tempAccessReadGroups = itemObject.accessGroups.read;
 
-    // actual api request
-    dispatch(attemptUpdatePermission(itemObject.Id, newReadPermission));
-  };
+  //   // from given accessGroups, deletes the "denied" groups while adding the "allowed" groups
+  //   tempAccessReadGroups = tempAccessReadGroups.filter(
+  //     (elem) => !deniedList.includes(elem.Id)
+  //   );
+  //   accessList.map((groupObject) => {
+  //     if (
+  //       !tempAccessReadGroups.read
+  //         .map((elem) => elem.Id)
+  //         .includes(groupObject.Id)
+  //     ) {
+  //       tempAccessReadGroups.push(groupObject);
+  //     }
+  //     return groupObject;
+  //   });
 
-  return !isDeleted && !boolSum && (
-    <div className={className}>
-      <div>
-        {/* passing NoteHeader onClick element, so that upon clicking title can be redirected */}
-        <div className="note-header">
-          <div className="main-title" onClick={routeChange}>
-            {title}
-          </div>
-          <div className="button-group">
-            <CardDropdown
-              groupObjectArray={groupObjectArray.groupObjectArray}
-              onChangePermission={onChangePermission}
-              onDeleteCard={onDeleteCard}
-              onDuplicateCard={onDuplicateCard}
-              permissionId={permissionId}
-            />
-          </div>
+  //   const newReadPermission = {
+  //     read: tempAccessReadGroups,
+  //     edit: itemObject.accessGroups.edit,
+  //   };
+
+  //   // actual api request
+  //   dispatch(attemptUpdatePermission(itemObject.Id, newReadPermission));
+  // };
+
+  console.log(content(item, itemChildren));
+
+  return item == null ? (
+    <div className="item" key={itemId}>
+      <ButtonBase
+        sx={{
+          width: "100%",
+          height: "100%",
+          backgroundColor: "white",
+          border: "0.5px solid rgba(0, 0, 0, 0.25)",
+          padding: "24px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "stretch",
+          justifyContent: "space-between",
+          borderRadius: borderRadius.card,
+        }}
+      >
+        <div className="item-title">
+          <Skeleton width="100%" height="32px" />
         </div>
-        <div className="description">
-          {createdBy}
+        <div className="item-content">
+          <Skeleton width="100%" />
+          <Skeleton width="100%" />
+          <Skeleton width="75%" />
         </div>
-        <div className="container-child">
-          {innerContent}
+      </ButtonBase>
+      <div className="item-footer">
+        <div className="item-description">
+          <Skeleton width="100%" />
         </div>
+        <IconButton>
+          <Icon size={1} path={isBookmarked ? mdiStar : mdiStarOutline} />
+        </IconButton>
+        <IconButton>
+          <Icon size={1} path={mdiDotsVertical} />
+        </IconButton>
       </div>
-      <NoteFooter
-        dateFromNow={dateFromNow}
-        bookmarkBoolean={bookmarkBoolean}
-        onBookmarkCard={onBookmarkCard}
-      />
+    </div>
+  ) : (
+    <div className="item" key={itemId}>
+      <ButtonBase
+        sx={{
+          width: "100%",
+          height: "100%",
+          backgroundColor: "white",
+          border: "0.5px solid rgba(0, 0, 0, 0.25)",
+          padding: "24px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "stretch",
+          justifyContent: "space-between",
+          borderRadius: borderRadius[item.type],
+        }}
+        component={LinkComponent}
+        to={`/item/${itemId}`}
+      >
+        <div className="item-title">{item.title}</div>
+        <div className="item-content">{content(item, itemChildren)}</div>
+      </ButtonBase>
+      <div className="item-footer">
+        <div className="item-description">
+          {item.owner.rank} {item.owner.name} · {dateElapsed(item.created)}
+        </div>
+        <IconButton>
+          <Icon size={1} path={isBookmarked ? mdiStar : mdiStarOutline} />
+        </IconButton>
+        <IconButton>
+          <Icon size={1} path={mdiDotsVertical} />
+        </IconButton>
+      </div>
     </div>
   );
 }
+
+// <div className="item-title">{title}</div>
+// <div className="item-description">{createdBy}</div>
+// <div>
+//   {/* passing NoteHeader onClick element, so that upon clicking title can be redirected */}
+//   <div className="note-header">
+//     <div className="button-group">
+//       <CardDropdown
+//         groupObjectArray={groupObjectArray.groupObjectArray}
+//         onChangePermission={onChangePermission}
+//         onDeleteCard={onDeleteCard}
+//         permissionId={permissionId}
+//       />
+//     </div>
+//   </div>
+//   <div className="description">{createdBy}</div>
+//   <div className="container-child">{innerContent}</div>
+// </div>
+// <NoteFooter dateFromNow={dateFromNow} />
 
 Card.propTypes = {
   Id: PropTypes.string.isRequired,
