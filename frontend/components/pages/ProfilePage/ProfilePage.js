@@ -77,9 +77,13 @@ export default function ProfilePage() {
   // Get group information after user information is fetched
   useEffect(() => {
     if (user != null) {
-      getGroupByGroupId(user.group).then((data) => {
-        setGroup(data);
-      });
+      if (user.group != null) {
+        getGroupByGroupId(user.group).then((data) => {
+          setGroup(data);
+        });
+      } else {
+        setGroup("none")
+      }
     }
   }, [user]);
 
