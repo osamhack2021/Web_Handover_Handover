@@ -1,12 +1,12 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+import Item from '_molecules/Item';
 
-import Card from '_molecules/Card';
 
 function CreateCardArray(cardArray) {
   return cardArray.map((elem) => {
     return (
-      <Card item={elem}/>
+      <Item item={elem}/>
     );
   });
 }

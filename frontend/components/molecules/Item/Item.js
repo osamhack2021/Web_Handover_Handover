@@ -1,26 +1,26 @@
 import {
-  mdiAccountMultipleCheck,
-  mdiContentDuplicate,
-  mdiDelete,
-  mdiDotsVertical,
-  mdiEarth,
-  mdiFileEditOutline,
-  mdiPackageDown,
-  mdiShare,
-  mdiStar,
-  mdiStarOutline,
-  mdiUpload
+    mdiAccountMultipleCheck,
+    mdiContentDuplicate,
+    mdiDelete,
+    mdiDotsVertical,
+    mdiEarth,
+    mdiFileEditOutline,
+    mdiPackageDown,
+    mdiShare,
+    mdiStar,
+    mdiStarOutline,
+    mdiUpload
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import {
-  ButtonBase,
-  Divider,
-  IconButton,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  Skeleton,
-  Tooltip
+    ButtonBase,
+    Divider,
+    IconButton,
+    ListItemIcon,
+    Menu,
+    MenuItem,
+    Skeleton,
+    Tooltip
 } from "@mui/material";
 import humanizeDuration from "humanize-duration";
 import R from "ramda";
@@ -28,10 +28,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getItemByItemId, getItemChild } from "_api/item";
 import LinkComponent from "_atoms/LinkComponent";
-import { attemptArchiveItem, attemptDeleteItem } from "_thunks/item";
-import { attemptRemoveBookmark } from "_thunks/user";
-import { attemptPublishItem } from "./../../../store/thunks/item";
-import { attemptAddBookmark } from "./../../../store/thunks/user";
+import { attemptArchiveItem, attemptDeleteItem, attemptPublishItem } from "_thunks/item";
+import { attemptAddBookmark, attemptRemoveBookmark } from "_thunks/user";
 
 const borderRadius = {
   cabinet: "0px 0px 16px 16px",
@@ -102,7 +100,7 @@ const statusTooltipText = {
   public: "공개된 항목",
 };
 
-export default function Card({
+export default function Item({
   id = null,
   item: itemObject = null,
   itemChildren: itemChildrenObject = null,

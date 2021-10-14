@@ -1,12 +1,12 @@
 /* eslint-disable react/jsx-filename-extension */
-import React, { useEffect, useRef, useState } from 'react';
-import Card from '_molecules/Card';
 import PropTypes from 'prop-types';
+import React, { useEffect, useRef } from 'react';
+import Item from '_molecules/Item';
 
 function CreateCardArray(cardArray) {
   return cardArray.map((elem) => {
     return (
-      <Card item={elem} />
+      <Item item={elem} />
     );
   });
 }

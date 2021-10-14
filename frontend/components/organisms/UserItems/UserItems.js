@@ -1,6 +1,6 @@
 import { Box, Container, LinearProgress, Tab, Tabs } from "@mui/material";
 import React from "react";
-import Card from "_molecules/Card";
+import Item from "_molecules/Item";
 import TabPanel from "_molecules/TabPanel";
 
 const CardGrid = ({ cards }) => {
@@ -23,7 +23,7 @@ const CardGrid = ({ cards }) => {
       }}
     >
       {cards.map((e) => (
-        <Card id={e._id} />
+        <Item id={e._id} />
       ))}
     </Container>
   );
@@ -32,7 +32,7 @@ const CardGrid = ({ cards }) => {
 function CreateCardArray(cardArray) {
   return cardArray.map((elem) => {
     const { _id } = elem;
-    return <Card id={_id} />;
+    return <Item id={_id} />;
   });
 }
 
