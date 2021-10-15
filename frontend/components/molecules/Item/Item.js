@@ -9,9 +9,9 @@ import {
   mdiShare,
   mdiStar,
   mdiStarOutline,
-  mdiUpload
-} from "@mdi/js";
-import Icon from "@mdi/react";
+  mdiUpload,
+} from '@mdi/js';
+import Icon from '@mdi/react';
 import {
   ButtonBase,
   Divider,
@@ -20,78 +20,79 @@ import {
   Menu,
   MenuItem,
   Skeleton,
-  Tooltip
-} from "@mui/material";
-import humanizeDuration from "humanize-duration";
-import R from "ramda";
-import React, { useEffect, useState } from "react";
-import { store as RNC } from "react-notifications-component";
-import { useSelector } from "react-redux";
-import { getItemByItemId, getItemChild } from "_api/item";
-import LinkComponent from "_atoms/LinkComponent";
+  Tooltip,
+} from '@mui/material';
+import humanizeDuration from 'humanize-duration';
+import R from 'ramda';
+import React, { useEffect, useState } from 'react';
+import { store as RNC } from 'react-notifications-component';
+import { useDispatch, useSelector } from 'react-redux';
+import { getItemByItemId, getItemChild } from '_api/item';
+import LinkComponent from '_atoms/LinkComponent';
 import {
   attemptArchiveItem,
   attemptDeleteItem,
-  attemptPublishItem
-} from "_thunks/item";
-import { attemptAddBookmark, attemptRemoveBookmark } from "_thunks/user";
+  attemptPublishItem,
+} from '_thunks/item';
+import { attemptAddBookmark, attemptRemoveBookmark } from '_thunks/user';
 
 const borderRadius = {
-  cabinet: "0px 0px 16px 16px",
-  document: "0px 16px 16px 0px",
-  card: "16px",
+  cabinet: '0px 0px 16px 16px',
+  document: '0px 16px 16px 0px',
+  card: '16px',
 };
 
 // Maximum number of line of the content
 const LINE_CLAMP = 4;
 
 const content = (item, itemChildren) => {
-  if (item == null || !item.hasOwnProperty("content")) return null;
+  if (item == null || !item.hasOwnProperty('content')) return null;
 
-  if (item.type === "card") {
+  if (item.type === 'card') {
     // Card directly hold content, display summary of it
     return (
       <div className="item-content-html">
         {
           item.content
-            .replace(/[ ]{2,}/g, "") // remove HTML indentation spaces
-            .replace(/<\/[h\d|p|br]>/g, "\n") // replace HTML closing tags to newline
-            .replace(/\n+/, "") // remove starting newline
-            .replace(/[\s]{2,}/g, "") // remove multiple whitespace characters
-            .replace(/<[^>]+>/g, "") // remove all HTML tags
+            .replace(/[ ]{2,}/g, '') // remove HTML indentation spaces
+            .replace(/<\/[h\d|p|br]>/g, '\n') // replace HTML closing tags to newline
+            .replace(/\n+/, '') // remove starting newline
+            .replace(/[\s]{2,}/g, '') // remove multiple whitespace characters
+            .replace(/<[^>]+>/g, '') // remove all HTML tags
         }
       </div>
     );
-  } else {
-    if (itemChildren == null) return null;
-    else {
-      // Join titles of child items with new line
-      return itemChildren.map((child, i) => {
-        if (i < LINE_CLAMP) {
-          return <div key={i}>{child.title}</div>;
-        }
-        if (i == LINE_CLAMP) {
-          return (
-            <div className="item-content-ellipsis" key={i}>
-              외 {itemChildren.length - LINE_CLAMP}건
-            </div>
-          );
-        }
-      });
-    }
   }
+  if (itemChildren == null) return null;
+
+  // Join titles of child items with new line
+  return itemChildren.map((child, i) => {
+    if (i < LINE_CLAMP) {
+      return <div key={i}>{child.title}</div>;
+    }
+    if (i == LINE_CLAMP) {
+      return (
+        <div className="item-content-ellipsis" key={i}>
+          외
+          {' '}
+          {itemChildren.length - LINE_CLAMP}
+          건
+        </div>
+      );
+    }
+  });
 };
 
 const dateElapsed = (date) => {
   const created = new Date(date);
   const now = new Date();
   return (
-    humanizeDuration(now - created, {
-      language: "ko",
+    `${humanizeDuration(now - created, {
+      language: 'ko',
       largest: 1,
-      spacer: "",
+      spacer: '',
       round: true,
-    }) + " 전"
+    })} 전`
   );
 };
 
@@ -101,8 +102,8 @@ const statusIcon = {
 };
 
 const statusTooltipText = {
-  archived: "보관된 항목",
-  public: "공개된 항목",
+  archived: '보관된 항목',
+  public: '공개된 항목',
 };
 
 export default function Item({
@@ -111,31 +112,31 @@ export default function Item({
   itemChildren: itemChildrenObject = null,
 }) {
   // find current user from store
-  const { user } = useSelector(R.pick(["user"]));
+  const { user } = useSelector(R.pick(['user']));
+  const dispatch = useDispatch();
 
-  const itemId =
-    itemObject != null
-      ? itemObject.hasOwnProperty("Id")
-        ? itemObject.Id // id from local store
-        : itemObject.hasOwnProperty("_id")
+  const itemId = itemObject != null
+    ? itemObject.hasOwnProperty('Id')
+      ? itemObject.Id // id from local store
+      : itemObject.hasOwnProperty('_id')
         ? itemObject._id // id from API response
         : id
-      : id; // id from props
+    : id; // id from props
 
   // will try to use object passed as props if exists
   const [item, setItem] = useState(
     itemObject
       ? {
-          ...itemObject,
-          _id: itemId, // if itemObject is passed as props, append _id
-          id: itemId,
-        }
-      : null
+        ...itemObject,
+        _id: itemId, // if itemObject is passed as props, append _id
+        id: itemId,
+      }
+      : null,
   );
   const [itemChildren, setItemChildren] = useState(itemChildrenObject);
 
   const [isBookmarked, setBookmarked] = useState(
-    user.bookmarks.includes(itemId)
+    user.bookmarks.includes(itemId),
   );
   // visibility of the component; used on delete and unauthorized items
   const [visible, setVisible] = useState(true);
@@ -153,14 +154,14 @@ export default function Item({
   useEffect(() => {
     // retrieve item and its children from API if there were no item object passed
     if (
-      item == null ||
-      !item.hasOwnProperty("accessGroups") || // item must have accessGroups property
-      !item.hasOwnProperty("content")         // item must have content property
+      item == null
+      || !item.hasOwnProperty('accessGroups') // item must have accessGroups property
+      || !item.hasOwnProperty('content') // item must have content property
     ) {
       getItemByItemId(itemId)
         .then((item) => {
           setItem(item);
-          if (item.type !== "card") {
+          if (item.type !== 'card') {
             getItemChild(item.path).then((children) => {
               setItemChildren(children);
             });
@@ -169,33 +170,30 @@ export default function Item({
         .catch((response) => {
           setVisible(false);
           // setItem({ error: response.text });
-          if (!response.text.startsWith("Access denied"))
-            console.error(response);
+          if (!response.text.startsWith('Access denied')) { console.error(response); }
         });
-    } else {
-      if (item.type !== "card" && itemChildren == null) {
-        getItemChild(item.path).then((children) => {
-          setItemChildren(children);
-        });
-      }
+    } else if (item.type !== 'card' && itemChildren == null) {
+      getItemChild(item.path).then((children) => {
+        setItemChildren(children);
+      });
     }
   }, []);
 
   const shareItem = () => {
     navigator.clipboard.writeText(`${location.hostname}/item/${itemId}`);
-    
+
     RNC.addNotification({
-      title: "클립보드에 복사됨",
-      type: "success",
-      message: "항목 링크가 클립보드에 복사되었습니다.",
-      container: "top-center",
-      animationIn: ["animated", "fadeInRight"],
-      animationOut: ["animated", "fadeOutRight"],
+      title: '클립보드에 복사됨',
+      type: 'success',
+      message: '항목 링크가 클립보드에 복사되었습니다.',
+      container: 'top-center',
+      animationIn: ['animated', 'fadeInRight'],
+      animationOut: ['animated', 'fadeOutRight'],
       dismiss: {
         duration: 5000,
       },
     });
-  }
+  };
 
   const deleteItem = () => {
     dispatch(attemptDeleteItem(itemId));
@@ -204,12 +202,12 @@ export default function Item({
 
   const archiveItem = () => {
     dispatch(attemptArchiveItem(itemId));
-    setItem({ ...item, status: "archived" });
+    setItem({ ...item, status: 'archived' });
   };
 
   const publishItem = () => {
     dispatch(attemptPublishItem(itemId));
-    setItem({ ...item, status: "published" });
+    setItem({ ...item, status: 'published' });
   };
 
   const toggleBookmark = () => {
@@ -228,22 +226,20 @@ export default function Item({
     setBookmarked(!isBookmarked);
   };
 
-  const status =
-    item == null ||
-    !item.hasOwnProperty("status") ||
-    !item.hasOwnProperty("accessGroups")
-      ? null
-      : item.status === "archived"
-      ? "archived"
-      : item.accessGroups.read === "all"
-      ? "public"
-      : null;
+  const status = item == null
+    || !item.hasOwnProperty('status')
+    || !item.hasOwnProperty('accessGroups')
+    ? null
+    : item.status === 'archived'
+      ? 'archived'
+      : item.accessGroups.read === 'all'
+        ? 'public'
+        : null;
 
   const isCurrentUserOwner = item ? item.owner._id === user.Id : false;
-  const isCurrentUserEditor =
-    item != null && item.hasOwnProperty("accessGroups")
-      ? item.accessGroups.edit.includes(user.group)
-      : false;
+  const isCurrentUserEditor = item != null && item.hasOwnProperty('accessGroups')
+    ? item.accessGroups.edit.includes(user.group)
+    : false;
 
   // Item object schema
   // {
@@ -282,15 +278,15 @@ export default function Item({
     <div className="item" key={itemId}>
       <ButtonBase
         sx={{
-          width: "100%",
-          height: "100%",
-          backgroundColor: "white",
-          border: "0.5px solid rgba(0, 0, 0, 0.25)",
-          padding: "24px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "stretch",
-          justifyContent: "space-between",
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'white',
+          border: '0.5px solid rgba(0, 0, 0, 0.25)',
+          padding: '24px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'stretch',
+          justifyContent: 'space-between',
           borderRadius: borderRadius.card,
         }}
       >
@@ -319,15 +315,15 @@ export default function Item({
     <div className="item" key={itemId}>
       <ButtonBase
         sx={{
-          width: "100%",
-          height: "100%",
-          backgroundColor: item.status === "archived" ? "WhiteSmoke" : "white",
-          border: "0.5px solid rgba(0, 0, 0, 0.25)",
-          padding: "24px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "stretch",
-          justifyContent: "space-between",
+          width: '100%',
+          height: '100%',
+          backgroundColor: item.status === 'archived' ? 'WhiteSmoke' : 'white',
+          border: '0.5px solid rgba(0, 0, 0, 0.25)',
+          padding: '24px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'stretch',
+          justifyContent: 'space-between',
           borderRadius: borderRadius[item.type],
         }}
         component={LinkComponent}
@@ -340,14 +336,18 @@ export default function Item({
               <Icon size={1} path={statusIcon[status]} />
             </Tooltip>
           ) : (
-            <div></div>
+            <div />
           )}
         </div>
         <div className="item-content">{content(item, itemChildren)}</div>
       </ButtonBase>
       <div className="item-footer">
         <div className="item-description">
-          {item.owner.rank} {item.owner.name} · {dateElapsed(item.created)}
+          {item.owner.rank}
+          {' '}
+          {item.owner.name}
+ ·
+          {dateElapsed(item.created)}
         </div>
         <Tooltip title="북마크에 추가" arrow>
           <IconButton onClick={toggleBookmark}>
@@ -366,26 +366,26 @@ export default function Item({
         PaperProps={{
           elevation: 0,
           sx: {
-            overflow: "visible",
-            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-            ml: "6px",
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            ml: '6px',
             mt: 0.5,
-            "&:before": {
+            '&:before': {
               content: '""',
-              display: "block",
-              position: "absolute",
+              display: 'block',
+              position: 'absolute',
               top: 0,
               right: 16,
               width: 10,
               height: 10,
-              bgcolor: "background.paper",
-              transform: "translateY(-50%) rotate(45deg)",
+              bgcolor: 'background.paper',
+              transform: 'translateY(-50%) rotate(45deg)',
               zIndex: 0,
             },
           },
         }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         {isCurrentUserOwner || isCurrentUserEditor ? ( // only show edit menu to owner and editor
           <MenuItem component={LinkComponent} to={`/item/${itemId}/edit`}>
@@ -395,7 +395,7 @@ export default function Item({
             수정
           </MenuItem>
         ) : (
-          <div></div>
+          <div />
         )}
         <MenuItem component={LinkComponent} to={`/item/${itemId}/duplicate`}>
           <ListItemIcon>
@@ -418,7 +418,7 @@ export default function Item({
               권한 설정
             </MenuItem>
             <Divider light />
-            {item.status !== "archived" ? (
+            {item.status !== 'archived' ? (
               <MenuItem onClick={archiveItem}>
                 <ListItemIcon>
                   <Icon path={mdiPackageDown} size={1} />
@@ -441,7 +441,7 @@ export default function Item({
             </MenuItem>
           </div>
         ) : (
-          <div></div>
+          <div />
         )}
       </Menu>
     </div>

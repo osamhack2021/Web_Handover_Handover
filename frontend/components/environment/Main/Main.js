@@ -11,6 +11,7 @@ import WelcomePage from '_pages/WelcomePage';
 import LoginPage from '_pages/LoginPage';
 import RegisterPage from '_pages/RegisterPage';
 import RoutingPage from '_pages/RoutingPage';
+import AboutPage from '_pages/AboutPage';
 
 // import Navigation from '_organisms/Navigation';
 // import Footer from '_organisms/Footer';
@@ -43,7 +44,7 @@ export default function Main({ location }) {
         <div className="main">
           <Switch>
             <Route exact path="/" component={WelcomePage} />
-            <Route path="/about" component={WelcomePage} />
+            <Route path="/about" component={AboutPage} />
             <Route path="/help" component={WelcomePage} />
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
