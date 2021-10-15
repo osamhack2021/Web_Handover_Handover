@@ -3,12 +3,14 @@
 
 프로젝트명 또는 프로젝트 로고 이미지 **(택1)**
 
-## 프로잭트 소개
-- 설명 기입
+## 프로젝트 소개
+**Handover**는 더 편리하고 똑똑한 인수인계를 위한 플랫폼입니다. 
 
 
 ## 기능 설명
- - 설명 기입
+ - 3단계 문서(서랍 🗄️, 문서 📰, 카드 📇) 구성으로 쉽게 관리하는 인수인계 문서
+ - 그룹 생성, 북마크, 댓글 기능들로 함께 공유하는 인수인계 문서
+ - 관리자 기능으로 보안위반으로부터 안전한 인수인계 문서
 
 ## 컴퓨터 구성 / 필수 조건 안내 (Prerequisites)
 * ECMAScript 6 지원 브라우저 사용
@@ -16,14 +18,15 @@
 
 ## 기술 스택 (Technique Used) 
 ### Server(back-end)
- - nodejs 14.17.6
- - expressjs
- - MariaDB, MongoDB
+ - [`nodejs 14.17.6`](https://nodejs.org/en/)
+ - [`expressjs`](https://expressjs.com/)
+ - [`MongoDB`](https://www.mongodb.com/)
+ - [`Docker`](https://www.docker.com/)
+ - [`Algolia Search`](https://www.algolia.com/)
  
 ### Front-end
- - react.js
- - UI framework
- - 기타 사용한 라이브러리
+ - [`react.js`](https://reactjs.org/)
+ - [`MaterialUI`](https://mui.com/)
 
 ## 설치 안내 (Installation Process)
 ```bash
@@ -33,13 +36,7 @@ $ yarn start
 ```
 
 ## 프로젝트 사용법 (Getting Started)
-
-잘 모를 경우
-구글 검색 - 마크다운 문법
-[https://post.naver.com/viewer/postView.nhn?volumeNo=24627214&memberNo=42458017](https://post.naver.com/viewer/postView.nhn?volumeNo=24627214&memberNo=42458017)
-
- 편한 마크다운 에디터를 찾아서 사용
- 샘플 에디터 [https://stackedit.io/app#](https://stackedit.io/app#)
+- yet to do...
  
 ## 팀 정보 (Team Information)
 
