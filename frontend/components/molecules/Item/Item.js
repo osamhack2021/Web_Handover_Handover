@@ -375,7 +375,7 @@ export default function Item({
               display: "block",
               position: "absolute",
               top: 0,
-              right: 18,
+              right: 16,
               width: 10,
               height: 10,
               bgcolor: "background.paper",
