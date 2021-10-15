@@ -25,7 +25,7 @@ import {
 import humanizeDuration from "humanize-duration";
 import R from "ramda";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { store as RNC } from "react-notifications-component";
 import { getItemByItemId, getItemChild } from "_api/item";
 import LinkComponent from "_atoms/LinkComponent";
 import {
@@ -181,6 +181,22 @@ export default function Item({
       }
     }
   }, []);
+
+  const shareItem = () => {
+    navigator.clipboard.writeText(`${location.hostname}/item/${itemId}`);
+    
+    RNC.addNotification({
+      title: "클립보드에 복사됨",
+      type: "success",
+      message: "항목 링크가 클립보드에 복사되었습니다.",
+      container: "top-center",
+      animationIn: ["animated", "fadeInRight"],
+      animationOut: ["animated", "fadeOutRight"],
+      dismiss: {
+        duration: 5000,
+      },
+    });
+  }
 
   const deleteItem = () => {
     dispatch(attemptDeleteItem(itemId));
@@ -388,7 +404,7 @@ export default function Item({
           </ListItemIcon>
           복제
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={shareItem}>
           <ListItemIcon>
             <Icon path={mdiShare} size={1} />
           </ListItemIcon>
