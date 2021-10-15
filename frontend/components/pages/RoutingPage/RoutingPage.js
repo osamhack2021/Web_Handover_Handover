@@ -39,7 +39,7 @@ export default function RoutingPage() {
         .catch(R.identity)
         .then(() => setLoadingItem(false));
     }
-  }, []);
+  }, [user]);
 
   return (
     !loadingGroup
