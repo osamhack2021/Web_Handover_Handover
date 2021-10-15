@@ -26,6 +26,7 @@ import humanizeDuration from "humanize-duration";
 import R from "ramda";
 import React, { useEffect, useState } from "react";
 import { store as RNC } from "react-notifications-component";
+import { useSelector } from "react-redux";
 import { getItemByItemId, getItemChild } from "_api/item";
 import LinkComponent from "_atoms/LinkComponent";
 import {
@@ -109,8 +110,6 @@ export default function Item({
   item: itemObject = null,
   itemChildren: itemChildrenObject = null,
 }) {
-  const dispatch = useDispatch();
-
   // find current user from store
   const { user } = useSelector(R.pick(["user"]));
 
