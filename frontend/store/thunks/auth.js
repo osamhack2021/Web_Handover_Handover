@@ -2,9 +2,6 @@ import {
   push
 } from 'connected-react-router';
 import {
-  snakeToCamelCase
-} from 'json-style-converter/es5';
-import {
   store as RNC
 } from 'react-notifications-component';
 import {
@@ -23,7 +20,7 @@ import {
 
 export const attemptLogin = (userId) => (dispatch) => postLogin(userId)
   .then((data) => {
-    dispatch(login(snakeToCamelCase(data.user)));
+    dispatch(login(data.user));
 
     // Save user information to localStorage to note the user is logged in
     localStorage.setItem('user', JSON.stringify(data.user));

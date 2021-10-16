@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import R from 'ramda';
-
-import HorizontalHeader from '_organisms/HorizontalHeader';
-import HorizontalContent from '_organisms/HorizontalContent';
-import { snakeToCamelCase } from 'json-style-converter/es5';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { getRecommendItem } from '_api/item';
+import HorizontalContent from '_organisms/HorizontalContent';
+import HorizontalHeader from '_organisms/HorizontalHeader';
+
 
 export default function RecommendPage({ location }) {
   const [loading, setLoading] = useState(true);
@@ -15,7 +14,7 @@ export default function RecommendPage({ location }) {
 
   useEffect(() => {
     getRecommendItem(user.Id).then((data) => {
-      setRecommendObject(snakeToCamelCase(data));
+      setRecommendObject(data);
       setLoading(false);
     });
   }, [location]);

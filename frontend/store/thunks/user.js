@@ -1,5 +1,4 @@
 import { push } from "connected-react-router";
-import { snakeToCamelCase } from "json-style-converter/es5";
 import { store as RNC } from "react-notifications-component";
 import { updateUser } from "_actions/user";
 import { getUser, putUser, putUserPassword } from "_api/user";
@@ -11,7 +10,7 @@ export const attemptGetUser = () => (dispatch) => {
 
     return getUser(currentUserId)
       .then((data) => {
-        dispatch(updateUser(snakeToCamelCase(data)));
+        dispatch(updateUser(data));
         return data;
       })
       .catch(() => {
@@ -31,7 +30,7 @@ export const attemptUpdateUser = (updatedUser) => (dispatch) => {
 
   return putUser(currentUserId, updatedUser)
     .then((data) => {
-      dispatch(updateUser(snakeToCamelCase(data)));
+      dispatch(updateUser(data));
 
       RNC.addNotification({
         title: "프로필 수정",
@@ -55,7 +54,7 @@ export const attemptAddBookmark = (updatedUser) => (dispatch) => {
 
   return putUser(currentUserId, updatedUser)
     .then((data) => {
-      dispatch(updateUser(snakeToCamelCase(data)));
+      dispatch(updateUser(data));
 
       RNC.addNotification({
         title: "북마크 추가",
@@ -79,7 +78,7 @@ export const attemptRemoveBookmark = (updatedUser) => (dispatch) => {
 
   return putUser(currentUserId, updatedUser)
     .then((data) => {
-      dispatch(updateUser(snakeToCamelCase(data)));
+      dispatch(updateUser(data));
 
       RNC.addNotification({
         title: "북마크 제거",

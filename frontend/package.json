@@ -71,7 +71,6 @@
     "history": "^4.10.1",
     "immutability-helper": "^3.1.1",
     "immutable": "^3.8.2",
-    "json-style-converter": "^1.0.3",
     "humanize-duration": "^3.27.0",
     "prop-types": "^15.7.2",
     "query-string": "^7.0.1",
