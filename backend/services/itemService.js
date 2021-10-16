@@ -4,7 +4,7 @@ const { RuntimeError } = require('./errors/RuntimeError.js');
 const LIMIT = 20;
 
 module.exports = {
-    search: async (query = {}) => {
+    search: async (query = {}, limit = true) => {
         try {
             const projection = {
                 title: true, path: true, type: true,
@@ -35,7 +35,7 @@ module.exports = {
                 $nin: ['deleted', 'modified']
             };
 
-            let query_ = Item.find(query, projection);
+            let query_ = limit ? Item.find(query, projection) : Item.find(query);
 
             query_.sort('created');
 
@@ -44,7 +44,7 @@ module.exports = {
                 select: ['rank', 'name']
             });
 
-            query_.skip(query_.page * LIMIT).limit(LIMIT);
+            if (limit) query_.skip(query_.page * LIMIT).limit(LIMIT);
 
             return await query_.exec();
 

@@ -19,7 +19,7 @@ module.exports = {
                     throw new BusinessError(`Query invalid: ${key}로는 검색할 수 없습니다!`);
             }            
 
-            const result = await itemService.search(req.query);
+            const result = await itemService.search(req.query, false);
 
             res.status(200).send(result);
 
