@@ -229,8 +229,8 @@ $ yarn start
             </a>
         </td>
         <td width="175" align="center">
-            <a href="mailto:00cwooh@snu.ac.kr">
-                <img src="https://img.shields.io/badge/00cwooh@snu.ac.kr-green?logo=gmail&style=social">
+            <a href="mailto:cwooh8@gmail.com">
+                <img src="https://img.shields.io/badge/cwooh8@gmail.com-green?logo=gmail&style=social">
             </a>
         </td>
     </tr>
