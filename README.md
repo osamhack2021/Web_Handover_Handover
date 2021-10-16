@@ -6,8 +6,19 @@
 ## 프로젝트 소개
 **Handover**는 더 편리하고 똑똑한 인수인계를 위한 플랫폼입니다. 
 
+## 목차
+<ol>
+ <li><a href="#features">기능 설명</a></li>
+ <li><a href="#prerequisites">컴퓨터 구성 / 필수 조건 안내</a></li>
+ <li><a href="#stacks">기술 스택</a></li>
+ <li><a href="#install">설치 안내</a></li>
+ <li><a href="#gettingstarted">프로젝트 사용법</a></li>
+ <li><a href="#teaminfo">팀 정보</a></li>
+ <li><a href="#license">저작권 및 사용권 정보</a></li>
+</ol>
 
-## 기능 설명 ✨
+<h2 id="features"> 기능 설명 (Key Features) ✨</h2>
+
 Handover만의 **3가지 핵심 기능**과 함께 더 편리하고 똑똑한 인수인계를 진행해보세요!
  - **`3단계 문서 구성`**(서랍 🗄️, 문서 📰, 카드 📇)으로 **쉽게 읽고, 작성하는** 인수인계 문서
  - **`그룹 생성`**, **`북마크`**, **`댓글`** 기능들로 **함께 공유하는** 인수인계 문서
@@ -47,11 +58,13 @@ Handover 내의 모든 문서는 **서랍 🗄️, 문서 📰, 카드 📇** �
 
 - 그룹 별로 **보안 관리자**를 등록해 그룹 내 문서에서 보안 사항이 위반되고 있는지 확인하고, 관리할 수 있습니다.
 
-## 컴퓨터 구성 / 필수 조건 안내 (Prerequisites)
+<h2 id="prerequisites"> 컴퓨터 구성 / 필수 조건 안내 (Prerequisites)</h2>
+
 * ECMAScript 6 지원 브라우저 사용
 * 권장: Google Chrome 버젼 77 이상
 
-## 기술 스택 (Technique Used) 
+<h2 id="stacks"> 기술 스택 (Key Tech Stacks)</h2>
+
 ### Server(back-end)
  - [`nodejs 14.17.6`](https://nodejs.org/en/)
  - [`expressjs`](https://expressjs.com/)
@@ -63,17 +76,19 @@ Handover 내의 모든 문서는 **서랍 🗄️, 문서 📰, 카드 📇** �
  - [`react.js`](https://reactjs.org/)
  - [`MaterialUI`](https://mui.com/)
 
-## 설치 안내 (Installation Process)
+<h2 id="install"> 설치 안내 (Installaltion Methods)</h2>
+
 ```bash
 $ git clone osamhack2021/App_Flutter_Web_Express_Handover_TeamName
 $ yarn install
 $ yarn start
 ```
 
-## 프로젝트 사용법 (Getting Started)
+<h2 id="gettingstarted"> 프로젝트 사용법 (Getting Started) </h2>
+
 - yet to do...
  
-## 팀 정보 (Team Information)
+<h2 id="teaminfo"> 팀 정보 (Team Info) </h2>
 
 <table width="788">
     <thead>
@@ -217,8 +232,9 @@ $ yarn start
     </tbody>
 </table>
 
-## 저작권 및 사용권 정보 (Copyleft / End User License)
- * [MIT](https://github.com/osam2020-WEB/Sample-ProjectName-TeamName/blob/master/license.md)
+<h2 id="license"> 저작권 및 사용권 정보 (Copyleft / End User License) </h2>
+
+* [MIT](https://github.com/osam2020-WEB/Sample-ProjectName-TeamName/blob/master/license.md)
 
 This project is licensed under the terms of the MIT license.
 
