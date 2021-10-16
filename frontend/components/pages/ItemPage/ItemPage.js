@@ -90,7 +90,7 @@ export default function ItemPage() {
       // retrieve item from server for possible updates
       dispatch(attemptGetItem(itemId))
         .then((response) => {
-          if (!deepEqual(item, setItem(response))) {
+          if (!deepEqual(item, response)) {
             // update state deep equality between state and response is false
             console.log(
               itemId,
