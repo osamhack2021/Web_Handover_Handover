@@ -54,7 +54,7 @@ module.exports = {
 
             // Check session's read authority
             const user = await userService.findOne({ serviceNumber: res.locals.serviceNumber });
-            if(!item.accessGroups.read.some(i => i.equals(user.group)) && item.owner._id !== res.locals._id)
+            if(!item.accessGroups.read.some(i => i.equals(user.group)) && item.owner._id.toString() !== res.locals._id.toString())
                 throw new ForbiddenError(`Access denied: 열람 권한이 없습니다.`);
 
             res.status(200).send(item);
