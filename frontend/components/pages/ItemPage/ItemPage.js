@@ -111,10 +111,17 @@ export default function ItemPage() {
 
     // setting recents of localstorage
     const recentArray = JSON.parse(localStorage.getItem("recents"));
-    if (recentArray != null && !recentArray.includes(itemId)) {
+    if (recentArray != null) {
+      if (!recentArray.includes(itemId)) {
+        localStorage.setItem(
+          "recents",
+          JSON.stringify([itemId, ...recentArray].slice(0, 20))
+        );
+      }
+    } else {
       localStorage.setItem(
         "recents",
-        JSON.stringify([itemId, ...recentArray].slice(0, 20))
+        JSON.stringify([itemId])
       );
     }
   }, [itemId]);
