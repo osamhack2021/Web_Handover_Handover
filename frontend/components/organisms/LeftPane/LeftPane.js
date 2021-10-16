@@ -1,15 +1,12 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import R from 'ramda';
-import PropTypes from 'prop-types';
-import { snakeToCamelCase } from 'json-style-converter/es5';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListSubheader from '@mui/material/ListSubheader';
-
-import ProfileMenu from '_molecules/ProfileMenu';
+import R from 'ramda';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import MenuItem from '_molecules/MenuItem';
-import { attemptGetGroup } from '_thunks/group';
+import ProfileMenu from '_molecules/ProfileMenu';
+
 
 const dummy = [{
   Id: 1,
@@ -53,22 +50,22 @@ export default function LeftPane() {
           <ListSubheader className="leftpane-label"> 내 문서 </ListSubheader>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: '북마크', link: '/leftpane/bookmarks' }} />
+              <MenuItem value={{ title: '북마크', link: '/bookmarks' }} />
             </ListItemButton>
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: '최근에 본 문서', link: '/leftpane/recents' }} />
+              <MenuItem value={{ title: '최근에 본 문서', link: '/recents' }} />
             </ListItemButton>
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: '내가 작성한 문서', link: '/leftpane/myitems' }} />
+              <MenuItem value={{ title: '내가 작성한 문서', link: '/account/items' }} />
             </ListItemButton>
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: '임시저장한 문서', link: '/leftpane/drafts' }} />
+              <MenuItem value={{ title: '임시저장한 문서', link: '/drafts' }} />
             </ListItemButton>
           </ListItem>
         </div>
