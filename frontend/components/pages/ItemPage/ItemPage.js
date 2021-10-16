@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import TypeIcon from "_atoms/TypeIcon";
-import Breadcrumbs from "_molecules/Breadcrumbs";
+import BreadCrumbs from "_molecules/BreadCrumbs";
 import Editor from "_molecules/Editor";
 import Comment from "_organisms/Comment";
 import { attemptGetItem, attemptGetItemChildren } from "_thunks/item";
@@ -182,9 +182,9 @@ export default function ItemPage() {
           </Tooltip>
         </div>
         {itemParents != null ? (
-          <Breadcrumbs itemArray={[...itemParents, item]} />
+          <BreadCrumbs itemArray={[...itemParents, item]} />
         ) : (
-          <Breadcrumbs hierarchyLevel={hierarchyLevel[item.type]} />
+          <BreadCrumbs hierarchyLevel={hierarchyLevel[item.type]} />
         )}
         {item.content && <Editor content={item.content} editable={false} />}
         <div>
