@@ -1,31 +1,28 @@
-import React, { useEffect, useState } from "react";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import Stack from "@mui/material/Stack";
 import {
-  useEditor,
-  EditorContent,
   BubbleMenu,
+  EditorContent,
   FloatingMenu,
+  useEditor
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import React, { useEffect } from "react";
 import MenuBar from "_molecules/MenuBar";
-import Stack from "@mui/material/Stack";
-import Divider from "@mui/material/Divider";
-import Box from "@mui/material/Box";
 
-export default function Editor({ content = null, onContentChange = null }) {
-  const [loadingChild, setLoadingChild] = useState(true);
-  const [contentObject, setContentObject] = useState({});
-
-  useEffect(() => {
-    // retrieve item data with props.itemId
-    setLoadingChild(false);
-    // setContentObject({});
-  }, []);
-
+export default function Editor({
+  content = null,
+  onContentChange = null,
+  editable = true,
+}) {
   const editor = useEditor({
     extensions: [StarterKit],
-    content: content
-      ? content
-      : `
+    editable: editable,
+    content:
+      content != null
+        ? content
+        : `
         <h2>
           Hi there,
         </h2>
@@ -57,10 +54,17 @@ export default function Editor({ content = null, onContentChange = null }) {
       `,
   });
 
+  useEffect(() => {
+    if (editor != null) {
+      // Read more: https://tiptap.dev/api/commands/set-content
+      editor.commands.setContent(content);
+    }
+  }, [content, editor]);
+
   if (onContentChange != null && editor != null)
     onContentChange(editor.getHTML()); // TODO: Resolve https://reactjs.org/link/setstate-in-render warning
 
-  return (
+  return editable ? (
     <Stack
       spacing={0.5}
       sx={{ border: "2px solid #0d0d0d20", borderRadius: 2 }}
@@ -150,6 +154,8 @@ export default function Editor({ content = null, onContentChange = null }) {
         <EditorContent editor={editor} />
       </Box>
     </Stack>
+  ) : (
+    <EditorContent editor={editor} />
   );
 }
 
