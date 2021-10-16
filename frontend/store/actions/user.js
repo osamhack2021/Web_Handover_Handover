@@ -10,6 +10,9 @@ export function login(user) {
 }
 
 export function logout() {
+  // clear recents, serviceNumber
+  localStorage.clear();
+
   return {
     type: LOGOUT_USER,
   };
