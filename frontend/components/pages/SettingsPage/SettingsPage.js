@@ -7,7 +7,6 @@ export default function SettingsPage() {
   return (
     <div className="setting-page">
       <Switch>
-        {/* <Route path="/setting/themechange" component={} /> */}
         <Route exact path="/account/settings/group" component={GroupSettings} />
         <Route exact path="/account/settings" component={ProfileSettings} />
       </Switch>
