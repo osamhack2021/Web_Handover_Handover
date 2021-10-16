@@ -1,4 +1,5 @@
 import { Container, Stack, Tooltip } from "@mui/material";
+import { push } from 'connected-react-router';
 import R from "ramda";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -64,6 +65,11 @@ export default function ItemPage() {
   // const [item, setItem] = useState({});
 
   useEffect(() => {
+    if (itemId.length != 24) {
+      dispatch(push('/error'));
+      return;
+    }
+
     if (
       item == null ||
       !item.hasOwnProperty("accessGroups") || // item must have accessGroups property
@@ -105,18 +111,11 @@ export default function ItemPage() {
 
     // setting recents of localstorage
     const recentArray = JSON.parse(localStorage.getItem("recents"));
-    if (!recentArray.includes(itemId)) {
-      if (recentArray.length > 20) {
-        localStorage.setItem(
-          "recents",
-          JSON.stringify([...recentArray, itemId].shift())
-        );
-      } else {
-        localStorage.setItem(
-          "recents",
-          JSON.stringify([...recentArray, itemId])
-        );
-      }
+    if (recentArray != null && !recentArray.includes(itemId)) {
+      localStorage.setItem(
+        "recents",
+        JSON.stringify([itemId, ...recentArray].slice(0, 20))
+      );
     }
   }, [itemId]);
 
