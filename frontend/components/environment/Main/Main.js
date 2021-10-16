@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Switch, Route, Redirect } from 'react-router';
+import R from 'ramda';
+import React, { useEffect, useState } from 'react';
 import ReactNotification from 'react-notifications-component';
 import { useDispatch } from 'react-redux';
-import R from 'ramda';
-
-import { attemptGetUser } from '_thunks/user';
-
-import WelcomePage from '_pages/WelcomePage';
+import { Redirect, Route, Switch } from 'react-router';
 import LoginPage from '_pages/LoginPage';
 import RegisterPage from '_pages/RegisterPage';
 import RoutingPage from '_pages/RoutingPage';
 import AboutPage from '_pages/AboutPage';
-
-// import Navigation from '_organisms/Navigation';
-// import Footer from '_organisms/Footer';
+import WelcomePage from '_pages/WelcomePage';
+import { attemptGetUser } from '_thunks/user';
 
 export default function Main({ location }) {
   const dispatch = useDispatch();
