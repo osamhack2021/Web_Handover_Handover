@@ -1,5 +1,5 @@
 import { Container, Stack, Tooltip } from "@mui/material";
-import { push } from 'connected-react-router';
+import { push } from "connected-react-router";
 import R from "ramda";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -66,7 +66,7 @@ export default function ItemPage() {
 
   useEffect(() => {
     if (itemId.length != 24) {
-      dispatch(push('/error'));
+      dispatch(push("/error"));
       return;
     }
 

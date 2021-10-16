@@ -9,9 +9,9 @@ import {
   mdiShare,
   mdiStar,
   mdiStarOutline,
-  mdiUpload
-} from '@mdi/js';
-import Icon from '@mdi/react';
+  mdiUpload,
+} from "@mdi/js";
+import Icon from "@mdi/react";
 import {
   ButtonBase,
   Divider,
@@ -20,7 +20,7 @@ import {
   Menu,
   MenuItem,
   Skeleton,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import humanizeDuration from "humanize-duration";
 import R from "ramda";
@@ -33,15 +33,15 @@ import {
   attemptDeleteItem,
   attemptGetItem,
   attemptGetItemChildren,
-  attemptPublishItem
+  attemptPublishItem,
 } from "_thunks/item";
 import { attemptAddBookmark, attemptRemoveBookmark } from "_thunks/user";
 import { deepEqual } from "_utils/compare";
 
 const borderRadius = {
-  cabinet: '0px 0px 16px 16px',
-  document: '0px 16px 16px 0px',
-  card: '16px',
+  cabinet: "0px 0px 16px 16px",
+  document: "0px 16px 16px 0px",
+  card: "16px",
 };
 
 // Maximum number of line of the content
@@ -52,17 +52,17 @@ const content = (item, itemChildren) => {
 
   if (item == null || !item.hasOwnProperty("content")) return null;
 
-  if (item.type === 'card') {
+  if (item.type === "card") {
     // Card directly hold content, display summary of it
     return (
       <div className="item-content-html">
         {
           item.content
-            .replace(/[ ]{2,}/g, '') // remove HTML indentation spaces
-            .replace(/<\/[h\d|p|br]>/g, '\n') // replace HTML closing tags to newline
-            .replace(/\n+/, '') // remove starting newline
-            .replace(/[\s]{2,}/g, '') // remove multiple whitespace characters
-            .replace(/<[^>]+>/g, '') // remove all HTML tags
+            .replace(/[ ]{2,}/g, "") // remove HTML indentation spaces
+            .replace(/<\/[h\d|p|br]>/g, "\n") // replace HTML closing tags to newline
+            .replace(/\n+/, "") // remove starting newline
+            .replace(/[\s]{2,}/g, "") // remove multiple whitespace characters
+            .replace(/<[^>]+>/g, "") // remove all HTML tags
         }
       </div>
     );
@@ -77,10 +77,7 @@ const content = (item, itemChildren) => {
     if (i == LINE_CLAMP) {
       return (
         <div className="item-content-ellipsis" key={i}>
-          외
-          {' '}
-          {itemChildren.length - LINE_CLAMP}
-          건
+          외 {itemChildren.length - LINE_CLAMP}건
         </div>
       );
     }
@@ -90,14 +87,12 @@ const content = (item, itemChildren) => {
 const dateElapsed = (date) => {
   const created = new Date(date);
   const now = new Date();
-  return (
-    `${humanizeDuration(now - created, {
-      language: 'ko',
-      largest: 1,
-      spacer: '',
-      round: true,
-    })} 전`
-  );
+  return `${humanizeDuration(now - created, {
+    language: "ko",
+    largest: 1,
+    spacer: "",
+    round: true,
+  })} 전`;
 };
 
 const statusIcon = {
@@ -106,8 +101,8 @@ const statusIcon = {
 };
 
 const statusTooltipText = {
-  archived: '보관된 항목',
-  public: '공개된 항목',
+  archived: "보관된 항목",
+  public: "공개된 항목",
 };
 
 export default function Item({
@@ -116,7 +111,7 @@ export default function Item({
   itemChildren: itemChildrenObject = null,
 }) {
   // find current user from store
-  const { user } = useSelector(R.pick(['user']));
+  const { user } = useSelector(R.pick(["user"]));
   const dispatch = useDispatch();
 
   const itemId =
@@ -126,33 +121,25 @@ export default function Item({
         : itemObject.hasOwnProperty("_id")
         ? itemObject._id // id from API response
         : id
-    : id; // id from props
+      : id; // id from props
 
-  // Read more about useSelector() hook here: 
+  // Read more about useSelector() hook here:
   // https://react-redux.js.org/api/hooks#useselector
   const cachedItem = useSelector((state) => state.itemCache[itemId]);
 
   // DEBUG
-  if (cachedItem == null)
-    console.log(itemId + " wasn't found in itemCache.");
-  else
-    console.log(itemId + " was found in itemCache: ", cachedItem);
+  if (cachedItem == null) console.log(itemId + " wasn't found in itemCache.");
+  else console.log(itemId + " was found in itemCache: ", cachedItem);
 
   // will try to use object passed as props if exists
   // will try to use cachedItem if not null (= if exists in cache)
   const [item, setItem] = useState(
-    itemObject
-      ? {
-          ...itemObject,
-          _id: itemId, // append _id if itemObject is passed as props
-          id: itemId, // TODO: check whether `Id` exists anymore, it shouldn't exist anymore because snakeToCamelCase is not used anymore.
-        }
-      : cachedItem // look for itemCache
+    itemObject ? itemObject : cachedItem // look for itemCache
   );
   const [itemChildren, setItemChildren] = useState(itemChildrenObject);
 
   const [isBookmarked, setBookmarked] = useState(
-    user.bookmarks.includes(itemId),
+    user.bookmarks.includes(itemId)
   );
   // visibility of the component; used on delete and unauthorized items
   const [visible, setVisible] = useState(true);
@@ -190,7 +177,11 @@ export default function Item({
         .then((response) => {
           if (!deepEqual(item, setItem(response))) {
             // update state deep equality between state and response is false
-            console.log(itemId, " cache was updated compared to server: ", response);
+            console.log(
+              itemId,
+              " cache was updated compared to server: ",
+              response
+            );
             setItem(response);
           }
         })
@@ -208,12 +199,12 @@ export default function Item({
     navigator.clipboard.writeText(`${location.hostname}/item/${itemId}`);
 
     RNC.addNotification({
-      title: '클립보드에 복사됨',
-      type: 'success',
-      message: '항목 링크가 클립보드에 복사되었습니다.',
-      container: 'top-center',
-      animationIn: ['animated', 'fadeInRight'],
-      animationOut: ['animated', 'fadeOutRight'],
+      title: "클립보드에 복사됨",
+      type: "success",
+      message: "항목 링크가 클립보드에 복사되었습니다.",
+      container: "top-center",
+      animationIn: ["animated", "fadeInRight"],
+      animationOut: ["animated", "fadeOutRight"],
       dismiss: {
         duration: 5000,
       },
@@ -227,12 +218,12 @@ export default function Item({
 
   const archiveItem = () => {
     dispatch(attemptArchiveItem(itemId));
-    setItem({ ...item, status: 'archived' });
+    setItem({ ...item, status: "archived" });
   };
 
   const publishItem = () => {
     dispatch(attemptPublishItem(itemId));
-    setItem({ ...item, status: 'published' });
+    setItem({ ...item, status: "published" });
   };
 
   const toggleBookmark = () => {
@@ -251,20 +242,22 @@ export default function Item({
     setBookmarked(!isBookmarked);
   };
 
-  const status = item == null
-    || !item.hasOwnProperty('status')
-    || !item.hasOwnProperty('accessGroups')
-    ? null
-    : item.status === 'archived'
-      ? 'archived'
-      : item.accessGroups.read === 'all'
-        ? 'public'
-        : null;
+  const status =
+    item == null ||
+    !item.hasOwnProperty("status") ||
+    !item.hasOwnProperty("accessGroups")
+      ? null
+      : item.status === "archived"
+      ? "archived"
+      : item.accessGroups.read === "all"
+      ? "public"
+      : null;
 
   const isCurrentUserOwner = item ? item.owner._id === user.Id : false;
-  const isCurrentUserEditor = item != null && item.hasOwnProperty('accessGroups')
-    ? item.accessGroups.edit.includes(user.group)
-    : false;
+  const isCurrentUserEditor =
+    item != null && item.hasOwnProperty("accessGroups")
+      ? item.accessGroups.edit.includes(user.group)
+      : false;
 
   // Item object schema
   // {
@@ -308,15 +301,15 @@ export default function Item({
     <div className="item" key={itemId}>
       <ButtonBase
         sx={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: 'white',
-          border: '0.5px solid rgba(0, 0, 0, 0.25)',
-          padding: '24px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'stretch',
-          justifyContent: 'space-between',
+          width: "100%",
+          height: "100%",
+          backgroundColor: "white",
+          border: "0.5px solid rgba(0, 0, 0, 0.25)",
+          padding: "24px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "stretch",
+          justifyContent: "space-between",
           borderRadius: borderRadius.card,
         }}
       >
@@ -334,7 +327,7 @@ export default function Item({
           <Skeleton width="100%" />
         </div>
         <IconButton>
-          <Icon size={1} path={isBookmarked ? mdiStar : mdiStarOutline} />
+          <Icon size={1} path={mdiStarOutline} />
         </IconButton>
         <IconButton>
           <Icon size={1} path={mdiDotsVertical} />
@@ -345,15 +338,15 @@ export default function Item({
     <div className="item" key={itemId}>
       <ButtonBase
         sx={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: item.status === 'archived' ? 'WhiteSmoke' : 'white',
-          border: '0.5px solid rgba(0, 0, 0, 0.25)',
-          padding: '24px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'stretch',
-          justifyContent: 'space-between',
+          width: "100%",
+          height: "100%",
+          backgroundColor: item.status === "archived" ? "WhiteSmoke" : "white",
+          border: "0.5px solid rgba(0, 0, 0, 0.25)",
+          padding: "24px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "stretch",
+          justifyContent: "space-between",
           borderRadius: borderRadius[item.type],
         }}
         component={LinkComponent}
@@ -396,26 +389,26 @@ export default function Item({
         PaperProps={{
           elevation: 0,
           sx: {
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            ml: '6px',
+            overflow: "visible",
+            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+            ml: "6px",
             mt: 0.5,
-            '&:before': {
+            "&:before": {
               content: '""',
-              display: 'block',
-              position: 'absolute',
+              display: "block",
+              position: "absolute",
               top: 0,
               right: 16,
               width: 10,
               height: 10,
-              bgcolor: 'background.paper',
-              transform: 'translateY(-50%) rotate(45deg)',
+              bgcolor: "background.paper",
+              transform: "translateY(-50%) rotate(45deg)",
               zIndex: 0,
             },
           },
         }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         {isCurrentUserOwner || isCurrentUserEditor ? ( // only show edit menu to owner and editor
           <MenuItem component={LinkComponent} to={`/item/${itemId}/edit`}>
@@ -448,7 +441,7 @@ export default function Item({
               권한 설정
             </MenuItem>
             <Divider light />
-            {item.status !== 'archived' ? (
+            {item.status !== "archived" ? (
               <MenuItem onClick={archiveItem}>
                 <ListItemIcon>
                   <Icon path={mdiPackageDown} size={1} />
