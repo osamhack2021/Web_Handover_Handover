@@ -3,8 +3,15 @@
 
 프로젝트명 또는 프로젝트 로고 이미지 **(택1)**
 
-## 프로젝트 소개
+## 프로젝트 소개 
 **Handover**는 더 편리하고 똑똑한 인수인계를 위한 플랫폼입니다. 
+
+<p align="center">
+ <img alt="GitHub language count" src="https://img.shields.io/github/contributors/osamhack2021/WEB_Handover_Handover?style=for-the-badge&logo">
+ <img alt="GitHub language count" src="https://img.shields.io/github/issues-closed/osamhack2021/WEB_Handover_Handover?style=for-the-badge&logo">
+ <img alt="GitHub language count" src="https://img.shields.io/github/stars/osamhack2021/WEB_Handover_Handover?style=for-the-badge&logo">
+  <img src='https://img.shields.io/badge/License-MIT-e88073?style=for-the-badge&logo'>
+</p>
 
 ## 목차
 <ol>
