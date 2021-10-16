@@ -1,0 +1,55 @@
+@import "mixins";
+
+.content-pane {
+  .outer-div {
+    @include flexBox($display: flex, $justify-content: center);
+    width: 100%;
+    .grid-container {
+      margin-top: 0;
+      max-height: 100%;
+      overflow-x: auto;
+      width: fit-content;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 80px;
+    }
+  }
+}
+
+.item-list-page {
+
+  .item-list-page-title {
+    width: 100%;
+    font-size: 2.5em;
+    font-weight: bolder;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .item-list-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+
+    .item-list-title {
+      flex-grow: 1;
+      font-size: 2em;
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .item-list-content {
+    height: $height;
+    align-items: center;
+    margin: 16px 0;
+    gap: 8px;
+    overflow-x: hidden;
+  }
+}
