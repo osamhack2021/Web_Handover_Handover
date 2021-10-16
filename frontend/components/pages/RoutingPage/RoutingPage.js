@@ -55,16 +55,18 @@ export default function RoutingPage() {
             <Route path="/home" component={TestPage} />
 
             {/* Search Page */}
-            <Route path="/search/:searchQuery" component={SearchPage} />
+            <Route exact path="/search/:searchQuery" component={SearchPage} />
 
             {/* LeftPane Pages */}
-            <Route path="/leftpane/:path" component={ItemListPage} />
+            <Route exact path="/bookmarks" component={ItemListPage} />
+            <Route exact path="/recents" component={ItemListPage} />
+            <Route exact path="/drafts" component={ItemListPage} />
 
             {/* Item Page */}
-            <Route path="/create" component={EditorPage} />
-            <Route path="/item/:itemId" component={ItemPage} />
-            <Route path="/item/:itemId/edit" component={EditorPage} />
-            <Route path="/item/:itemId/settings" component={EditorPage} />
+            <Route exact path="/create" component={EditorPage} />
+            <Route exact path="/item/:itemId" component={ItemPage} />
+            <Route exact path="/item/:itemId/edit" component={EditorPage} />
+            <Route exact path="/item/:itemId/settings" component={EditorPage} />
 
             {/* Account Page */}
             <Route exact path="/account" component={ProfilePage} />
