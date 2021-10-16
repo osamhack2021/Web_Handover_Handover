@@ -17,9 +17,9 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Route, Switch, useLocation, useParams } from "react-router";
 import { getGroupByGroupId } from "_frontend/api/group";
-import { getItemByUserId } from "_frontend/api/item";
+import { getUserItem } from "_frontend/api/item";
 import { getUser } from "_frontend/api/user";
-import { LinkComponent } from "_frontend/components/atoms/LinkComponent/LinkComponent";
+import LinkComponent from "_atoms/LinkComponent";
 import GroupSettings from "_frontend/components/organisms/GroupSettings";
 import ProfileSettings from "_frontend/components/organisms/ProfileSettings";
 import Profile from "_organisms/Profile";
@@ -77,16 +77,20 @@ export default function ProfilePage() {
   // Get group information after user information is fetched
   useEffect(() => {
     if (user != null) {
-      getGroupByGroupId(user.group).then((data) => {
-        setGroup(data);
-      });
+      if (user.group != null) {
+        getGroupByGroupId(user.group).then((data) => {
+          setGroup(data);
+        });
+      } else {
+        setGroup("none")
+      }
     }
   }, [user]);
 
   // Get user item information on /items
   useEffect(() => {
     if (location.pathname.endsWith("/items") && userItem == null) {
-      getItemByUserId(userId).then((data) => {
+      getUserItem(userId).then((data) => {
         setUserItem(data);
       });
     }

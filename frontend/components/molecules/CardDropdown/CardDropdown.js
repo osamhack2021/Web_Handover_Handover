@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import Popover from '@mui/material/Popover';
+import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
-import { useSelector } from 'react-redux';
+import Popover from '@mui/material/Popover';
 import PropTypes from 'prop-types';
 import R from 'ramda';
-
-import { PromiseGroupArray } from '_utils/promiseArray';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Duplicate from '_assets/svgs/duplicate.svg';
 import CustomButton from '_atoms/CustomButton';
 import CustomSelect from '../CustomSelect';
+
 
 function CreateMenuItemArray(groupObjectArray) {
   const returnArray = [];

@@ -1,22 +1,12 @@
 /* eslint-disable react/jsx-filename-extension */
-import React, { useEffect, useRef, useState } from 'react';
-import Card from '_molecules/Card';
 import PropTypes from 'prop-types';
+import React, { useEffect, useRef } from 'react';
+import Item from '_molecules/Item';
 
 function CreateCardArray(cardArray) {
   return cardArray.map((elem) => {
-    const {
-      type, title, description, content, Id,
-    } = elem;
     return (
-      <Card
-        type={type}
-        title={title}
-        description={description}
-        isArchived={false}
-        content={content}
-        Id={Id}
-      />
+      <Item item={elem} />
     );
   });
 }
@@ -25,6 +15,7 @@ export default function HorizontalContent({ cardArray }) {
   const recommendCard = useRef();
   // eslint-disable-next-line consistent-return
   useEffect(() => {
+    console.log(`loading with cardArray ${cardArray}`);
     const container = recommendCard.current;
     if (container) {
       const onWheel = (e) => {
@@ -38,7 +29,7 @@ export default function HorizontalContent({ cardArray }) {
       container.addEventListener('wheel', onWheel);
       return () => container.removeEventListener('wheel', onWheel);
     }
-  }, []);
+  }, [cardArray]);
   // type = 'card', title, description, children, isArchived = false
   return (
     <div className="recommend-card" ref={recommendCard}>

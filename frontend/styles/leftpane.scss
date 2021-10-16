@@ -2,11 +2,8 @@
 
 .leftpane {
     width: 240px;
-    height: 100vh;
+    height: 100%;
     overflow-y: auto;
-    margin: 0;
-    box-shadow: (2px 0px 6px $black-b25);
-    position: fixed;
 
     .leftpane-header {
         position: static

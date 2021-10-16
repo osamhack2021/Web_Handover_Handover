@@ -65,8 +65,6 @@ export default function GroupSettings() {
 
   const mapGroupMember = (members) => {
     return members.map((member) => {
-      console.log("member: " + JSON.stringify(member));
-      // console.log(member.division); // I'm not sure why member.division is output as undefined.. 😢
       return (
         <GroupMember
           profileImageUrl={member.profileImageUrl}

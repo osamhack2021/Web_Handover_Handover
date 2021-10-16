@@ -14,12 +14,13 @@
 @import 'recovery';
 @import 'forminput';
 
-@import 'home';
-@import 'todo';
 @import 'settings';
 
 @import 'leftpane';
-@import 'note';
+@import 'item';
+@import 'item-page';
+
+@import 'item-list-page';
 @import 'template';
 @import 'profile-menu';
 @import 'grid-layout';

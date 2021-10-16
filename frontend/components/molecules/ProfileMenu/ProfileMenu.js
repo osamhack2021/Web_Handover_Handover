@@ -1,18 +1,18 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import R from "ramda";
-
+import { mdiAccount, mdiCog, mdiLogoutVariant, mdiMenuDown } from "@mdi/js";
+import Icon from "@mdi/react";
 import Box from "@mui/material/Box";
+import ButtonBase from "@mui/material/ButtonBase";
+import ListItemIcon from "@mui/material/ListItemIcon";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ButtonBase from "@mui/material/ButtonBase";
-import Icon from "@mdi/react";
-import { mdiAccount, mdiCog, mdiLogoutVariant, mdiMenuDown } from "@mdi/js";
+import R from "ramda";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import LinkComponent from "_atoms/LinkComponent";
+import { attemptLogout } from "_thunks/auth";
 
-import { attemptLogout } from "_frontend/store/thunks/auth";
-import { LinkComponent } from "_atoms/LinkComponent/LinkComponent";
+
 
 export default function ProfileMenu() {
   const dispatch = useDispatch();

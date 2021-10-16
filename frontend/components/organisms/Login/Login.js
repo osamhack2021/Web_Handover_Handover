@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import R from "ramda";
-
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-
+import R from "ramda";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import useKeyPress from "_hooks/useKeyPress";
 import { attemptLogin } from "_thunks/auth";
+
+
 // import { attemptDummyLogin } from '_thunks/auth';
 
 export default function Login() {
@@ -26,7 +26,7 @@ export default function Login() {
   }, []);
 
   const login = () => {
-    const userCredentials = { serviceNumber: serviceNumber, password };
+    const userCredentials = { serviceNumber, password };
 
     if (remember) {
       localStorage.setItem("serviceNumber", serviceNumber);
@@ -44,6 +44,8 @@ export default function Login() {
 
   const updateServiceNumber = (e) => setServiceNumber(e.target.value);
   const updatePassword = (e) => setPassword(e.target.value);
+
+  const isValid = serviceNumber.length > 0 && password.length > 0;
 
   return (
     <div className="login-box">
@@ -71,6 +73,7 @@ export default function Login() {
       </div>
       <Button
         fullWidth
+        disabled={!isValid}
         sx={{ my: 2 }}
         variant="contained"
         onClick={login}

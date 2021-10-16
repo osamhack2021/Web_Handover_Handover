@@ -1,19 +1,15 @@
-import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Switch, Route, Redirect } from 'react-router';
+import R from 'ramda';
+import React, { useEffect, useState } from 'react';
 import ReactNotification from 'react-notifications-component';
 import { useDispatch } from 'react-redux';
-import R from 'ramda';
-
-import { attemptGetUser } from '_thunks/user';
-
-import WelcomePage from '_pages/WelcomePage';
+import { Redirect, Route, Switch } from 'react-router';
+import AboutPage from '_pages/AboutPage';
 import LoginPage from '_pages/LoginPage';
 import RegisterPage from '_pages/RegisterPage';
 import RoutingPage from '_pages/RoutingPage';
-
-// import Navigation from '_organisms/Navigation';
-// import Footer from '_organisms/Footer';
+import WelcomePage from '_pages/WelcomePage';
+import { attemptGetUser } from '_thunks/user';
 
 export default function Main({ location }) {
   const dispatch = useDispatch();
@@ -43,7 +39,7 @@ export default function Main({ location }) {
         <div className="main">
           <Switch>
             <Route exact path="/" component={WelcomePage} />
-            <Route path="/about" component={WelcomePage} />
+            <Route path="/about" component={AboutPage} />
             <Route path="/help" component={WelcomePage} />
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
@@ -55,7 +51,9 @@ export default function Main({ location }) {
             <Route path="/item" component={RoutingPage} />
             <Route path="/account" component={RoutingPage} />
             <Route path="/user" component={RoutingPage} />
-            <Route path="/leftpane" component={RoutingPage} />
+            <Route exact path="/bookmarks" component={RoutingPage} />
+            <Route exact path="/recents" component={RoutingPage} />
+            <Route exact path="/drafts" component={RoutingPage} />
 
             {/* 404 Fallback page */}
             <Route path="/error">

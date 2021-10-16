@@ -1,15 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
-import { SearchBox, Hits } from 'react-instantsearch/dom';
-
-import SearchIcon from '_assets/svgs/search_icon.svg';
-import BellIcon from '_assets/svgs/bell.svg';
-import CustomButton from '_atoms/CustomButton';
+import { mdiBell } from "@mdi/js";
+import Icon from "@mdi/react";
+import { IconButton } from "@mui/material";
+import PropTypes from "prop-types";
+import React, { useRef, useState } from "react";
+import { useHistory } from "react-router-dom";
+import SearchIcon from "_assets/svgs/search_icon.svg";
 
 export default function Header() {
   const history = useHistory();
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const searchInput = useRef();
 
   const onChange = (event) => {
@@ -18,7 +17,7 @@ export default function Header() {
   const routePath = (event) => {
     if (event.keyCode === 13) {
       history.push(`/search/${value}`);
-      setValue('');
+      setValue("");
     }
   };
   return (
@@ -26,12 +25,20 @@ export default function Header() {
       <div className="search-bar">
         <form>
           <img src={SearchIcon} alt="input-icon" />
-          <input placeholder="검색..." type="text" form="myform" value={value} onChange={onChange} ref={searchInput} onKeyDown={routePath} />
+          <input
+            placeholder="검색..."
+            type="text"
+            form="myform"
+            value={value}
+            onChange={onChange}
+            ref={searchInput}
+            onKeyDown={routePath}
+          />
         </form>
       </div>
-      <div>
-        <CustomButton imgSrc={BellIcon} />
-      </div>
+      <IconButton className="header-notification-button">
+        <Icon size={1} path={mdiBell} />
+      </IconButton>
     </div>
   );
 }
