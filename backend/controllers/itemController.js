@@ -109,7 +109,7 @@ module.exports = {
             if(item === null) throw new NotFoundError(`Item not Found: 존재하지 않는 항목입니다.`);
 
             // Check session's edit authority
-            if(!item.accessGroups.edit.some(i => i.equals(res.locals.group)) && item.owner._id !== res.locals._id)
+            if(!item.accessGroups.edit.some(i => i.equals(res.locals.group)) && item.owner._id.toString() !== res.locals._id.toString())
                 throw new ForbiddenError(`Access denied: 수정 권한이 없습니다.`);
 
             // Append Contributor
