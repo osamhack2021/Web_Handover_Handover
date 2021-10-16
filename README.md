@@ -71,10 +71,11 @@ Handover 내의 모든 문서는 **서랍 🗄️, 문서 📰, 카드 📇** �
 
 - 그룹 별로 **보안 관리자**를 등록해 그룹 내 문서에서 보안 사항이 위반되고 있는지 확인하고, 관리할 수 있습니다.
 
-<h2 id="prerequisites"> 컴퓨터 구성 / 필수 조건 안내 (Prerequisites)</h2>
+<h2 id="prerequisites"> 컴퓨터 구성 / 필수 조건 안내 (Prerequisites)🔎</h2>
 
-* ECMAScript 6 지원 브라우저 사용
-* 권장: Google Chrome 버젼 77 이상
+|<image src="http://drive.google.com/uc?export=view&id=1bceDKsPsCdPKTxcA4GGRekxcKjCD811I" width="20" height="20"> Chrome|<image src="http://drive.google.com/uc?export=view&id=147h0HsFTpTaQpSm_7vPh2AXWAxoquObd" width="20" height="20"> Edge|<image src="http://drive.google.com/uc?export=view&id=1k90zbqzSBAQlwxAFgt5KX7rl6lk0FKj_" width="20" height="20"> FireFox|<image src="http://drive.google.com/uc?export=view&id=1Ik_IpAhFESqSiDxKVl06M560fmSjb7EO" width="20" height="20"> Safari|
+|:---:|:---:|:---:|:---:|
+|✔|✔|✔|✔|
 
 <h2 id="stacks"> 기술 스택 (Key Tech Stacks)</h2>
 
