@@ -65,16 +65,21 @@ Handover 내의 모든 문서는 **서랍 🗄️, 문서 📰, 카드 📇** �
 
 <h2 id="stacks"> 기술 스택 (Key Tech Stacks)</h2>
 
-### Server(back-end)
- - [`nodejs 14.17.6`](https://nodejs.org/en/)
- - [`expressjs`](https://expressjs.com/)
- - [`MongoDB`](https://www.mongodb.com/)
- - [`Docker`](https://www.docker.com/)
- - [`Algolia Search`](https://www.algolia.com/)
+### Back-end
+* `RESTful`한 백엔드 구축
+    - [`nodejs 14.17.6`](https://nodejs.org/en/)
+    - [`expressjs`](https://expressjs.com/)
+    - [`Docker`](https://www.docker.com/)
+* `NoSQL` 데이터베이스 사용 
+    - [`MongoDB`](https://www.mongodb.com/)
+* `Algolia`를 사용한 검색
+    - [`Algolia Search`](https://www.algolia.com/)
  
 ### Front-end
- - [`react.js`](https://reactjs.org/)
- - [`MaterialUI`](https://mui.com/)
+* `React`를 사용한 프론트엔드 구축
+    - [`react.js`](https://reactjs.org/)
+* `Material UI`를 사용한 디자인
+    - [`MaterialUI`](https://mui.com/)
 
 <h2 id="install"> 설치 안내 (Installaltion Methods)</h2>
 
