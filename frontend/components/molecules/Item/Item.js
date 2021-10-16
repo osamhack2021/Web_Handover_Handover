@@ -299,6 +299,11 @@ export default function Item({
   // don't render if visible is false
   if (visible == false) return null;
 
+  const createdDate = new Date(item.created);
+  const createdString = `${createdDate.toLocaleDateString(
+    "ko-KR"
+  )} ${createdDate.toLocaleTimeString("en-GB")}`;
+
   return item == null ? (
     <div className="item" key={itemId}>
       <ButtonBase
@@ -367,13 +372,13 @@ export default function Item({
         <div className="item-content">{content(item, itemChildren)}</div>
       </ButtonBase>
       <div className="item-footer">
-        <div className="item-description">
-          {item.owner.rank}
-          {' '}
-          {item.owner.name}
- ·
-          {dateElapsed(item.created)}
-        </div>
+        <Tooltip title={createdString} arrow>
+          <div className="item-description">
+            {`${item.owner.rank} ${item.owner.name} · ${dateElapsed(
+              item.created
+            )}`}
+          </div>
+        </Tooltip>
         <Tooltip title="북마크에 추가" arrow>
           <IconButton onClick={toggleBookmark}>
             <Icon size={1} path={isBookmarked ? mdiStar : mdiStarOutline} />
