@@ -9,7 +9,7 @@ import {
   mdiShare,
   mdiStar,
   mdiStarOutline,
-  mdiUpload,
+  mdiUpload
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import {
@@ -20,7 +20,7 @@ import {
   Menu,
   MenuItem,
   Skeleton,
-  Tooltip,
+  Tooltip
 } from "@mui/material";
 import humanizeDuration from "humanize-duration";
 import R from "ramda";
@@ -33,7 +33,7 @@ import {
   attemptDeleteItem,
   attemptGetItem,
   attemptGetItemChildren,
-  attemptPublishItem,
+  attemptPublishItem
 } from "_thunks/item";
 import { attemptAddBookmark, attemptRemoveBookmark } from "_thunks/user";
 import { deepEqual } from "_utils/compare";
