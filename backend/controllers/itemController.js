@@ -54,7 +54,7 @@ module.exports = {
 
             // Check session's read authority
             const user = await userService.findOne({ serviceNumber: res.locals.serviceNumber });
-            if(!item.accessGroups.read.some(i => i.equals(user.group)))
+            if(!item.accessGroups.read.some(i => i.equals(user.group)) && item.owner._id !== res.locals._id)
                 throw new ForbiddenError(`Access denied: 열람 권한이 없습니다.`);
 
             res.status(200).send(item);
@@ -109,7 +109,7 @@ module.exports = {
             if(item === null) throw new NotFoundError(`Item not Found: 존재하지 않는 항목입니다.`);
 
             // Check session's edit authority
-            if(!item.accessGroups.edit.some(i => i.equals(res.locals.group)))
+            if(!item.accessGroups.edit.some(i => i.equals(res.locals.group)) && item.owner._id !== res.locals._id)
                 throw new ForbiddenError(`Access denied: 수정 권한이 없습니다.`);
 
             // Append Contributor
@@ -137,6 +137,10 @@ module.exports = {
 
             if(item === null)
                 throw new NotFoundError(`Item not Found: 존재하지 않는 항목입니다.`);
+
+            // Check session's delete authority
+            if(item.owner._id !== res.locals._id)
+                throw new ForbiddenError(`Access denied: 삭제 권한이 없습니다.`);
             
             // Algolia
             await algolia.deleteObject(item_id);
