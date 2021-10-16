@@ -10,7 +10,14 @@ const BreadCrumbItem = ({ item = null }) => {
     <Button
       variant="text"
       size="small"
-      sx={{ width: item != null ? "auto" : "100px", textTransform: "none" }}
+      sx={{
+        width: item != null ? "auto" : "100px",
+        textTransform: "none",
+        borderRadius: "16px",
+        px: 1.5,
+        backgroundColor: "rgba(0, 0, 0, 0.075)",
+        color: "black"
+      }}
       component={item != null ? LinkComponent : null}
       to={item != null ? `/item/${item._id}` : null}
     >
