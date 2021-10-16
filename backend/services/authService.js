@@ -109,7 +109,7 @@ module.exports = {
       group: loginUser.group,
       status: loginUser.status,
     }, JWT_SECRET_KEY, {
-      expiresIn: '1h',
+      expiresIn: '12h',
     });
 
     return user;
