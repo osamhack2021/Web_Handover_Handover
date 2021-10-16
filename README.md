@@ -1,10 +1,23 @@
-# Handover
-![Logo](https://logosbynick.com/wp-content/uploads/2018/03/final-logo-example.png)
+# Handover - 국방업무공유체계 📋
+<div align="center">
+ <br><br>
+ <img src='http://drive.google.com/uc?export=view&id=1_UuRq_lX68VWsA-5i2iIgczpno-dSdKI' width="600" height="150" />
+ <br><br><br>
+ <img alt="GitHub language count" src="https://img.shields.io/github/contributors/osamhack2021/WEB_Handover_Handover?style=for-the-badge&logo">
+ <img alt="GitHub language count" src="https://img.shields.io/github/issues-closed/osamhack2021/WEB_Handover_Handover?style=for-the-badge&logo">
+ <img alt="GitHub language count" src="https://img.shields.io/github/stars/osamhack2021/WEB_Handover_Handover?style=for-the-badge&logo">
+ <img src='https://img.shields.io/badge/License-MIT-e88073?style=for-the-badge&logo'>
+</div>
 
-프로젝트명 또는 프로젝트 로고 이미지 **(택1)**
+## 프로젝트 소개 (Project Introduction) 👋
 
-## 프로젝트 소개
-**Handover**는 더 편리하고 똑똑한 인수인계를 위한 플랫폼입니다. 
+<p align="center"> 
+ <img src='http://drive.google.com/uc?export=view&id=1A4XxkjSMLXGl4dtebVH6KG0wfLqCMLMT' width="400" height="400" />
+</p>
+
+**Handover📋**는 군에서 더 편리하고 똑똑하게 인수인계를 할 수 있도록 사용자들을 지원하는 Web 서비스입니다.
+Handover과 함께 여러 방법으로 진행되고 있는 인수인계 방식들을 통일하고, 체계적으로 문서들을 관리해보세요!
+
 
 ## 목차
 <ol>
@@ -243,8 +256,8 @@ npm run prd
             </a>
         </td>
         <td width="175" align="center">
-            <a href="mailto:00cwooh@snu.ac.kr">
-                <img src="https://img.shields.io/badge/00cwooh@snu.ac.kr-green?logo=gmail&style=social">
+            <a href="mailto:cwooh8@gmail.com">
+                <img src="https://img.shields.io/badge/cwooh8@gmail.com-green?logo=gmail&style=social">
             </a>
         </td>
     </tr>
