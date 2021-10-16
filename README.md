@@ -83,11 +83,25 @@ Handover 내의 모든 문서는 **서랍 🗄️, 문서 📰, 카드 📇** �
 
 <h2 id="install"> 설치 안내 (Installaltion Methods)</h2>
 
-```bash
-$ git clone osamhack2021/App_Flutter_Web_Express_Handover_TeamName
-$ yarn install
-$ yarn start
+1. Repository Clone
+> 터미널에서 다음 명령을 실행
+
 ```
+git clone https://github.com/osamhack2021/Web_Handover_Handover.git handover
+```
+
+2. Docker 설정
+> 사용 운영체제에 맞는 Docker 설치 => [`Get Docker`](https://docs.docker.com/get-docker/)
+
+3. Docker 실행
+```
+npm run prd
+```
+
+4. Docker 중지
+> `Ctrl C` 를 눌러서 foreground에서 실행되던 Docker 중지 
+> `npm down` 명령어를 통해 background에서 실행되는 Docker 중지
+
 
 <h2 id="gettingstarted"> 프로젝트 사용법 (Getting Started) </h2>
 
