@@ -78,7 +78,10 @@ Handover 내의 모든 문서는 **서랍 🗄️, 문서 📰, 카드 📇** �
 |✔|✔|✔|✔|
 
 <h2 id="stacks"> 기술 스택 (Key Tech Stacks)</h2>
-
+<p align="center">
+ <img src='http://drive.google.com/uc?export=view&id=1PykbZsYB5xFwBGvpFZ_lKPpalqH_6YKd' />
+</p>
+ 
 ### Back-end
 * `RESTful`한 백엔드 구축
     - [`nodejs 14.17.6`](https://nodejs.org/en/)
@@ -92,8 +95,11 @@ Handover 내의 모든 문서는 **서랍 🗄️, 문서 📰, 카드 📇** �
 ### Front-end
 * `React`를 사용한 프론트엔드 구축
     - [`react.js`](https://reactjs.org/)
+    - [`Redux`](https://redux.js.org/)
 * `Material UI`를 사용한 디자인
     - [`MaterialUI`](https://mui.com/)
+* Sass를 사용하여 스타일링
+    - [`Sass`](https://sass-lang.com/)
 
 <h2 id="install"> 설치 안내 (Installaltion Methods)</h2>
 
