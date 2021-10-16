@@ -116,9 +116,7 @@ export default function Item({
 
   const itemId =
     itemObject != null
-      ? itemObject.hasOwnProperty("Id")
-        ? itemObject.Id // id from local store
-        : itemObject.hasOwnProperty("_id")
+      ? itemObject.hasOwnProperty("_id")
         ? itemObject._id // id from API response
         : id
       : id; // id from props
@@ -253,7 +251,7 @@ export default function Item({
       ? "public"
       : null;
 
-  const isCurrentUserOwner = item ? item.owner._id === user.Id : false;
+  const isCurrentUserOwner = item ? item.owner._id === user._id : false;
   const isCurrentUserEditor =
     item != null && item.hasOwnProperty("accessGroups")
       ? item.accessGroups.edit.includes(user.group)

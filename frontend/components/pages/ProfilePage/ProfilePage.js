@@ -54,7 +54,7 @@ export default function ProfilePage() {
     ? params.userId
     : null;
   // userId from redux state (/account)
-  const userIdFromLocal = useSelector(R.pick(["user"])).user.Id;
+  const userIdFromLocal = useSelector(R.pick(["user"])).user._id;
 
   const userId = userIdFromParams == null ? userIdFromLocal : userIdFromParams;
 

@@ -17,7 +17,7 @@ function CreateMenuItemArray(groupObjectArray) {
   const nameArray = groupObjectArray.map((elem) => elem.name);
   for (let i = 0; i < groupObjectArray.length; i++) {
     const innerString = nameArray.slice(0, i + 1).join('>');
-    const value = groupObjectArray[i].Id;
+    const value = groupObjectArray[i]._id;
     returnArray.push({ value, innerString });
   }
   return returnArray;

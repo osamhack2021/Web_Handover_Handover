@@ -35,7 +35,7 @@ export default function RoutingPage() {
         .catch(R.identity)
         .then(() => setLoadingGroup(false));
 
-      dispatch(attemptGetUserItem(user.Id))
+      dispatch(attemptGetUserItem(user._id))
         .catch(R.identity)
         .then(() => setLoadingItem(false));
     }
