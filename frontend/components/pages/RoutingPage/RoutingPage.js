@@ -3,18 +3,18 @@ import R from 'ramda';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router';
-import { login } from '_frontend/store/actions/user';
+import { login } from '_actions/user';
 import Header from '_organisms/Header';
 import LeftPane from '_organisms/LeftPane';
 import EditorPage from '_pages/EditorPage';
+import ItemListPage from '_pages/ItemListPage';
 import ItemPage from '_pages/ItemPage';
 import ProfilePage from '_pages/ProfilePage';
 import RecoveryPage from '_pages/RecoveryPage';
 import SearchPage from '_pages/SearchPage';
 import TestPage from '_pages/TestPage';
-import ItemListPage from '_pages/ItemListPage';
 import { attemptGetGroup } from '_thunks/group';
-import { attemptLoadItems } from '_thunks/item';
+import { attemptGetUserItem } from '_thunks/item';
 
 export default function RoutingPage() {
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ export default function RoutingPage() {
         .catch(R.identity)
         .then(() => setLoadingGroup(false));
 
-      dispatch(attemptLoadItems(user.Id))
+      dispatch(attemptGetUserItem(user.Id))
         .catch(R.identity)
         .then(() => setLoadingItem(false));
     }
@@ -45,10 +45,10 @@ export default function RoutingPage() {
     !loadingGroup
     && !loadingItem && (
       <div className="page-template">
-        <div className="left-pane-container">
+        <div className="left-pane">
           <LeftPane />
         </div>
-        <div className="home-page">
+        <div className="content-pane">
           <Header />
           <Switch>
             {/* Home Page */}

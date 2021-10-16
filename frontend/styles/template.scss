@@ -1,15 +1,23 @@
-@import 'mixins';
+@import "mixins";
 
-.page-template{
+.page-template {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+
+  .left-pane {
+    background-color: $beige;
     height: 100%;
-    margin:0;
-    @include flexBox($display : flex, $flex-direction : row);
+    margin: 0;
+    width: 240px;
+    box-shadow: (2px 0px 6px $black-b25);
+  }
+
+  .content-pane {
     display: flex;
-    flex-direction: row;
-    .left-pane-container{
-        background-color: $beige;
-        height : 100%;
-        margin : 0;
-        width : fit-content;
-    }
+    height: 100%;
+    flex-grow: 1;
+    justify-content: flex-start;
+    flex-direction: column;
+  }
 }

@@ -1,0 +1,34 @@
+@import "mixins";
+
+.content-pane {
+  .outer-div {
+    @include flexBox($display: flex, $justify-content: center);
+    width: 100%;
+    .grid-container {
+      margin-top: 0;
+      max-height: 100%;
+      overflow-x: auto;
+      width: fit-content;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 80px;
+    }
+  }
+}
+
+.item-page {
+  .item-header {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+
+    .item-title {
+      font-size: 2.5em;
+      font-weight: bolder;
+      flex-grow: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
