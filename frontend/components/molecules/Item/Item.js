@@ -9,7 +9,7 @@ import {
   mdiShare,
   mdiStar,
   mdiStarOutline,
-  mdiUpload,
+  mdiUpload
 } from '@mdi/js';
 import Icon from '@mdi/react';
 import {
@@ -20,21 +20,23 @@ import {
   Menu,
   MenuItem,
   Skeleton,
-  Tooltip,
-} from '@mui/material';
-import humanizeDuration from 'humanize-duration';
-import R from 'ramda';
-import React, { useEffect, useState } from 'react';
-import { store as RNC } from 'react-notifications-component';
-import { useDispatch, useSelector } from 'react-redux';
-import { getItemByItemId, getItemChild } from '_api/item';
-import LinkComponent from '_atoms/LinkComponent';
+  Tooltip
+} from "@mui/material";
+import humanizeDuration from "humanize-duration";
+import R from "ramda";
+import React, { useEffect, useState } from "react";
+import { store as RNC } from "react-notifications-component";
+import { useDispatch, useSelector } from "react-redux";
+import LinkComponent from "_atoms/LinkComponent";
 import {
   attemptArchiveItem,
   attemptDeleteItem,
-  attemptPublishItem,
-} from '_thunks/item';
-import { attemptAddBookmark, attemptRemoveBookmark } from '_thunks/user';
+  attemptGetItem,
+  attemptGetItemChildren,
+  attemptPublishItem
+} from "_thunks/item";
+import { attemptAddBookmark, attemptRemoveBookmark } from "_thunks/user";
+import { deepEqual } from "_utils/compare";
 
 const borderRadius = {
   cabinet: '0px 0px 16px 16px',
@@ -46,7 +48,9 @@ const borderRadius = {
 const LINE_CLAMP = 4;
 
 const content = (item, itemChildren) => {
-  if (item == null || !item.hasOwnProperty('content')) return null;
+  const dispatch = useDispatch();
+
+  if (item == null || !item.hasOwnProperty("content")) return null;
 
   if (item.type === 'card') {
     // Card directly hold content, display summary of it
@@ -115,23 +119,35 @@ export default function Item({
   const { user } = useSelector(R.pick(['user']));
   const dispatch = useDispatch();
 
-  const itemId = itemObject != null
-    ? itemObject.hasOwnProperty('Id')
-      ? itemObject.Id // id from local store
-      : itemObject.hasOwnProperty('_id')
+  const itemId =
+    itemObject != null
+      ? itemObject.hasOwnProperty("Id")
+        ? itemObject.Id // id from local store
+        : itemObject.hasOwnProperty("_id")
         ? itemObject._id // id from API response
         : id
     : id; // id from props
 
+  // Read more about useSelector() hook here: 
+  // https://react-redux.js.org/api/hooks#useselector
+  const cachedItem = useSelector((state) => state.itemCache[itemId]);
+
+  // DEBUG
+  if (cachedItem == null)
+    console.log(itemId + " wasn't found in itemCache.");
+  else
+    console.log(itemId + " was found in itemCache: ", cachedItem);
+
   // will try to use object passed as props if exists
+  // will try to use cachedItem if not null (= if exists in cache)
   const [item, setItem] = useState(
     itemObject
       ? {
-        ...itemObject,
-        _id: itemId, // if itemObject is passed as props, append _id
-        id: itemId,
-      }
-      : null,
+          ...itemObject,
+          _id: itemId, // append _id if itemObject is passed as props
+          id: itemId, // TODO: check whether `Id` exists anymore, it shouldn't exist anymore because snakeToCamelCase is not used anymore.
+        }
+      : cachedItem // look for itemCache
   );
   const [itemChildren, setItemChildren] = useState(itemChildrenObject);
 
@@ -152,30 +168,39 @@ export default function Item({
   };
 
   useEffect(() => {
-    // retrieve item and its children from API if there were no item object passed
     if (
-      item == null
-      || !item.hasOwnProperty('accessGroups') // item must have accessGroups property
-      || !item.hasOwnProperty('content') // item must have content property
+      item == null ||
+      !item.hasOwnProperty("accessGroups") || // item must have accessGroups property
+      !item.hasOwnProperty("content") // item must have content property
     ) {
-      getItemByItemId(itemId)
+      // retrieve item and its children from API if there were no item object passed
+      dispatch(attemptGetItem(itemId))
         .then((item) => {
           setItem(item);
-          if (item.type !== 'card') {
-            getItemChild(item.path).then((children) => {
-              setItemChildren(children);
+          if (item.type !== "card") {
+            dispatch(attemptGetItemChildren(item.path)).then((items) => {
+              setItemChildren(items);
             });
           }
         })
-        .catch((response) => {
-          setVisible(false);
-          // setItem({ error: response.text });
-          if (!response.text.startsWith('Access denied')) { console.error(response); }
+        .catch(() => setVisible(false));
+    } else {
+      // retrieve item from server for possible updates
+      dispatch(attemptGetItem(itemId))
+        .then((response) => {
+          if (!deepEqual(item, setItem(response))) {
+            // update state deep equality between state and response is false
+            console.log(itemId, " cache was updated compared to server: ", response);
+            setItem(response);
+          }
+        })
+        .catch(() => setVisible(false));
+
+      if (item.type !== "card" && itemChildren == null) {
+        dispatch(attemptGetItemChildren(item.path)).then((children) => {
+          setItemChildren(children);
         });
-    } else if (item.type !== 'card' && itemChildren == null) {
-      getItemChild(item.path).then((children) => {
-        setItemChildren(children);
-      });
+      }
     }
   }, []);
 

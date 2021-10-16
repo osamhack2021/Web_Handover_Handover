@@ -1,17 +1,17 @@
-import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
-
-import user from './user';
-import todos from './todos';
+import { combineReducers } from 'redux';
 import group from './group';
-import userItem from './userItem';
+import itemCache from './itemCache';
+import todos from './todos';
+import user from './user';
+
 
 const createRootReducer = (history) => combineReducers({
   router: connectRouter(history),
   user,
   todos,
   group,
-  userItem,
+  itemCache,
 });
 
 export default createRootReducer;

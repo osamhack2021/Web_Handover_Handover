@@ -7,7 +7,7 @@ import HorizontalHeader from '_organisms/HorizontalHeader';
 import HorizontalContent from '_organisms/HorizontalContent';
 import PromiseItemArray from '_utils/promiseArray';
 import { snakeToCamelCase } from 'json-style-converter/es5';
-import { getItemByItemId } from '_api/item';
+import { getItem } from '_api/item';
 import { object } from 'prop-types';
 
 export default function ItemListPage() {
@@ -49,7 +49,7 @@ export default function ItemListPage() {
       if (typeof elem === 'object') {
         return elem;
       }
-      return getItemByItemId(elem);
+      return getItem(elem);
     })).then((objectArray) => {
       const camelObjectArray = snakeToCamelCase(objectArray);
       setItemObjects({

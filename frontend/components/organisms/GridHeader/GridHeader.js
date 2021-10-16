@@ -6,7 +6,7 @@ import { Breadcrumbs } from '@mui/material';
 import { snakeToCamelCase } from 'json-style-converter/es5';
 
 import BreadCrumb from '_molecules/BreadCrumb';
-import { getItemByItemId } from '_api/item';
+import { getItem } from '_api/item';
 
 function arrayToBreadCrumb(array) {
   return array.map((elem) => <BreadCrumb key={elem.Id} link={`/item/${elem.Id}`} value={elem} />);
