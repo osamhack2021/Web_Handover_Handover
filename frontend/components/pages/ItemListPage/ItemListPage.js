@@ -16,7 +16,7 @@ const ItemList = ({ items, title, iconType }) => (
     <Stack direction="row" className="item-list-content" spacing={2}>
       {items != null ? (
         items.length > 0 ? (
-          items.map((item) => <Item item={item} />)
+          items.map((item) => <Item key={item._id} item={item} />)
         ) : (
           <div>표시할 항목이 없습니다.</div>
         )
