@@ -18,7 +18,7 @@
 > 더 나아가, 부대 간 효율적인 업무 방법을 공유하는 **통합적 업무 공유 플랫폼**을 제공하는 것을 목표로 하고 있습니다.<br>
 
 
-## 📖 목차 (
+## 📖 목차
 <ol>
  <li><a href="#features">기능 설명</a></li>
  <li><a href="#prerequisites">컴퓨터 구성 / 필수 조건 안내</a></li>
@@ -75,7 +75,7 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
 |:---:|:---:|:---:|:---:|
 |✔|✔|✔|✔|
  
-<h2 id="expectation"> ✨ Handover 기대효과 (Expactation) </h2>
+<h2 id="expectation"> ✨ Handover 기대효과 (Expectation) </h2>
  
  ### 👍 인수인계 방식의 체계화
   - 공통된 인수인계 문서 작성 플랫폼을 통한 **인수인계 방식 통일**
