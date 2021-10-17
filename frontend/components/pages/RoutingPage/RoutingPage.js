@@ -50,6 +50,7 @@ export default function RoutingPage() {
         </div>
         <div className="content-pane">
           <Header />
+          <div className="content-container">
           <Switch>
             {/* Home Page */}
             <Route path="/home" component={TestPage} />
@@ -84,6 +85,7 @@ export default function RoutingPage() {
               <Redirect to="/error" />
             </Route>
           </Switch>
+          </div>
         </div>
       </div>
     )
