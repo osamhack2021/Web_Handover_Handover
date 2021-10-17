@@ -9,7 +9,7 @@ import {
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import React, { useEffect } from "react";
-import MenuBar from "_molecules/MenuBar";
+import EditorMenuBar from "_frontend/components/molecules/EditorMenuBar";
 
 export default function Editor({
   content = null,
@@ -70,7 +70,7 @@ export default function Editor({
       sx={{ border: "2px solid #0d0d0d20", borderRadius: 2 }}
     >
       <Stack sx={{ mb: 1 }}>
-        <MenuBar editor={editor} sx={{ px: 1 }} />
+        <EditorMenuBar editor={editor} sx={{ px: 1 }} />
         <Divider flexItem />
       </Stack>
       {editor && (

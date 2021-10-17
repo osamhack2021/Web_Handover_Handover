@@ -11,9 +11,7 @@ import {
   mdiFormatQuoteClose, mdiRedo, mdiUndo
 } from "@mdi/js";
 import Icon from "@mdi/react";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
-import Stack from "@mui/material/Stack";
+import { Button, Divider, Stack } from "@mui/material";
 import React from "react";
 import "_styles/editor.scss";
 
@@ -21,7 +19,7 @@ const VerticalDivider = () => (
   <Divider orientation="vertical" sx={{ mx: 0.5 }} />
 );
 
-const MenuButton = ({ icon, size = 32, ...props }) => (
+const EditorMenuButton = ({ icon, size = 32, ...props }) => (
   <Button
     size="small"
     sx={{
@@ -37,7 +35,7 @@ const MenuButton = ({ icon, size = 32, ...props }) => (
   </Button>
 );
 
-const StyleMenuButton = ({
+const StyledEditorMenuButton = ({
   onClick,
   activeOn = null,
   isEnabled = true,
@@ -52,7 +50,7 @@ const StyleMenuButton = ({
       ? editor.isActive(activeOn) // e.g. editor.isActive("code")
       : editor.isActive(activeOn[0], activeOn[1]); // e.g. editor.isActive("heading", { level: 1 })
   return (
-    <MenuButton
+    <EditorMenuButton
       onClick={onClick}
       size="small"
       disabled={!isEnabled}
@@ -67,7 +65,7 @@ const StyleMenuButton = ({
   );
 };
 
-export default function MenuBar({ editor, size = 42, ...props }) {
+export default function EditorMenuBar({ editor, size = 42, ...props }) {
   if (!editor) {
     return null;
   }
@@ -80,13 +78,13 @@ export default function MenuBar({ editor, size = 42, ...props }) {
   return (
     <Stack direction="row" spacing={0.25} sx={{ ...props.sx, height: size }} divider={<VerticalDivider/>}>
       <Stack direction="row" spacing={0.25} sx={{ p: 0.5 }}>
-        <StyleMenuButton
+        <StyledEditorMenuButton
           onClick={() => editor.chain().focus().undo().run()}
           isEnabled={editor.can().undo()}
           icon={mdiUndo}
           editor={editor}
         />
-        <StyleMenuButton
+        <StyledEditorMenuButton
           onClick={() => editor.chain().focus().redo().run()}
           isEnabled={editor.can().redo()}
           icon={mdiRedo}
@@ -99,7 +97,7 @@ export default function MenuBar({ editor, size = 42, ...props }) {
           { level: 2, icon: mdiFormatHeader2 },
           { level: 3, icon: mdiFormatHeader3 },
         ].map((e) => (
-          <StyleMenuButton
+          <StyledEditorMenuButton
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: e.level }).run()
             }
@@ -111,12 +109,12 @@ export default function MenuBar({ editor, size = 42, ...props }) {
         ))}
       </Stack>
       <Stack direction="row" spacing={0.25} sx={{ p: 0.5 }}>
-        <StyleMenuButton
+        <StyledEditorMenuButton
           onClick={() => editor.chain().focus().unsetAllMarks().run()}
           icon={mdiFormatClear}
           editor={editor}
         />
-        <StyleMenuButton
+        <StyledEditorMenuButton
           onClick={() => editor.chain().focus().toggleBold().run}
           activeOn="bold"
           icon={mdiFormatBold}
@@ -124,13 +122,13 @@ export default function MenuBar({ editor, size = 42, ...props }) {
         />
       </Stack>
       <Stack direction="row" spacing={0.25} sx={{ p: 0.5 }}>
-        <StyleMenuButton
+        <StyledEditorMenuButton
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           icon={mdiFormatListBulleted}
           activeOn="bulletList"
           editor={editor}
         />
-        <StyleMenuButton
+        <StyledEditorMenuButton
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           icon={mdiFormatListNumbered}
           activeOn="orderedList"
@@ -138,19 +136,19 @@ export default function MenuBar({ editor, size = 42, ...props }) {
         />
       </Stack>
       <Stack direction="row" spacing={0.25} sx={{ p: 0.5 }}>
-        <StyleMenuButton
+        <StyledEditorMenuButton
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           icon={mdiFormatQuoteClose}
           activeOn="blockquote"
           editor={editor}
         />
-        <StyleMenuButton
+        <StyledEditorMenuButton
           onClick={() => editor.chain().focus().toggleCode().run()}
           icon={mdiCodeBraces}
           activeOn="code"
           editor={editor}
         />
-        <StyleMenuButton
+        <StyledEditorMenuButton
           onClick={() => editor.chain().focus().toggleCodeBlock().run()}
           icon={mdiCodeBracesBox}
           activeOn="codeBlock"
