@@ -40,9 +40,12 @@
     flex-direction: row;
     gap: 12px;
     padding-top: 8px;
+    
+    :first-child {
+      margin-left: auto;
+    }
 
     .item-profile-image {
-      margin-left: auto;
       width: 24px;
       height: 24px;
       border-radius: 50%;
