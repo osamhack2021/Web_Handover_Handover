@@ -5,11 +5,12 @@ import {
   mdiDotsVertical,
   mdiEarth,
   mdiFileEditOutline,
+  mdiFileTreeOutline,
   mdiPackageDown,
   mdiShare,
   mdiStar,
   mdiStarOutline,
-  mdiUpload,
+  mdiUpload
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import {
@@ -22,7 +23,7 @@ import {
   MenuItem,
   Skeleton,
   Stack,
-  Tooltip,
+  Tooltip
 } from "@mui/material";
 import { push } from "connected-react-router";
 import R from "ramda";
@@ -33,6 +34,7 @@ import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import LinkComponent from "_atoms/LinkComponent";
 import TypeIcon from "_atoms/TypeIcon";
+import ItemList from "_frontend/components/organisms/ItemList";
 import { dateElapsed, dateToString } from "_frontend/utils/date";
 import BreadCrumbs from "_molecules/BreadCrumbs";
 import Editor from "_molecules/Editor";
@@ -42,12 +44,12 @@ import {
   attemptDeleteItem,
   attemptGetItem,
   attemptGetItemChildren,
-  attemptPublishItem,
+  attemptPublishItem
 } from "_thunks/item";
 import {
   attemptAddBookmark,
   attemptGetUser,
-  attemptRemoveBookmark,
+  attemptRemoveBookmark
 } from "_thunks/user";
 import { deepEqual } from "_utils/compare";
 
@@ -127,11 +129,6 @@ export default function ItemPage() {
       dispatch(attemptGetItem(itemId))
         .then((item) => {
           setItem(item);
-          if (item.type !== "card") {
-            dispatch(attemptGetItemChildren(item.path)).then((items) => {
-              setItemChildren(items);
-            });
-          }
         })
         .catch(() => setVisible(false));
     } else {
@@ -149,12 +146,6 @@ export default function ItemPage() {
           }
         })
         .catch(() => setVisible(false));
-
-      if (item.type !== "card" && itemChildren == null) {
-        dispatch(attemptGetItemChildren(item.path)).then((children) => {
-          setItemChildren(children);
-        });
-      }
     }
 
     // setting recents of localstorage
@@ -176,6 +167,12 @@ export default function ItemPage() {
       dispatch(attemptGetUser(item.owner._id)).then((user) => {
         setItemOwner(user);
       });
+
+      if (item.type !== "card") {
+        dispatch(attemptGetItemChildren(item.path)).then((children) => {
+          setItemChildren(children.filter(i => i._id != item._id));
+        });
+      }
 
       switch (item.type) {
         case "cabinet": // will have 0 parents because it's the root item
@@ -333,8 +330,10 @@ export default function ItemPage() {
                 <TypeIcon type={item.type} size={1.5} opacity={0.7} />
               </Badge>
             </Tooltip>
+
             {/* Item title */}
-            <div className="item-title">{item.title}</div>
+            <div className="item-header-title">{item.title}</div>
+
             {/* Item action menus */}
             <Stack direction="row">
               <Tooltip title="북마크에 추가" arrow>
@@ -351,13 +350,18 @@ export default function ItemPage() {
             </Stack>
           </div>
         </Stack>
+
         {/* Item BreadCrumbs */}
         {itemParents != null ? (
           <BreadCrumbs itemArray={[...itemParents, item]} />
         ) : (
           <BreadCrumbs hierarchyLevel={hierarchyLevel[item.type]} />
         )}
-        {/* Item owner profile */}
+
+        {/* Item content */}
+        {item.content && <Editor content={item.content} editable={false} />}
+
+        {/* Item metadata (owner profile, created date) */}
         {itemOwner != null ? (
           <Stack className="item-profile">
             <img
@@ -381,7 +385,14 @@ export default function ItemPage() {
             <Skeleton width={200} height="1em" />
           </Stack>
         )}
-        {item.content && <Editor content={item.content} editable={false} />}
+
+        {/* Item children */}
+        {item.type !== "card" && <ItemList
+          items={itemChildren}
+          title="하위 항목"
+          icon={mdiFileTreeOutline}
+        />}
+
         <div>
           <div className="outer-div">
             <div className="grid-container">
