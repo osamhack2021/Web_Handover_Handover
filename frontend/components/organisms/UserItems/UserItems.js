@@ -12,7 +12,6 @@ const CardGrid = ({ cards }) => {
     <Container
       component={Container}
       maxWidth="md"
-      minWidth="sm"
       sx={{
         pt: 4,
         ml: 6,

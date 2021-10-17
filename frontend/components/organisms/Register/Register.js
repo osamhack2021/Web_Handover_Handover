@@ -1,19 +1,19 @@
+import LoadingButton from "@mui/lab/LoadingButton";
+import Container from "@mui/material/Container";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import ListSubheader from "@mui/material/ListSubheader";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import TextField from "@mui/material/TextField";
+import Tooltip from "@mui/material/Tooltip";
+import R from "ramda";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import R from "ramda";
-
-import { validateServiceNumber, validatePassword } from "_utils/validation";
 import { attemptRegister } from "_thunks/auth";
+import { validatePassword, validateServiceNumber } from "_utils/validation";
 
-import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import ListSubheader from "@mui/material/ListSubheader";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import LoadingButton from "@mui/lab/LoadingButton";
-import Tooltip from "@mui/material/Tooltip";
-import Container from "@mui/material/Container";
+
 
 
 export default function Register() {
@@ -165,7 +165,7 @@ export default function Register() {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="md">
       <div className="login-logo mx-auto" />
       <div className="login-title">회원가입</div>
       <div className="login-subtitle">환영합니다!</div>
