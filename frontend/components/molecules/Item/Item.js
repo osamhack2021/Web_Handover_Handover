@@ -22,12 +22,12 @@ import {
   Skeleton,
   Tooltip
 } from "@mui/material";
-import humanizeDuration from "humanize-duration";
 import R from "ramda";
 import React, { useEffect, useState } from "react";
 import { store as RNC } from "react-notifications-component";
 import { useDispatch, useSelector } from "react-redux";
 import LinkComponent from "_atoms/LinkComponent";
+import { dateElapsed, dateToString } from "_frontend/utils/date";
 import {
   attemptArchiveItem,
   attemptDeleteItem,
@@ -47,9 +47,7 @@ const borderRadius = {
 // Maximum number of line of the content
 const LINE_CLAMP = 4;
 
-const content = (item, itemChildren) => {
-  const dispatch = useDispatch();
-
+const renderContent = (item, itemChildren) => {
   if (item == null || !item.hasOwnProperty("content")) return null;
 
   if (item.type === "card") {
@@ -82,17 +80,6 @@ const content = (item, itemChildren) => {
       );
     }
   });
-};
-
-const dateElapsed = (date) => {
-  const created = new Date(date);
-  const now = new Date();
-  return `${humanizeDuration(now - created, {
-    language: "ko",
-    largest: 1,
-    spacer: "",
-    round: true,
-  })} 전`;
 };
 
 const statusIcon = {
@@ -290,10 +277,7 @@ export default function Item({
   // don't render if visible is false
   if (visible == false) return null;
 
-  const createdDate = new Date(item.created);
-  const createdString = `${createdDate.toLocaleDateString(
-    "ko-KR"
-  )} ${createdDate.toLocaleTimeString("en-GB")}`;
+  const content = renderContent(item, itemChildren)
 
   return item == null ? (
     <div className="item" key={itemId}>
@@ -360,10 +344,18 @@ export default function Item({
             <div />
           )}
         </div>
-        <div className="item-content">{content(item, itemChildren)}</div>
+        {content != null ? (
+          <div className="item-content">{content}</div>
+        ) : (
+          <div className="item-content">
+            <Skeleton width="100%" />
+            <Skeleton width="100%" />
+            <Skeleton width="75%" />
+          </div>
+        )}
       </ButtonBase>
       <div className="item-footer">
-        <Tooltip title={createdString} arrow>
+        <Tooltip title={dateToString(item.created)} arrow>
           <div className="item-description">
             {`${item.owner.rank} ${item.owner.name} · ${dateElapsed(
               item.created

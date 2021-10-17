@@ -34,4 +34,28 @@
       text-overflow: ellipsis;
     }
   }
+
+  .item-profile {
+    align-items: center;
+    flex-direction: row;
+
+    .item-profile-image {
+      width: 24px;
+      height: 24px;
+      margin-right: 12px;
+      border-radius: 50%;
+      border: 1px solid #0005;
+    }
+
+    .item-profile-name {
+      font-size: 1.15em;
+      font-weight: bold;
+      text-align: start;
+      padding-top: 3px;
+    }
+
+    .item-profile-name-loading {
+      width: 100px;
+    }
+  }
 }

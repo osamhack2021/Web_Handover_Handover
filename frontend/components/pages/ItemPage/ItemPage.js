@@ -18,6 +18,7 @@ import {
   Divider,
   IconButton,
   ListItemIcon,
+  Skeleton,
   Menu,
   MenuItem,
   Stack,
@@ -41,7 +42,11 @@ import {
   attemptGetItemChildren,
   attemptPublishItem
 } from "_thunks/item";
-import { attemptAddBookmark, attemptRemoveBookmark } from "_thunks/user";
+import {
+  attemptAddBookmark,
+  attemptGetUser,
+  attemptRemoveBookmark
+} from "_thunks/user";
 import { deepEqual } from "_utils/compare";
 
 const typeString = {
@@ -85,6 +90,8 @@ export default function ItemPage() {
   const [isBookmarked, setBookmarked] = useState(
     user.bookmarks.includes(itemId)
   );
+  const [itemOwner, setItemOwner] = useState(null);
+
   // visibility of the component; used on delete and unauthorized items
   const [visible, setVisible] = useState(true);
 
@@ -164,6 +171,10 @@ export default function ItemPage() {
 
   useEffect(() => {
     if (item != null) {
+      dispatch(attemptGetUser(item.owner._id)).then((user) => {
+        setItemOwner(user);
+      });
+
       switch (item.type) {
         case "cabinet": // will have 0 parents because it's the root item
           console.log("switch: case =", item.type, pathArray);
@@ -302,9 +313,7 @@ export default function ItemPage() {
                 badgeContent={
                   status != null ? (
                     <Icon size={0.75} path={statusIcon[status]} opacity={0.7} />
-                  ) : (
-                    null
-                  )
+                  ) : null
                 }
                 anchorOrigin={{
                   vertical: "bottom",
@@ -343,6 +352,22 @@ export default function ItemPage() {
             <BreadCrumbs hierarchyLevel={hierarchyLevel[item.type]} />
           )}
         </Stack>
+        {itemOwner != null ? (
+          <Stack className="item-profile">
+            <img
+              className="item-profile-image"
+              src={itemOwner.profileImageUrl || "/images/default-profile.png"}
+            />
+            <div className="item-profile-name">
+              {itemOwner.rank} {itemOwner.name}
+            </div>
+          </Stack>
+        ) : (
+          <Stack className="item-profile">
+            <Skeleton className="item-profile-image"/>
+            <Skeleton className="item-profile-name" />
+          </Stack>
+        )}
         {item.content && <Editor content={item.content} editable={false} />}
         <div>
           <div className="outer-div">
