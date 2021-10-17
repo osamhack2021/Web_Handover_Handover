@@ -86,7 +86,7 @@ async function init() {
     let icsqd = {
         serviceNumber: 'icsqd',
         password: 'icsqd',
-        name: '전대령',
+        name: '전민철',
         rank: '대령',
         title: '전대장',
         status: 'admin',
@@ -122,7 +122,7 @@ async function init() {
     let AAA = {
         serviceNumber: 'AAA',
         password: 'AAA',
-        name: 'A대위',
+        name: '박찬우',
         rank: '대위',
         title: 'AAA과장',
         status: 'active',
@@ -157,7 +157,7 @@ async function init() {
     let BBB = {
         serviceNumber: 'BBB',
         password: 'BBB',
-        name: 'B대위',
+        name: '박대영',
         rank: '대위',
         title: 'BBB과장',
         status: 'active',
@@ -191,7 +191,7 @@ async function init() {
     let CCC = {
         serviceNumber: 'CCC',
         password: 'CCC',
-        name: 'C소령',
+        name: '김길동',
         rank: '소령',
         title: 'CCC대장',
         status: 'active',
