@@ -47,10 +47,17 @@
   }
 }
 
-.item-list-content {
-  height: $height;
-  align-items: center;
-  margin: 16px 0;
-  gap: 8px;
-  overflow-x: hidden;
+.item-list-scroll {
+  width: 100% !important;
+  height: $height + 16px * 2 !important;
+
+  .item-list-content {
+    width: 100%;
+    height: $height;
+    display: flex;
+    align-items: center;
+    margin: 16px 16px 16px 0;
+    gap: 8px;
+    overflow-x: hidden;
+  }
 }
