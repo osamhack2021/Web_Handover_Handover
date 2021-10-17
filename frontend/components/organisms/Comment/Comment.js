@@ -1,59 +1,52 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import CardHeader from '@mui/material/CardHeader';
+import { Skeleton, Tooltip } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link } from 'react-router-dom';
+import { attemptGetUser } from "_thunks/user";
+import { dateElapsed, dateToString } from "_utils/date";
 
-import { getUser } from '_api/user';
-
-export default function Comment({ commentObject }) {
+export default function Comment({ comment }) {
   // decomposes comment Object
-  const {
-    content, by, isEdited, date,
-  } = commentObject;
   const [user, setUser] = useState({});
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    if (by !== undefined) {
-      getUser(by).then((data) => {
-        setUser(data);
-        setLoading(false);
+    if (comment != null) {
+      dispatch(attemptGetUser(comment.by)).then((user) => {
+        setUser(user);
       });
     }
-  }, []);
-  return !loading && (
-    <Stack direction="row">
-      <img
-        alt="profile_image"
-        style={{
-          width: '36px',
-          height: '36px',
-          marginRight: '12px',
-          borderRadius: '50%',
-        }}
-        src={user.profileImageUrl || '/images/default-profile.png'}
-      />
-      <Card
-        sx={{
-          maxWidth: 'md',
-        }}
-      >
-        <CardHeader
-          title={user.name}
-          subheader={date}
-        />
-        {content}
-      </Card>
-    </Stack>
+  }, [comment]);
 
+  return (
+    <div className="comment-section-item">
+      {user != null ? (
+        <img
+          className="comment-section-profile-image"
+          src={user.profileImageUrl || "/images/default-profile.png"}
+        />
+      ) : (
+        <Skeleton variant="circular" width={48} height={48} />
+      )}
+      <div className="comment-section-content">
+        {user != null && comment != null ? (
+          <div className="comment-section-item-header">
+            <Link to={`/user/${user._id}`}>
+              {user.rank} {user.name}
+            </Link>
+            {"님이"}
+            <Tooltip title={dateToString(comment.date)} arrow>
+              <div>{dateElapsed(comment.date)}</div>
+            </Tooltip>
+            {"작성"}
+          </div>
+        ) : (
+          <Skeleton width="75%" height="1em" />
+        )}
+        <div className="comment-section-item-content">
+        {comment && comment.content}
+        </div>
+      </div>
+    </div>
   );
 }
-
-Comment.propTypes = {
-  commentObject: PropTypes.shape({
-    content: PropTypes.string,
-    by: PropTypes.string,
-    isEdited: PropTypes.bool,
-    date: PropTypes.string,
-  }).isRequired,
-};

@@ -33,6 +33,7 @@ import { Link } from "react-router-dom";
 import LinkComponent from "_atoms/LinkComponent";
 import TypeIcon from "_atoms/TypeIcon";
 import ItemList from "_frontend/components/organisms/ItemList";
+import CommentSection from "_frontend/components/templates/CommentSection";
 import { dateElapsed, dateToString } from "_frontend/utils/date";
 import BreadCrumbs from "_molecules/BreadCrumbs";
 import Editor from "_molecules/Editor";
@@ -380,7 +381,7 @@ export default function ItemPage() {
               <Tooltip title={dateToString(item.created)} arrow>
                 <div>{dateElapsed(item.created)}</div>
               </Tooltip>
-              {"작성함"}
+              {"작성"}
             </div>
           </Stack>
         ) : (
@@ -399,21 +400,7 @@ export default function ItemPage() {
 
         {/* Item comments */}
         <ItemListHeader title="댓글" icon={mdiCommentTextOutline} />
-
-        <div>
-          <div className="outer-div">
-            <div className="grid-container">
-              {/* <GridHeader title={item.title} pathArray={pathObject.pathArray} />
-          <div className="grid-layout-container">
-            <GridLayout cardArray={childObject.childArray} />
-          </div> */}
-            </div>
-          </div>
-          {item.comments &&
-            item.comments.map((elem) => (
-              <Comment key={item.comments.indexOf(elem)} commentObject={elem} />
-            ))}
-        </div>
+        <CommentSection comments={item.comments} currentUser={user} />
       </Stack>
       <Menu
         anchorEl={anchorEl}
