@@ -4,7 +4,7 @@ import { updateUser } from "_actions/user";
 import { getUser, putUser, putUserPassword } from "_api/user";
 import { dispatchError } from "_utils/api";
 
-export const attemptGetUser = () => (dispatch) => {
+export const attemptGetCurrentUser = () => (dispatch) => {
   try {
     const currentUserId = JSON.parse(localStorage.getItem("user"))._id;
 
@@ -23,6 +23,17 @@ export const attemptGetUser = () => (dispatch) => {
       reject("Error: User not logged in");
     });
   }
+};
+
+export const attemptGetUser = (userId) => (dispatch) => {
+  return getUser(userId)
+    .then((data) => {
+      return data;
+    })
+    .catch(() => {
+      // Redirect to /login if there is no user logged in
+      dispatchError(dispatch);
+    });
 };
 
 export const attemptUpdateUser = (updatedUser) => (dispatch) => {

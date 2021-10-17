@@ -9,7 +9,7 @@ import LoginPage from '_pages/LoginPage';
 import RegisterPage from '_pages/RegisterPage';
 import RoutingPage from '_pages/RoutingPage';
 import WelcomePage from '_pages/WelcomePage';
-import { attemptGetUser } from '_thunks/user';
+import { attemptGetCurrentUser } from '_thunks/user';
 
 export default function Main({ location }) {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ export default function Main({ location }) {
   useEffect(() => {
     let subscribed = true;
 
-    dispatch(attemptGetUser())
+    dispatch(attemptGetCurrentUser())
       .catch(R.identity)
       .then(() => subscribed && setLoading(false));
 
