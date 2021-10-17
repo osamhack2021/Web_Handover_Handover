@@ -47,9 +47,7 @@ const borderRadius = {
 // Maximum number of line of the content
 const LINE_CLAMP = 4;
 
-const content = (item, itemChildren) => {
-  const dispatch = useDispatch();
-
+const renderContent = (item, itemChildren) => {
   if (item == null || !item.hasOwnProperty("content")) return null;
 
   if (item.type === "card") {
@@ -295,6 +293,8 @@ export default function Item({
     "ko-KR"
   )} ${createdDate.toLocaleTimeString("en-GB")}`;
 
+  const content = renderContent(item, itemChildren)
+
   return item == null ? (
     <div className="item" key={itemId}>
       <ButtonBase
@@ -360,7 +360,15 @@ export default function Item({
             <div />
           )}
         </div>
-        <div className="item-content">{content(item, itemChildren)}</div>
+        {content != null ? (
+          <div className="item-content">{content}</div>
+        ) : (
+          <div className="item-content">
+            <Skeleton width="100%" />
+            <Skeleton width="100%" />
+            <Skeleton width="75%" />
+          </div>
+        )}
       </ButtonBase>
       <div className="item-footer">
         <Tooltip title={createdString} arrow>
