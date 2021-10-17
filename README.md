@@ -1,7 +1,7 @@
 # 📋 Handover - 국방업무공유체계 
 <div align="center">
  <br><br>
- <img src='http://drive.google.com/uc?export=view&id=1OGPVGQsgtd8wetUAGPmSOkGWOJXWdTHh' width="700" height="224" />
+ <img src='http://drive.google.com/uc?export=view&id=1OGPVGQsgtd8wetUAGPmSOkGWOJXWdTHh' width="400" />
  <br><br><br>
  <img alt="GitHub language count" src="https://img.shields.io/github/contributors/osamhack2021/WEB_Handover_Handover?style=for-the-badge&logo">
  <img alt="GitHub language count" src="https://img.shields.io/github/issues-closed/osamhack2021/WEB_Handover_Handover?style=for-the-badge&logo">
