@@ -9,7 +9,7 @@ import {
   mdiShare,
   mdiStar,
   mdiStarOutline,
-  mdiUpload,
+  mdiUpload
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import {
@@ -20,20 +20,20 @@ import {
   Menu,
   MenuItem,
   Skeleton,
-  Tooltip,
+  Tooltip
 } from "@mui/material";
-import humanizeDuration from "humanize-duration";
 import R from "ramda";
 import React, { useEffect, useState } from "react";
 import { store as RNC } from "react-notifications-component";
 import { useDispatch, useSelector } from "react-redux";
 import LinkComponent from "_atoms/LinkComponent";
+import { dateElapsed, dateToString } from "_frontend/utils/date";
 import {
   attemptArchiveItem,
   attemptDeleteItem,
   attemptGetItem,
   attemptGetItemChildren,
-  attemptPublishItem,
+  attemptPublishItem
 } from "_thunks/item";
 import { attemptAddBookmark, attemptRemoveBookmark } from "_thunks/user";
 import { deepEqual } from "_utils/compare";
@@ -47,9 +47,7 @@ const borderRadius = {
 // Maximum number of line of the content
 const LINE_CLAMP = 4;
 
-const content = (item, itemChildren) => {
-  const dispatch = useDispatch();
-
+const renderContent = (item, itemChildren) => {
   if (item == null || !item.hasOwnProperty("content")) return null;
 
   if (item.type === "card") {
@@ -84,17 +82,6 @@ const content = (item, itemChildren) => {
   });
 };
 
-const dateElapsed = (date) => {
-  const created = new Date(date);
-  const now = new Date();
-  return `${humanizeDuration(now - created, {
-    language: "ko",
-    largest: 1,
-    spacer: "",
-    round: true,
-  })} 전`;
-};
-
 const statusIcon = {
   archived: mdiPackageDown,
   public: mdiEarth,
@@ -116,9 +103,7 @@ export default function Item({
 
   const itemId =
     itemObject != null
-      ? itemObject.hasOwnProperty("Id")
-        ? itemObject.Id // id from local store
-        : itemObject.hasOwnProperty("_id")
+      ? itemObject.hasOwnProperty("_id")
         ? itemObject._id // id from API response
         : id
       : id; // id from props
@@ -253,7 +238,7 @@ export default function Item({
       ? "public"
       : null;
 
-  const isCurrentUserOwner = item ? item.owner._id === user.Id : false;
+  const isCurrentUserOwner = item ? item.owner._id === user._id : false;
   const isCurrentUserEditor =
     item != null && item.hasOwnProperty("accessGroups")
       ? item.accessGroups.edit.includes(user.group)
@@ -292,10 +277,7 @@ export default function Item({
   // don't render if visible is false
   if (visible == false) return null;
 
-  const createdDate = new Date(item.created);
-  const createdString = `${createdDate.toLocaleDateString(
-    "ko-KR"
-  )} ${createdDate.toLocaleTimeString("en-GB")}`;
+  const content = renderContent(item, itemChildren)
 
   return item == null ? (
     <div className="item" key={itemId}>
@@ -362,10 +344,18 @@ export default function Item({
             <div />
           )}
         </div>
-        <div className="item-content">{content(item, itemChildren)}</div>
+        {content != null ? (
+          <div className="item-content">{content}</div>
+        ) : (
+          <div className="item-content">
+            <Skeleton width="100%" />
+            <Skeleton width="100%" />
+            <Skeleton width="75%" />
+          </div>
+        )}
       </ButtonBase>
       <div className="item-footer">
-        <Tooltip title={createdString} arrow>
+        <Tooltip title={dateToString(item.created)} arrow>
           <div className="item-description">
             {`${item.owner.rank} ${item.owner.name} · ${dateElapsed(
               item.created

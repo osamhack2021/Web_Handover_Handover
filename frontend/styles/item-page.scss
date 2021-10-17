@@ -20,15 +20,56 @@
   .item-header {
     display: flex;
     flex-direction: row;
-    gap: 16px;
+    align-items: center;
+    margin-bottom: 8px;
+    gap: 12px;
 
-    .item-title {
+    .item-header-title {
       font-size: 2.5em;
       font-weight: bolder;
       flex-grow: 1;
+      margin-bottom: -6px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+  }
+
+  .item-profile {
+    align-items: center;
+    flex-direction: row;
+    gap: 12px;
+    padding-top: 8px;
+    
+    :first-child {
+      margin-left: auto;
+    }
+
+    .item-profile-image {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid #0003;
+    }
+
+    .item-profile-name {
+      display: flex;
+      gap: 4px;
+      flex-direction: row;
+      font-size: 1em;
+      text-align: start;
+      padding-top: 3px;
+      color: $black-b70;
+
+      a {
+        color: $black-b70;
+        text-decoration: none;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .item-list {
+    margin-top: 32px;
   }
 }

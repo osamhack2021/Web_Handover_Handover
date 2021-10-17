@@ -21,7 +21,7 @@ export default function SearchPage() {
       }
       setLoading(false);
     });
-  }, []);
+  }, [searchQuery]);
   return !loading && (
     <div className="recommend-page">
       <div className="recommend-page-header">

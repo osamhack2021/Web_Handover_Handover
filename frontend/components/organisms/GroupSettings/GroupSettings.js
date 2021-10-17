@@ -16,7 +16,7 @@ export default function GroupSettings() {
 
   // Get managing groups
   useEffect(() => {
-    searchGroupByAdmin(user.Id).then((result) => setManagingGroup(result));
+    searchGroupByAdmin(user._id).then((result) => setManagingGroup(result));
   }, [user]);
 
   // Get group members of each groups after managing groups are fetched & Set division and admin field of each members

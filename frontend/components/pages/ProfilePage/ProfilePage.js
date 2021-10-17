@@ -16,10 +16,10 @@ import R from "ramda";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Route, Switch, useLocation, useParams } from "react-router";
+import LinkComponent from "_atoms/LinkComponent";
 import { getGroupByGroupId } from "_frontend/api/group";
 import { getUserItem } from "_frontend/api/item";
 import { getUser } from "_frontend/api/user";
-import LinkComponent from "_atoms/LinkComponent";
 import GroupSettings from "_frontend/components/organisms/GroupSettings";
 import ProfileSettings from "_frontend/components/organisms/ProfileSettings";
 import Profile from "_organisms/Profile";
@@ -54,7 +54,7 @@ export default function ProfilePage() {
     ? params.userId
     : null;
   // userId from redux state (/account)
-  const userIdFromLocal = useSelector(R.pick(["user"])).user.Id;
+  const userIdFromLocal = useSelector(R.pick(["user"])).user._id;
 
   const userId = userIdFromParams == null ? userIdFromLocal : userIdFromParams;
 

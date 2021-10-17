@@ -13,7 +13,7 @@ export default function RecommendPage({ location }) {
   const { user } = useSelector(R.pick(['user']));
 
   useEffect(() => {
-    getRecommendItem(user.Id).then((data) => {
+    getRecommendItem(user._id).then((data) => {
       setRecommendObject(data);
       setLoading(false);
     });

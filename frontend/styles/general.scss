@@ -39,13 +39,12 @@ a {
   }
 }
 
-// Remove Bulma conflicts with React Notifications Component
-.notifications-component .notification {
-  background-color: unset;
-  padding: unset;
-}
-
 // Bug in production
 .select select {
   padding-right: 2.5em;
+}
+
+// Override MUI Tooltip top margin
+.MuiTooltip-tooltip {
+  margin-top: 8px !important;
 }
