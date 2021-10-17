@@ -1,12 +1,10 @@
 import {
-  mdiAccountMultipleCheck,
-  mdiContentDuplicate,
+  mdiAccountMultipleCheck, mdiCommentTextOutline, mdiContentDuplicate,
   mdiDelete,
   mdiDotsVertical,
   mdiEarth,
   mdiFileEditOutline,
-  mdiFileTreeOutline,
-  mdiPackageDown,
+  mdiFileTreeOutline, mdiPackageDown,
   mdiShare,
   mdiStar,
   mdiStarOutline,
@@ -38,6 +36,7 @@ import ItemList from "_frontend/components/organisms/ItemList";
 import { dateElapsed, dateToString } from "_frontend/utils/date";
 import BreadCrumbs from "_molecules/BreadCrumbs";
 import Editor from "_molecules/Editor";
+import ItemListHeader from "_molecules/ItemListHeader";
 import Comment from "_organisms/Comment";
 import {
   attemptArchiveItem,
@@ -397,6 +396,9 @@ export default function ItemPage() {
           title="하위 항목"
           icon={mdiFileTreeOutline}
         />}
+
+        {/* Item comments */}
+        <ItemListHeader title="댓글" icon={mdiCommentTextOutline} />
 
         <div>
           <div className="outer-div">
