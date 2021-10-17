@@ -1,6 +1,5 @@
 import { Stack } from "@mui/material";
 import React from "react";
-import HorizontalScroll from 'react-scroll-horizontal';
 import TypeIcon from "_atoms/TypeIcon";
 import Item from "_molecules/Item";
 
@@ -13,7 +12,7 @@ export default function ItemList({ items, title, icon, iconType }) {
         ) : null}
         {title && <div className="item-list-title">{title}</div>}
       </div>
-      <HorizontalScroll className="item-list-scroll">
+      <div className="item-list-scroll">
         <Stack direction="row" className="item-list-content" spacing={2}>
           {items != null ? (
             items.length > 0 ? (
@@ -25,7 +24,7 @@ export default function ItemList({ items, title, icon, iconType }) {
             <div>Loading...</div>
           )}
         </Stack>
-      </HorizontalScroll>
+      </div>
     </div>
   );
 }

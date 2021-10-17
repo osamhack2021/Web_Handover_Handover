@@ -48,16 +48,35 @@
 }
 
 .item-list-scroll {
-  width: 100% !important;
-  height: $height + 16px * 2 !important;
+  width: 100%;
+  overflow-x: scroll;
+  margin-bottom: 8px;
 
   .item-list-content {
-    width: 100%;
     height: $height;
     display: flex;
     align-items: center;
-    margin: 16px 16px 16px 0;
+    margin: 16px 16px 8px 0;
     gap: 8px;
-    overflow-x: hidden;
   }
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #e8817370;
+  border-radius: 20px;
+  border: 5px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #e8817350;
 }
