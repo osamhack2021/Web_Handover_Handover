@@ -1,11 +1,11 @@
-import { Container, Stack } from "@mui/material";
-import R from "ramda";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router";
-import TypeIcon from "_atoms/TypeIcon";
-import Item from "_molecules/Item";
-import { attemptGetItem } from "_thunks/item";
+import { Container, Stack } from '@mui/material';
+import R from 'ramda';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router';
+import TypeIcon from '_atoms/TypeIcon';
+import Item from '_molecules/Item';
+import { attemptGetItem } from '_thunks/item';
 
 const ItemList = ({ items, title, iconType }) => (
   <div className="item-list">
@@ -13,7 +13,7 @@ const ItemList = ({ items, title, iconType }) => (
       <TypeIcon type={iconType} size={1.5} opacity={0.7} />
       <div className="item-list-title">{title}</div>
     </div>
-    <Stack direction="row" className="item-list-content">
+    <Stack direction="row" className="item-list-content" spacing={2}>
       {items != null ? (
         items.length > 0 ? (
           items.map((item) => <Item item={item} />)
@@ -28,44 +28,44 @@ const ItemList = ({ items, title, iconType }) => (
 );
 
 export default function ItemListPage() {
-  const { user } = useSelector(R.pick(["user"]));
-  const { itemCache } = useSelector(R.pick(["itemCache"]));
+  const { user } = useSelector(R.pick(['user']));
+  const { itemCache } = useSelector(R.pick(['itemCache']));
 
   const dispatch = useDispatch();
 
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState('');
   const [items, setItems] = useState(null);
   const { pathname } = useLocation();
 
   const addItem = (item) => {
-    console.log("adding item", item, "previous item", items);
-    let currentItems = items != null ? items : [];
+    console.log('adding item', item, 'previous item', items);
+    const currentItems = items != null ? items : [];
     setItems([...currentItems, item]);
   };
 
   useEffect(() => {
     let array = [];
     switch (pathname) {
-      case "/bookmarks":
-        setTitle("북마크");
+      case '/bookmarks':
+        setTitle('북마크');
         array = user.bookmarks;
         break;
-      case "/recents":
-        setTitle("최근에 본 문서");
-        const localStorageRecents = JSON.parse(localStorage.getItem("recents"));
+      case '/recents':
+        setTitle('최근에 본 문서');
+        const localStorageRecents = JSON.parse(localStorage.getItem('recents'));
         array = localStorageRecents != null ? localStorageRecents : [];
         break;
-      case "/drafts":
-        setTitle("임시저장한 문서");
-        array = Object.keys(itemCache).map(itemId => itemCache[itemId]).filter(
-          (item) => item.owner._id === user._id && item.status === "draft"
+      case '/drafts':
+        setTitle('임시저장한 문서');
+        array = Object.keys(itemCache).map((itemId) => itemCache[itemId]).filter(
+          (item) => item.owner._id === user._id && item.status === 'draft',
         );
         break;
       default:
         array = [];
     }
 
-    let cachedItems = [];
+    const cachedItems = [];
 
     array.forEach((itemId) => {
       if (itemCache.hasOwnProperty(itemId)) {
@@ -78,12 +78,9 @@ export default function ItemListPage() {
     setItems(cachedItems);
   }, [pathname, user]);
 
-  const cabinetItems =
-    items != null ? items.filter((item) => item.type === "cabinet") : null;
-  const documentItems =
-    items != null ? items.filter((item) => item.type === "document") : null;
-  const cardItems =
-    items != null ? items.filter((item) => item.type === "card") : null;
+  const cabinetItems = items != null ? items.filter((item) => item.type === 'cabinet') : null;
+  const documentItems = items != null ? items.filter((item) => item.type === 'document') : null;
+  const cardItems = items != null ? items.filter((item) => item.type === 'card') : null;
 
   return items != null ? (
     <Container maxWidth="md">
