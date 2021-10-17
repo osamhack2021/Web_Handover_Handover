@@ -1,7 +1,9 @@
 import {
-  mdiFileCabinet, mdiFileDocumentOutline, mdiTextBoxOutline
+  mdiFileCabinet,
+  mdiFileDocumentOutline,
+  mdiTextBoxOutline
 } from "@mdi/js";
-import { Icon } from '@mdi/react';
+import { Icon } from "@mdi/react";
 import React from "react";
 
 const icon = {
@@ -11,7 +13,10 @@ const icon = {
 };
 
 export default function TypeIcon({ type, ...props }) {
-  return (
+  const isString = typeof type === "string";
+  return isString ? (
     <Icon path={icon[type]} {...props} />
+  ) : (
+    <Icon path={type} {...props} />
   );
 }

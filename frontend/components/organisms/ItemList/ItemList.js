@@ -3,12 +3,14 @@ import React from "react";
 import TypeIcon from "_atoms/TypeIcon";
 import Item from "_molecules/Item";
 
-export default function ItemList({ items, title, iconType }) {
+export default function ItemList({ items, title, icon, iconType }) {
   return (
     <div className="item-list">
       <div className="item-list-header">
-        <TypeIcon type={iconType} size={1.5} opacity={0.7} />
-        <div className="item-list-title">{title}</div>
+        {iconType != null || icon != null ? (
+          <TypeIcon type={iconType} path={icon} size={1.5} opacity={0.7} />
+        ) : null}
+        {title && <div className="item-list-title">{title}</div>}
       </div>
       <Stack direction="row" className="item-list-content" spacing={2}>
         {items != null ? (
