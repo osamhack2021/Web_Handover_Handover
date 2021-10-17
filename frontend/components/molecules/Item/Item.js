@@ -22,12 +22,12 @@ import {
   Skeleton,
   Tooltip
 } from "@mui/material";
-import humanizeDuration from "humanize-duration";
 import R from "ramda";
 import React, { useEffect, useState } from "react";
 import { store as RNC } from "react-notifications-component";
 import { useDispatch, useSelector } from "react-redux";
 import LinkComponent from "_atoms/LinkComponent";
+import { dateElapsed, dateToString } from "_frontend/utils/date";
 import {
   attemptArchiveItem,
   attemptDeleteItem,
@@ -80,17 +80,6 @@ const renderContent = (item, itemChildren) => {
       );
     }
   });
-};
-
-const dateElapsed = (date) => {
-  const created = new Date(date);
-  const now = new Date();
-  return `${humanizeDuration(now - created, {
-    language: "ko",
-    largest: 1,
-    spacer: "",
-    round: true,
-  })} 전`;
 };
 
 const statusIcon = {
@@ -288,11 +277,6 @@ export default function Item({
   // don't render if visible is false
   if (visible == false) return null;
 
-  const createdDate = new Date(item.created);
-  const createdString = `${createdDate.toLocaleDateString(
-    "ko-KR"
-  )} ${createdDate.toLocaleTimeString("en-GB")}`;
-
   const content = renderContent(item, itemChildren)
 
   return item == null ? (
@@ -371,7 +355,7 @@ export default function Item({
         )}
       </ButtonBase>
       <div className="item-footer">
-        <Tooltip title={createdString} arrow>
+        <Tooltip title={dateToString(item.created)} arrow>
           <div className="item-description">
             {`${item.owner.rank} ${item.owner.name} · ${dateElapsed(
               item.created
