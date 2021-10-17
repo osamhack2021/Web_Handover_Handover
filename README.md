@@ -27,6 +27,7 @@
  <li><a href="#competitiveness">경쟁력</a></li>
  <li><a href="#install">설치 안내</a></li>
  <li><a href="#gettingstarted">프로젝트 사용법</a></li>
+ <li><a href="#structure">소스코드 구조</a></li>
  <li><a href="#teaminfo">팀 정보</a></li>
  <li><a href="#license">저작권 및 사용권 정보</a></li>
 </ol>
@@ -145,6 +146,15 @@ npm down
 <h2 id="gettingstarted"> 🏃 프로젝트 사용법 (Getting Started) </h2>
 
 - yet to do...
+ 
+<h2 id="structure"> 🕹️ 소스코드 구조 (Source Code Structure) </h2>
+
+* Environment
+    - `/`
+* WEB(FE)
+    - `/frontend`
+* WEB(BE)
+    - `/backend`
  
 <h2 id="teaminfo"> 👨‍👦‍👦 팀 정보 (Team Info) </h2>
 
