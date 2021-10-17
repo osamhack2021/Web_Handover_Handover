@@ -9,7 +9,7 @@ import {
   mdiShare,
   mdiStar,
   mdiStarOutline,
-  mdiUpload
+  mdiUpload,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import {
@@ -18,11 +18,11 @@ import {
   Divider,
   IconButton,
   ListItemIcon,
-  Skeleton,
   Menu,
   MenuItem,
+  Skeleton,
   Stack,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import { push } from "connected-react-router";
 import R from "ramda";
@@ -30,8 +30,10 @@ import React, { useEffect, useState } from "react";
 import { store as RNC } from "react-notifications-component";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 import LinkComponent from "_atoms/LinkComponent";
 import TypeIcon from "_atoms/TypeIcon";
+import { dateElapsed, dateToString } from "_frontend/utils/date";
 import BreadCrumbs from "_molecules/BreadCrumbs";
 import Editor from "_molecules/Editor";
 import Comment from "_organisms/Comment";
@@ -40,12 +42,12 @@ import {
   attemptDeleteItem,
   attemptGetItem,
   attemptGetItemChildren,
-  attemptPublishItem
+  attemptPublishItem,
 } from "_thunks/item";
 import {
   attemptAddBookmark,
   attemptGetUser,
-  attemptRemoveBookmark
+  attemptRemoveBookmark,
 } from "_thunks/user";
 import { deepEqual } from "_utils/compare";
 
@@ -331,7 +333,9 @@ export default function ItemPage() {
                 <TypeIcon type={item.type} size={1.5} opacity={0.7} />
               </Badge>
             </Tooltip>
+            {/* Item title */}
             <div className="item-title">{item.title}</div>
+            {/* Item action menus */}
             <Stack direction="row">
               <Tooltip title="북마크에 추가" arrow>
                 <IconButton onClick={toggleBookmark}>
@@ -346,12 +350,14 @@ export default function ItemPage() {
               </IconButton>
             </Stack>
           </div>
-          {itemParents != null ? (
-            <BreadCrumbs itemArray={[...itemParents, item]} />
-          ) : (
-            <BreadCrumbs hierarchyLevel={hierarchyLevel[item.type]} />
-          )}
         </Stack>
+        {/* Item BreadCrumbs */}
+        {itemParents != null ? (
+          <BreadCrumbs itemArray={[...itemParents, item]} />
+        ) : (
+          <BreadCrumbs hierarchyLevel={hierarchyLevel[item.type]} />
+        )}
+        {/* Item owner profile */}
         {itemOwner != null ? (
           <Stack className="item-profile">
             <img
@@ -359,13 +365,20 @@ export default function ItemPage() {
               src={itemOwner.profileImageUrl || "/images/default-profile.png"}
             />
             <div className="item-profile-name">
-              {itemOwner.rank} {itemOwner.name}
+              <Link to={`/user/${itemOwner._id}`}>
+                {itemOwner.rank} {itemOwner.name}
+              </Link>
+              {"님이"}
+              <Tooltip title={dateToString(item.created)} arrow>
+                <div>{dateElapsed(item.created)}</div>
+              </Tooltip>
+              {"작성함"}
             </div>
           </Stack>
         ) : (
           <Stack className="item-profile">
-            <Skeleton className="item-profile-image"/>
-            <Skeleton className="item-profile-name" />
+            <Skeleton variant="circular" width={24} height={24} />
+            <Skeleton width={200} height="1em" />
           </Stack>
         )}
         {item.content && <Editor content={item.content} editable={false} />}

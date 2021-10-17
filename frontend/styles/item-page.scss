@@ -38,24 +38,30 @@
   .item-profile {
     align-items: center;
     flex-direction: row;
+    gap: 12px;
+    padding-top: 8px;
 
     .item-profile-image {
       width: 24px;
       height: 24px;
-      margin-right: 12px;
       border-radius: 50%;
-      border: 1px solid #0005;
+      border: 1px solid #0003;
     }
 
     .item-profile-name {
-      font-size: 1.15em;
-      font-weight: bold;
+      display: flex;
+      gap: 4px;
+      flex-direction: row;
+      font-size: 1em;
       text-align: start;
       padding-top: 3px;
-    }
+      color: $black-b70;
 
-    .item-profile-name-loading {
-      width: 100px;
+      a {
+        color: $black-b70;
+        text-decoration: none;
+        font-weight: bold;
+      }
     }
   }
 }
