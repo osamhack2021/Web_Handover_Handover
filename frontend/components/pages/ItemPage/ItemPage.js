@@ -91,13 +91,13 @@ export default function ItemPage() {
   const [item, setItem] = useState(cachedItem);
   const [itemChildren, setItemChildren] = useState(null);
   const [itemParents, setItemParents] = useState(null);
-  const [isBookmarked, setBookmarked] = useState(
-    user.bookmarks.includes(itemId)
-  );
   const [itemOwner, setItemOwner] = useState(null);
 
   // visibility of the component; used on delete and unauthorized items
   const [visible, setVisible] = useState(true);
+  const [isBookmarked, setBookmarked] = useState(
+    user.bookmarks.includes(itemId)
+  );
 
   // creates [currentItemId, parentItemId, parentParentItemId] array
   const pathArray =
@@ -119,6 +119,11 @@ export default function ItemPage() {
       dispatch(push("/error"));
       return;
     }
+
+    // reset states
+    setItemChildren(null);
+    setItemParents(null);
+    setItemOwner(null);
 
     if (
       item == null ||
