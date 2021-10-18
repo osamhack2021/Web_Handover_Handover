@@ -1,25 +1,51 @@
 @import "mixins";
 
 .item-page {
-  .item-header {
+  .item-page-header {
     display: flex;
     flex-direction: row;
     align-items: center;
     margin-bottom: 8px;
     gap: 12px;
 
-    .item-header-title {
+    .item-page-header-title, #item-page-header-title-editor {
       font-size: 2.5em;
       font-weight: bolder;
       flex-grow: 1;
+    }
+
+    .item-page-header-title {
       margin-bottom: -6px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    .item-page-header-title-editor {
+      margin-bottom: 14px;
+    }
   }
 
-  .item-profile {
+  .item-page-content {
+    margin-top: 24px;
+  }
+
+  .item-editor-breadcrumb {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+
+    svg {
+      margin-right: 4px;
+    }
+  }
+
+  .item-page-content-editor {
+    margin-top: 16px;
+    background-color: white;
+  }
+
+  .item-page-profile {
     align-items: center;
     flex-direction: row;
     gap: 8px;
@@ -29,12 +55,12 @@
       margin-left: auto;
     }
 
-    .item-profile-image {
+    .item-page-profile-image {
       width: 24px;
       height: 24px;
     }
 
-    .item-profile-name {
+    .item-page-profile-name {
       display: flex;
       gap: 4px;
       flex-direction: row;
@@ -53,5 +79,21 @@
 
   .item-list {
     margin-top: 32px;
+  }
+
+  .item-action-editor {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 32px;
+    gap: 8px;
+
+    :first-child {
+      margin-left: auto;
+    }
+
+    svg {
+      margin-right: 6px;
+    }
   }
 }

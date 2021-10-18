@@ -7,7 +7,8 @@ import {
   mdiDotsVertical,
   mdiEarth,
   mdiFileEditOutline,
-  mdiFileTreeOutline, mdiPackageDown,
+  mdiFileTreeOutline,
+  mdiPackageDown,
   mdiShare,
   mdiStar,
   mdiStarOutline,
@@ -26,12 +27,14 @@ import {
   Stack,
   Tooltip
 } from "@mui/material";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import { push } from "connected-react-router";
 import R from "ramda";
 import React, { useEffect, useState } from "react";
 import { store as RNC } from "react-notifications-component";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { Route, Switch, useLocation, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import LinkComponent from "_atoms/LinkComponent";
 import TypeIcon from "_atoms/TypeIcon";
@@ -46,7 +49,8 @@ import {
   attemptDeleteItem,
   attemptGetItem,
   attemptGetItemChildren,
-  attemptPublishItem
+  attemptPublishItem,
+  attemptUpdateItem
 } from "_thunks/item";
 import {
   attemptAddBookmark,
@@ -80,6 +84,7 @@ const statusTooltipText = {
 export default function ItemPage() {
   // Item id from URL params: /item/:itemId
   const { itemId } = useParams();
+  const { pathname } = useLocation();
 
   // find current user from store
   const { user } = useSelector(R.pick(["user"]));
@@ -156,7 +161,42 @@ export default function ItemPage() {
         .catch(() => setVisible(false));
     }
 
-    // setting recents of localstorage
+    // Use this to add alert on leave
+    // if (pathname.endsWith("/edit")) {
+    //   const unsavedChangesDialog = {
+    //     title: "페이지를 나가시겠습니까?",
+    //     content: "저장되지 않은 모든 정보는 소실됩니다. 복구할 수 없으니 주의해주세요.",
+    //     action: {
+    //       primary: {
+    //         text: "페이지에 머무르기",
+    //         callback: null
+    //       },
+    //       secondary: {
+    //         text: "나가기",
+    //         callback: null
+    //       }
+    //     }
+    //   }
+
+    //   const alertUser = e => {
+    //     e.preventDefault();
+    //     e.returnValue = '';
+
+    //     showDialog(unsavedChangesDialog);
+    //   }
+
+    //   // Code from: https://javascript.plainenglish.io/how-to-alert-a-user-before-leaving-a-page-in-react-a2858104ca94
+    //   window.addEventListener('beforeunload', alertUser)
+    //   // window.addEventListener('unload', handleUnload)
+    //   return () => {
+    //     window.removeEventListener('beforeunload', alertUser)
+    //     // window.removeEventListener('unload', handleUnload)
+    //   }
+    // } else if (pathname.endsWith("/settings")) {
+    //   // do something
+    // } else {
+    // }
+    // setting recents of localstorage when visited as page
     const recentArray = JSON.parse(localStorage.getItem("recents"));
     if (recentArray != null) {
       if (!recentArray.includes(itemId)) {
@@ -172,58 +212,67 @@ export default function ItemPage() {
 
   useEffect(() => {
     if (item != null) {
-      dispatch(attemptGetUser(item.owner._id)).then((user) => {
-        setItemOwner(user);
-      });
-
-      if (item.type !== "card") {
-        dispatch(attemptGetItemChildren(item.path)).then((children) => {
-          setItemChildren(children.filter(i => i._id != item._id));
+      // retrieve itemOwner
+      if (itemOwner == null) {
+        dispatch(attemptGetUser(item.owner._id)).then((user) => {
+          setItemOwner(user);
         });
       }
 
-      switch (item.type) {
-        case "cabinet": // will have 0 parents because it's the root item
-          console.log("switch: case =", item.type, pathArray);
-          setItemParents([]);
-          break;
-        case "document": // will have 1 parent item as cabinet
-          console.log("switch: case =", item.type, pathArray);
-          if (pathArray.length == 2) {
-            // try item from cache
-            setItemParents([cachedParent]);
+      // retrieve itemChildren
+      if (itemChildren == null) {
+        if (item.type !== "card") {
+          dispatch(attemptGetItemChildren(item.path)).then((children) => {
+            setItemChildren(children.filter((i) => i._id != item._id));
+          });
+        }
+      }
 
-            // check for document update
-            dispatch(attemptGetItem(pathArray[1])).then((item) => {
-              // update only if updated
-              if (!deepEqual(item, cachedParent)) setItemParents([item]);
-            });
-          }
-          break;
-        case "card": // will have 2 parent items as document and cabinet
-          console.log("switch: case =", item.type, pathArray);
-          if (pathArray.length == 3) {
-            // try item from cache
-            setItemParents([cachedParentParent, cachedParent]);
+      // retrieve itemParents
+      if (itemParents == null) {
+        switch (item.type) {
+          case "cabinet": // will have 0 parents because it's the root item
+            console.log("switch: case =", item.type, pathArray);
+            setItemParents([]);
+            break;
+          case "document": // will have 1 parent item as cabinet
+            console.log("switch: case =", item.type, pathArray);
+            if (pathArray.length == 2) {
+              // try item from cache
+              setItemParents([cachedParent]);
 
-            // check for document update
-            dispatch(attemptGetItem(pathArray[1])).then((item) => {
-              // update only if updated
-              if (!deepEqual(item, cachedParent)) {
-                // update to [newDocumentItem, previousCabinetItem]
-                setItemParents([cachedParentParent, item]);
-              }
-            });
+              // check for document update
+              dispatch(attemptGetItem(pathArray[1])).then((item) => {
+                // update only if updated
+                if (!deepEqual(item, cachedParent)) setItemParents([item]);
+              });
+            }
+            break;
+          case "card": // will have 2 parent items as document and cabinet
+            console.log("switch: case =", item.type, pathArray);
+            if (pathArray.length == 3) {
+              // try item from cache
+              setItemParents([cachedParentParent, cachedParent]);
 
-            // check for cabinet update
-            dispatch(attemptGetItem(pathArray[2])).then((item) => {
-              // update only if updated
-              if (!deepEqual(item, cachedParentParent)) {
-                // update to [previousDocumentItem, newCabinetItem]
-                setItemParents([item, cachedParent]);
-              }
-            });
-          }
+              // check for document update
+              dispatch(attemptGetItem(pathArray[1])).then((item) => {
+                // update only if updated
+                if (!deepEqual(item, cachedParent)) {
+                  // update to [newDocumentItem, previousCabinetItem]
+                  setItemParents([cachedParentParent, item]);
+                }
+              });
+
+              // check for cabinet update
+              dispatch(attemptGetItem(pathArray[2])).then((item) => {
+                // update only if updated
+                if (!deepEqual(item, cachedParentParent)) {
+                  // update to [previousDocumentItem, newCabinetItem]
+                  setItemParents([item, cachedParent]);
+                }
+              });
+            }
+        }
       }
     }
   }, [item]);
@@ -277,13 +326,40 @@ export default function ItemPage() {
 
   // states for menu component
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const isMenuOpen = Boolean(anchorEl);
+  const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  // // states for dialog component
+  // const [dialog, setDialog] = useState({
+  //   title: "",
+  //   content: "",
+  //   action: {
+  //     primary: {
+  //       text: "",
+  //       callback: null,
+  //     },
+  //     secondary: {
+  //       text: "",
+  //       callback: null,
+  //     },
+  //   },
+  // });
+  // const [isDialogOpen, setDialogOpen] = useState(false);
+  // const handleDialogOpen = () => {
+  //   setDialogOpen(true);
+  // };
+  // const handleDialogClose = () => {
+  //   setDialogOpen(false);
+  // };
+  // const showDialog = (dialog) => {
+  //   setDialog(dialog);
+  //   handleDialogOpen();
+  // };
 
   const status =
     item == null ||
@@ -302,114 +378,439 @@ export default function ItemPage() {
       ? item.accessGroups.edit.includes(user.group)
       : false;
 
+  // states for editor
+  const setTitle = (title) => {
+    if (item != null) setItem({ ...item, title: title });
+  };
+  const setContent = (content) => {
+    if (item != null && item.content !== content)
+      setItem({ ...item, content: content });
+  };
+
+  const handlePublish = () => {
+    dispatch(attemptUpdateItem(itemId, item)).then(item => {
+      dispatch(push(`/item/${itemId}`));
+    })
+  };
+
   return visible && item != null ? (
     // <div className="content-pane">
     // <Header />
     <Container maxWidth="md" sx={{ py: 4 }}>
-      <Stack spacing={1} className="item-page">
-        <Stack>
-          <div className="item-header">
-            <Tooltip
-              title={
-                (status != null ? `${statusTooltipText[status]} ` : "") +
-                typeString[item.type]
-              }
-              arrow
-            >
-              <Badge
-                badgeContent={
-                  status != null ? (
-                    <Icon size={0.75} path={statusIcon[status]} opacity={0.7} />
-                  ) : null
-                }
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-                sx={{
-                  ".MuiBadge-badge": {
-                    backgroundColor: "#eae8dc",
-                    p: "4px",
-                    mb: "4px",
-                    mr: "4px",
-                  },
+      <Switch>
+        {/* Item Read Page */}
+        <Route exact path="/item/:itemId">
+          <Stack spacing={1} className="item-page">
+            <Stack>
+              <div className="item-page-header">
+                <Tooltip
+                  title={
+                    (status != null ? `${statusTooltipText[status]} ` : "") +
+                    typeString[item.type]
+                  }
+                  arrow
+                >
+                  <Badge
+                    badgeContent={
+                      status != null ? (
+                        <Icon
+                          size={0.75}
+                          path={statusIcon[status]}
+                          opacity={0.7}
+                        />
+                      ) : null
+                    }
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right",
+                    }}
+                    sx={{
+                      ".MuiBadge-badge": {
+                        backgroundColor: "#eae8dc",
+                        p: "4px",
+                        mb: "4px",
+                        mr: "4px",
+                      },
+                    }}
+                  >
+                    <TypeIcon type={item.type} size={1.5} opacity={0.7} />
+                  </Badge>
+                </Tooltip>
+
+                {/* Item title */}
+                <div className="item-page-header-title">{item.title}</div>
+
+                {/* Item action menus */}
+                <Stack direction="row">
+                  <Tooltip title="북마크에 추가" arrow>
+                    <IconButton onClick={toggleBookmark}>
+                      <Icon
+                        size={1.25}
+                        path={isBookmarked ? mdiStar : mdiStarOutline}
+                      />
+                    </IconButton>
+                  </Tooltip>
+                  <IconButton onClick={handleMenuClick}>
+                    <Icon size={1} path={mdiDotsVertical} />
+                  </IconButton>
+                </Stack>
+              </div>
+            </Stack>
+
+            {/* Item BreadCrumbs */}
+            {itemParents != null ? (
+              <BreadCrumbs itemArray={[...itemParents, item]} />
+            ) : (
+              <BreadCrumbs hierarchyLevel={hierarchyLevel[item.type]} />
+            )}
+
+            {/* Item content */}
+            {item.content && (
+              <div className="item-page-content">
+                <Editor content={item.content} editable={false} />
+              </div>
+            )}
+
+            {/* Item metadata (owner profile, created date) */}
+            {itemOwner != null ? (
+              <Stack className="item-page-profile">
+                <img
+                  className="item-page-profile-image profile-image"
+                  src={
+                    itemOwner.profileImageUrl || "/images/profile-default.jpg"
+                  }
+                />
+                <div className="item-page-profile-name">
+                  <Link to={`/user/${itemOwner._id}`}>
+                    {itemOwner.rank} {itemOwner.name}
+                  </Link>
+                  {"님이"}
+                  <Tooltip title={dateToString(item.created)} arrow>
+                    <div>{dateElapsed(item.created)}</div>
+                  </Tooltip>
+                  {"작성"}
+                </div>
+              </Stack>
+            ) : (
+              <Stack className="item-page-profile">
+                <Skeleton variant="circular" width={24} height={24} />
+                <Skeleton width={200} height="1em" />
+              </Stack>
+            )}
+
+            {/* Item children */}
+            {item.type !== "card" && (
+              <ItemList
+                items={itemChildren}
+                title="하위 항목"
+                icon={mdiFileTreeOutline}
+              />
+            )}
+
+            {/* Item comments */}
+            <ItemListHeader title="댓글" icon={mdiCommentTextOutline} />
+            <CommentSection
+              itemId={itemId}
+              comments={item.comments}
+              currentUser={user}
+            />
+          </Stack>
+        </Route>
+
+        {/* Item Edit Page */}
+        <Route exact path="/item/:itemId/edit">
+          <Stack className="item-page item-editor">
+            <Stack>
+              <div className="item-page-header">
+                <Tooltip
+                  title={
+                    (status != null ? `${statusTooltipText[status]} ` : "") +
+                    typeString[item.type]
+                  }
+                  arrow
+                >
+                  <Badge
+                    badgeContent={
+                      status != null ? (
+                        <Icon
+                          size={0.75}
+                          path={statusIcon[status]}
+                          opacity={0.7}
+                        />
+                      ) : null
+                    }
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right",
+                    }}
+                    sx={{
+                      ".MuiBadge-badge": {
+                        backgroundColor: "#eae8dc",
+                        p: "4px",
+                        mb: "4px",
+                        mr: "4px",
+                      },
+                    }}
+                  >
+                    <TypeIcon type={item.type} size={1.5} opacity={0.7} />
+                  </Badge>
+                </Tooltip>
+
+                {/* Item title */}
+                <TextField
+                  className="item-page-header-title item-page-header-title-editor"
+                  fullWidth
+                  id="item-page-header-title-editor"
+                  label="제목"
+                  variant="standard"
+                  value={item.title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+
+                {/* Item action menus */}
+                <Stack direction="row">
+                  <Tooltip title="북마크에 추가" arrow>
+                    <IconButton onClick={toggleBookmark}>
+                      <Icon
+                        size={1.25}
+                        path={isBookmarked ? mdiStar : mdiStarOutline}
+                      />
+                    </IconButton>
+                  </Tooltip>
+                  <IconButton onClick={handleMenuClick}>
+                    <Icon size={1} path={mdiDotsVertical} />
+                  </IconButton>
+                </Stack>
+              </div>
+            </Stack>
+
+            {/* Item BreadCrumbs */}
+            <div className="item-editor-breadcrumb">
+              {itemParents != null ? (
+                <BreadCrumbs
+                  itemArray={[...itemParents, item]}
+                  clickable={false}
+                />
+              ) : (
+                <BreadCrumbs hierarchyLevel={hierarchyLevel[item.type]} />
+              )}
+              <Button
+                variant="text"
+                color="secondary"
+                size="small"
+                component={LinkComponent}
+                to={`/item/${itemId}/settings`}
+              >
+                <Icon path={mdiFileTreeOutline} size={0.75} />
+                항목 위치 변경
+              </Button>
+            </div>
+
+            {/* Item content editor */}
+            <Editor
+              className="item-page-content-editor"
+              content={item.content}
+              onContentChange={(html) => setContent(html)}
+            />
+
+            {/* Item metadata (owner profile, created date) */}
+            {itemOwner != null ? (
+              <Stack className="item-page-profile">
+                <img
+                  className="item-page-profile-image profile-image"
+                  src={
+                    itemOwner.profileImageUrl || "/images/profile-default.jpg"
+                  }
+                />
+                <div className="item-page-profile-name">
+                  <Link to={`/user/${itemOwner._id}`}>
+                    {itemOwner.rank} {itemOwner.name}
+                  </Link>
+                  {"님이"}
+                  <Tooltip title={dateToString(item.created)} arrow>
+                    <div>{dateElapsed(item.created)}</div>
+                  </Tooltip>
+                  {"작성"}
+                </div>
+              </Stack>
+            ) : (
+              <Stack className="item-page-profile">
+                <Skeleton variant="circular" width={24} height={24} />
+                <Skeleton width={200} height="1em" />
+              </Stack>
+            )}
+
+            {/* Item children */}
+            {item.type !== "card" && (
+              <ItemList
+                items={itemChildren}
+                title="하위 항목"
+                icon={mdiFileTreeOutline}
+              />
+            )}
+
+            {/* Item save action */}
+            <div className="item-action-editor">
+              <Button
+                variant="outlined"
+                color="secondary"
+                size="large"
+                onClick={() => {
+                  alert(JSON.stringify(item));
                 }}
               >
-                <TypeIcon type={item.type} size={1.5} opacity={0.7} />
-              </Badge>
-            </Tooltip>
-
-            {/* Item title */}
-            <div className="item-header-title">{item.title}</div>
-
-            {/* Item action menus */}
-            <Stack direction="row">
-              <Tooltip title="북마크에 추가" arrow>
-                <IconButton onClick={toggleBookmark}>
-                  <Icon
-                    size={1.25}
-                    path={isBookmarked ? mdiStar : mdiStarOutline}
-                  />
-                </IconButton>
-              </Tooltip>
-              <IconButton onClick={handleClick}>
-                <Icon size={1} path={mdiDotsVertical} />
-              </IconButton>
-            </Stack>
-          </div>
-        </Stack>
-
-        {/* Item BreadCrumbs */}
-        {itemParents != null ? (
-          <BreadCrumbs itemArray={[...itemParents, item]} />
-        ) : (
-          <BreadCrumbs hierarchyLevel={hierarchyLevel[item.type]} />
-        )}
-
-        {/* Item content */}
-        {item.content && <Editor content={item.content} editable={false} />}
-
-        {/* Item metadata (owner profile, created date) */}
-        {itemOwner != null ? (
-          <Stack className="item-profile">
-            <img
-              className="item-profile-image profile-image"
-              src={itemOwner.profileImageUrl || "/images/profile-default.jpg"}
-            />
-            <div className="item-profile-name">
-              <Link to={`/user/${itemOwner._id}`}>
-                {itemOwner.rank} {itemOwner.name}
-              </Link>
-              {"님이"}
-              <Tooltip title={dateToString(item.created)} arrow>
-                <div>{dateElapsed(item.created)}</div>
-              </Tooltip>
-              {"작성"}
+                <Icon path={mdiContentSave} size={0.9} />
+                임시저장
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                size="large"
+                onClick={() => {
+                  alert(JSON.stringify(item));
+                }}
+              >
+                <Icon path={mdiPackageDown} size={0.9} />
+                항목 보관
+              </Button>
+              <Button
+                disableElevation
+                variant="contained"
+                color="secondary"
+                size="large"
+                onClick={handlePublish}
+              >
+                <Icon
+                  path={mdiUpload}
+                  size={0.9}
+                  style={{ marginLeft: "-4px" }}
+                />
+                항목 게시
+              </Button>
             </div>
           </Stack>
-        ) : (
-          <Stack className="item-profile">
-            <Skeleton variant="circular" width={24} height={24} />
-            <Skeleton width={200} height="1em" />
+        </Route>
+
+        {/* Item Settings Page */}
+        <Route exact path="/item/:itemId/settings">
+          <Stack spacing={1} className="item-page">
+            <Stack>
+              <div className="item-page-header">
+                <Tooltip
+                  title={
+                    (status != null ? `${statusTooltipText[status]} ` : "") +
+                    typeString[item.type]
+                  }
+                  arrow
+                >
+                  <Badge
+                    badgeContent={
+                      status != null ? (
+                        <Icon
+                          size={0.75}
+                          path={statusIcon[status]}
+                          opacity={0.7}
+                        />
+                      ) : null
+                    }
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right",
+                    }}
+                    sx={{
+                      ".MuiBadge-badge": {
+                        backgroundColor: "#eae8dc",
+                        p: "4px",
+                        mb: "4px",
+                        mr: "4px",
+                      },
+                    }}
+                  >
+                    <TypeIcon type={item.type} size={1.5} opacity={0.7} />
+                  </Badge>
+                </Tooltip>
+
+                {/* Item title */}
+                <div className="item-page-header-title">{item.title}</div>
+
+                {/* Item action menus */}
+                <Stack direction="row">
+                  <Tooltip title="북마크에 추가" arrow>
+                    <IconButton onClick={toggleBookmark}>
+                      <Icon
+                        size={1.25}
+                        path={isBookmarked ? mdiStar : mdiStarOutline}
+                      />
+                    </IconButton>
+                  </Tooltip>
+                  <IconButton onClick={handleMenuClick}>
+                    <Icon size={1} path={mdiDotsVertical} />
+                  </IconButton>
+                </Stack>
+              </div>
+            </Stack>
+
+            {/* Item BreadCrumbs */}
+            {itemParents != null ? (
+              <BreadCrumbs itemArray={[...itemParents, item]} />
+            ) : (
+              <BreadCrumbs hierarchyLevel={hierarchyLevel[item.type]} />
+            )}
+
+            {/* Item content */}
+            {item.content && <Editor content={item.content} editable={false} />}
+
+            {/* Item metadata (owner profile, created date) */}
+            {itemOwner != null ? (
+              <Stack className="item-page-profile">
+                <img
+                  className="item-page-profile-image profile-image"
+                  src={
+                    itemOwner.profileImageUrl || "/images/profile-default.jpg"
+                  }
+                />
+                <div className="item-page-profile-name">
+                  <Link to={`/user/${itemOwner._id}`}>
+                    {itemOwner.rank} {itemOwner.name}
+                  </Link>
+                  {"님이"}
+                  <Tooltip title={dateToString(item.created)} arrow>
+                    <div>{dateElapsed(item.created)}</div>
+                  </Tooltip>
+                  {"작성"}
+                </div>
+              </Stack>
+            ) : (
+              <Stack className="item-page-profile">
+                <Skeleton variant="circular" width={24} height={24} />
+                <Skeleton width={200} height="1em" />
+              </Stack>
+            )}
+
+            {/* Item children */}
+            {item.type !== "card" && (
+              <ItemList
+                items={itemChildren}
+                title="하위 항목"
+                icon={mdiFileTreeOutline}
+              />
+            )}
+
+            {/* Item comments */}
+            <ItemListHeader title="댓글" icon={mdiCommentTextOutline} />
+            <CommentSection
+              itemId={itemId}
+              comments={item.comments}
+              currentUser={user}
+            />
           </Stack>
-        )}
-
-        {/* Item children */}
-        {item.type !== "card" && <ItemList
-          items={itemChildren}
-          title="하위 항목"
-          icon={mdiFileTreeOutline}
-        />}
-
-        {/* Item comments */}
-        <ItemListHeader title="댓글" icon={mdiCommentTextOutline} />
-        <CommentSection itemId={itemId} comments={item.comments} currentUser={user} />
-      </Stack>
+        </Route>
+      </Switch>
       <Menu
         anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+        onClick={handleMenuClose}
         PaperProps={{
           elevation: 0,
           sx: {
@@ -434,7 +835,8 @@ export default function ItemPage() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {isCurrentUserOwner || isCurrentUserEditor ? ( // only show edit menu to owner and editor
+        {!pathname.endsWith("/edit") &&
+        (isCurrentUserOwner || isCurrentUserEditor) ? ( // only show edit menu to owner and editor
           <MenuItem component={LinkComponent} to={`/item/${itemId}/edit`}>
             <ListItemIcon>
               <Icon path={mdiFileEditOutline} size={1} />
@@ -458,6 +860,11 @@ export default function ItemPage() {
         </MenuItem>
         {isCurrentUserOwner ? (
           <div>
+            {!pathname.endsWith("/settings") && (
+              <MenuItem
+                component={LinkComponent}
+                to={`/item/${itemId}/settings`}
+              >
                 <ListItemIcon>
                   <Icon path={mdiCog} size={1} />
                 </ListItemIcon>
@@ -496,3 +903,31 @@ export default function ItemPage() {
     <div>Loading...</div>
   );
 }
+
+// <Dialog open={isDialogOpen} onClose={handleDialogClose} maxWidth="xs">
+//   <DialogTitle id="alert-dialog-title">{dialog.title}</DialogTitle>
+//   <DialogContent>
+//     <DialogContentText id="alert-dialog-description">
+//       {dialog.content}
+//     </DialogContentText>
+//   </DialogContent>
+//   <DialogActions>
+//     <Button
+//       onClick={() => {
+//         handleDialogClose();
+//         dialog.action.secondary.callback && dialog.action.secondary.callback();
+//       }}
+//     >
+//       {dialog.action.secondary.text}
+//     </Button>
+//     <Button
+//       onClick={() => {
+//         handleDialogClose();
+//         dialog.action.primary.callback && dialog.action.primary.callback();
+//       }}
+//       autoFocus
+//     >
+//       {dialog.action.primary.text}
+//     </Button>
+//   </DialogActions>
+// </Dialog>
