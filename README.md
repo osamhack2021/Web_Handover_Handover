@@ -126,20 +126,21 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
  
 <h2 id="install"> 🚀 설치 안내 (Installaltion Methods) </h2>
 
-### 1. Clone Repository
-```
-git clone https://github.com/osamhack2021/Web_Handover_Handover.git handover
-```
-### 2. Docker 설정
-사용 운영체제에 맞는 Docker 설치 => [`Get Docker`](https://docs.docker.com/get-docker/)
-### 3. Docker 실행
-```
-npm run prd
-```
-### 4. Docker 중지
-```
-npm down
-```
+ ### 1. Docker 설정
+ 사용 운영체제에 맞는 Docker 설치 => [Get Docker](https://docs.docker.com/get-docker/)
+ ### 2. Clone Repository
+ ```
+ git clone https://github.com/osamhack2021/Web_Handover_Handover.git handover
+ ```
+
+ ### 3. Docker 실행
+ ```
+ npm run prd
+ ```
+ ### 4. Docker 중지
+ ```
+ npm down
+ ```
 
 
 <h2 id="gettingstarted"> 🏃 프로젝트 사용법 (Getting Started) </h2>
