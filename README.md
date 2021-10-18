@@ -158,53 +158,113 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
  
 <h2 id="teaminfo"> 👨‍👦‍👦 팀 정보 (Team Info) </h2>
 
-<table width="788">
+<table width="950">
     <thead>
-    <tr>
-        <th width="100" align="center">사진</th>
-        <th width="100" align="center">이름</th>
-        <th width="150" align="left">역할</th>
-        <th width="100" align="center">GitHub</th>
-        <th width="175" align="center">이메일</th>
-    </tr> 
     </thead>
     <tbody>
     <tr>
+        <th>사진</th>
         <td width="100" align="center">
             <a href="https://github.com/ntcho">
                 <img src="https://user-images.githubusercontent.com/13298429/132793750-33ab9941-00f3-4ee9-8401-adbf95201806.png" width="60" height="60">
             </a>
         </td>
-        <td width="100" align="center">조나단</td>
-        <td width="150">
-            팀장<br>
-            프론트엔드 개발
-        </td>
-        <td width="100" align="center">
-            <a href="https://github.com/ntcho">
-                <img src="http://img.shields.io/badge/ntcho-green?style=social&logo=github"/>
-            </a>
-        </td>
-        <td width="175" align="center">
-            <a href="mailto:ntcho13@gmail.com">
-                <img src="https://img.shields.io/badge/ntcho13@gmail.com-green?logo=gmail&style=social">
-            </a>
-        </td>
-    </tr>
-    <tr>
         <td width="100" align="center">
             <a href="https://github.com/ahnavocado">
                 <img src="https://user-images.githubusercontent.com/13298429/132990151-bb4bbdb0-67b0-4df8-894a-5173204778b2.png" width="60" height="60">
             </a>
         </td>
+        <td width="100" align="center">
+            <a href="https://github.com/holymollyhao">
+                <img src="https://user-images.githubusercontent.com/13298429/132990109-6c65271f-431b-460a-98bb-d59ad00b1024.png" width="60" height="60">
+            </a>
+        </td>
+        <td width="100" align="center">
+            <a href="https://github.com/cw00h">
+                <img src="https://user-images.githubusercontent.com/13298429/132937945-1035efad-e38b-4595-9f68-8593d03fb214.png" width="60" height="60">
+            </a>
+        </td>
+        <td width="100" align="center">
+            <a href="https://github.com/phjppo0918">
+                <img src="https://user-images.githubusercontent.com/13298429/132939286-3aa06019-e474-4f42-b164-1813a925d624.png" width="60" height="60">
+            </a>
+        </td>
+        <td width="100" align="center">
+            <a href="https://github.com/134130">
+                <img src="https://user-images.githubusercontent.com/13298429/132968154-4d885c91-ba18-4bbd-871b-8f4b969451a8.png" width="60" height="60">
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <th>이름</th>
+        <td width="100" align="center">조나단</td>
         <td width="100" align="center">안수겸</td>
-        <td width="150">
+        <td width="100" align="center">김태원</td>
+        <td width="100" align="center">최우혁</td>
+        <td width="100" align="center">박현준</td>
+        <td width="100" align="center">오지환</td>
+    </tr>
+    <tr>
+        <th>역할</th>
+        <td width="150" align="center">
+            팀장<br>
+            프론트엔드 개발
+        </td>
+        <td width="150" align="center">
             디자인<br>
             프론트엔드 개발
+        </td>
+        <td width="150" align="center">
+            프론트엔드 개발
+        </td>
+        <td width="150" align="center">
+            프론트엔드 개발
+        </td>
+        <td width="150" align="center">
+            백엔드 개발
+        </td>
+        <td width="150" align="center">
+            백엔드 개발
+        </td>
+    </tr>
+    <tr>
+        <th>GitHub</th>
+        <td width="100" align="center">
+            <a href="https://github.com/ntcho">
+                <img src="http://img.shields.io/badge/ntcho-green?style=social&logo=github"/>
+            </a>
         </td>
         <td width="100" align="center">
             <a href="https://github.com/ahnavocado">
                 <img src="http://img.shields.io/badge/ahnavocado-green?style=social&logo=github"/>
+            </a>
+        </td>
+        <td width="100" align="center">
+            <a href="https://github.com/holymollyhao">
+                <img src="http://img.shields.io/badge/holymollyhao-green?style=social&logo=github"/>
+            </a>
+        </td>
+        <td width="100" align="center">
+            <a href="https://github.com/cw00h">
+                <img src="http://img.shields.io/badge/cw00h-green?style=social&logo=github"/>
+            </a>
+        </td>
+        <td width="100" align="center">
+            <a href="https://github.com/phjppo0918">
+                <img src="http://img.shields.io/badge/phjppo0918-green?style=social&logo=github"/>
+            </a>
+        </td>
+        <td width="100" align="center">
+            <a href="https://github.com/134130">
+                <img src="http://img.shields.io/badge/134130-green?style=social&logo=github"/>
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <th>이메일</th>
+        <td width="175" align="center">
+            <a href="mailto:ntcho13@gmail.com">
+                <img src="https://img.shields.io/badge/ntcho13@gmail.com-green?logo=gmail&style=social">
             </a>
         </td>
         <td width="175" align="center">
@@ -212,41 +272,9 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
                 <img src="https://img.shields.io/badge/ahn.avocado@gmail.com-green?logo=gmail&style=social">
             </a>
         </td>
-    </tr>
-    <tr>
-        <td width="100" align="center">
-            <a href="https://github.com/holymollyhao">
-                <img src="https://user-images.githubusercontent.com/13298429/132990109-6c65271f-431b-460a-98bb-d59ad00b1024.png" width="60" height="60">
-            </a>
-        </td>
-        <td width="100" align="center">김태원</td>
-        <td width="150">
-            프론트엔드 개발
-        </td>
-        <td width="100" align="center">
-            <a href="https://github.com/holymollyhao">
-                <img src="http://img.shields.io/badge/holymollyhao-green?style=social&logo=github"/>
-            </a>
-        </td>
         <td width="175" align="center">
             <a href="mailto:maxkim139@gmail.com">
                 <img src="https://img.shields.io/badge/maxkim139@gmail.com-green?logo=gmail&style=social">
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td width="100" align="center">
-            <a href="https://github.com/cw00h">
-                <img src="https://user-images.githubusercontent.com/13298429/132937945-1035efad-e38b-4595-9f68-8593d03fb214.png" width="60" height="60">
-            </a>
-        </td>
-        <td width="100" align="center">최우혁</td>
-        <td width="150">
-            프론트엔드 개발
-        </td>
-        <td width="100" align="center">
-            <a href="https://github.com/cw00h">
-                <img src="http://img.shields.io/badge/cw00h-green?style=social&logo=github"/>
             </a>
         </td>
         <td width="175" align="center">
@@ -254,41 +282,9 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
                 <img src="https://img.shields.io/badge/cwooh8@gmail.com-green?logo=gmail&style=social">
             </a>
         </td>
-    </tr>
-    <tr>
-       <td width="100" align="center">
-            <a href="https://github.com/phjppo0918">
-                <img src="https://user-images.githubusercontent.com/13298429/132939286-3aa06019-e474-4f42-b164-1813a925d624.png" width="60" height="60">
-            </a>
-        </td>
-        <td width="100" align="center">박현준</td>
-        <td width="150">
-            백엔드 개발
-        </td>
-        <td width="100" align="center">
-            <a href="https://github.com/phjppo0918">
-                <img src="http://img.shields.io/badge/phjppo0918-green?style=social&logo=github"/>
-            </a>
-        </td>
         <td width="175" align="center">
             <a href="mailto:phjppo0918@gmail.com">
                 <img src="https://img.shields.io/badge/phjppo0918@gmail.com-green?logo=gmail&style=social">
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td width="100" align="center">
-            <a href="https://github.com/134130">
-                <img src="https://user-images.githubusercontent.com/13298429/132968154-4d885c91-ba18-4bbd-871b-8f4b969451a8.png" width="60" height="60">
-            </a>
-        </td>
-        <td width="100" align="center">오지환</td>
-        <td width="150">
-            백엔드 개발
-        </td>
-        <td width="100" align="center">
-            <a href="https://github.com/134130">
-                <img src="http://img.shields.io/badge/134130-green?style=social&logo=github"/>
             </a>
         </td>
         <td width="175" align="center">
