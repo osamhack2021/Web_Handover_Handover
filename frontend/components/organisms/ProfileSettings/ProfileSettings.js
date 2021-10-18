@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import R from 'ramda';
-import { useDispatch, useSelector } from 'react-redux';
-
 import { Box } from '@mui/material';
-import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import ListSubheader from "@mui/material/ListSubheader";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import Tabs from '@mui/material/Tabs';
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import ListSubheader from "@mui/material/ListSubheader";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import Tab from '@mui/material/Tab';
-
+import Tabs from '@mui/material/Tabs';
+import TextField from "@mui/material/TextField";
+import Tooltip from "@mui/material/Tooltip";
+import R from 'ramda';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import TabPanel from '_molecules/TabPanel';
-
 import { attemptUpdateUser } from '_thunks/user';
 import { validatePassword } from "_utils/validation";
+
+
+
 
 export default function ProfileSettings() {
   const dispatch = useDispatch();
@@ -137,12 +137,11 @@ export default function ProfileSettings() {
       <TabPanel value={tabNumber} index={0}>
         <div className="tabpanel">
           <Box className="profile-setting-box">
-            <div className="profile-img-label"> 프로필 사진 </div>
+            <div className="profile-image-label"> 프로필 사진 </div>
             <div>
               <img
-                className="profile-img"
-                /*src={profilePic || '/images/default-profile.png'}*/
-                src={user.profileImageUrl || '/images/default-profile.png'}
+                className="profile-image"
+                src={user.profileImageUrl || '/images/profile-default.jpg'}
                 alt="profile"
               />
               <TextField

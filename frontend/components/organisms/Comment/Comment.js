@@ -22,8 +22,8 @@ export default function Comment({ comment }) {
     <div className="comment-section-item">
       {user != null ? (
         <img
-          className="comment-section-profile-image"
-          src={user.profileImageUrl || "/images/default-profile.png"}
+          className="comment-section-profile-image profile-image"
+          src={user.profileImageUrl || "/images/profile-default.jpg"}
         />
       ) : (
         <Skeleton variant="circular" width={48} height={48} />

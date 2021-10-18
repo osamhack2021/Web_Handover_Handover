@@ -39,13 +39,14 @@ export default function ProfileMenu() {
       >
         <Stack direction="row" sx={{ alignItems: "center", width: "100%" }}>
           <img
+          className="profile-image"
             style={{
               width: "36px",
               height: "36px",
               marginRight: "12px",
               borderRadius: "50%",
             }}
-            src={user.profileImageUrl || "/images/default-profile.png"}
+            src={user.profileImageUrl || "/images/profile-default.jpg"}
           />
           <div
             style={{

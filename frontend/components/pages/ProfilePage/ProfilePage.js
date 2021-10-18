@@ -130,10 +130,11 @@ export default function ProfilePage() {
           arrow
         >
           <Avatar
+            className="profile-image"
             component={ButtonBase}
             src={
               user == null || user.profileImageUrl == null
-                ? "/images/default-profile.png"
+                ? "/images/profile-default.jpg"
                 : user.profileImageUrl
             }
             sx={{ width: 120, height: 120, border: "1px solid #0002" }}

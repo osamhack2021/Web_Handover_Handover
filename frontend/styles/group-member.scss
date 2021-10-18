@@ -14,11 +14,10 @@
     .group-member-profile {
         display: flex;
         width : 230px;
-        .profile-img {
+        .profile-image {
             width: 40px;
             height: 40px;
             border-radius: 70%;
-            border: 1px solid $black;
             margin-right: 10px;
         }
 

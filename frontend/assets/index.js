@@ -1,5 +1,5 @@
 // Images
-import './images/default-profile.png';
+import './images/profile-default.jpg';
 import './images/handover-logo.png';
 import './images/meeting.png';
 import './images/wave.png';

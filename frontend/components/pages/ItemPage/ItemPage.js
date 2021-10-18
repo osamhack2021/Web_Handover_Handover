@@ -369,8 +369,8 @@ export default function ItemPage() {
         {itemOwner != null ? (
           <Stack className="item-profile">
             <img
-              className="item-profile-image"
-              src={itemOwner.profileImageUrl || "/images/default-profile.png"}
+              className="item-profile-image profile-image"
+              src={itemOwner.profileImageUrl || "/images/profile-default.jpg"}
             />
             <div className="item-profile-name">
               <Link to={`/user/${itemOwner._id}`}>

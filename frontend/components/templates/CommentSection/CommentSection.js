@@ -57,8 +57,8 @@ export default function CommentSection({
       {(comments && comments.length > 0) && <Divider />}
       <div className="comment-section-item">
         <img
-          className="comment-section-profile-image"
-          src={currentUser.profileImageUrl || "/images/default-profile.png"}
+          className="profile-image comment-section-profile-image"
+          src={currentUser.profileImageUrl || "/images/profile-default.jpg"}
         />
         <div className="comment-section-editor comment-section-content">
           <TextField

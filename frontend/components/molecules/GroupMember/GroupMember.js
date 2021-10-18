@@ -28,9 +28,8 @@ export default function GroupMember({
     <div className="group-member">
       <div className="group-member-profile">
         <img
-          className="profile-img"
-          src={profileImageUrl || "/images/default-profile.png"}
-          alt="profile"
+          className="profile-image"
+          src={profileImageUrl || "/images/profile-default.jpg"}
         />
         <div className="profile-string">
           <div className="profile-string-above">{aboveString}</div>

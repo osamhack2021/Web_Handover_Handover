@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 export default function TeamProfile({
   imgSrc, name, description,
@@ -18,7 +18,7 @@ export default function TeamProfile({
       }}
     >
       <img
-        alt="team_profile_image"
+        className="profile-image"
         style={{
           width: '80px',
           height: '80px',
@@ -26,7 +26,7 @@ export default function TeamProfile({
           marginRight: '10px',
           borderRadius: '50%',
         }}
-        src={imgSrc || '/images/default-profile.png'}
+        src={imgSrc || '/images/profile-default.jpg'}
       />
       <CardHeader
         title={(
