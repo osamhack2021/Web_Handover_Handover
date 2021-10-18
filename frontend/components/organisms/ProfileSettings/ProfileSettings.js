@@ -1,28 +1,25 @@
-import { Box } from '@mui/material';
+import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import ListSubheader from "@mui/material/ListSubheader";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
 import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
-import R from 'ramda';
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import TabPanel from '_molecules/TabPanel';
-import { attemptUpdateUser } from '_thunks/user';
+import R from "ramda";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import TabPanel from "_molecules/TabPanel";
+import { attemptUpdateUser } from "_thunks/user";
 import { validatePassword } from "_utils/validation";
-
-
-
 
 export default function ProfileSettings() {
   const dispatch = useDispatch();
 
-  const { user } = useSelector(R.pick(['user']));
+  const { user } = useSelector(R.pick(["user"]));
 
   const [tabNumber, setTabNumber] = useState(0);
   const [password, setPassword] = useState("");
@@ -65,7 +62,7 @@ export default function ProfileSettings() {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    checkPassword('', e.target.value);
+    checkPassword("", e.target.value);
   };
 
   const handlePasswordConfirmChange = (e) => {
@@ -78,7 +75,11 @@ export default function ProfileSettings() {
   };
 
   const mapMenuItem = (item) =>
-    item.map((i, index) => <MenuItem value={i} key={index}>{i}</MenuItem>);
+    item.map((i, index) => (
+      <MenuItem value={i} key={index}>
+        {i}
+      </MenuItem>
+    ));
 
   const isInputValid = () => {
     const isPasswordValid = password.length > 1 && passwordValid;
@@ -103,7 +104,7 @@ export default function ProfileSettings() {
   };
 
   const update = () => {
-    if(passwordValid) {
+    if (passwordValid) {
       const updatedUser = {
         name: user.name,
         password: password,
@@ -119,15 +120,15 @@ export default function ProfileSettings() {
       console.log(updatedUser);
       dispatch(attemptUpdateUser(updatedUser)).catch(R.identity);
     }
-  }
+  };
 
   return (
     <Box className="tabs-container">
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={tabNumber}
           onChange={handleChange}
-          TabIndicatorProps={{ style: { background: 'black' } }}
+          TabIndicatorProps={{ style: { background: "black" } }}
           variant="scrollable"
           scrollButtons="auto"
         >
@@ -141,7 +142,7 @@ export default function ProfileSettings() {
             <div>
               <img
                 className="profile-image"
-                src={user.profileImageUrl || '/images/profile-default.jpg'}
+                src={user.profileImageUrl || "/images/profile-default.jpg"}
                 alt="profile"
               />
               <TextField
@@ -149,14 +150,21 @@ export default function ProfileSettings() {
                 id="input-profileImageUrl"
                 label="프로필 사진"
                 value={profileImageUrl}
-                onChange={(event) => handleInputChange(event, setProfileImageUrl)}
+                onChange={(event) =>
+                  handleInputChange(event, setProfileImageUrl)
+                }
                 placeholder="프로필 사진의 링크를 입력해주세요"
                 margin="normal"
               />
             </div>
             <FormControl fullWidth margin="normal">
               <InputLabel htmlFor="select-rank">계급/등급</InputLabel>
-              <Select defaultValue={user.rank} id="select-rank" label="계급/등급" onChange={(event) => handleInputChange(event, setRank)}>
+              <Select
+                defaultValue={user.rank}
+                id="select-rank"
+                label="계급/등급"
+                onChange={(event) => handleInputChange(event, setRank)}
+              >
                 <MenuItem value="" disabled={true}>
                   선택
                 </MenuItem>
@@ -207,11 +215,18 @@ export default function ProfileSettings() {
             </FormControl>
             <FormControl fullWidth margin="normal">
               <InputLabel htmlFor="select-rank">계정 상태</InputLabel>
-              <Select defaultValue={user.status} id="select-status" label="계정 상태" onChange={(event) => handleInputChange(event, setStatus)}>
-                <MenuItem value="" disabled={true}>선택</MenuItem>
-                <MenuItem value={'active'}>활성</MenuItem>
-                <MenuItem value={'inactive'}>비활성</MenuItem>
-                <MenuItem value={'retired'}>전역</MenuItem>
+              <Select
+                defaultValue={user.status}
+                id="select-status"
+                label="계정 상태"
+                onChange={(event) => handleInputChange(event, setStatus)}
+              >
+                <MenuItem value="" disabled={true}>
+                  선택
+                </MenuItem>
+                <MenuItem value={"active"}>활성</MenuItem>
+                <MenuItem value={"inactive"}>비활성</MenuItem>
+                <MenuItem value={"retired"}>전역</MenuItem>
               </Select>
             </FormControl>
             <TextField
@@ -235,7 +250,11 @@ export default function ProfileSettings() {
               onChange={handlePasswordConfirmChange}
               margin="normal"
               color={
-                passwordConfirm ? (passwordConfirmValid ? "success" : "error") : ""
+                passwordConfirm
+                  ? passwordConfirmValid
+                    ? "success"
+                    : "error"
+                  : ""
               }
               error={passwordConfirm.length > 1 && !passwordConfirmValid}
               helperText={passwordConfirmMessage}

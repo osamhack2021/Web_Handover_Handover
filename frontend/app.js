@@ -1,11 +1,11 @@
 const express = require("express");
-const path    = require("path");
+const path = require("path");
 
 require("./config/environment");
 
 const assetFolder = path.resolve(__dirname, "./dist/");
-const port        = process.env.PORT;
-const app         = express();
+const port = process.env.PORT;
+const app = express();
 
 // serve static assets normally
 app.use(express.static(assetFolder));

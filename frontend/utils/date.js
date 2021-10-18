@@ -18,5 +18,7 @@ export const dateElapsed = (dateString) => {
 
 export const dateToString = (dateString) => {
   const date = new Date(dateString);
-  return `${date.toLocaleDateString("ko-KR")} ${date.toLocaleTimeString("en-GB")}`;
+  return `${date.toLocaleDateString("ko-KR")} ${date.toLocaleTimeString(
+    "en-GB"
+  )}`;
 };

@@ -1,4 +1,3 @@
 export function joinClassName(classNameArr) {
-    return classNameArr.join(' ');
-  }
-  
+  return classNameArr.join(" ");
+}

@@ -22,4 +22,4 @@ export const sortByOrder = (a, b) => {
   return 0;
 };
 
-export const sortItemsByOrder = items => items.sort(sortByOrder);
+export const sortItemsByOrder = (items) => items.sort(sortByOrder);

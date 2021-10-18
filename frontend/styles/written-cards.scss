@@ -1,27 +1,27 @@
-@import 'mixins';
+@import "mixins";
 
 .profile-page {
-    overflow-y : scroll;
+  overflow-y: scroll;
 
-    .tabs-container {
-        margin: 90px auto 80px auto;
-        width: 840px;
+  .tabs-container {
+    margin: 90px auto 80px auto;
+    width: 840px;
+  }
+
+  .tabpanel {
+    margin-top: 80px;
+    display: flex;
+    flex-wrap: wrap;
+
+    .note--card {
+      width: 700px;
+      margin: 0 auto 40px auto;
     }
 
-    .tabpanel {
-        margin-top : 80px;
-        display : flex;
-        flex-wrap : wrap;
-
-        .note--card {
-            width: 700px;
-            margin : 0 auto 40px auto;
-        }
-        
-        .note--cabinet, .note--document{
-            width : 240px;
-            margin : 20px;
-        }
+    .note--cabinet,
+    .note--document {
+      width: 240px;
+      margin: 20px;
     }
-
+  }
 }

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import TextField from "@mui/material/TextField";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -46,11 +46,7 @@ export default function Login() {
           margin="normal"
         />
       </div>
-      <Button
-        className="login-button"
-        size="medium"
-        variant = "contained"
-      >
+      <Button className="login-button" size="medium" variant="contained">
         이메일로 인증번호 받기
       </Button>
     </div>

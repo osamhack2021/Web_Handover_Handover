@@ -1,7 +1,7 @@
 import {
   mdiFileCabinet,
   mdiFileDocumentOutline,
-  mdiTextBoxOutline
+  mdiTextBoxOutline,
 } from "@mdi/js";
 import { Icon } from "@mdi/react";
 import React from "react";

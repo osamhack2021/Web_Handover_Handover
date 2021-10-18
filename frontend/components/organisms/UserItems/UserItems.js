@@ -18,7 +18,7 @@ const CardGrid = ({ cards }) => {
         display: "flex",
         flexDirection: "row",
         flexWrap: "wrap",
-        gap: "12px"
+        gap: "12px",
       }}
     >
       {cards.map((e) => (

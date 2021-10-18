@@ -1,6 +1,9 @@
 import {
   mdiCodeBraces,
-  mdiCodeBracesBox, mdiFormatBold, mdiFormatClear, mdiFormatHeader1,
+  mdiCodeBracesBox,
+  mdiFormatBold,
+  mdiFormatClear,
+  mdiFormatHeader1,
   mdiFormatHeader2,
   mdiFormatHeader3,
   // mdiFormatHeader4,
@@ -8,7 +11,9 @@ import {
   // mdiFormatHeader6,
   mdiFormatListBulleted,
   mdiFormatListNumbered,
-  mdiFormatQuoteClose, mdiRedo, mdiUndo
+  mdiFormatQuoteClose,
+  mdiRedo,
+  mdiUndo,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Button, Divider, Stack } from "@mui/material";
@@ -24,7 +29,7 @@ const EditorMenuButton = ({ icon, size = 32, ...props }) => (
     size="small"
     sx={{
       ...props.sx,
-      minWidth: '0px',
+      minWidth: "0px",
       width: size,
       height: size,
       height: "100%",
@@ -76,7 +81,12 @@ export default function EditorMenuBar({ editor, size = 42, ...props }) {
   // Menu is modified from: https://github.com/ueberdosis/tiptap/blob/main/demos/src/Examples/Default/React/index.jsx
 
   return (
-    <Stack direction="row" spacing={0.25} sx={{ ...props.sx, height: size }} divider={<VerticalDivider/>}>
+    <Stack
+      direction="row"
+      spacing={0.25}
+      sx={{ ...props.sx, height: size }}
+      divider={<VerticalDivider />}
+    >
       <Stack direction="row" spacing={0.25} sx={{ p: 0.5 }}>
         <StyledEditorMenuButton
           onClick={() => editor.chain().focus().undo().run()}

@@ -1,3 +1,3 @@
-import HorizontalHeader from './HorizontalHeader';
+import HorizontalHeader from "./HorizontalHeader";
 
 export default HorizontalHeader;

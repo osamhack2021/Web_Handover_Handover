@@ -2,7 +2,7 @@ import update from "immutability-helper";
 import {
   ADD_ITEM_CACHE,
   ADD_ITEM_CACHES,
-  DELETE_ITEM_CACHE
+  DELETE_ITEM_CACHE,
 } from "_actions/itemCache";
 import { LOGOUT_USER } from "_actions/user";
 

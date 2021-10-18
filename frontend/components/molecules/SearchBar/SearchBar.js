@@ -1,6 +1,6 @@
-import React from 'react';
-import SearchIcon from '_assets/svgs/search_icon.svg';
-import CustomButton from '_atoms/CustomButton';
+import React from "react";
+import SearchIcon from "_assets/svgs/search_icon.svg";
+import CustomButton from "_atoms/CustomButton";
 
 export default function SearchBar() {
   return (

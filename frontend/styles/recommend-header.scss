@@ -1,33 +1,33 @@
-@import 'mixins';
+@import "mixins";
 
-.recommend-header{
+.recommend-header {
   @include flexBox(
-    $display : flex,
-    $flex-direction : row,
-    $justify-content : space-between
+    $display: flex,
+    $flex-direction: row,
+    $justify-content: space-between
   );
-  margin-bottom : 6px;
-  color : $black;
+  margin-bottom: 6px;
+  color: $black;
 
-  .recommend-header-title{
+  .recommend-header-title {
     @include setfonts(
       $font-weight: $weight-bold,
       $font-size: $size-3,
       $line-height: 44px
-    )
+    );
   }
-  .recommend-header-link{
+  .recommend-header-link {
     display: flex;
     align-items: flex-end;
-    .recommend-link-text{
-        @include setfonts(
+    .recommend-link-text {
+      @include setfonts(
         $font-weight: $weight-bold,
         $font-size: $size-5,
         $line-height: 24px
       );
-      color : $black;
-      &:hover{
-        color : lighten($black, 10%);
+      color: $black;
+      &:hover {
+        color: lighten($black, 10%);
       }
     }
   }

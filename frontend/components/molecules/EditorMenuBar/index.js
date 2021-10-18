@@ -1,3 +1,3 @@
-import EditorMenuBar from './EditorMenuBar';
+import EditorMenuBar from "./EditorMenuBar";
 
 export default EditorMenuBar;

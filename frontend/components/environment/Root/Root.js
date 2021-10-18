@@ -5,15 +5,14 @@ import React from "react";
 import { Provider } from "react-redux";
 import Main from "_environment/Main";
 
-
 const theme = createTheme({
   palette: {
-    type: 'light',
+    type: "light",
     primary: {
-      main: '#dd4436',
+      main: "#dd4436",
     },
     secondary: {
-      main: '#E85A50',
+      main: "#E85A50",
     },
   },
 });

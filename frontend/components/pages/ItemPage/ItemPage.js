@@ -12,7 +12,7 @@ import {
   mdiShare,
   mdiStar,
   mdiStarOutline,
-  mdiUpload
+  mdiUpload,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import {
@@ -25,7 +25,7 @@ import {
   MenuItem,
   Skeleton,
   Stack,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -50,12 +50,12 @@ import {
   attemptGetItem,
   attemptGetItemChildren,
   attemptPublishItem,
-  attemptUpdateItem
+  attemptUpdateItem,
 } from "_thunks/item";
 import {
   attemptAddBookmark,
   attemptGetUser,
-  attemptRemoveBookmark
+  attemptRemoveBookmark,
 } from "_thunks/user";
 import { deepEqual } from "_utils/compare";
 
@@ -388,9 +388,9 @@ export default function ItemPage() {
   };
 
   const handlePublish = () => {
-    dispatch(attemptUpdateItem(itemId, item)).then(item => {
+    dispatch(attemptUpdateItem(itemId, item)).then((item) => {
       dispatch(push(`/item/${itemId}`));
-    })
+    });
   };
 
   return visible && item != null ? (

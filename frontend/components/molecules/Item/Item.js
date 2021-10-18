@@ -9,7 +9,7 @@ import {
   mdiShare,
   mdiStar,
   mdiStarOutline,
-  mdiUpload
+  mdiUpload,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import {
@@ -20,7 +20,7 @@ import {
   Menu,
   MenuItem,
   Skeleton,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import R from "ramda";
 import React, { useEffect, useState } from "react";
@@ -33,7 +33,7 @@ import {
   attemptDeleteItem,
   attemptGetItem,
   attemptGetItemChildren,
-  attemptPublishItem
+  attemptPublishItem,
 } from "_thunks/item";
 import { attemptAddBookmark, attemptRemoveBookmark } from "_thunks/user";
 import { deepEqual } from "_utils/compare";
@@ -277,7 +277,7 @@ export default function Item({
   // don't render if visible is false
   if (visible == false) return null;
 
-  const content = renderContent(item, itemChildren)
+  const content = renderContent(item, itemChildren);
 
   return item == null ? (
     <div className="item" key={itemId}>

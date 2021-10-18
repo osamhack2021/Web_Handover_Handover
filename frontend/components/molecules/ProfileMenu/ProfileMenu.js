@@ -12,8 +12,6 @@ import { useDispatch, useSelector } from "react-redux";
 import LinkComponent from "_atoms/LinkComponent";
 import { attemptLogout } from "_thunks/auth";
 
-
-
 export default function ProfileMenu() {
   const dispatch = useDispatch();
   const { user } = useSelector(R.pick(["user"]));
@@ -39,7 +37,7 @@ export default function ProfileMenu() {
       >
         <Stack direction="row" sx={{ alignItems: "center", width: "100%" }}>
           <img
-          className="profile-image"
+            className="profile-image"
             style={{
               width: "36px",
               height: "36px",

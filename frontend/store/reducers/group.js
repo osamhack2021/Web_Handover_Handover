@@ -1,5 +1,5 @@
-import update from 'immutability-helper';
-import { LOAD_GROUP } from '_actions/group';
+import update from "immutability-helper";
+import { LOAD_GROUP } from "_actions/group";
 
 export default function group(state = {}, action) {
   switch (action.type) {

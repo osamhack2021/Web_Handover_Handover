@@ -1,11 +1,14 @@
-html, body, #app, #app>div {
-  background-color : $beige;
-  height : 100%;
+html,
+body,
+#app,
+#app > div {
+  background-color: $beige;
+  height: 100%;
   overflow: auto;
 }
 
 body {
-  margin : 0;
+  margin: 0;
 }
 
 a {

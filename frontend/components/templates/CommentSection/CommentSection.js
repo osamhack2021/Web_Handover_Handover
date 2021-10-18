@@ -54,7 +54,7 @@ export default function CommentSection({
         {comments &&
           comments.map((elem, index) => <Comment key={index} comment={elem} />)}
       </div>
-      {(comments && comments.length > 0) && <Divider />}
+      {comments && comments.length > 0 && <Divider />}
       <div className="comment-section-item">
         <img
           className="profile-image comment-section-profile-image"

@@ -1,3 +1,3 @@
-import HorizontalContent from './HorizontalContent';
+import HorizontalContent from "./HorizontalContent";
 
 export default HorizontalContent;

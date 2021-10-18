@@ -1,47 +1,64 @@
-import React from 'react';
-import TeamProfile from '_organisms/TeamProfile';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import WelcomeHeader from '_organisms/WelcomeHeader';
-import Container from '@mui/material/Container';
-import Stack from '@mui/material/Stack';
+import React from "react";
+import TeamProfile from "_organisms/TeamProfile";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import WelcomeHeader from "_organisms/WelcomeHeader";
+import Container from "@mui/material/Container";
+import Stack from "@mui/material/Stack";
 
 export default function AboutPage() {
   return (
     <div>
       <WelcomeHeader />
-      <Container maxWidth="md" sx={{ paddingBottom: '200px' }}>
-        <Typography sx={{
-          fontFamily: 'BM HANNA',
-          fontStyle: 'normal',
-          fontWeight: '400',
-          fontSize: '40px',
-          marginBottom: '80px',
-        }}
+      <Container maxWidth="md" sx={{ paddingBottom: "200px" }}>
+        <Typography
+          sx={{
+            fontFamily: "BM HANNA",
+            fontStyle: "normal",
+            fontWeight: "400",
+            fontSize: "40px",
+            marginBottom: "80px",
+          }}
         >
           프로젝트 소개
         </Typography>
-        <Stack direction="row" alignItems="center" spacing={3} sx={{ marginBottom: '200px' }}>
-          <div style={{ backgroundColor: 'white', width: '400px', height: '300px' }} />
-          <Typography sx={{
-            fontFamily: 'BM HANNA',
-            fontStyle: 'normal',
-            fontWeight: '400',
-            fontSize: '20px',
-            width: '500px',
-          }}
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={3}
+          sx={{ marginBottom: "200px" }}
+        >
+          <div
+            style={{
+              backgroundColor: "white",
+              width: "400px",
+              height: "300px",
+            }}
+          />
+          <Typography
+            sx={{
+              fontFamily: "BM HANNA",
+              fontStyle: "normal",
+              fontWeight: "400",
+              fontSize: "20px",
+              width: "500px",
+            }}
           >
-            Handover🤝는 군에서 더 편리하게, 더 똑똑하게 인수인계를 할 수 있도록 사용자들을 지원하는 Web 서비스입니다. Handover를 통해 여러 방법으로 진행되고 있는 인수인계 방식들을 통일하고, 체계적으로 문서들을 관리해보세요!
+            Handover🤝는 군에서 더 편리하게, 더 똑똑하게 인수인계를 할 수 있도록
+            사용자들을 지원하는 Web 서비스입니다. Handover를 통해 여러 방법으로
+            진행되고 있는 인수인계 방식들을 통일하고, 체계적으로 문서들을
+            관리해보세요!
           </Typography>
         </Stack>
-        <Typography sx={{
-          fontFamily: 'BM HANNA_TTF',
-          fontStyle: 'normal',
-          fontWeight: '400',
-          fontSize: '40px',
-          marginBottom: '80px',
-        }}
+        <Typography
+          sx={{
+            fontFamily: "BM HANNA_TTF",
+            fontStyle: "normal",
+            fontWeight: "400",
+            fontSize: "40px",
+            marginBottom: "80px",
+          }}
         >
           팀원 소개
         </Typography>

@@ -1,30 +1,36 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const Group = require('../models/Group.js');
-const User = require('../models/User.js');
-const Item = require('../models/Item.js');
+const Group = require("../models/Group.js");
+const User = require("../models/User.js");
+const Item = require("../models/Item.js");
 
 function syntaxHighlight(json) {
-    if (typeof json != 'string') {
-         json = JSON.stringify(json, undefined, 2);
-    }
-    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-        var cls = 'number';
-        if (/^"/.test(match)) {
-            if (/:$/.test(match)) {
-                cls = 'key';
-            } else {
-                cls = 'string';
-            }
-        } else if (/true|false/.test(match)) {
-            cls = 'boolean';
-        } else if (/null/.test(match)) {
-            cls = 'null';
+  if (typeof json != "string") {
+    json = JSON.stringify(json, undefined, 2);
+  }
+  json = json
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+  return json.replace(
+    /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+    function (match) {
+      var cls = "number";
+      if (/^"/.test(match)) {
+        if (/:$/.test(match)) {
+          cls = "key";
+        } else {
+          cls = "string";
         }
-        return '<span class="' + cls + '">' + match + '</span>';
-    });
+      } else if (/true|false/.test(match)) {
+        cls = "boolean";
+      } else if (/null/.test(match)) {
+        cls = "null";
+      }
+      return '<span class="' + cls + '">' + match + "</span>";
+    }
+  );
 }
 
 const CSS = `
@@ -38,19 +44,19 @@ pre { outline: 1px solid #ccc; padding: 5px; margin: 5px; font-family: consolas;
 .key { color: red; }
 `;
 
-router.get('', async (req, res) => {
-    try {
-        let data = {};
+router.get("", async (req, res) => {
+  try {
+    let data = {};
 
-        data.groups = await Group.find({});
-        data.users = await User.find({});
-        data.items = await Item.find({});
+    data.groups = await Group.find({});
+    data.users = await User.find({});
+    data.items = await Item.find({});
 
-        data.groups = syntaxHighlight(data.groups);
-        data.users = syntaxHighlight(data.users);
-        data.items = syntaxHighlight(data.items);
-        
-        let result = `
+    data.groups = syntaxHighlight(data.groups);
+    data.users = syntaxHighlight(data.users);
+    data.items = syntaxHighlight(data.items);
+
+    let result = `
         <html>
         <head>
             <style>${CSS}</style>
@@ -80,11 +86,10 @@ ${data.items}
         </html>
         `;
 
-        res.send(result);
-
-    } catch(e) {
-        res.status(e.status || 444).send(e);
-    }
+    res.send(result);
+  } catch (e) {
+    res.status(e.status || 444).send(e);
+  }
 });
 
 module.exports = router;

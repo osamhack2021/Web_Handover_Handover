@@ -1,3 +1,3 @@
-import TeamProfile from './TeamProfile';
+import TeamProfile from "./TeamProfile";
 
 export default TeamProfile;

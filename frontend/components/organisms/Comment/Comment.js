@@ -1,7 +1,7 @@
 import { Skeleton, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { attemptGetUser } from "_thunks/user";
 import { dateElapsed, dateToString } from "_utils/date";
 
@@ -44,7 +44,7 @@ export default function Comment({ comment }) {
           <Skeleton width="150px" height="1em" />
         )}
         <div className="comment-section-item-content">
-        {comment && comment.content}
+          {comment && comment.content}
         </div>
       </div>
     </div>

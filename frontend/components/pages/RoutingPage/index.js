@@ -1,3 +1,3 @@
-import RoutingPage from './RoutingPage';
+import RoutingPage from "./RoutingPage";
 
 export default RoutingPage;

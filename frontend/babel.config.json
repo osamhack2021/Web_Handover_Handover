@@ -1,12 +1,9 @@
 {
-    "presets": ["@babel/env", "@babel/preset-react"],
-    "plugins": [
-      ["ramda", { "useES": true }]
-    ],
-    "env": {
-      "test": {
-        "plugins": ["ramda"]
-      }
+  "presets": ["@babel/env", "@babel/preset-react"],
+  "plugins": [["ramda", { "useES": true }]],
+  "env": {
+    "test": {
+      "plugins": ["ramda"]
     }
   }
-  
+}

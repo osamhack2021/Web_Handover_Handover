@@ -1,19 +1,20 @@
-const crypto = require('crypto');
-const jwt = require('jsonwebtoken');
-const userService = require('./userService.js');
-const groupService = require('./groupService.js');
-const itemService = require('./itemService.js');
+const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
+const userService = require("./userService.js");
+const groupService = require("./groupService.js");
+const itemService = require("./itemService.js");
 
-const { RuntimeError } = require('./errors/RuntimeError.js');
-const { AuthError, ForbiddenError } = require('./errors/BusinessError.js');
+const { RuntimeError } = require("./errors/RuntimeError.js");
+const { AuthError, ForbiddenError } = require("./errors/BusinessError.js");
 
 const { JWT_SECRET_KEY } = process.env;
 const { PASSWORD_HASH_KEY } = process.env;
 
 function encode(rawPassword) {
-  return crypto.createHmac('sha256', PASSWORD_HASH_KEY)
+  return crypto
+    .createHmac("sha256", PASSWORD_HASH_KEY)
     .update(rawPassword)
-    .digest('hex');
+    .digest("hex");
 }
 
 function decodeToken(token) {
@@ -22,7 +23,7 @@ function decodeToken(token) {
 
     return decoded;
   } catch (err) {
-    throw new ForbiddenError('Access denied: 로그인이 필요한 서비스입니다.');
+    throw new ForbiddenError("Access denied: 로그인이 필요한 서비스입니다.");
   }
 }
 
@@ -31,16 +32,25 @@ function isSelf(loginUserId, targetUserId) {
 }
 
 async function isAdmin(loginUserId) {
-  const user = await userService.findOne({ _id: loginUserId }, { status: true })
-    .catch((err) => { throw err; });
-  return user.status === 'admin';
+  const user = await userService
+    .findOne({ _id: loginUserId }, { status: true })
+    .catch((err) => {
+      throw err;
+    });
+  return user.status === "admin";
 }
 
 async function isHumanResourceManager(loginUserId, targetUserId) {
-  const user = await userService.findOne({ _id: targetUserId }, { group: true })
-    .catch((err) => { throw err; });
-  const isGroupManager_ = await isGroupManager(loginUserId, user.group)
-    .catch((err) => { throw err; });
+  const user = await userService
+    .findOne({ _id: targetUserId }, { group: true })
+    .catch((err) => {
+      throw err;
+    });
+  const isGroupManager_ = await isGroupManager(loginUserId, user.group).catch(
+    (err) => {
+      throw err;
+    }
+  );
 
   if (!isGroupManager_) {
     return false;
@@ -50,7 +60,8 @@ async function isHumanResourceManager(loginUserId, targetUserId) {
 }
 
 async function isGroupManager(loginUserId, targetGroupId) {
-  const targetGroup = await groupService.read({ _id: targetGroupId }, { admins: true })
+  const targetGroup = await groupService
+    .read({ _id: targetGroupId }, { admins: true })
     .catch((err) => {
       throw err;
     });
@@ -64,29 +75,47 @@ async function isGroupManager(loginUserId, targetGroupId) {
 }
 
 async function isItemEditor(loginUserId, targetItemId) {
-  const user = await userService.findOne({ _id: loginUserId }, { group: true })
-    .catch((err) => { throw err; });
-  const targetItem = await itemService.read({ _id: targetItemId }, { owner: true, contributors: true, accessGroups: true })
-    .catch((err) => { throw err; });
+  const user = await userService
+    .findOne({ _id: loginUserId }, { group: true })
+    .catch((err) => {
+      throw err;
+    });
+  const targetItem = await itemService
+    .read(
+      { _id: targetItemId },
+      { owner: true, contributors: true, accessGroups: true }
+    )
+    .catch((err) => {
+      throw err;
+    });
 
-  return targetItem.owner._id === loginUserId
-			|| targetItem.contributors.includes(loginUserId)
-			|| accessGroups.edit.includes(user.group);
+  return (
+    targetItem.owner._id === loginUserId ||
+    targetItem.contributors.includes(loginUserId) ||
+    accessGroups.edit.includes(user.group)
+  );
 }
 
 async function isItemReader(loginUserId, targetItemId) {
-  const user = await userService.findOne({ _id: loginUserId }, { group: true })
-    .catch((err) => { throw err; });
-  const targetItem = await itemService.read({ _id: targetItemId }, { contributors: true, accessGroups: true })
-    .catch((err) => { throw err; });
+  const user = await userService
+    .findOne({ _id: loginUserId }, { group: true })
+    .catch((err) => {
+      throw err;
+    });
+  const targetItem = await itemService
+    .read({ _id: targetItemId }, { contributors: true, accessGroups: true })
+    .catch((err) => {
+      throw err;
+    });
 
-  return targetItem.contributors.includes(loginUserId)
-			|| accessGroups.edit.includes(user.group)
-			|| accessGroups.read.includes(user.group);
+  return (
+    targetItem.contributors.includes(loginUserId) ||
+    accessGroups.edit.includes(user.group) ||
+    accessGroups.read.includes(user.group)
+  );
 }
 
 module.exports = {
-
   async login(params) {
     params.password = encode(params.password);
 
@@ -94,23 +123,29 @@ module.exports = {
       .findOne({ serviceNumber: params.serviceNumber })
       .catch((err) => {
         if (err instanceof TypeError) {
-          throw new AuthError('Authentication error: 로그인에 실패했습니다.');
+          throw new AuthError("Authentication error: 로그인에 실패했습니다.");
         }
-        throw new RuntimeError('Runtime error: 로그인에 실패했습니다.');
+        throw new RuntimeError("Runtime error: 로그인에 실패했습니다.");
       });
 
     if (loginUser === null || loginUser.password !== params.password) {
-      throw new AuthError('Authentication error: 로그인에 실패했습니다. 올바르지 않은 군번과 비밀번호입니다.');
+      throw new AuthError(
+        "Authentication error: 로그인에 실패했습니다. 올바르지 않은 군번과 비밀번호입니다."
+      );
     }
 
-    const user = jwt.sign({
-      _id: loginUser._id,
-      serviceNumber: loginUser.serviceNumber,
-      group: loginUser.group,
-      status: loginUser.status,
-    }, JWT_SECRET_KEY, {
-      expiresIn: '12h',
-    });
+    const user = jwt.sign(
+      {
+        _id: loginUser._id,
+        serviceNumber: loginUser.serviceNumber,
+        group: loginUser.group,
+        status: loginUser.status,
+      },
+      JWT_SECRET_KEY,
+      {
+        expiresIn: "12h",
+      }
+    );
 
     return user;
   },
@@ -122,54 +157,70 @@ module.exports = {
   async authAdmin(token) {
     const decode = decodeToken(token);
 
-    const isAd = await isAdmin(decode._id).catch((err) => { throw err; });
+    const isAd = await isAdmin(decode._id).catch((err) => {
+      throw err;
+    });
     if (!isAd) {
-      throw new ForbiddenError('Access denied: 접근 권한이 존재하지 않습니다');
+      throw new ForbiddenError("Access denied: 접근 권한이 존재하지 않습니다");
     }
     return isAd;
   },
   // User 수정 권한 확인
   async editUserAuth(loginUserId, targetUserId) {
-    const results = await Promise.all([isHumanResourceManager(loginUserId, targetUserId), isAdmin(loginUserId)])
-      .catch((err) => { throw err; });
+    const results = await Promise.all([
+      isHumanResourceManager(loginUserId, targetUserId),
+      isAdmin(loginUserId),
+    ]).catch((err) => {
+      throw err;
+    });
 
-    if (!isSelf(loginUserId, targetUserId)
-			&& !results.includes(true)) {
-      throw new ForbiddenError('Access denied: 접근 권한이 존재하지 않습니다');
+    if (!isSelf(loginUserId, targetUserId) && !results.includes(true)) {
+      throw new ForbiddenError("Access denied: 접근 권한이 존재하지 않습니다");
     }
 
     return true;
   },
 
   async deleteUserAuth(loginUserId, targetUserId) {
-    const results = await Promise.all([isHumanResourceManager(loginUserId, targetUserId), isAdmin(loginUserId)])
-      .catch((err) => { throw err; });
+    const results = await Promise.all([
+      isHumanResourceManager(loginUserId, targetUserId),
+      isAdmin(loginUserId),
+    ]).catch((err) => {
+      throw err;
+    });
 
     if (!results.includes(true)) {
-      throw new ForbiddenError('Access denied: 접근 권한이 존재하지 않습니다');
+      throw new ForbiddenError("Access denied: 접근 권한이 존재하지 않습니다");
     }
 
     return true;
   },
 
   async readUserAuth(loginUserId, targetUserId) {
-    const results = await Promise.all([isHumanResourceManager(loginUserId, targetUserId), isAdmin(loginUserId)])
-      .catch((err) => { throw err; });
+    const results = await Promise.all([
+      isHumanResourceManager(loginUserId, targetUserId),
+      isAdmin(loginUserId),
+    ]).catch((err) => {
+      throw err;
+    });
 
-    if (!isSelf(loginUserId, targetUserId)
-			&& !results.includes(true)) {
-      return 'general';
+    if (!isSelf(loginUserId, targetUserId) && !results.includes(true)) {
+      return "general";
     }
 
-    return 'all';
+    return "all";
   },
 
   // Group 수정 권한 확인
   async editGroupAuth(loginUserId, targetGroupId) {
-    const results = await Promise.all([isGroupManager(loginUserId, targetGroupId), isAdmin(loginUserId)])
-      .catch((err) => { throw err; });
+    const results = await Promise.all([
+      isGroupManager(loginUserId, targetGroupId),
+      isAdmin(loginUserId),
+    ]).catch((err) => {
+      throw err;
+    });
     if (!results.includes(true)) {
-      throw new ForbiddenError('Access denied: 접근 권한이 존재하지 않습니다');
+      throw new ForbiddenError("Access denied: 접근 권한이 존재하지 않습니다");
     }
 
     return true;
@@ -177,23 +228,30 @@ module.exports = {
 
   // Item 수정 권한 확인
   async editItemAuth(loginUserId, targetItemId) {
-    const results = await Promise.all([isItemEditor(loginUserId, targetItemId), isAdmin(loginUserId)])
-      .catch((err) => { throw err; });
+    const results = await Promise.all([
+      isItemEditor(loginUserId, targetItemId),
+      isAdmin(loginUserId),
+    ]).catch((err) => {
+      throw err;
+    });
     if (!results.includes(true)) {
-      throw new ForbiddenError('Access denied: 접근 권한이 존재하지 않습니다');
+      throw new ForbiddenError("Access denied: 접근 권한이 존재하지 않습니다");
     }
 
     return true;
   },
 
   async readItemAuth(loginUserId, targetItemId) {
-    const results = await Promise.all([isItemReader(loginUserId, targetItemId), isAdmin(loginUserId)])
-      .catch((err) => { throw err; });
+    const results = await Promise.all([
+      isItemReader(loginUserId, targetItemId),
+      isAdmin(loginUserId),
+    ]).catch((err) => {
+      throw err;
+    });
     if (!results) {
-      throw new ForbiddenError('Access denied: 접근 권한이 존재하지 않습니다');
+      throw new ForbiddenError("Access denied: 접근 권한이 존재하지 않습니다");
     }
 
     return true;
   },
-
 };

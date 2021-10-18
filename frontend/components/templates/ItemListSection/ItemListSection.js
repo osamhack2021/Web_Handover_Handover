@@ -1,12 +1,14 @@
-import { Container, Stack } from '@mui/material';
-import React from 'react';
-import ItemList from '_organisms/ItemList';
+import { Container, Stack } from "@mui/material";
+import React from "react";
+import ItemList from "_organisms/ItemList";
 
-export default function ItemListSection({title, items}) {
-
-  const cabinetItems = items != null ? items.filter((item) => item.type === 'cabinet') : null;
-  const documentItems = items != null ? items.filter((item) => item.type === 'document') : null;
-  const cardItems = items != null ? items.filter((item) => item.type === 'card') : null;
+export default function ItemListSection({ title, items }) {
+  const cabinetItems =
+    items != null ? items.filter((item) => item.type === "cabinet") : null;
+  const documentItems =
+    items != null ? items.filter((item) => item.type === "document") : null;
+  const cardItems =
+    items != null ? items.filter((item) => item.type === "card") : null;
 
   return items != null ? (
     <Container maxWidth="md">

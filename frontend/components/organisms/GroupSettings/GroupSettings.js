@@ -26,9 +26,7 @@ export default function GroupSettings() {
         let adminIdArray = [];
         let inspectorIdArray = [];
         getGroupByGroupId(group._id).then((result) => {
-          result.admins.forEach((admin) => 
-            adminIdArray.push(admin._id)
-          );
+          result.admins.forEach((admin) => adminIdArray.push(admin._id));
           result.inspectors.forEach((inspector) =>
             inspectorIdArray.push(inspector._id)
           );
@@ -45,11 +43,11 @@ export default function GroupSettings() {
 
             // The following can be used to get user's group name, but it's not necessary for now.
             // The reason why member.division is undefined is because getGroupByGroupId() is an async request.
-            // `setManagingMembers` won't contain the 'division' field because it is invocated before the 
+            // `setManagingMembers` won't contain the 'division' field because it is invocated before the
             // respond of the request is recieved.
             // getGroupByGroupId(user.group).then((group) => {
             //   users[index].division = group.name;
-            // }); 
+            // });
           });
           setManagingMembers([...managingMembers, users]);
         });

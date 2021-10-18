@@ -73,7 +73,11 @@ export default function RoutingPage() {
               <Route exact path="/account" component={ProfilePage} />
               <Route exact path="/account/items" component={ProfilePage} />
               <Route exact path="/account/settings" component={ProfilePage} />
-              <Route exact path="/account/settings/group" component={ProfilePage} />
+              <Route
+                exact
+                path="/account/settings/group"
+                component={ProfilePage}
+              />
               <Route exact path="/account/recovery" component={RecoveryPage} />
 
               {/* User Profile Page */}

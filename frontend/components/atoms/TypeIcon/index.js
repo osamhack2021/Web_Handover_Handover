@@ -1,3 +1,3 @@
-import TypeIcon from './TypeIcon';
+import TypeIcon from "./TypeIcon";
 
 export default TypeIcon;

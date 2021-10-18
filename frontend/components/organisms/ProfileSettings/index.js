@@ -1,3 +1,3 @@
-import ProfileSettings from './ProfileSettings';
+import ProfileSettings from "./ProfileSettings";
 
 export default ProfileSettings;

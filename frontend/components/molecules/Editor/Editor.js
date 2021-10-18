@@ -5,7 +5,7 @@ import {
   BubbleMenu,
   EditorContent,
   FloatingMenu,
-  useEditor
+  useEditor,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import React from "react";

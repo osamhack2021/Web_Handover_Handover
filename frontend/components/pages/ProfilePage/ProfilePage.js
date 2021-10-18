@@ -2,7 +2,7 @@ import {
   mdiAccount,
   mdiAccountMultiplePlus,
   mdiCog,
-  mdiNoteEdit
+  mdiNoteEdit,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import Avatar from "@mui/material/Avatar";
@@ -135,7 +135,11 @@ export default function ProfilePage() {
             src={user && user.profileImageUrl}
             sx={{ width: 120, height: 120 }}
           >
-            <img src={"/images/profile-default.jpg"} width="100%" height="100%"/>
+            <img
+              src={"/images/profile-default.jpg"}
+              width="100%"
+              height="100%"
+            />
           </Avatar>
         </Tooltip>
         {user == null || group == null ? null : (

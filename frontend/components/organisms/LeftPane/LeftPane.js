@@ -5,7 +5,7 @@ import ListSubheader from "@mui/material/ListSubheader";
 import R from "ramda";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import LinkComponent from '_atoms/LinkComponent';
+import LinkComponent from "_atoms/LinkComponent";
 import Logo from "_frontend/components/atoms/Logo";
 import MenuItem from "_molecules/MenuItem";
 import ProfileMenu from "_molecules/ProfileMenu";
@@ -44,7 +44,11 @@ export default function LeftPane() {
 
   return (
     <div className="leftpane">
-      <ButtonBase component={LinkComponent} to="/home" className="leftpane-logo-button">
+      <ButtonBase
+        component={LinkComponent}
+        to="/home"
+        className="leftpane-logo-button"
+      >
         <Logo />
       </ButtonBase>
       <div className="leftpane-header">

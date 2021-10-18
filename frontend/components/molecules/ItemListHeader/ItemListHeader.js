@@ -1,5 +1,5 @@
 import React from "react";
-import TypeIcon from '_atoms/TypeIcon';
+import TypeIcon from "_atoms/TypeIcon";
 
 export default function ItemListHeader({ title, icon, iconType }) {
   return (

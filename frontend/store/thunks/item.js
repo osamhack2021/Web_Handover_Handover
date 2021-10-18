@@ -2,7 +2,7 @@ import { store as RNC } from "react-notifications-component";
 import {
   addItemCache,
   addItemCaches,
-  deleteItemCache
+  deleteItemCache,
 } from "_actions/itemCache";
 import {
   addItemComment,
@@ -13,7 +13,7 @@ import {
   getItemChildren,
   getUserItem,
   publishItem,
-  updateItem
+  updateItem,
 } from "_api/item";
 import { dispatchError } from "_utils/api";
 
@@ -98,19 +98,18 @@ export const attemptGetItemChildren = (itemPath) => (dispatch) =>
     })
     .catch(dispatchError(dispatch));
 
-export const attemptCreateItem = (item) => (dispatch) =>
-  {
-    // Exclude _id property from item object
-    // Read more: https://stackoverflow.com/a/56773391/4524257
-    // const {_id, owner, ...request} = item;
-    return createItem(item)
-      .then((item) => {
-        // save all result to itemCache
-        dispatch(addItemCache(item));
-        return item;
-      })
-      .catch(dispatchError(dispatch));
-  };
+export const attemptCreateItem = (item) => (dispatch) => {
+  // Exclude _id property from item object
+  // Read more: https://stackoverflow.com/a/56773391/4524257
+  // const {_id, owner, ...request} = item;
+  return createItem(item)
+    .then((item) => {
+      // save all result to itemCache
+      dispatch(addItemCache(item));
+      return item;
+    })
+    .catch(dispatchError(dispatch));
+};
 
 export const attemptUpdateItem = (itemId, item) => (dispatch) => {
   return updateItem(itemId, {

@@ -1,3 +1,3 @@
-import GroupSettings from './GroupSettings';
+import GroupSettings from "./GroupSettings";
 
 export default GroupSettings;

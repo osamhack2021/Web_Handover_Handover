@@ -1,3 +1,3 @@
-import RecoverySection from './RecoverySection';
+import RecoverySection from "./RecoverySection";
 
 export default RecoverySection;
