@@ -208,23 +208,23 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
         <th>역할</th>
         <td width="150" align="center">
             팀장<br>
-            프론트엔드 개발
+            프론트엔드
         </td>
         <td width="150" align="center">
             디자인<br>
-            프론트엔드 개발
+            프론트엔드
         </td>
         <td width="150" align="center">
-            프론트엔드 개발
+            프론트엔드
         </td>
         <td width="150" align="center">
-            프론트엔드 개발
+            프론트엔드
         </td>
         <td width="150" align="center">
-            백엔드 개발
+            백엔드
         </td>
         <td width="150" align="center">
-            백엔드 개발
+            백엔드
         </td>
     </tr>
     <tr>
