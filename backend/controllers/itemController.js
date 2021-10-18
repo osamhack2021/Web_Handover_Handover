@@ -122,7 +122,7 @@ module.exports = {
             object.objectID = object._id;
             delete object._id;
 
-            res.status(204).send();
+            res.status(201).send(result);
         } catch(err) {
             res.status(err.status || 500).send(err.message);
         }
