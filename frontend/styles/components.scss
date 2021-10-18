@@ -51,3 +51,24 @@
   border: 1px solid #0003 !important;
   border-radius: 50% !important;
 }
+
+// custom scrollbar
+// from: https://dev.to/xtrp/how-to-create-a-beautiful-custom-scrollbar-for-your-site-in-plain-css-1mjg
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #00000025;
+  border-radius: 20px;
+  border: 5px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #00000015;
+}
