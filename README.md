@@ -102,32 +102,27 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
   - Editor내 표 작성, 수식 작성 기능 등 **사용자들이 필요로 하는 기능**들을 추가하며 성장 가능
  
 <h2 id="stacks"> 🛠️ 기술 스택 (Key Tech Stacks) </h2>
-<p align="center">
- <img src='./image/tech_stacks.png' />
-</p>
+ <img src='./image/tech_stacks.png' align="center" /> 
  
-### 
- 
-### :shopping_cart:: Back-end
-* `RESTful`한 백엔드 구축
-    - [`nodejs 14.17.6`](https://nodejs.org/en/)
-    - [`expressjs`](https://expressjs.com/)
-* `NoSQL` 데이터베이스 사용 
-    - [`MongoDB`](https://www.mongodb.com/)
-    - [`mongoose`](https://mongoosejs.com/)
-* `Algolia`를 사용한 검색
-    - [`Algolia Search`](https://www.algolia.com/)
- 
-### 💄 Front-end
-* `React`를 사용한 프론트엔드 구축
-    - [`react.js`](https://reactjs.org/)
-    - [`Redux`](https://redux.js.org/)
-* `Material UI`를 사용한 디자인
-    - [`MaterialUI`](https://mui.com/)
-* Sass를 사용하여 스타일링
-    - [`Sass`](https://sass-lang.com/)
+ ### 🚉 Platform
+  - [docker](https://www.docker.com/)
+  - [docker-compose](https://docs.docker.com/compose/)
+  - [nginx](https://www.nginx.com/)
 
-<br>
+ ### :shopping_cart: Back-end
+  - [Node.js](https://nodejs.org/en/)
+  - [Express](https://expressjs.com/)
+  - [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
+  - [MongoDB](https://www.mongodb.com/)
+  - [Mongoose](https://mongoosejs.com/)
+  - [Algolia](https://www.algolia.com/)
+ 
+ ### 💄 Front-end
+  - [React](https://reactjs.org/)
+  - [Redux](https://redux.js.org/)
+  - [MaterialUI](https://mui.com/)
+  - [Sass](https://sass-lang.com/)
+  - [webpack](https://webpack.kr/)
  
 <h2 id="install"> 🚀 설치 안내 (Installaltion Methods) </h2>
 
