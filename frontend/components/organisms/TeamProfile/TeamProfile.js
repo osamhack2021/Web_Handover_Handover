@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 function RoleCreator(string) {
-  console.log(string.split(','));
   return string.split(',').map((elem) => {
     let color = '';
     switch (elem) {
@@ -25,7 +24,6 @@ function RoleCreator(string) {
       default:
         color = '#595959';
     }
-    console.log(color);
     return (
       <span style={{ color }}>
         {elem}
@@ -102,31 +100,6 @@ export default function TeamProfile({
           {status}
         </Typography>
       </Stack>
-
-      {/* <CardHeader
-        title={(
-          <Typography sx={{
-            fontFamily: 'BM HANNA_TTF',
-            fontStyle: 'normal',
-            fontWeight: '400',
-            fontSize: '30px',
-          }}
-          >
-            {name}
-          </Typography>
-        )}
-        subheader={(
-          <Typography sx={{
-            fontFamily: 'BM HANNA_TTF',
-            fontStyle: 'normal',
-            fontWeight: '400',
-            fontSize: '23px',
-          }}
-          >
-            {description}
-          </Typography>
-        )}
-      /> */}
     </Card>
   );
 }
@@ -134,6 +107,7 @@ export default function TeamProfile({
 TeamProfile.propTypes = {
   imgSrc: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  roles: PropTypes.string.isRequired,
+  army: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
 };
