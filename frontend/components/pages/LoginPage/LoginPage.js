@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { Container } from '@mui/material';
 import { push } from 'connected-react-router';
 import R from 'ramda';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Login from '_organisms/Login';
 
-import LoginSection from '_templates/LoginSection';
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -16,8 +17,16 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="login-page page">
-      <LoginSection />
-    </div>
+    <Container
+      maxWidth="xs"
+      sx={{
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Login />
+    </Container>
   );
 }

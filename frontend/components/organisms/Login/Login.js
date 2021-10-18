@@ -4,6 +4,7 @@ import R from "ramda";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import LinkComponent from "_frontend/components/atoms/LinkComponent";
+import Logo from "_frontend/components/atoms/Logo";
 import useKeyPress from "_hooks/useKeyPress";
 import { attemptLogin } from "_thunks/auth";
 
@@ -47,10 +48,11 @@ export default function Login() {
   const isValid = serviceNumber.length > 0 && password.length > 0;
 
   return (
-    <div className="login-box">
-      <div className="login-logo" />
-      <div className="login-title">로그인</div>
-      <div className="login-subtitle">환영합니다!</div>
+    <div className="login-page">
+      <div className="login-header">
+        <Logo />
+        <div className="login-title">로그인</div>
+      </div>
       <div className="forminput-container">
         <TextField
           fullWidth
@@ -72,6 +74,7 @@ export default function Login() {
       </div>
       <Button
         fullWidth
+        color="secondary"
         disabled={!isValid}
         sx={{ my: 2 }}
         variant="contained"
@@ -80,20 +83,12 @@ export default function Login() {
       >
         로그인
       </Button>
-      <div className="login-register">
-        비밀번호를 잊으셨나요?&nbsp;
-        <Button component={LinkComponent} to="/recovery" className="login-link">
-          비밀번호 찾기
+      <div className="login-options">
+        <Button component={LinkComponent} to="/recovery">
+          계정을 잊으셨나요?
         </Button>
-      </div>
-      <div className="login-register">
-        계정이 없으신가요?&nbsp;
-        <Button
-          component={LinkComponent}
-          to="/register"
-          className="register-link"
-        >
-          회원가입
+        <Button component={LinkComponent} to="/register">
+          계정 만들기
         </Button>
       </div>
     </div>
