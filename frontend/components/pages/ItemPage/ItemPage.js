@@ -1,5 +1,8 @@
 import {
-  mdiAccountMultipleCheck, mdiCommentTextOutline, mdiContentDuplicate,
+  mdiCog,
+  mdiCommentTextOutline,
+  mdiContentDuplicate,
+  mdiContentSave,
   mdiDelete,
   mdiDotsVertical,
   mdiEarth,
@@ -455,12 +458,12 @@ export default function ItemPage() {
         </MenuItem>
         {isCurrentUserOwner ? (
           <div>
-            <MenuItem component={LinkComponent} to={`/item/${itemId}/settings`}>
-              <ListItemIcon>
-                <Icon path={mdiAccountMultipleCheck} size={1} />
-              </ListItemIcon>
-              권한 설정
-            </MenuItem>
+                <ListItemIcon>
+                  <Icon path={mdiCog} size={1} />
+                </ListItemIcon>
+                설정
+              </MenuItem>
+            )}
             <Divider light />
             {status !== "archived" ? (
               <MenuItem onClick={archiveItem}>

@@ -1,5 +1,5 @@
 import {
-  mdiAccountMultipleCheck,
+  mdiCog,
   mdiContentDuplicate,
   mdiDelete,
   mdiDotsVertical,
@@ -113,8 +113,8 @@ export default function Item({
   const cachedItem = useSelector((state) => state.itemCache[itemId]);
 
   // DEBUG
-  if (cachedItem == null) console.log(itemId + " wasn't found in itemCache.");
-  else console.log(itemId + " was found in itemCache: ", cachedItem);
+  // if (cachedItem == null) console.log(itemId + " wasn't found in itemCache.");
+  // else console.log(itemId + " was found in itemCache: ", cachedItem);
 
   // will try to use object passed as props if exists
   // will try to use cachedItem if not null (= if exists in cache)
@@ -426,9 +426,9 @@ export default function Item({
           <div>
             <MenuItem component={LinkComponent} to={`/item/${itemId}/settings`}>
               <ListItemIcon>
-                <Icon path={mdiAccountMultipleCheck} size={1} />
+                <Icon path={mdiCog} size={1} />
               </ListItemIcon>
-              권한 설정
+              설정
             </MenuItem>
             <Divider light />
             {item.status !== "archived" ? (
