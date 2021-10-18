@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import WelcomeHeader from '_organisms/WelcomeHeader';
-import Meeting from '_assets/svgs/meeting.svg';
+import WelcomeFooter from '_organisms/WelcomeFooter';
 import MeetingPNG from '_assets/images/meeting.png';
 import WaveVector from '_assets/images/wave.png';
 
@@ -162,7 +162,7 @@ export default function WelcomePage() {
         </Stack>
       </Container>
       <div style={{
-        display: 'flex', flexDirection: 'column', backgroundColor: '#D8C3A5', height: '700px', justifyContent: 'center', alignItems: 'center',
+        display: 'flex', flexDirection: 'column', backgroundColor: '#D8C3A5', height: '600px', justifyContent: 'center', alignItems: 'center',
       }}
       >
         <Typography sx={{
@@ -188,6 +188,7 @@ export default function WelcomePage() {
           회원가입
         </Button>
       </div>
+      <WelcomeFooter />
     </div>
   );
 }
