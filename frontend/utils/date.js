@@ -3,6 +3,11 @@ import humanizeDuration from "humanize-duration";
 export const dateElapsed = (dateString) => {
   const date = new Date(dateString);
   const now = new Date();
+
+  if (now - date < 1000) {
+    return "방금 전";
+  }
+
   return `${humanizeDuration(now - date, {
     language: "ko",
     largest: 1,
