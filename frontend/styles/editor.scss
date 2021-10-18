@@ -9,6 +9,14 @@
     margin-top: 0.75em;
   }
 
+  * {
+    // display: block;
+    margin-block-start: 0;
+    // margin-block-end: 1em;
+    // margin-inline-start: 0px;
+    // margin-inline-end: 0px;
+  }
+
   ul,
   ol {
     padding: 0 1rem;
