@@ -1,23 +1,23 @@
-import { mdiBell } from "@mdi/js";
-import Icon from "@mdi/react";
-import { IconButton } from "@mui/material";
-import PropTypes from "prop-types";
-import React, { useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
-import SearchIcon from "_assets/svgs/search_icon.svg";
+import { mdiBell } from '@mdi/js';
+import Icon from '@mdi/react';
+import { IconButton } from '@mui/material';
+import PropTypes from 'prop-types';
+import React, { useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import SearchIcon from '_assets/svgs/search_icon.svg';
 
 export default function Header() {
   const history = useHistory();
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
   const searchInput = useRef();
 
   const onChange = (event) => {
     setValue(event.target.value);
   };
   const routePath = (event) => {
-    if (event.keyCode === 13) {
+    if (event.keyCode === 13 && history.location.pathname !== `/search/${value}`) {
       history.push(`/search/${value}`);
-      setValue("");
+      setValue('');
     }
   };
   return (

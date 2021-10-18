@@ -1,6 +1,9 @@
 // Images
 import './images/profile-default.jpg';
 import './images/handover-logo.png';
+import './images/demopage.png';
+import './images/share.png';
+import './images/structure.png';
 import './images/meeting.png';
 import './images/wave.png';
 import './svgs/pink_trapezoid.svg';
