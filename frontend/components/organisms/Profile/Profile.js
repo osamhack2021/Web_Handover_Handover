@@ -50,7 +50,7 @@ export default function Profile({ user, group }) {
   return user == null || group == null ? (
     <LinearProgress />
   ) : (
-    <Container maxWidth="md" sx={{ pt: 4, ml: 6 }} className="profile">
+    <Container maxWidth="md" sx={{ pt: 4, ml: 6, width: 900 }} className="profile">
       {entry.map((e, index) => (
         <div className="profile-item" key={index}>
           <div className="profile-label">{e.label}</div>
