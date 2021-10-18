@@ -57,7 +57,7 @@ async function init() {
             military: '0000',
             mobile: '010-0000-0000'
         },
-        profileImageUrl: 'https://t1.daumcdn.net/liveboard/holapet/0e5f90af436e4c218343073164a5f657.JPG'
+        profileImageUrl: 'https://user-images.githubusercontent.com/67567023/137678863-c728e29f-8049-42a3-b858-c7fbe9579152.png'
     };
     users.logicom = await post('/user', logicom);
     
@@ -95,7 +95,7 @@ async function init() {
             military: '0000',
             mobile: '010-0000-0000'
         },
-        profileImageUrl: 'https://t1.daumcdn.net/liveboard/holapet/0e5f90af436e4c218343073164a5f657.JPG'
+        profileImageUrl: 'https://user-images.githubusercontent.com/67567023/137678866-a32d7e12-caa5-458a-8620-a9e9ac180b80.png'
     };
     users.icsqd = await post('/user', icsqd);
     
@@ -124,13 +124,14 @@ async function init() {
         password: 'AAA',
         name: '박찬우',
         rank: '대위',
-        title: 'AAA과장',
+        title: '인사과장',
         status: 'active',
         email: 'AAA@navy.mil',
         tel: {
             military: '0000',
             mobile: '010-0000-0000'
-        }
+        },
+        profileImageUrl: 'https://user-images.githubusercontent.com/67567023/137678752-5e08d457-a8c2-4efe-85c2-020b4df59d4c.png'
     };
     users.AAA = await post('/user', AAA);
     
@@ -141,7 +142,7 @@ async function init() {
     })).token;
 
     groups.AAA = await post('/group', {
-        name: 'AAA과',
+        name: '인사과',
         path: groups.icsqd.path,
         admins: [users.icsqd._id]
     });
@@ -165,7 +166,8 @@ async function init() {
         tel: {
             military: '0000',
             mobile: '010-0000-0000'
-        }
+        },
+        profileImageUrl: 'https://user-images.githubusercontent.com/67567023/137678869-cefa34d6-bbfa-4da8-b87d-6e9c01ce6c85.png'
     };
     users.BBB = await post('/user', BBB);
     
@@ -199,7 +201,8 @@ async function init() {
         tel: {
             military: '0000',
             mobile: '010-0000-0000'
-        }
+        },
+        profileImageUrl: 'https://user-images.githubusercontent.com/67567023/137678861-9a17f892-2fbb-4889-be06-2165f8350943.png'
     };
     users.CCC = await post('/user', CCC);
     
@@ -234,13 +237,17 @@ async function init() {
         },
         status: 'published',
         comments: [{
-            content: 'Wow! Very Good!!',
+            content: '좋은 문서 감사합니다! 저희 부대의 신임 간부와 전입 병사들에게 큰 도움이 될 것 같습니다. 혹시 주 장비실 청소 방법에 대한 내용을 추가해주실 수 있으십니까?',
             by: users.AAA._id,
             date: new Date('2021-9-10')
         }, {
-            content: 'LGTM',
+            content: '피드백 감사합니다. 주 장비실 청소 방법에 대한 카드 문서를 추가했습니다!',
             by: users.CCC._id,
-            date: new Date('2021-9-16')
+            date: new Date('2021-9-11')
+        }, {
+            content: '안녕하십니까! 저희 부대에서는 다른 방식으로 NAC 계정들을 관리하고 있는데, 저희 부대의 방식을 공유드리고 싶어 이 서랍을 복제해 저희 부대의 문서를 작성해보았습니다. 확인해보시면 큰 도움이 되실 겁니다! ',
+            by: users.BBB._id,
+            date: new Date('2021-9-11')
         }],
         created: new Date('2021-9-9')
     };
