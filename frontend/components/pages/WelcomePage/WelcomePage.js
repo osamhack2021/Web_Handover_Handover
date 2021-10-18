@@ -11,6 +11,9 @@ import WelcomeHeader from '_organisms/WelcomeHeader';
 import WelcomeFooter from '_organisms/WelcomeFooter';
 import MeetingPNG from '_assets/images/meeting.png';
 import WaveVector from '_assets/images/wave.png';
+import DemoPage from '_assets/images/demopage.png';
+import Share from '_assets/images/share.png';
+import Structure from '_assets/images/structure.png';
 
 function FeatureBlock(subTitle, title, description, imgSrc, position) {
   let justifyContent;
@@ -30,7 +33,7 @@ function FeatureBlock(subTitle, title, description, imgSrc, position) {
   }
   return (
     <Stack direction="row" alignItems="center" justifyContent={justifyContent} sx={{ marginBottom: '100px' }}>
-      {position === 'left' ? <img width="280px" height="200px" src={imgSrc} /> : ''}
+      {position === 'left' ? <img width="280px" height="200px" src={imgSrc} style={{ border: '3px solid #555' }} /> : ''}
       <div>
         <Typography sx={{
           fontFamily: 'Roberto',
@@ -66,7 +69,7 @@ function FeatureBlock(subTitle, title, description, imgSrc, position) {
           {description}
         </Typography>
       </div>
-      {position === 'right' ? <img width="280px" height="200px" src={imgSrc} /> : ''}
+      {position === 'right' ? <img width="280px" height="200px" src={imgSrc} style={{ border: '3px solid #555' }} /> : ''}
     </Stack>
   );
 }
@@ -155,9 +158,9 @@ export default function WelcomePage() {
                 서비스 소개
 
               </Typography>
-              {FeatureBlock('인수 인계서 작성', '효율적인 부대 관리', '부대 업무를 한곳에 모아보세요. 사용자가 속한 그룹의 인수인계서, 업무들을 한번에 관리할 수 있습니다.', '', 'right')}
-              {FeatureBlock('편리한 인수 인계', '업무 문서 공유', '인수인계를  위해서는 권한만 설정해주면 됩니다 인수인계 문서만 작성이 되어 있다면 간단하게 인수인계를 진행할 수 있습니다! 그저 클릭 몇번으로 사용자의 권한을 설정해주세요', '', 'left')}
-              {FeatureBlock('댓글 북마크 기능', '보다 쉬운 인수인계서', 'Handover 의 모든 문서들은 서랍, 문서, 카드 의 구조를 가지고 있습니다 모든 보직, 근무의 인수인계서는 누구나 쉽게 이해할 수 있도록 서랍, 문서, 카드 3단계로 체계화 되어 있습니다. 어떤 업무를 수행하는지, 어떤 작업이 있는지 체계적으로 정리되어 있습니다. ', '', 'right')}
+              {FeatureBlock('인수 인계서 작성', '효율적인 부대 관리', '부대 업무를 한곳에 모아보세요. 사용자가 속한 그룹의 인수인계서, 업무들을 한번에 관리할 수 있습니다.', Structure, 'right')}
+              {FeatureBlock('편리한 인수 인계', '업무 문서 공유', '인수인계를  위해서는 권한만 설정해주면 됩니다 인수인계 문서만 작성이 되어 있다면 간단하게 인수인계를 진행할 수 있습니다! 그저 클릭 몇번으로 사용자의 권한을 설정해주세요', Share, 'left')}
+              {FeatureBlock('댓글 북마크 기능', '보다 쉬운 인수인계서', 'Handover 의 모든 문서들은 서랍, 문서, 카드 의 구조를 가지고 있습니다 모든 보직, 근무의 인수인계서는 누구나 쉽게 이해할 수 있도록 서랍, 문서, 카드 3단계로 체계화 되어 있습니다. 어떤 업무를 수행하는지, 어떤 작업이 있는지 체계적으로 정리되어 있습니다. ', DemoPage, 'right')}
               {FeatureBlock('더 발전해 나가는 국방 업무', '커뮤니티', '커뮤니티를 통해서 더 좋은 업무방식을 찾아보세요. 다양한 부대에 같은 보직, 업무를 가진 사람들이 공유한 문서를 보며 더 발전된 부대 운영을 할 수 있습니다.', '', 'center')}
             </Stack>
           </Container>
