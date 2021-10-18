@@ -66,8 +66,8 @@ export default function RoutingPage() {
               {/* Item Page */}
               <Route exact path="/create" component={EditorPage} />
               <Route exact path="/item/:itemId" component={ItemPage} />
-              <Route exact path="/item/:itemId/edit" component={EditorPage} />
-              <Route exact path="/item/:itemId/settings" component={EditorPage} />
+              <Route exact path="/item/:itemId/edit" component={ItemPage} />
+              <Route exact path="/item/:itemId/settings" component={ItemPage} />
 
               {/* Account Page */}
               <Route exact path="/account" component={ProfilePage} />
