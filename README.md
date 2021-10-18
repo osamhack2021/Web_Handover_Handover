@@ -1,13 +1,17 @@
 # 📋 Handover - 국방업무공유체계 
-<div align="center">
- <br><br>
- <img src='./image/Handover.png' width="400" />
- <br><br>
+<p align="center">
+ <br>
+ <img src='./image/Handover.png' alt="Handover Logo" width="400" />
+</p>
+<p align="center">
+ <a href="https://www.notion.so/osam-handover/f9e9132e0b0c4832a3d77e27411241e0?v=fe68ef0118be4d11aa0b1d0f6e8c20ea">Documentation</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="">PPT</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="">Demo Video</a>
+</p>
+<p align="center">
  <img alt="GitHub language count" src="https://img.shields.io/github/contributors/osamhack2021/WEB_Handover_Handover?style=for-the-badge&logo">
  <img alt="GitHub language count" src="https://img.shields.io/github/issues-closed/osamhack2021/WEB_Handover_Handover?style=for-the-badge&logo">
  <img alt="GitHub language count" src="https://img.shields.io/github/stars/osamhack2021/WEB_Handover_Handover?style=for-the-badge&logo">
  <img src='https://img.shields.io/badge/License-MIT-e88073?style=for-the-badge&logo'>
-</div>
+</p>
 
 ## 👋 프로젝트 소개 (Project Introduction)
 
