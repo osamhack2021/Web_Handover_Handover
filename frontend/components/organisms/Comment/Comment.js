@@ -41,7 +41,7 @@ export default function Comment({ comment }) {
             {"작성"}
           </div>
         ) : (
-          <Skeleton width="75%" height="1em" />
+          <Skeleton width="150px" height="1em" />
         )}
         <div className="comment-section-item-content">
         {comment && comment.content}
