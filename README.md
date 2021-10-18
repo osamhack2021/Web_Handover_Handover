@@ -1,7 +1,7 @@
 # 📋 Handover - 국방업무공유체계 
 <div align="center">
  <br><br>
- <img src='https://user-images.githubusercontent.com/67567023/137679548-901affc5-a64b-42be-83d1-ffd59a479771.png' width="400" />
+ <img src='./image/Handover.png' width="400" />
  <br><br>
  <img alt="GitHub language count" src="https://img.shields.io/github/contributors/osamhack2021/WEB_Handover_Handover?style=for-the-badge&logo">
  <img alt="GitHub language count" src="https://img.shields.io/github/issues-closed/osamhack2021/WEB_Handover_Handover?style=for-the-badge&logo">
@@ -42,7 +42,7 @@ Handover만의 **3가지 핵심 기능**과 함께 더 편리하고 똑똑한 �
 <h3> 🗄️ 3단계 문서 구성 </h3>
 
 <p align="center">
- <img src='https://user-images.githubusercontent.com/67567023/137679614-672fe3db-2855-438c-bd3b-c52cae0e9fce.png' width="800" height="500"/>
+ <img src='./image/document_architecture.png' width="800" height="500"/>
 </p>
 
 Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3단계 구성을 갖습니다.
@@ -55,7 +55,7 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
 <h3> 🤝 문서 공유 서비스 </h3>
 
 <p align="center"> 
- <img src='https://user-images.githubusercontent.com/67567023/137679656-4ea88f8e-036c-457c-9460-a16e988adc91.png' width="400" height="400" />
+ <img src='./image/dummy.png' width="400" height="400" />
 </p>
 
 - 같은 보직, 같은 소속의 사용자들과 인수인계 문서를 **공유**하고, **댓글**을 통해 의견을 나누어보세요!
@@ -64,14 +64,14 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
 <h3> 🔐 보안 관리자 등록을 통한 기밀 유출 방지 </h3>
 
 <p align="center"> 
- <img src='https://user-images.githubusercontent.com/67567023/137679656-4ea88f8e-036c-457c-9460-a16e988adc91.png' width="400" height="400" />
+ <img src='./image/dummy.png' width="400" height="400" />
 </p>
 
 - 그룹 별로 **보안 관리자**를 등록해 그룹 내 문서에서 보안 사항이 위반되고 있는지 확인하고, 관리할 수 있습니다.
 
 <h2 id="prerequisites"> 🔎 컴퓨터 구성 / 필수 조건 안내 (Prerequisites) </h2>
 
-|<image src="https://user-images.githubusercontent.com/67567023/137679852-ca661735-33c8-45f0-9b01-89ac7e2069c3.png" width="20" height="20"> Chrome|<image src="https://user-images.githubusercontent.com/67567023/137679876-b1b55f02-48ca-441a-a1a1-d2347d2f66d2.png" width="20" height="20"> Edge|<image src="https://user-images.githubusercontent.com/67567023/137682748-d0c4bff6-0486-4d1f-98c0-4f38727f3a06.png" width="20" height="20"> FireFox|<image src="https://user-images.githubusercontent.com/67567023/137682764-e9ba4bca-833e-449e-9452-62fdafb527dc.png" width="20" height="20"> Safari|
+|<image src="./image/Chrome.png" width="20" height="20"> Chrome|<image src="./image/Edge.png" width="20" height="20"> Edge|<image src="./image/Firefox.png" width="20" height="20"> FireFox|<image src="./image/Safari.png" width="20" height="20"> Safari|
 |:---:|:---:|:---:|:---:|
 |✔|✔|✔|✔|
  
@@ -99,7 +99,7 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
  
 <h2 id="stacks"> 🛠️ 기술 스택 (Key Tech Stacks) </h2>
 <p align="center">
- <img src='https://user-images.githubusercontent.com/67567023/137682892-65bb83eb-9ee8-441c-b64d-5eecc3affd49.png' />
+ <img src='./image/tech_stacks.png' />
 </p>
  
 ### 
