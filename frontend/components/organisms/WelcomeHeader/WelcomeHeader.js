@@ -5,6 +5,8 @@ import Button from '@mui/material/Button';
 import HandoverLogo from '_assets/images/handover-logo.png';
 import { useHistory } from 'react-router-dom';
 
+import Logo from '_atoms/Logo';
+
 export default function WelcomeHeader() {
   const history = useHistory();
   const onClickAbout = (event) => {
@@ -19,7 +21,7 @@ export default function WelcomeHeader() {
   return (
     <Stack direction="row" justifyContent="space-between" style={{ width: '100%', marginTop: '10px' }}>
       <div style={{ marginLeft: '40px' }}>
-        <img alt="logo" src={HandoverLogo} width="170" />
+        <Logo width="170" />
       </div>
       <Stack direction="row" sx={{ marginRight: '40px' }}>
         <Button sx={{ color: 'black', fontSize: '15px' }} onClick={onClickAbout}>소개</Button>
