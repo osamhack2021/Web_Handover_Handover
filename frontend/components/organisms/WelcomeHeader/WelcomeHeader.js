@@ -9,6 +9,9 @@ import Logo from '_atoms/Logo';
 
 export default function WelcomeHeader() {
   const history = useHistory();
+  const onClickLogo = (event) => {
+    history.push('/');
+  };
   const onClickAbout = (event) => {
     history.push('/about');
   };
@@ -21,7 +24,7 @@ export default function WelcomeHeader() {
   return (
     <Stack direction="row" justifyContent="space-between" style={{ width: '100%', marginTop: '10px' }}>
       <div style={{ marginLeft: '40px' }}>
-        <Logo width="170" />
+        <Logo width="170" onClick={onClickLogo} />
       </div>
       <Stack direction="row" sx={{ marginRight: '40px' }}>
         <Button sx={{ color: 'black', fontSize: '15px' }} onClick={onClickAbout}>소개</Button>
