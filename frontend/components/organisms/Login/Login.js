@@ -3,10 +3,9 @@ import TextField from "@mui/material/TextField";
 import R from "ramda";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import LinkComponent from "_frontend/components/atoms/LinkComponent";
 import useKeyPress from "_hooks/useKeyPress";
 import { attemptLogin } from "_thunks/auth";
-
 
 // import { attemptDummyLogin } from '_thunks/auth';
 
@@ -82,15 +81,20 @@ export default function Login() {
         로그인
       </Button>
       <div className="login-register">
-        <Link to="/recovery" className="login-link">
+        비밀번호를 잊으셨나요?&nbsp;
+        <Button component={LinkComponent} to="/recovery" className="login-link">
           비밀번호 찾기
-        </Link>
+        </Button>
       </div>
       <div className="login-register">
         계정이 없으신가요?&nbsp;
-        <Link to="/register" className="login-link">
+        <Button
+          component={LinkComponent}
+          to="/register"
+          className="register-link"
+        >
           회원가입
-        </Link>
+        </Button>
       </div>
     </div>
   );
