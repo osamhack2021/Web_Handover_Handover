@@ -37,7 +37,7 @@ const LinkTab = ({ content }) => (
 const getTabIndex = (url) => {
   if (url.endsWith("/items")) return 1;
   if (url.endsWith("/settings")) return 2;
-  if (url.endsWith("/settings/group")) return 2;
+  if (url.endsWith("/settings/group")) return 3;
   return 0;
 };
 
