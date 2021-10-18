@@ -1,8 +1,10 @@
 .comment-section {
-  width: 100%;
+  width: 50%;
+  min-width: 200px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  margin-top: 8px;
   gap: 16px;
 
   .comment-section-list {
@@ -39,15 +41,14 @@
 
       .comment-section-item-header {
         display: flex;
-        align-items: center;
+        align-items: baseline;
         gap: 4px;
         flex-direction: row;
         font-size: 1em;
-        padding: 0 16px;
+        padding: 10px 16px 8px 16px;
         text-align: start;
-        height: 48px;
+        height: 24px;
         background-color: #00000005;
-        padding-top: 3px;
         color: $black-b70;
 
         a {
@@ -58,7 +59,7 @@
       }
 
       .comment-section-item-content {
-        padding: 12px 16px;
+        padding: 8px 16px 12px 16px;
       }
 
       .MuiInputBase-root {

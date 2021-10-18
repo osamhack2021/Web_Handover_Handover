@@ -2,9 +2,10 @@ import { store as RNC } from "react-notifications-component";
 import {
   addItemCache,
   addItemCaches,
-  deleteItemCache,
+  deleteItemCache
 } from "_actions/itemCache";
 import {
+  addItemComment,
   archiveItem,
   createItem,
   deleteItem,
@@ -12,7 +13,7 @@ import {
   getItemChildren,
   getUserItem,
   publishItem,
-  updateItem,
+  updateItem
 } from "_api/item";
 import { dispatchError } from "_utils/api";
 
@@ -105,6 +106,16 @@ export const attemptUpdateItemPermission =
       (item) => {
         // save response to itemCache
         dispatch(addItemCache(item));
+      }
+    );
+  };
+
+export const attemptAddItemComment =
+  (itemId, comments, onComplete) => (dispatch) => {
+    return addItemComment(itemId, comments).then(
+      () => {
+        // save response to itemCache
+        dispatch(attemptGetItem(itemId)).then((item) => onComplete(item));
       }
     );
   };

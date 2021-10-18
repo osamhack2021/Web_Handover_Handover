@@ -38,6 +38,12 @@ export const updateItem = (itemId, object) => request.put(`/api/item/${itemId}`)
   .then(handleSuccess)
   .catch(handleError);
 
+// update item with item id
+export const addItemComment = (itemId, comments) => request.put(`/api/item/${itemId}`)
+  .send({comments: comments})
+  .then(handleSuccess)
+  .catch(handleError);
+
 // update item.status to 'archived' with item id
 export const archiveItem = (itemId) => request.put(`/api/item/${itemId}`)
   .send({status: 'archived'})

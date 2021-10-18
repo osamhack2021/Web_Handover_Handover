@@ -38,7 +38,6 @@ import { dateElapsed, dateToString } from "_frontend/utils/date";
 import BreadCrumbs from "_molecules/BreadCrumbs";
 import Editor from "_molecules/Editor";
 import ItemListHeader from "_molecules/ItemListHeader";
-import Comment from "_organisms/Comment";
 import {
   attemptArchiveItem,
   attemptDeleteItem,
@@ -400,7 +399,7 @@ export default function ItemPage() {
 
         {/* Item comments */}
         <ItemListHeader title="댓글" icon={mdiCommentTextOutline} />
-        <CommentSection comments={item.comments} currentUser={user} />
+        <CommentSection itemId={itemId} comments={item.comments} currentUser={user} />
       </Stack>
       <Menu
         anchorEl={anchorEl}
