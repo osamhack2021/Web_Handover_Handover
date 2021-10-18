@@ -82,7 +82,7 @@ export default function ProfilePage() {
           setGroup(data);
         });
       } else {
-        setGroup("none")
+        setGroup("none");
       }
     }
   }, [user]);
@@ -132,13 +132,11 @@ export default function ProfilePage() {
           <Avatar
             className="profile-image"
             component={ButtonBase}
-            src={
-              user == null || user.profileImageUrl == null
-                ? "/images/profile-default.jpg"
-                : user.profileImageUrl
-            }
-            sx={{ width: 120, height: 120, border: "1px solid #0002" }}
-          />
+            src={user && user.profileImageUrl}
+            sx={{ width: 120, height: 120 }}
+          >
+            <img src={"/images/profile-default.jpg"} width="100%" height="100%"/>
+          </Avatar>
         </Tooltip>
         {user == null || group == null ? null : (
           <Stack sx={{ px: 4, justifyContent: "center" }}>
