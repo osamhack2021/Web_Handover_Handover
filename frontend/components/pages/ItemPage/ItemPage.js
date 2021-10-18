@@ -120,6 +120,7 @@ export default function ItemPage() {
     }
 
     // reset states
+    setItem(null);
     setItemChildren(null);
     setItemParents(null);
     setItemOwner(null);
