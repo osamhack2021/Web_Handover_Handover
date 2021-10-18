@@ -82,17 +82,19 @@ export default function WelcomePage() {
   }, []);
 
   return (
-    <div style={{ position: 'relative', overflowX: 'hidden' }}>
+    <div style={{ position: 'relative', overflowX: 'hidden', maxWidth: 'sm' }}>
       <WelcomeHeader />
-      <img src={WaveVector} alt="waveVector" style={{ position: 'absolute', zIndex: '1' }} />
+      {/* <Container maxWidth="sm"> */}
+      <img src={WaveVector} minWidth="100%" alt="waveVector" style={{ position: 'absolute', zIndex: '1' }} />
       <img
         src={MeetingPNG}
         alt="meetingSvg"
         width="600px"
         style={{
-          position: 'absolute', zIndex: '2', top: '200px', left: '900px',
+          position: 'absolute', zIndex: '2', top: '200px', left: '50%',
         }}
       />
+      {/* </Container> */}
       <Container maxWidth="md" sx={{ height: '100%', position: 'relative', zIndex: '5' }}>
         <Stack>
           <Stack direction="row" justifyContent="space-between">
