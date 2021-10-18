@@ -10,16 +10,24 @@ import Logo from '_atoms/Logo';
 export default function WelcomeHeader() {
   const history = useHistory();
   const onClickLogo = (event) => {
-    history.push('/');
+    if (history.location.pathname !== '/') {
+      history.push('/');
+    }
   };
   const onClickAbout = (event) => {
-    history.push('/about');
+    if (history.location.pathname !== '/about') {
+      history.push('/about');
+    }
   };
   const onClickLogin = (event) => {
-    history.push('/login');
+    if (history.location.pathname !== '/login') {
+      history.push('/login');
+    }
   };
   const onClickRegister = (event) => {
-    history.push('/register');
+    if (history.location.pathname !== '/register') {
+      history.push('/register');
+    }
   };
   return (
     <Stack direction="row" justifyContent="space-between" style={{ width: '100%', marginTop: '10px' }}>
