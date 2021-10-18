@@ -22,7 +22,7 @@
   .item-profile {
     align-items: center;
     flex-direction: row;
-    gap: 12px;
+    gap: 8px;
     padding-top: 8px;
     
     :first-child {
@@ -40,7 +40,7 @@
       flex-direction: row;
       font-size: 1em;
       text-align: start;
-      padding-top: 3px;
+      padding-top: 2px;
       color: $black-b70;
 
       a {
