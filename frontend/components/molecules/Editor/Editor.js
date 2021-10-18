@@ -15,6 +15,7 @@ export default function Editor({
   content = null,
   onContentChange = null,
   editable = true,
+  ...props
 }) {
   const editor = useEditor({
     extensions: [StarterKit],
@@ -67,7 +68,8 @@ export default function Editor({
   return editable ? (
     <Stack
       spacing={0.5}
-      sx={{ border: "2px solid #0d0d0d20", borderRadius: 2 }}
+      sx={{ border: "2px solid #0003", borderRadius: 2 }}
+      {...props}
     >
       <Stack sx={{ mb: 1 }}>
         <EditorMenuBar editor={editor} sx={{ px: 1 }} />
