@@ -1,5 +1,8 @@
 // Images
 import './images/default-profile.png';
+import './images/handover-logo.png';
+import './images/meeting.png';
+import './images/wave.png';
 import './svgs/pink_trapezoid.svg';
 import './svgs/logo.svg';
 import './svgs/bookmark.svg';
@@ -12,3 +15,4 @@ import './svgs/search_icon.svg';
 import './svgs/clock_icon.svg';
 import './svgs/bell.svg';
 import './svgs/user.svg';
+import './svgs/meeting.svg';

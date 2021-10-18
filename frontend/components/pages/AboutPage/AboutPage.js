@@ -3,10 +3,12 @@ import TeamProfile from '_organisms/TeamProfile';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
+import WelcomeHeader from '_organisms/WelcomeHeader';
 
 export default function AboutPage() {
   return (
     <div>
+      <WelcomeHeader />
       <Typography sx={{
         fontFamily: 'BM HANNA',
         fontStyle: 'normal',
