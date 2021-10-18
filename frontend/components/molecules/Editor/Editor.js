@@ -8,7 +8,7 @@ import {
   useEditor
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import React, { useEffect } from "react";
+import React from "react";
 import EditorMenuBar from "_frontend/components/molecules/EditorMenuBar";
 
 export default function Editor({
@@ -55,12 +55,13 @@ export default function Editor({
       `,
   });
 
-  useEffect(() => {
-    if (editor != null) {
-      // Read more: https://tiptap.dev/api/commands/set-content
-      editor.commands.setContent(content);
-    }
-  }, [content, editor]);
+  // The following code generates edit state loop. The editor works fine without this.
+  // useEffect(() => {
+  //   if (editor != null) {
+  //     // Read more: https://tiptap.dev/api/commands/set-content
+  //     editor.commands.setContent(content);
+  //   }
+  // }, [content, editor]);
 
   if (onContentChange != null && editor != null)
     onContentChange(editor.getHTML()); // TODO: Resolve https://reactjs.org/link/setstate-in-render warning
@@ -160,12 +161,3 @@ export default function Editor({
     <EditorContent editor={editor} />
   );
 }
-
-// Card.propTypes = {
-//   type: PropTypes.string.isRequired,
-//   title: PropTypes.string.isRequired,
-//   description: PropTypes.string.isRequired,
-//   content: PropTypes.object.isRequired,
-//   isArchived: PropTypes.bool.isRequired,
-//   Id: PropTypes.string.isRequired,
-// };
