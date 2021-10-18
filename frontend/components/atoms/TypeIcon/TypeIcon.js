@@ -12,11 +12,11 @@ const icon = {
   card: mdiTextBoxOutline,
 };
 
-export default function TypeIcon({ type, ...props }) {
+export default function TypeIcon({ type, path, ...props }) {
   const isString = typeof type === "string";
   return isString ? (
     <Icon path={icon[type]} {...props} />
   ) : (
-    <Icon path={type} {...props} />
+    <Icon path={path} {...props} />
   );
 }
