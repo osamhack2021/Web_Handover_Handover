@@ -98,26 +98,71 @@ export const attemptGetItemChildren = (itemPath) => (dispatch) =>
     })
     .catch(dispatchError(dispatch));
 
-// attemptUpdatePermission:
-// parameters: itemId currently being updated, accessGroupObject
+export const attemptCreateItem = (item) => (dispatch) =>
+  {
+    // Exclude _id property from item object
+    // Read more: https://stackoverflow.com/a/56773391/4524257
+    // const {_id, owner, ...request} = item;
+    return createItem(item)
+      .then((item) => {
+        // save all result to itemCache
+        dispatch(addItemCache(item));
+        return item;
+      })
+      .catch(dispatchError(dispatch));
+  };
+
+export const attemptUpdateItem = (itemId, item) => (dispatch) => {
+  return updateItem(itemId, {
+    content: item.content,
+    title: item.title,
+    status: item.status,
+  }).then((item) => {
+    // save response to itemCache
+    dispatch(addItemCache(item));
+
+    RNC.addNotification({
+      title: "수정 완료",
+      type: "success",
+      message: "성공적으로 수정 내용을 저장하였습니다",
+      container: "top-center",
+      animationIn: ["animated", "fadeInRight"],
+      animationOut: ["animated", "fadeOutRight"],
+      dismiss: {
+        duration: 5000,
+      },
+    });
+  });
+};
+
 export const attemptUpdateItemPermission =
-  (itemId, accessGroupObject) => (dispatch) => {
-    return updateItem(itemId, { accessGroup: accessGroupObject }).then(
-      (item) => {
+  (itemId, accessGroup) => (dispatch) => {
+    return updateItem(itemId, { accessGroup: accessGroup }).then(
+      getItem(itemId).then((item) => {
         // save response to itemCache
         dispatch(addItemCache(item));
-      }
+
+        RNC.addNotification({
+          title: "권한 수정 완료",
+          type: "success",
+          message: "성공적으로 항목 권한을 변경하였습니다",
+          container: "top-center",
+          animationIn: ["animated", "fadeInRight"],
+          animationOut: ["animated", "fadeOutRight"],
+          dismiss: {
+            duration: 5000,
+          },
+        });
+      })
     );
   };
 
 export const attemptAddItemComment =
   (itemId, comments, onComplete) => (dispatch) => {
-    return addItemComment(itemId, comments).then(
-      () => {
-        // save response to itemCache
-        dispatch(attemptGetItem(itemId)).then((item) => onComplete(item));
-      }
-    );
+    return addItemComment(itemId, comments).then(() => {
+      // save response to itemCache
+      dispatch(attemptGetItem(itemId)).then((item) => onComplete(item));
+    });
   };
 
 // deleting item
