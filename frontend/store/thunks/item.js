@@ -2,7 +2,7 @@ import { store as RNC } from "react-notifications-component";
 import {
   addItemCache,
   addItemCaches,
-  deleteItemCache,
+  deleteItemCache
 } from "_actions/itemCache";
 import {
   addItemComment,
@@ -13,7 +13,7 @@ import {
   getItemChildren,
   getUserItem,
   publishItem,
-  updateItem,
+  updateItem
 } from "_api/item";
 import { dispatchError } from "_utils/api";
 
@@ -116,6 +116,8 @@ export const attemptUpdateItem = (itemId, item) => (dispatch) => {
     content: item.content,
     title: item.title,
     status: item.status,
+    accessGroups: item.accessGroups,
+    path: item.path,
   }).then((item) => {
     // save response to itemCache
     dispatch(addItemCache(item));

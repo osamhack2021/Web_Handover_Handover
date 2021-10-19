@@ -1,12 +1,16 @@
 import {
+  mdiAccountMultipleCheck,
   mdiCog,
   mdiCommentTextOutline,
   mdiContentDuplicate,
   mdiContentSave,
   mdiDelete,
   mdiDotsVertical,
-  mdiEarth, mdiFamilyTree, mdiFileEditOutline,
-  mdiFileTreeOutline, mdiPackageDown,
+  mdiEarth,
+  mdiFamilyTree,
+  mdiFileEditOutline,
+  mdiFileTreeOutline,
+  mdiPackageDown,
   mdiShare,
   mdiStar,
   mdiStarOutline,
@@ -17,10 +21,14 @@ import {
   Badge,
   Container,
   Divider,
+  FormControl,
+  FormHelperText,
   IconButton,
+  InputLabel,
   ListItemIcon,
   Menu,
   MenuItem,
+  Select,
   Skeleton,
   Stack,
   Tooltip
@@ -36,6 +44,8 @@ import { Route, Switch, useLocation, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import LinkComponent from "_atoms/LinkComponent";
 import TypeIcon from "_atoms/TypeIcon";
+import { getGroupByGroupId } from "_frontend/api/group";
+import MultipleGroupSelectChip from "_frontend/components/molecules/MultipleGroupSelectChip";
 import ItemList from "_frontend/components/organisms/ItemList";
 import CommentSection from "_frontend/components/templates/CommentSection";
 import { dateElapsed, dateToString } from "_frontend/utils/date";
@@ -131,6 +141,7 @@ export default function ItemPage() {
     setItemChildren(null);
     setItemParents(null);
     setItemOwner(null);
+    setAvailableGroups(null);
     setVisible(true);
     setBookmarked(user.bookmarks.includes(itemId));
 
@@ -196,8 +207,11 @@ export default function ItemPage() {
       .catch(() => setVisible(false));
 
     if (item != null) {
-      // Set title initial state
+      // set editor initial state
       setTitle(item.title);
+
+      // set settings initial state
+      setAccessGroups(item.accessGroups);
 
       // retrieve itemOwner
       if (itemOwner == null) {
@@ -217,6 +231,7 @@ export default function ItemPage() {
 
       // retrieve itemParents
       if (itemParents == null) {
+        console.log("get itemParents");
         switch (item.type) {
           case "cabinet": // will have 0 parents because it's the root item
             console.log("switch: case =", item.type, pathArray);
@@ -227,6 +242,8 @@ export default function ItemPage() {
             if (pathArray.length == 2) {
               // try item from cache
               setItemParents([cachedParent]);
+              setPath(cachedParent.path);
+              console.log("document - cachedParent.path", cachedParent.path);
 
               // check for document update
               dispatch(attemptGetItem(pathArray[1])).then((item) => {
@@ -240,6 +257,8 @@ export default function ItemPage() {
             if (pathArray.length == 3) {
               // try item from cache
               setItemParents([cachedParentParent, cachedParent]);
+              setPath(cachedParent.path);
+              console.log("card - cachedParent.path", cachedParent.path);
 
               // check for document update
               dispatch(attemptGetItem(pathArray[1])).then((item) => {
@@ -260,6 +279,37 @@ export default function ItemPage() {
               });
             }
         }
+      }
+
+      // get parent groups
+      if (user != null && availableGroups == null) {
+        getGroupByGroupId(user.group).then(async (group) => {
+          let loadedGroupIds = group.pathGroups.map(
+            (pathGroup) => pathGroup._id
+          );
+          // List of groupIds that have to be loaded because they were in accessGroups
+          let accessGroupIds = [
+            ...item.accessGroups.read.map((group) => group._id),
+            ...item.accessGroups.edit.map((group) => group._id),
+          ];
+          accessGroupIds = accessGroupIds
+            .filter((e, i) => accessGroupIds.indexOf(e) === i) // only leave unique items
+            .filter((groupId) => !loadedGroupIds.includes(groupId));
+
+          console.log("additionally loading:", accessGroupIds);
+
+          let loadedGroups = group.pathGroups;
+
+          for (const groupId of accessGroupIds) {
+            if (groupId != null) {
+              let group = await getGroupByGroupId(groupId);
+              // add the group to the available groups
+              loadedGroups.push(group);
+            }
+          }
+
+          setAvailableGroups(loadedGroups);
+        });
       }
     }
   }, [item]);
@@ -392,6 +442,49 @@ export default function ItemPage() {
       dispatch(push(`/item/${itemId}`));
     });
   };
+
+  // states for settings
+  const [path, setPath] = useState(null);
+  const [accessGroups, setAccessGroups] = useState(null);
+  const [availableGroups, setAvailableGroups] = useState(null);
+
+  const parentType =
+    item &&
+    {
+      card: "document",
+      document: "cabinet",
+      cabinet: null,
+    }[item.type];
+
+  const availablePaths = Object.entries(
+    useSelector((state) => state.itemCache)
+  ).filter(
+    // filter items from cache where type is parent and current user is owner
+    ([itemId, item]) => item.type === parentType && item.owner._id === user._id
+  );
+
+  const handlePathChange = (event) => {
+    setPath(event.target.value);
+  };
+
+  const handleModify = () => {
+    // update content with content from editor
+    dispatch(
+      attemptUpdateItem(itemId, {
+        ...item,
+        path,
+        accessGroups: {
+          read: accessGroups.read.map((groups) => groups._id),
+          edit: accessGroups.edit.map((groups) => groups._id),
+        },
+      })
+    ).then((item) => {
+      setItem(item);
+      dispatch(push(`/item/${itemId}`));
+    });
+  };
+
+  console.log("parent:", itemParents);
 
   return visible && item != null ? (
     // <div className="content-pane">
@@ -755,8 +848,89 @@ export default function ItemPage() {
             )}
 
             {/* Item path */}
-            <ItemListHeader title="항목 위치" icon={mdiFamilyTree} />
+            {item != null && item.type !== "cabinet" && (
+              <>
+                <ItemListHeader
+                  title="항목 위치"
+                  icon={mdiFamilyTree}
+                  style={{ marginTop: 16, marginBottom: 16 }}
+                />
 
+                <FormControl>
+                  <InputLabel id="item-path-label">상위 항목</InputLabel>
+                  <Select
+                    className="item-page-settings-item-path"
+                    labelId="item-path-label"
+                    id="item-path-select"
+                    value={path != null ? path : ""}
+                    displayEmpty
+                    label="상위 항목"
+                    onChange={handlePathChange}
+                  >
+                    {availablePaths.map(([itemId, item]) => (
+                      <MenuItem value={item.path}>
+                        {/* <TypeIcon
+                          type={item.type}
+                          size={0.75}
+                          style={{ marginRight: 4 }}
+                        /> */}
+                        {item.title}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <FormHelperText>현재 항목을 포함할 상위 항목</FormHelperText>
+                </FormControl>
+              </>
+            )}
+
+            {/* Item access groups */}
+            <ItemListHeader
+              title="그룹 권한"
+              icon={mdiAccountMultipleCheck}
+              style={{ marginTop: 16, marginBottom: 16 }}
+            />
+
+            <MultipleGroupSelectChip
+              items={availableGroups}
+              label="열람 권한"
+              helperText="현재 항목을 열람할 수 있는 사용자 그룹"
+              selectedGroups={
+                // array of groupId
+                accessGroups?.read.map((group) =>
+                  group.hasOwnProperty("_id") ? group._id : group
+                )
+              }
+              onChange={(selection) =>
+                setAccessGroups({
+                  ...accessGroups,
+                  read: selection.map((groupId) =>
+                    availableGroups.find((e) => e._id === groupId)
+                  ),
+                })
+              }
+            />
+
+            <div style={{ height: 8 }} />
+
+            <MultipleGroupSelectChip
+              items={availableGroups}
+              label="수정 권한"
+              helperText="현재 항목을 수정할 수 있는 사용자 그룹"
+              selectedGroups={
+                // array of groupId
+                accessGroups?.edit.map((group) =>
+                  group.hasOwnProperty("_id") ? group._id : group
+                )
+              }
+              onChange={(selection) =>
+                setAccessGroups({
+                  ...accessGroups,
+                  edit: selection.map((groupId) =>
+                    availableGroups.find((e) => e._id === groupId)
+                  ),
+                })
+              }
+            />
 
             {/* Item children */}
             {item.type !== "card" && (
@@ -766,6 +940,23 @@ export default function ItemPage() {
                 icon={mdiFileTreeOutline}
               />
             )}
+
+            {/* Item save action */}
+            <div className="item-action-editor">
+              <Button
+                variant="contained"
+                color="secondary"
+                size="large"
+                onClick={handleModify}
+              >
+                <Icon
+                  path={mdiContentSave}
+                  size={0.9}
+                  style={{ paddingLeft: -2 }}
+                />
+                변경 내용 저장
+              </Button>
+            </div>
           </Stack>
         </Route>
       </Switch>
