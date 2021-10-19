@@ -12,7 +12,7 @@ import {
   mdiShare,
   mdiStar,
   mdiStarOutline,
-  mdiUpload
+  mdiUpload,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import {
@@ -25,7 +25,7 @@ import {
   MenuItem,
   Skeleton,
   Stack,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -50,12 +50,12 @@ import {
   attemptGetItem,
   attemptGetItemChildren,
   attemptPublishItem,
-  attemptUpdateItem
+  attemptUpdateItem,
 } from "_thunks/item";
 import {
   attemptAddBookmark,
   attemptGetUser,
-  attemptRemoveBookmark
+  attemptRemoveBookmark,
 } from "_thunks/user";
 import { deepEqual } from "_utils/compare";
 
@@ -95,7 +95,7 @@ export default function ItemPage() {
   const cachedItem = useSelector((state) => state.itemCache[itemId]);
 
   // will try to use cachedItem if not null (= if exists in cache)
-  const [item, setItem] = useState(cachedItem);
+  const [item, setItem] = useState(null);
   const [itemChildren, setItemChildren] = useState(null);
   const [itemParents, setItemParents] = useState(null);
   const [itemOwner, setItemOwner] = useState(null);
@@ -128,22 +128,13 @@ export default function ItemPage() {
     }
 
     // reset states
+    console.log("render (useEffect): item =", item, "cachedItem =", cachedItem);
     setItem(cachedItem);
     setItemChildren(null);
     setItemParents(null);
     setItemOwner(null);
     setVisible(true);
     setBookmarked(user.bookmarks.includes(itemId));
-
-    // retrieve item from server for possible updates
-    dispatch(attemptGetItem(itemId))
-      .then((response) => {
-        if (!deepEqual(item, response)) {
-          // update state if deep equality between state and response is false
-          setItem(response);
-        }
-      })
-      .catch(() => setVisible(false));
 
     // Use this to add alert on leave
     // if (pathname.endsWith("/edit")) {
@@ -195,7 +186,21 @@ export default function ItemPage() {
   }, [itemId]);
 
   useEffect(() => {
+    // retrieve item from server for possible updates
+    dispatch(attemptGetItem(itemId))
+      .then((response) => {
+        if (!deepEqual(item, response)) {
+          // update state if deep equality between state and response is false
+          console.log("updated:", item, response);
+          setItem(response);
+        }
+      })
+      .catch(() => setVisible(false));
+
     if (item != null) {
+      // Set title initial state
+      setTitle(item.title);
+
       // retrieve itemOwner
       if (itemOwner == null) {
         dispatch(attemptGetUser(item.owner._id)).then((user) => {
@@ -363,17 +368,14 @@ export default function ItemPage() {
       : false;
 
   // states for editor
-  const setTitle = (title) => {
-    if (item != null) setItem({ ...item, title });
-  };
-  const setContent = (content) => {
-    if (item != null && item.content !== content) {
-      setItem({ ...item, content });
-    }
-  };
+  const [title, setTitle] = useState(null);
+  const [content, setContent] = useState(null);
 
   const handlePublish = () => {
-    dispatch(attemptUpdateItem(itemId, item)).then((item) => {
+    // update content with content from editor
+    dispatch(
+      attemptUpdateItem(itemId, { ...item, title: title, content: content })
+    ).then((item) => {
       dispatch(push(`/item/${itemId}`));
     });
   };
@@ -548,7 +550,7 @@ export default function ItemPage() {
                   id="item-page-header-title-editor"
                   label="제목"
                   variant="standard"
-                  value={item.title}
+                  value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
 
@@ -594,8 +596,8 @@ export default function ItemPage() {
             {/* Item content editor */}
             <Editor
               className="item-page-content-editor"
-              content={item.content}
-              onContentChange={(html) => setContent(html)}
+              content={item.content} // initial content state
+              onContentChange={(html) => setContent(html)} // saves updates to separate state than item
             />
 
             {/* Item metadata (owner profile, created date) */}
