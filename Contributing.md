@@ -1,5 +1,5 @@
 ## Handover에 기여하는 법
-Handover 의 Contributing.md는 오픈소스인 Ruby on Rails의  [Contributing.md](https://github.com/rails/rails/blob/main/CONTRIBUTING.md) 를 참고했습니다
+Handover 의 Contributing.md는 오픈소스인 Ruby on Rails의  [Contributing.md](https://github.com/rails/rails/blob/main/CONTRIBUTING.md) 를 참고하였습니다
 
 #### **버그를 찾으셨나요?**
 
@@ -28,7 +28,7 @@ Handover 의 Contributing.md는 오픈소스인 Ruby on Rails의  [Contributing.
 
 #### **Handover 의 개발문서에 기여하고 싶으신가요?**
 
-* Handover 팀에 연락주세요! [Handover Team](https://github.com/osamhack2021/Web_Handover_Handover#-%ED%8C%80-%EC%A0%95%EB%B3%B4-team-info-)🔥
+* 팀 Handover에 연락주세요! [Team Handover](https://github.com/osamhack2021/Web_Handover_Handover#-%ED%8C%80-%EC%A0%95%EB%B3%B4-team-info-)🔥
 
 
 감사합니다!
