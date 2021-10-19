@@ -21,7 +21,7 @@ const BreadCrumbItem = ({ item = null, clickable = true }) => {
       component={clickable && item != null ? LinkComponent : null}
       to={clickable && item != null ? `/item/${item._id}` : null}
     >
-      <Stack direction="row" spacing={0.75} sx={{ alignItems: "center" }}>
+      <Stack direction="row" spacing={0.75} sx={{ alignItems: "center", width: "100%" }}>
         {item != null ? <TypeIcon type={item.type} size={0.75} /> : null}
         {item != null ? (
           <div className="breadcrumb-text">{item.title}</div>
