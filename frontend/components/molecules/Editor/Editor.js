@@ -69,10 +69,10 @@ export default function Editor({
   return editable ? (
     <Stack
       spacing={0.5}
-      sx={{ border: "2px solid #0003", borderRadius: 2 }}
+      sx={{ border: "2px solid #0003", borderRadius: 2, mb: 2 }}
       {...props}
     >
-      <Stack sx={{ mb: 1 }}>
+      <Stack>
         <EditorMenuBar editor={editor} sx={{ px: 1 }} />
         <Divider flexItem />
       </Stack>
@@ -153,7 +153,7 @@ export default function Editor({
           </button>
         </FloatingMenu>
       )}
-      <Box sx={{ p: 2 }}>
+      <Box sx={{ px: 2, overflowY: "scroll" }}>
         <EditorContent editor={editor} />
       </Box>
     </Stack>

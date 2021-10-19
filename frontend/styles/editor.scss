@@ -1,5 +1,8 @@
 /* Basic editor styles */
 .ProseMirror {
+  // padding-bottom: 16px;
+  padding-top: 16px;
+
   // Removes editor focus outline
   &-focused {
     outline: none;
@@ -12,7 +15,7 @@
   * {
     // display: block;
     margin-block-start: 0;
-    // margin-block-end: 1em;
+    // margin-block-end: 0;
     // margin-inline-start: 0px;
     // margin-inline-end: 0px;
   }
