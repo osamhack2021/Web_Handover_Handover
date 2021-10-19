@@ -1,7 +1,7 @@
 # 📋 Handover - 국방업무공유체계 
 <p align="center">
  <br>
- <div width="400" style="background: #fff;">
+ <div width="400" style="background: #fff;" align="center">
   <img src='./image/logo.svg' alt="Handover Logo" width="400" />
  </div>
 </p>
