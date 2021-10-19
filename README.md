@@ -1,7 +1,9 @@
 # 📋 Handover - 국방업무공유체계 
 <p align="center">
  <br>
- <img src='./image/Handover.png' alt="Handover Logo" width="400" />
+ <div width="400" style="background: #fff;">
+  <img src='./image/logo.svg' alt="Handover Logo" width="400" />
+ </div>
 </p>
 <p align="center">
  <a href="https://www.notion.so/osam-handover/f9e9132e0b0c4832a3d77e27411241e0?v=fe68ef0118be4d11aa0b1d0f6e8c20ea">Documentation</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="">PPT</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="">Demo Video</a>
