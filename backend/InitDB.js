@@ -259,6 +259,114 @@ async function init() {
   );
   /****** CCC End ******/
 
+  /****** Create 이병 오지환  ******/
+  let aaa = {
+    serviceNumber: "21-71009999",
+    password: "21-71009999",
+    name: "오지환",
+    rank: "이병",
+    title: "CERT감시병",
+    status: "active",
+    email: "21-71009999@navy.mil",
+    tel: {
+      military: "0000",
+      mobile: "010-0000-0000",
+    },
+    profileImageUrl:
+      "https://user-images.githubusercontent.com/67567023/137697785-811e6ae3-0bf3-4ddc-b031-5976293b1573.png",
+  };
+  users.aaa = await post("/user", aaa);
+
+  // login as aaa
+  jwt = (
+    await post("/login", {
+      serviceNumber: "21-71009999",
+      password: "21-71009999",
+    })
+  ).token;
+
+  // Update aaa's group
+  users.aaa = await post(
+    `/user/${users.aaa._id}`,
+    {
+      group: groups.AAA._id,
+    },
+    "PUT"
+  );
+  /****** aaa End ******/
+
+  /****** Create 상병 이상훈  ******/
+  let bbb = {
+    serviceNumber: "20-71009999",
+    password: "20-71009999",
+    name: "이상훈",
+    rank: "상병",
+    title: "정보통신관리병",
+    status: "active",
+    email: "20-71009999@navy.mil",
+    tel: {
+      military: "0000",
+      mobile: "010-0000-0000",
+    },
+    profileImageUrl:
+      "https://user-images.githubusercontent.com/67567023/137697751-3af02605-7b60-4dd2-b92b-b350fe46c30b.png",
+  };
+  users.bbb = await post("/user", bbb);
+
+  // login as bbb
+  jwt = (
+    await post("/login", {
+      serviceNumber: "20-71009999",
+      password: "20-71009999",
+    })
+  ).token;
+
+  // Update bbb's group
+  users.bbb = await post(
+    `/user/${users.bbb._id}`,
+    {
+      group: groups.BBB._id,
+    },
+    "PUT"
+  );
+  /****** bbb End ******/
+
+  /****** Create 일병 조현서  ******/
+  let ccc = {
+    serviceNumber: "21-71000000",
+    password: "21-71000000",
+    name: "조현서",
+    rank: "일병",
+    title: "전기병",
+    status: "active",
+    email: "20-71000000@navy.mil",
+    tel: {
+      military: "0000",
+      mobile: "010-0000-0000",
+    },
+    profileImageUrl:
+      "https://user-images.githubusercontent.com/67567023/137697741-ea28073b-4cdd-4439-ad80-4f619363a4f8.png",
+  };
+  users.ccc = await post("/user", ccc);
+
+  // login as ccc
+  jwt = (
+    await post("/login", {
+      serviceNumber: "20-71009999",
+      password: "20-71009999",
+    })
+  ).token;
+
+  // Update ccc's group
+  users.bbb = await post(
+    `/user/${users.ccc._id}`,
+    {
+      group: groups.CCC._id,
+    },
+    "PUT"
+  );
+  /****** ccc End ******/
+
   let item1 = {
     title: "CERT",
     type: "cabinet",
