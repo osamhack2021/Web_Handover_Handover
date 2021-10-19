@@ -282,6 +282,20 @@ export default function ItemPage() {
     });
   };
 
+  const draftItem = () => {
+    RNC.addNotification({
+      title: "임시저장 완료",
+      type: "success",
+      message: "항목을 임시저장하였습니다",
+      container: "top-center",
+      animationIn: ["animated", "fadeInRight"],
+      animationOut: ["animated", "fadeOutRight"],
+      dismiss: {
+        duration: 5000,
+      },
+    });
+  };
+
   const deleteItem = () => {
     dispatch(attemptDeleteItem(itemId));
     setVisible(false);
@@ -643,9 +657,7 @@ export default function ItemPage() {
                 variant="outlined"
                 color="secondary"
                 size="large"
-                onClick={() => {
-                  alert(JSON.stringify(item));
-                }}
+                onClick={draftItem}
               >
                 <Icon path={mdiContentSave} size={0.9} />
                 임시저장
@@ -654,9 +666,8 @@ export default function ItemPage() {
                 variant="outlined"
                 color="secondary"
                 size="large"
-                onClick={() => {
-                  alert(JSON.stringify(item));
-                }}
+                disabled={status === "archived"}
+                onClick={archiveItem}
               >
                 <Icon path={mdiPackageDown} size={0.9} />
                 항목 보관
