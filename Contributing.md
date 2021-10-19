@@ -19,7 +19,7 @@ Handover 의 Contributing.md는 오픈소스인 Ruby on Rails의  [Contributing.
 
 * 추가하고 싶으신 템플릿이나 기능을 Handover 의 [Disscussions](https://github.com/osamhack2021/Web_Handover_Handover/discussions) 에 건의해주세요!
 
-* 긍정적인 피드백이 있기 전까지 새로운 이슈를 열지 말세요.  이슈는 버그 신고와 수정에 사용됩니다.
+* Issue는 버그 신고와 수정에 사용되니, 템플릿이나 기능 추가 문의는 Discussions 를 사용하주세요.
 
 #### **Source Code 에 관련한 질문이 있으신가요?**
 
