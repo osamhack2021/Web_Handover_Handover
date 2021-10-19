@@ -5,10 +5,8 @@ import {
   mdiContentSave,
   mdiDelete,
   mdiDotsVertical,
-  mdiEarth,
-  mdiFileEditOutline,
-  mdiFileTreeOutline,
-  mdiPackageDown,
+  mdiEarth, mdiFamilyTree, mdiFileEditOutline,
+  mdiFileTreeOutline, mdiPackageDown,
   mdiShare,
   mdiStar,
   mdiStarOutline,
@@ -756,35 +754,9 @@ export default function ItemPage() {
               <BreadCrumbs hierarchyLevel={hierarchyLevel[item.type]} />
             )}
 
-            {/* Item content */}
-            {item.content && <Editor content={item.content} editable={false} />}
+            {/* Item path */}
+            <ItemListHeader title="항목 위치" icon={mdiFamilyTree} />
 
-            {/* Item metadata (owner profile, created date) */}
-            {itemOwner != null ? (
-              <Stack className="item-page-profile">
-                <img
-                  className="item-page-profile-image profile-image"
-                  src={
-                    itemOwner.profileImageUrl || "/images/profile-default.jpg"
-                  }
-                />
-                <div className="item-page-profile-name">
-                  <Link to={`/user/${itemOwner._id}`}>
-                    {itemOwner.rank} {itemOwner.name}
-                  </Link>
-                  님이
-                  <Tooltip title={dateToString(item.created)} arrow>
-                    <div>{dateElapsed(item.created)}</div>
-                  </Tooltip>
-                  작성
-                </div>
-              </Stack>
-            ) : (
-              <Stack className="item-page-profile">
-                <Skeleton variant="circular" width={24} height={24} />
-                <Skeleton width={200} height="1em" />
-              </Stack>
-            )}
 
             {/* Item children */}
             {item.type !== "card" && (
@@ -794,14 +766,6 @@ export default function ItemPage() {
                 icon={mdiFileTreeOutline}
               />
             )}
-
-            {/* Item comments */}
-            <ItemListHeader title="댓글" icon={mdiCommentTextOutline} />
-            <CommentSection
-              itemId={itemId}
-              comments={item.comments}
-              currentUser={user}
-            />
           </Stack>
         </Route>
       </Switch>
@@ -822,7 +786,7 @@ export default function ItemPage() {
               display: "block",
               position: "absolute",
               top: 0,
-              right: 20,
+              right: 24,
               width: 10,
               height: 10,
               bgcolor: "background.paper",

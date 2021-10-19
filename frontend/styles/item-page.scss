@@ -8,6 +8,11 @@
     margin-bottom: 8px;
     gap: 12px;
 
+    .MuiIconButton-root {
+      width: 46px;
+      height: 46px;
+    }
+
     .item-page-header-title,
     #item-page-header-title-editor {
       font-size: 2.5em;
