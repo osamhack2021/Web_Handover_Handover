@@ -5,10 +5,10 @@ import {
   BubbleMenu,
   EditorContent,
   FloatingMenu,
-  useEditor,
+  useEditor
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import React from "react";
+import React, { useEffect } from "react";
 import EditorMenuBar from "_frontend/components/molecules/EditorMenuBar";
 
 export default function Editor({
@@ -55,13 +55,13 @@ export default function Editor({
       `,
   });
 
-  // The following code generates edit state loop. The editor works fine without this.
-  // useEffect(() => {
-  //   if (editor != null) {
-  //     // Read more: https://tiptap.dev/api/commands/set-content
-  //     editor.commands.setContent(content);
-  //   }
-  // }, [content, editor]);
+  useEffect(() => {
+    // Update content with props when changed
+    if (editor != null) {
+      // Read more: https://tiptap.dev/api/commands/set-content
+      editor.commands.setContent(content);
+    }
+  }, [content]);
 
   if (onContentChange != null && editor != null)
     onContentChange(editor.getHTML()); // TODO: Resolve https://reactjs.org/link/setstate-in-render warning
