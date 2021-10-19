@@ -73,7 +73,7 @@ export default function LeftPane() {
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: "최근에 본 문서", link: "/recents" }} />
+              <MenuItem value={{ title: "최근에 본 항목", link: "/recents" }} />
             </ListItemButton>
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>
@@ -85,7 +85,7 @@ export default function LeftPane() {
           </ListItem>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton disableGutters sx={{ py: 0 }}>
-              <MenuItem value={{ title: "임시저장한 문서", link: "/drafts" }} />
+              <MenuItem value={{ title: "임시저장한 항목", link: "/drafts" }} />
             </ListItemButton>
           </ListItem>
         </div>

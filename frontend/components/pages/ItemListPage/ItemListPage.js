@@ -29,12 +29,12 @@ export default function ItemListPage() {
         array = user.bookmarks;
         break;
       case "/recents":
-        setTitle("최근에 본 문서");
+        setTitle("최근에 본 항목");
         const localStorageRecents = JSON.parse(localStorage.getItem("recents"));
         array = localStorageRecents != null ? localStorageRecents : [];
         break;
       case "/drafts":
-        setTitle("임시저장한 문서");
+        setTitle("임시저장한 항목");
         array = Object.keys(itemCache)
           .map((itemId) => itemCache[itemId])
           .filter(
