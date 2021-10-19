@@ -36,25 +36,29 @@ module.exports = {
         },
       ]);
 
-      let parentName = null;
-      let pathGroups = [];
+      if (group != null && group.path != null) {
+        let parentName = null;
+        let pathGroups = [];
 
-      for (const groupId of group.path.split(",").filter((e) => e !== "")) {
-        // add following object to pathGroups property
-        // {
-        //   ...group,
-        //   fullName: "parentName > currentName",
-        // }
-        let parentGroup = await Group.findOne({ _id: groupId });
-        parentName =
-          parentName != null
-            ? parentName + " > " + parentGroup.name
-            : parentGroup.name;
+        for (const groupId of group.path.split(",").filter((e) => e !== "")) {
+          // add following object to pathGroups property
+          // {
+          //   ...group,
+          //   fullName: "parentName > currentName",
+          // }
+          let parentGroup = await Group.findOne({ _id: groupId });
+          parentName =
+            parentName != null
+              ? parentName + " > " + parentGroup.name
+              : parentGroup.name;
 
-        pathGroups.push({ ...parentGroup._doc, fullName: parentName });
+          pathGroups.push({ ...parentGroup._doc, fullName: parentName });
+        }
+
+        return { ...group._doc, pathGroups: pathGroups, fullName: parentName };
       }
-
-      return { ...group._doc, pathGroups: pathGroups, fullName: parentName };
+      
+      return group._doc;
     } catch (err) {
       throw new RuntimeError(err.message);
     }
