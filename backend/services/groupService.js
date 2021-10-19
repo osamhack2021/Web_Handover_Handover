@@ -25,7 +25,7 @@ module.exports = {
 
   read: async (query, projection = {}) => {
     try {
-      return await Group.findOne(query, projection).populate([
+      let group = await Group.findOne(query, projection).populate([
         {
           path: "admins",
           select: ["rank", "name"],
@@ -35,6 +35,26 @@ module.exports = {
           select: ["rank", "name"],
         },
       ]);
+
+      let parentName = null;
+      let pathGroups = [];
+
+      for (const groupId of group.path.split(",").filter((e) => e !== "")) {
+        // add following object to pathGroups property
+        // {
+        //   ...group,
+        //   fullName: "parentName > currentName",
+        // }
+        let parentGroup = await Group.findOne({ _id: groupId });
+        parentName =
+          parentName != null
+            ? parentName + " > " + parentGroup.name
+            : parentGroup.name;
+
+        pathGroups.push({ ...parentGroup._doc, fullName: parentName });
+      }
+
+      return { ...group._doc, pathGroups: pathGroups, fullName: parentName };
     } catch (err) {
       throw new RuntimeError(err.message);
     }
