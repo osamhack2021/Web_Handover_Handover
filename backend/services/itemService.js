@@ -110,8 +110,16 @@ module.exports = {
 
       delete payload._id;
 
+      console.log("payload:", payload);
+
       // Update item
-      const result = await Item.findOneAndUpdate({ _id: item._id }, payload);
+      const result = await Item.findOneAndUpdate({ _id: item._id }, payload, {
+        // Return modified object
+        // Read more: https://stackoverflow.com/a/43474183/4524257
+        returnOriginal: false,
+      });
+
+      console.log("result:", result);
       return result;
     } catch (err) {
       throw new RuntimeError(err.message);
