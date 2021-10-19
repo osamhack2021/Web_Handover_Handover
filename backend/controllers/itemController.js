@@ -32,13 +32,14 @@ module.exports = {
     }
   },
 
-  // GET /item/algolia
+  // GET /item/algolia?query=
   algoliaSearch: async (req, res) => {
     try {
-      const query = req.params.query;
+      const query = req.query.query;
 
       const result = await algolia.search(query, {
-        filters: `status:"modified" AND NOT accessGroups.read:"${res.locals.group}"`,
+        // filters: `NOT status:"modified" AND accessGroups.read:"${res.locals.group.toString()}"`
+        filters: `NOT status:"modified"`
       });
 
       res.status(200).send(result.hits);
