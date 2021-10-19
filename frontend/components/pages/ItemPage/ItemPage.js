@@ -13,8 +13,8 @@ import {
   mdiStar,
   mdiStarOutline,
   mdiUpload,
-} from "@mdi/js";
-import Icon from "@mdi/react";
+} from '@mdi/js';
+import Icon from '@mdi/react';
 import {
   Badge,
   Container,
@@ -26,24 +26,26 @@ import {
   Skeleton,
   Stack,
   Tooltip,
-} from "@mui/material";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import { push } from "connected-react-router";
-import R from "ramda";
-import React, { useEffect, useState } from "react";
-import { store as RNC } from "react-notifications-component";
-import { useDispatch, useSelector } from "react-redux";
-import { Route, Switch, useLocation, useParams } from "react-router";
-import { Link } from "react-router-dom";
-import LinkComponent from "_atoms/LinkComponent";
-import TypeIcon from "_atoms/TypeIcon";
-import ItemList from "_frontend/components/organisms/ItemList";
-import CommentSection from "_frontend/components/templates/CommentSection";
-import { dateElapsed, dateToString } from "_frontend/utils/date";
-import BreadCrumbs from "_molecules/BreadCrumbs";
-import Editor from "_molecules/Editor";
-import ItemListHeader from "_molecules/ItemListHeader";
+} from '@mui/material';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import { push } from 'connected-react-router';
+import R from 'ramda';
+import React, { useEffect, useState } from 'react';
+import { store as RNC } from 'react-notifications-component';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  Route, Switch, useLocation, useParams,
+} from 'react-router';
+import { Link } from 'react-router-dom';
+import LinkComponent from '_atoms/LinkComponent';
+import TypeIcon from '_atoms/TypeIcon';
+import ItemList from '_frontend/components/organisms/ItemList';
+import CommentSection from '_frontend/components/templates/CommentSection';
+import { dateElapsed, dateToString } from '_frontend/utils/date';
+import BreadCrumbs from '_molecules/BreadCrumbs';
+import Editor from '_molecules/Editor';
+import ItemListHeader from '_molecules/ItemListHeader';
 import {
   attemptArchiveItem,
   attemptDeleteItem,
@@ -51,18 +53,18 @@ import {
   attemptGetItemChildren,
   attemptPublishItem,
   attemptUpdateItem,
-} from "_thunks/item";
+} from '_thunks/item';
 import {
   attemptAddBookmark,
   attemptGetUser,
   attemptRemoveBookmark,
-} from "_thunks/user";
-import { deepEqual } from "_utils/compare";
+} from '_thunks/user';
+import { deepEqual } from '_utils/compare';
 
 const typeString = {
-  cabinet: "서랍",
-  document: "문서",
-  card: "카드",
+  cabinet: '서랍',
+  document: '문서',
+  card: '카드',
 };
 
 const hierarchyLevel = {
@@ -77,8 +79,8 @@ const statusIcon = {
 };
 
 const statusTooltipText = {
-  archived: "보관된",
-  public: "공개된",
+  archived: '보관된',
+  public: '공개된',
 };
 
 export default function ItemPage() {
@@ -87,7 +89,7 @@ export default function ItemPage() {
   const { pathname } = useLocation();
 
   // find current user from store
-  const { user } = useSelector(R.pick(["user"]));
+  const { user } = useSelector(R.pick(['user']));
   const dispatch = useDispatch();
 
   // Read more about useSelector() hook here:
@@ -103,40 +105,39 @@ export default function ItemPage() {
   // visibility of the component; used on delete and unauthorized items
   const [visible, setVisible] = useState(true);
   const [isBookmarked, setBookmarked] = useState(
-    user.bookmarks.includes(itemId)
+    user.bookmarks.includes(itemId),
   );
 
   // creates [currentItemId, parentItemId, parentParentItemId] array
-  const pathArray =
-    item != null
-      ? item.path
-          .split(",")
-          .filter((e) => e !== "") // remove surrounding empty strings
-          .reverse()
-      : [];
+  const pathArray = item != null
+    ? item.path
+      .split(',')
+      .filter((e) => e !== '') // remove surrounding empty strings
+      .reverse()
+    : [];
   const cachedParent = useSelector(
-    (state) => state.itemCache[pathArray.length > 1 ? pathArray[1] : null]
+    (state) => state.itemCache[pathArray.length > 1 ? pathArray[1] : null],
   );
   const cachedParentParent = useSelector(
-    (state) => state.itemCache[pathArray.length > 2 ? pathArray[2] : null]
+    (state) => state.itemCache[pathArray.length > 2 ? pathArray[2] : null],
   );
 
   useEffect(() => {
     if (itemId.length != 24) {
-      dispatch(push("/error"));
+      dispatch(push('/error'));
       return;
     }
 
     // reset states
-    setItem(null);
+    // setItem(null);
     setItemChildren(null);
     setItemParents(null);
     setItemOwner(null);
 
     if (
-      item == null ||
-      !item.hasOwnProperty("accessGroups") || // item must have accessGroups property
-      !item.hasOwnProperty("content") // item must have content property
+      item == null
+      || !item.hasOwnProperty('accessGroups') // item must have accessGroups property
+      || !item.hasOwnProperty('content') // item must have content property
     ) {
       // retrieve item and its children from API if there were no item object passed
       dispatch(attemptGetItem(itemId))
@@ -152,8 +153,8 @@ export default function ItemPage() {
             // update state deep equality between state and response is false
             console.log(
               itemId,
-              " cache was updated compared to server: ",
-              response
+              ' cache was updated compared to server: ',
+              response,
             );
             setItem(response);
           }
@@ -197,16 +198,16 @@ export default function ItemPage() {
     // } else {
     // }
     // setting recents of localstorage when visited as page
-    const recentArray = JSON.parse(localStorage.getItem("recents"));
+    const recentArray = JSON.parse(localStorage.getItem('recents'));
     if (recentArray != null) {
       if (!recentArray.includes(itemId)) {
         localStorage.setItem(
-          "recents",
-          JSON.stringify([itemId, ...recentArray].slice(0, 20))
+          'recents',
+          JSON.stringify([itemId, ...recentArray].slice(0, 20)),
         );
       }
     } else {
-      localStorage.setItem("recents", JSON.stringify([itemId]));
+      localStorage.setItem('recents', JSON.stringify([itemId]));
     }
   }, [itemId]);
 
@@ -221,7 +222,7 @@ export default function ItemPage() {
 
       // retrieve itemChildren
       if (itemChildren == null) {
-        if (item.type !== "card") {
+        if (item.type !== 'card') {
           dispatch(attemptGetItemChildren(item.path)).then((children) => {
             setItemChildren(children.filter((i) => i._id != item._id));
           });
@@ -231,12 +232,12 @@ export default function ItemPage() {
       // retrieve itemParents
       if (itemParents == null) {
         switch (item.type) {
-          case "cabinet": // will have 0 parents because it's the root item
-            console.log("switch: case =", item.type, pathArray);
+          case 'cabinet': // will have 0 parents because it's the root item
+            console.log('switch: case =', item.type, pathArray);
             setItemParents([]);
             break;
-          case "document": // will have 1 parent item as cabinet
-            console.log("switch: case =", item.type, pathArray);
+          case 'document': // will have 1 parent item as cabinet
+            console.log('switch: case =', item.type, pathArray);
             if (pathArray.length == 2) {
               // try item from cache
               setItemParents([cachedParent]);
@@ -248,8 +249,8 @@ export default function ItemPage() {
               });
             }
             break;
-          case "card": // will have 2 parent items as document and cabinet
-            console.log("switch: case =", item.type, pathArray);
+          case 'card': // will have 2 parent items as document and cabinet
+            console.log('switch: case =', item.type, pathArray);
             if (pathArray.length == 3) {
               // try item from cache
               setItemParents([cachedParentParent, cachedParent]);
@@ -275,18 +276,18 @@ export default function ItemPage() {
         }
       }
     }
-  }, [item]);
+  }, []);
 
   const shareItem = () => {
     navigator.clipboard.writeText(`${location.hostname}/item/${itemId}`);
 
     RNC.addNotification({
-      title: "클립보드에 복사됨",
-      type: "success",
-      message: "항목 링크가 클립보드에 복사되었습니다.",
-      container: "top-center",
-      animationIn: ["animated", "fadeInRight"],
-      animationOut: ["animated", "fadeOutRight"],
+      title: '클립보드에 복사됨',
+      type: 'success',
+      message: '항목 링크가 클립보드에 복사되었습니다.',
+      container: 'top-center',
+      animationIn: ['animated', 'fadeInRight'],
+      animationOut: ['animated', 'fadeOutRight'],
       dismiss: {
         duration: 5000,
       },
@@ -300,12 +301,12 @@ export default function ItemPage() {
 
   const archiveItem = () => {
     dispatch(attemptArchiveItem(itemId));
-    setItem({ ...item, status: "archived" });
+    setItem({ ...item, status: 'archived' });
   };
 
   const publishItem = () => {
     dispatch(attemptPublishItem(itemId));
-    setItem({ ...item, status: "published" });
+    setItem({ ...item, status: 'published' });
   };
 
   const toggleBookmark = () => {
@@ -361,30 +362,27 @@ export default function ItemPage() {
   //   handleDialogOpen();
   // };
 
-  const status =
-    item == null ||
-    !item.hasOwnProperty("status") ||
-    !item.hasOwnProperty("accessGroups")
-      ? null
-      : item.status === "archived"
-      ? "archived"
-      : item.accessGroups.read === "all"
-      ? "public"
-      : null;
+  const status = item == null
+    || !item.hasOwnProperty('status')
+    || !item.hasOwnProperty('accessGroups')
+    ? null
+    : item.status === 'archived'
+      ? 'archived'
+      : item.accessGroups.read === 'all'
+        ? 'public'
+        : null;
 
   const isCurrentUserOwner = item ? item.owner._id === user._id : false;
-  const isCurrentUserEditor =
-    item != null && item.hasOwnProperty("accessGroups")
-      ? item.accessGroups.edit.includes(user.group)
-      : false;
+  const isCurrentUserEditor = item != null && item.hasOwnProperty('accessGroups')
+    ? item.accessGroups.edit.includes(user.group)
+    : false;
 
   // states for editor
   const setTitle = (title) => {
-    if (item != null) setItem({ ...item, title: title });
+    if (item != null) setItem({ ...item, title });
   };
   const setContent = (content) => {
-    if (item != null && item.content !== content)
-      setItem({ ...item, content: content });
+    if (item != null && item.content !== content) { setItem({ ...item, content }); }
   };
 
   const handlePublish = () => {
@@ -405,8 +403,8 @@ export default function ItemPage() {
               <div className="item-page-header">
                 <Tooltip
                   title={
-                    (status != null ? `${statusTooltipText[status]} ` : "") +
-                    typeString[item.type]
+                    (status != null ? `${statusTooltipText[status]} ` : '')
+                    + typeString[item.type]
                   }
                   arrow
                 >
@@ -421,15 +419,15 @@ export default function ItemPage() {
                       ) : null
                     }
                     anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
+                      vertical: 'bottom',
+                      horizontal: 'right',
                     }}
                     sx={{
-                      ".MuiBadge-badge": {
-                        backgroundColor: "#eae8dc",
-                        p: "4px",
-                        mb: "4px",
-                        mr: "4px",
+                      '.MuiBadge-badge': {
+                        backgroundColor: '#eae8dc',
+                        p: '4px',
+                        mb: '4px',
+                        mr: '4px',
                       },
                     }}
                   >
@@ -477,18 +475,20 @@ export default function ItemPage() {
                 <img
                   className="item-page-profile-image profile-image"
                   src={
-                    itemOwner.profileImageUrl || "/images/profile-default.jpg"
+                    itemOwner.profileImageUrl || '/images/profile-default.jpg'
                   }
                 />
                 <div className="item-page-profile-name">
                   <Link to={`/user/${itemOwner._id}`}>
-                    {itemOwner.rank} {itemOwner.name}
+                    {itemOwner.rank}
+                    {' '}
+                    {itemOwner.name}
                   </Link>
-                  {"님이"}
+                  님이
                   <Tooltip title={dateToString(item.created)} arrow>
                     <div>{dateElapsed(item.created)}</div>
                   </Tooltip>
-                  {"작성"}
+                  작성
                 </div>
               </Stack>
             ) : (
@@ -499,7 +499,7 @@ export default function ItemPage() {
             )}
 
             {/* Item children */}
-            {item.type !== "card" && (
+            {item.type !== 'card' && (
               <ItemList
                 items={itemChildren}
                 title="하위 항목"
@@ -524,8 +524,8 @@ export default function ItemPage() {
               <div className="item-page-header">
                 <Tooltip
                   title={
-                    (status != null ? `${statusTooltipText[status]} ` : "") +
-                    typeString[item.type]
+                    (status != null ? `${statusTooltipText[status]} ` : '')
+                    + typeString[item.type]
                   }
                   arrow
                 >
@@ -540,15 +540,15 @@ export default function ItemPage() {
                       ) : null
                     }
                     anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
+                      vertical: 'bottom',
+                      horizontal: 'right',
                     }}
                     sx={{
-                      ".MuiBadge-badge": {
-                        backgroundColor: "#eae8dc",
-                        p: "4px",
-                        mb: "4px",
-                        mr: "4px",
+                      '.MuiBadge-badge': {
+                        backgroundColor: '#eae8dc',
+                        p: '4px',
+                        mb: '4px',
+                        mr: '4px',
                       },
                     }}
                   >
@@ -619,18 +619,20 @@ export default function ItemPage() {
                 <img
                   className="item-page-profile-image profile-image"
                   src={
-                    itemOwner.profileImageUrl || "/images/profile-default.jpg"
+                    itemOwner.profileImageUrl || '/images/profile-default.jpg'
                   }
                 />
                 <div className="item-page-profile-name">
                   <Link to={`/user/${itemOwner._id}`}>
-                    {itemOwner.rank} {itemOwner.name}
+                    {itemOwner.rank}
+                    {' '}
+                    {itemOwner.name}
                   </Link>
-                  {"님이"}
+                  님이
                   <Tooltip title={dateToString(item.created)} arrow>
                     <div>{dateElapsed(item.created)}</div>
                   </Tooltip>
-                  {"작성"}
+                  작성
                 </div>
               </Stack>
             ) : (
@@ -641,7 +643,7 @@ export default function ItemPage() {
             )}
 
             {/* Item children */}
-            {item.type !== "card" && (
+            {item.type !== 'card' && (
               <ItemList
                 items={itemChildren}
                 title="하위 항목"
@@ -683,7 +685,7 @@ export default function ItemPage() {
                 <Icon
                   path={mdiUpload}
                   size={0.9}
-                  style={{ marginLeft: "-4px" }}
+                  style={{ marginLeft: '-4px' }}
                 />
                 항목 게시
               </Button>
@@ -698,8 +700,8 @@ export default function ItemPage() {
               <div className="item-page-header">
                 <Tooltip
                   title={
-                    (status != null ? `${statusTooltipText[status]} ` : "") +
-                    typeString[item.type]
+                    (status != null ? `${statusTooltipText[status]} ` : '')
+                    + typeString[item.type]
                   }
                   arrow
                 >
@@ -714,15 +716,15 @@ export default function ItemPage() {
                       ) : null
                     }
                     anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
+                      vertical: 'bottom',
+                      horizontal: 'right',
                     }}
                     sx={{
-                      ".MuiBadge-badge": {
-                        backgroundColor: "#eae8dc",
-                        p: "4px",
-                        mb: "4px",
-                        mr: "4px",
+                      '.MuiBadge-badge': {
+                        backgroundColor: '#eae8dc',
+                        p: '4px',
+                        mb: '4px',
+                        mr: '4px',
                       },
                     }}
                   >
@@ -766,18 +768,20 @@ export default function ItemPage() {
                 <img
                   className="item-page-profile-image profile-image"
                   src={
-                    itemOwner.profileImageUrl || "/images/profile-default.jpg"
+                    itemOwner.profileImageUrl || '/images/profile-default.jpg'
                   }
                 />
                 <div className="item-page-profile-name">
                   <Link to={`/user/${itemOwner._id}`}>
-                    {itemOwner.rank} {itemOwner.name}
+                    {itemOwner.rank}
+                    {' '}
+                    {itemOwner.name}
                   </Link>
-                  {"님이"}
+                  님이
                   <Tooltip title={dateToString(item.created)} arrow>
                     <div>{dateElapsed(item.created)}</div>
                   </Tooltip>
-                  {"작성"}
+                  작성
                 </div>
               </Stack>
             ) : (
@@ -788,7 +792,7 @@ export default function ItemPage() {
             )}
 
             {/* Item children */}
-            {item.type !== "card" && (
+            {item.type !== 'card' && (
               <ItemList
                 items={itemChildren}
                 title="하위 항목"
@@ -814,38 +818,38 @@ export default function ItemPage() {
         PaperProps={{
           elevation: 0,
           sx: {
-            overflow: "visible",
-            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-            ml: "6px",
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            ml: '6px',
             mt: 0.5,
-            "&:before": {
+            '&:before': {
               content: '""',
-              display: "block",
-              position: "absolute",
+              display: 'block',
+              position: 'absolute',
               top: 0,
               right: 20,
               width: 10,
               height: 10,
-              bgcolor: "background.paper",
-              transform: "translateY(-50%) rotate(45deg)",
+              bgcolor: 'background.paper',
+              transform: 'translateY(-50%) rotate(45deg)',
               zIndex: 0,
             },
           },
         }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        {!pathname.endsWith("/edit") &&
-        (isCurrentUserOwner || isCurrentUserEditor) ? ( // only show edit menu to owner and editor
+        {!pathname.endsWith('/edit')
+        && (isCurrentUserOwner || isCurrentUserEditor) ? ( // only show edit menu to owner and editor
           <MenuItem component={LinkComponent} to={`/item/${itemId}/edit`}>
             <ListItemIcon>
               <Icon path={mdiFileEditOutline} size={1} />
             </ListItemIcon>
             수정
           </MenuItem>
-        ) : (
-          <div />
-        )}
+          ) : (
+            <div />
+          )}
         <MenuItem component={LinkComponent} to={`/item/${itemId}/duplicate`}>
           <ListItemIcon>
             <Icon path={mdiContentDuplicate} size={1} />
@@ -860,7 +864,7 @@ export default function ItemPage() {
         </MenuItem>
         {isCurrentUserOwner ? (
           <div>
-            {!pathname.endsWith("/settings") && (
+            {!pathname.endsWith('/settings') && (
               <MenuItem
                 component={LinkComponent}
                 to={`/item/${itemId}/settings`}
@@ -872,7 +876,7 @@ export default function ItemPage() {
               </MenuItem>
             )}
             <Divider light />
-            {status !== "archived" ? (
+            {status !== 'archived' ? (
               <MenuItem onClick={archiveItem}>
                 <ListItemIcon>
                   <Icon path={mdiPackageDown} size={1} />
