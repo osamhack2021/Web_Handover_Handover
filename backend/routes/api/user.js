@@ -1,13 +1,12 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const User = require('../../models/User.js');
+const userController = require("../../controllers/userController.js");
 
-router.post('/user/create', (req, res) => {
-    let body = req.body;
+router.get("", userController.search);
+router.get("/:id", userController.searchDetail);
 
-    User.create(body)
-        .then(user => res.send(user))
-        .catch(err => res.status(500).send(err));
-});
+router.put("/:id", userController.updateUser);
+
+router.delete("/:id", userController.deleteUser);
 
 module.exports = router;

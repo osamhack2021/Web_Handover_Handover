@@ -1,0 +1,39 @@
+@import "mixins";
+
+.drawer-container {
+  height: 100%;
+  .drawer {
+    background-color: $beige;
+    height: 100%;
+    margin: 0;
+    width: 360px;
+
+    .drawer-label {
+      @include setfonts(
+        $font-weight: $weight-bold,
+        $font-size: $size-6,
+        $line-height: 20px
+      );
+      margin: 30px 0 15px 52px;
+      background-color: $beige;
+    }
+
+    .leftpane-item {
+      @include setfonts(
+        $font-weight: $weight-semibold,
+        $font-size: $size-5,
+        $line-height: 24px
+      );
+      text-decoration: none;
+      padding: 15px 0 15px 52px;
+      color: $black;
+      width: 100%;
+      img {
+        position: relative;
+        top: 2px;
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+}

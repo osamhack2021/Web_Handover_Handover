@@ -1,50 +1,67 @@
-var createError = require('http-errors');
-var path = require('path');
-var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+let path = require("path");
+let bodyParser = require("body-parser");
+let cookieParser = require("cookie-parser");
+let logger = require("morgan");
+const multer = require("multer");
+const upload = multer({ dest: "files/" });
 
-var express = require('express');
-var app = express();
+let express = require("express");
+let app = express();
 
-var mongoose = require('./mongo.js');
+let mongoose = require("./mongo.js");
 mongoose();
 
-var indexRouter = require('./routes/index.js');
-app.use('/', indexRouter);
-var apiRouter = require('./routes/api/api.js');
-app.use('/api', apiRouter);
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(logger('dev'));
+app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
+
+let cors = require("cors");
+app.use(
+  cors({
+    origin: true,
+    credential: true,
+  })
+);
+
+/****************
+ * Test Router for Frontend developers
+ * Github Issue #124
+ */
+
+const testRouter = require("./routes/test.js");
+app.use("/api/test", testRouter);
+
+let indexRouter = require("./routes/index.js");
+app.use("/api/", indexRouter);
+
+let jwtRouter = require("./routes/api/jwt.js");
+app.use("/api/*", jwtRouter);
+
+let userRouter = require("./routes/api/user.js");
+app.use("/api/user", userRouter);
+
+let groupRouter = require("./routes/api/group.js");
+app.use("/api/group", groupRouter);
+
+let itemRouter = require("./routes/api/item.js");
+app.use("/api/item", itemRouter);
+
+let fileRouter = require("./routes/api/file.js");
+app.use("/api/file", fileRouter);
 
 app.listen(3000, () => {
-  console.log(`Example app listening at http://localhost:3000`)
-})
+  console.log(`API listening at http://localhost:3000`);
+});
+
+const { NotFoundError } = require("./services/errors/BusinessError.js");
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+app.use(function (req, res, next) {
+  throw new NotFoundError();
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+app.use(function (error, req, res, next) {
+  res.status(error.status || 500).send(error.message);
 });
-
-// module.exports = app;

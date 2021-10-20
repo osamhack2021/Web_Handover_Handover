@@ -1,0 +1,60 @@
+@import "mixins";
+
+.setting-page {
+  @include flexBox(
+    $display: flex,
+    $flex-direction: column,
+    $justify-content: flex-start,
+    $align-items: center
+  );
+  width: 100%;
+  min-width: fit-content;
+  background-color: $white;
+  height: 100%;
+  overflow-y: scroll;
+  .profile-image-label {
+    @include setfonts(
+      $font-size: $size-6,
+      $font-weight: $weight-bold,
+      $line-height: 24px
+    );
+    margin: 80px 0 20px 0;
+  }
+  .profile-image {
+    width: 120px;
+    height: 120px;
+  }
+  .profile-setting-button {
+    width: 180px;
+    height: 40px;
+    margin-bottom: 20px;
+  }
+  .profile-setting-box {
+    margin: 90px auto 80px auto;
+    width: 720px;
+  }
+  .profile-setting-title {
+    @include setfonts($font-size: $size-5, $font-weight: $weight-bold);
+    margin-bottom: 20px;
+  }
+  .profile-setting-button {
+    @include setfonts($font-size: $size-6, $line-height: 24px);
+    margin-top: 20px;
+  }
+  .tabs-container {
+    margin-top: 120px;
+    width: 720px;
+    .tabpanel {
+      margin-bottom: 50px;
+    }
+    .tabpanel-title {
+      margin: 70px 0 30px 0;
+      @include setfonts(
+        $font-family: Roboto,
+        $font-size: $size-3,
+        $font-weight: $weight-bold,
+        $line-height: 42px
+      );
+    }
+  }
+}

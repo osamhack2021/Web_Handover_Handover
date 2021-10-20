@@ -1,0 +1,54 @@
+{
+  "name": "handover",
+  "description": "📋 국방업무공유체계 – 업무 인수인계 및 공유 플랫폼",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "npm run build && docker compose up --detach",
+    "clean": "npm run down && npm run prune",
+    "down": "docker compose down",
+    "prune": "docker system prune -f && docker volume prune -f",
+    "prune:image": "docker image prune -f",
+    "prune:volume": "docker volume prune -f",
+    "build": "npm run down && docker compose build --parallel",
+    "build:dev": "npm run down && docker compose --file docker-compose.dev.yml build --parallel",
+    "dev": "npm run build:dev && docker compose --file docker-compose.dev.yml up",
+    "prd": "npm run build && docker compose up"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/osamhack2021/Web_Handover_Handover.git"
+  },
+  "author": {
+    "name": "Nathan Cho",
+    "email": "ntcho13@gmail.com",
+    "url": "https://github.com/ntcho"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/osamhack2021/Web_Handover_Handover/issues"
+  },
+  "keywords": [
+    "react",
+    "redux",
+    "webpack",
+    "express",
+    "ramda",
+    "eslint",
+    "jest",
+    "mongodb"
+  ],
+  "homepage": "https://github.com/osamhack2021/Web_Handover_Handover#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.26.1",
+    "eslint-plugin-react-hooks": "^4.2.0"
+  }
+}

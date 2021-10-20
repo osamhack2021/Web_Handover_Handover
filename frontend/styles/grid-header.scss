@@ -1,0 +1,34 @@
+@import "mixins";
+
+.MuiBreadcrumbs-separator {
+  @include setfonts($font-weight: 600, $font-size: 20px, $line-height: 24px);
+  color: $black-b50;
+}
+
+.grid-header {
+  @include flexBox(
+    $display: flex,
+    $flex-direction: column,
+    $justify-content: center
+  );
+  @include setfonts(
+    $font-weight: $weight-semibold,
+    $font-size: 40px,
+    $line-height: 48px
+  );
+  color: $black;
+  margin-top: 50px;
+
+  .breadcrumb {
+    @include setfonts(
+      $font-weight: $weight-semibold,
+      $font-size: $size-5,
+      $line-height: 24px
+    );
+    color: $black-b50;
+
+    &:hover {
+      color: darken($black-b50, 10%);
+    }
+  }
+}

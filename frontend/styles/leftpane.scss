@@ -1,0 +1,64 @@
+@import "mixins";
+
+.leftpane {
+  width: 240px;
+  height: 100%;
+  overflow-y: auto;
+
+  .leftpane-logo-button {
+    width: 100%;
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .logo {
+    height: 32px;
+  }
+
+  .leftpane-header {
+    position: static;
+  }
+
+  .leftpane-menu {
+    padding-top: 24px;
+
+    .leftpane-item {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: $black;
+      @include setfonts(
+        $font-weight: $weight-bold,
+        $font-size: $size-6,
+        $line-height: 19px
+      );
+      padding-left: 24px;
+      height: 45px;
+      width: 100%;
+    }
+
+    .leftpane-label {
+      display: flex;
+      align-items: center;
+      padding-left: 24px;
+      @include setfonts(
+        $font-weight: $weight-bold,
+        $font-size: $size-6,
+        $line-height: 15px
+      );
+      background-color: $beige;
+      height: 26px;
+    }
+
+    .leftpane-menu1 {
+      margin-bottom: 15px;
+    }
+    .leftpane-menu3 {
+      width: 240px;
+      position: fixed;
+      bottom: 0;
+    }
+  }
+}

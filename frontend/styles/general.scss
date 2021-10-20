@@ -1,0 +1,59 @@
+html,
+body,
+#app,
+#app > div {
+  background-color: #f5f4ef;
+  height: 100%;
+  overflow: auto;
+}
+
+body {
+  margin: 0;
+}
+
+a {
+  color: $info;
+}
+
+.title {
+  font-weight: $weight-normal;
+}
+
+.section {
+  background-color: transparent;
+}
+
+.box {
+  border-radius: 2px;
+}
+
+.select::after {
+  border-color: $grey-dark;
+}
+
+.field.has-help {
+  height: 67px;
+}
+
+.card-footer-item {
+  cursor: pointer;
+  &:hover {
+    background-color: $grey-lightest;
+  }
+}
+
+// Bug in production
+.select select {
+  padding-right: 2.5em;
+}
+
+// Override MUI Tooltip top margin
+.MuiTooltip-tooltip {
+  margin-top: 8px !important;
+}
+
+// Global fonts
+body * {
+  font-family: "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Roboto", Arial, sans-serif !important;
+  letter-spacing: -0.4px !important;
+}

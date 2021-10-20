@@ -1,0 +1,46 @@
+@import "mixins";
+
+.item-list-page-title {
+  width: 100%;
+  font-size: 2.5em;
+  font-weight: bolder;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-list-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+
+  svg {
+    padding-bottom: 4px;
+  }
+
+  .item-list-title {
+    flex-grow: 1;
+    font-size: 2em;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.item-list-scroll {
+  width: 100%;
+  overflow-x: scroll;
+  margin-bottom: 8px;
+
+  .item-list-content {
+    height: $height;
+    display: flex;
+    align-items: center;
+    margin: 16px 16px 8px 0;
+    gap: 8px;
+  }
+}

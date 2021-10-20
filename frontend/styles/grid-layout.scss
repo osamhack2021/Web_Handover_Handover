@@ -1,0 +1,15 @@
+@import "mixins";
+
+.grid-layout-container {
+  @include flexBox(
+    $display: flex,
+    $align-items: center,
+    $justify-content: center
+  );
+  margin-bottom: 150px;
+  .grid-layout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 40px;
+  }
+}

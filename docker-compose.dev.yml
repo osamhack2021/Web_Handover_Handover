@@ -1,0 +1,71 @@
+version: "3.9"
+
+services:
+  # MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: db
+    command: mongod --quiet --logpath /dev/null # disable mongodb verbose logging
+    # restart: unless-stopped
+    env_file: ./.env
+    volumes:
+      - db:/data/db
+    networks:
+      - backend
+
+  # Express.js Server
+  backend:
+    container_name: back
+    # command: tail -f /dev/null # DEBUG: uncomment to keep container running
+    depends_on:
+      - mongodb
+    build:
+      dockerfile: Dockerfile.dev # DEV: uses separate Dockerfile for development environment
+      context: ./backend
+    # restart: unless-stopped
+    env_file: ./.env
+    volumes:
+      - ./backend:/app/backend
+    networks:
+      - backend
+      - frontend
+
+  # React.js App Client
+  frontend:
+    container_name: front
+    # command: tail -f /dev/null # DEBUG: uncomment to keep container running
+    depends_on:
+      - backend
+    build:
+      dockerfile: Dockerfile.dev # DEV: uses separate Dockerfile for development environment
+      context: ./frontend
+      args:
+        - REACT_APP_API_BASE_URL=$API_BASE_URL
+    volumes:
+      - ./frontend:/app/frontend
+    networks:
+      - frontend
+
+  # Nginx Reserse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    # command: tail -f /dev/null # DEBUG: uncomment to keep container running
+    depends_on:
+      - frontend
+    ports:
+      - 80:80
+      - 443:443 # TODO: Add SSL support
+    volumes:
+      - ./nginx/config:/etc/nginx
+      - ./nginx/certs:/etc/ssl/private
+    networks:
+      - backend
+      - frontend
+
+volumes:
+  db:
+
+networks:
+  backend:
+  frontend:

@@ -1,32 +1,73 @@
-version: '3.3'
+version: "3.9"
+
 services:
+  # MongoDB
   mongodb:
-    image: mongo
-    container_name: mongodb
-    restart: always
+    image: mongo:latest
+    container_name: db
+    command: mongod --quiet --logpath /dev/null # disable mongodb verbose logging
+    # restart: unless-stopped
+    env_file: ./.env
     volumes:
-     - ./docker-config/mongodb:/data/db
-     - ./docker-config/mongodb/initdb:/docker-entrypoint-initdb.d
-    ports:
-     - '27019:27019'
-    networks: 
-      - net
+      - db:/data/db
+    networks:
+      - backend
+
+  # Express.js Server
   backend:
-    build:
-      context: ./backend 
-    container_name: express
-    ports:
-     - '3000:3000'
-#    expose:
-#      - "3000"
-    volumes:
-      - ./backend:/backend 
-      - /backend/node_modules
-    restart: "unless-stopped"
+    container_name: back
+    # command: tail -f /dev/null # DEBUG: uncomment to keep container running
     depends_on:
       - mongodb
-    networks: 
-      - net
+    build:
+      dockerfile: Dockerfile
+      context: ./backend
+    # restart: unless-stopped
+    env_file: ./.env
+    volumes:
+      - ./backend:/app/backend
+    networks:
+      - backend
+      - frontend
+
+  # React.js App Client
+  frontend:
+    container_name: front
+    # command: tail -f /dev/null # DEBUG: uncomment to keep container running
+    depends_on:
+      - backend
+    build:
+      dockerfile: Dockerfile
+      context: ./frontend
+      args:
+        - REACT_APP_API_BASE_URL=$API_BASE_URL
+    volumes:
+      - ./frontend:/app/frontend
+    networks:
+      - frontend
+
+  # Nginx Reserse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    # command: tail -f /dev/null # DEBUG: uncomment to keep container running
+    depends_on:
+      - frontend
+    ports:
+      - 80:80
+      - 443:443 # TODO: Add SSL support
+    volumes:
+      - ./nginx/config:/etc/nginx
+      - ./nginx/certs:/etc/ssl/private
+    networks:
+      - backend
+      - frontend
+
+volumes:
+  db:
+  node_modules_backend:
+  node_modules_frontend:
+
 networks:
-  net:
-    driver: bridge
+  backend:
+  frontend:

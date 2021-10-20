@@ -1,0 +1,39 @@
+@import "mixins";
+
+.profile-menu {
+  display: grid;
+  grid-template: "container";
+  place-content: center;
+  overflow: hidden;
+  grid-template-areas: "menuheader";
+
+  .profile-menu-content {
+    grid-area: menuheader;
+    z-index: 2;
+    padding-top: 50px;
+    padding-left: 24px;
+    padding-bottom: 33px;
+    color: $black;
+    @include flexBox($display: flex, $flex-direction: row);
+
+    .profile-image {
+      width: 50px;
+      height: 50px;
+      margin-right: 16px;
+    }
+
+    .profile-string-above {
+      @include setfonts($font-weight: $weight-bold, $font-size: $size-5);
+      margin-top: 9px;
+      margin-bottom: 4px;
+    }
+
+    .profile-string-below {
+      @include setfonts($font-weight: $weight-normal, $font-size: $size-7);
+    }
+  }
+
+  .profile-menu-background {
+    grid-area: menuheader;
+  }
+}

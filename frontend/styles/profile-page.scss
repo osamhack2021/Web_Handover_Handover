@@ -1,0 +1,14 @@
+@import "mixins";
+
+.profile-page {
+  @include flexBox(
+    $display: flex,
+    $flex-direction: column,
+    $justify-content: center,
+    $align-items: center
+  );
+  width: 100%;
+  min-width: fit-content;
+  background-color: $white;
+  height: 100%;
+}
