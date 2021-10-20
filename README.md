@@ -93,7 +93,7 @@ Handover 내의 모든 문서는 **🗄️ 서랍, 📰 문서, 📇 카드** �
 |:---:|:---:|:---:|:---:|
 |✔ (84+)|✔ (84+)|✔ (63+)|✔ (14.1+)|
  
-<h2 id="expectation"> ✨ Handover 의 기대효과 (Expectation) </h2>
+<h2 id="expectation"> ✨ Handover 의 기대효과 (Expectations) </h2>
  
  ### 👍 인수인계 방식의 체계화
   - 공통된 인수인계 문서 작성 플랫폼을 통한 **인수인계 방식 통일**
@@ -140,7 +140,7 @@ Handover 내의 모든 문서는 **🗄️ 서랍, 📰 문서, 📇 카드** �
 - [Sass](https://sass-lang.com/)
 - [webpack](https://webpack.kr/)
 
-<h2 id="install"> 🚀 설치 안내 (Installaltion Methods) </h2>
+<h2 id="install"> 🚀 설치 안내 (Installation Methods) </h2>
 
 ### 1. Repository Clone
 
