@@ -49,7 +49,7 @@ Handover만의 **3가지 핵심 기능**과 함께 더 편리하고 똑똑한 �
 <h3> 🗄️ 3단계 문서 구성 </h3>
 
 <p align="center">
- <img src='./image/document_architecture.png' width="800" height="500"/>
+ <img src='./image/document_architecture.png' width="600" height="375"/>
 </p>
 
 Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3단계 구성을 갖습니다.
