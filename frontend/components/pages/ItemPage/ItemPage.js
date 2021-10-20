@@ -224,7 +224,12 @@ export default function ItemPage() {
       if (itemChildren == null) {
         if (item.type !== "card") {
           dispatch(attemptGetItemChildren(item.path)).then((children) => {
-            setItemChildren(children.filter((i) => i._id != item._id));
+            setItemChildren(
+              children.filter(
+                (child) =>
+                  child._id != item._id && child.path.includes(item.path)
+              )
+            );
           });
         }
       }
