@@ -113,7 +113,7 @@ export default function WelcomePage() {
   const dispatch = useDispatch();
   const history = useHistory();
   const { user } = useSelector(R.pick(['user']));
-
+  document.title = 'Handover';
   useEffect(() => {
     if (!R.isEmpty(user)) {
       dispatch(push('/home'));

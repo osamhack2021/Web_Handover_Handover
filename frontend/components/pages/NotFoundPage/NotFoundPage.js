@@ -5,6 +5,7 @@ import { Container, Stack, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 
 export default function NotFoundPage() {
+  document.title = 'Not Found - Handover';
   const history = useHistory();
   const onClickHome = () => {
     history.push('/home');

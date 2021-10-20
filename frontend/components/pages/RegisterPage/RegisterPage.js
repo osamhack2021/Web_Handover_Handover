@@ -8,7 +8,7 @@ import Register from '_organisms/Register';
 export default function RegisterPage() {
   const dispatch = useDispatch();
   const { user } = useSelector(R.pick(['user']));
-
+  document.title = 'Register - Handover';
   useEffect(() => {
     if (!R.isEmpty(user)) {
       dispatch(push('/home'));

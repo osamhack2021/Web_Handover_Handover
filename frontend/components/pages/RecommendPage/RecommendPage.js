@@ -17,6 +17,7 @@ export default function RecommendPage({ location }) {
   console.log(itemCache);
   const [itemList, setItemList] = useState([]);
   const [loading, setLoading] = useState(true);
+  document.title = 'Home - Handover';
 
   useEffect(() => {
     if (Object.keys(itemCache).length === 0) {

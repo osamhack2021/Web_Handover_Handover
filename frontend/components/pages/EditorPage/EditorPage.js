@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import Editor from "_frontend/components/molecules/Editor";
 
 export default function EditorPage({ itemId }) {
+  document.title = 'Edit - Handover';
   const [title, setTitle] = useState("");
   const [path, setPath] = useState("");
   const [content, setContent] = useState(null);
