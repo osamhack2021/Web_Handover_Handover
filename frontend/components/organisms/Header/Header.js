@@ -24,7 +24,7 @@ export default function Header() {
     }
   };
   return (
-    <div className="header">
+    <div className="header" style={{ height: 'fit-content', paddingTop: '7px', paddingBottom: '7px' }}>
       <div className="search-bar">
         <form style={{ width: '100%' }}>
           <img src={SearchIcon} alt="input-icon" />
