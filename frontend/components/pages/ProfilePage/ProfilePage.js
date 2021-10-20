@@ -12,6 +12,8 @@ import Stack from '@mui/material/Stack';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Tooltip from '@mui/material/Tooltip';
+import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
 import R from 'ramda';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -26,6 +28,7 @@ import GroupSettings from '_frontend/components/organisms/GroupSettings';
 import ProfileSettings from '_frontend/components/organisms/ProfileSettings';
 import Profile from '_organisms/Profile';
 import UserItems from '_organisms/UserItems';
+import { Link } from '@mui/material';
 
 const LinkTab = ({ content }) => (
   <Tab
@@ -126,68 +129,74 @@ export default function ProfilePage() {
   ];
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Stack direction="row" sx={{ pt: 4, pb: 2, px: 8 }}>
-        <Tooltip
-          title={baseURL.endsWith('/account') ? '프로필 사진 변경' : ''}
-          arrow
-        >
-          <Avatar
-            className="profile-image"
-            component={ButtonBase}
-            src={user && user.profileImageUrl}
-            sx={{ width: 120, height: 120 }}
+    <Container sx={{
+      width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center',
+    }}
+    >
+      <Container maxWidth="md">
+        <Stack direction="row" sx={{ pt: 4, pb: 2, px: 8 }}>
+          <Tooltip
+            title={baseURL.endsWith('/account') ? '프로필 사진 변경' : ''}
+            arrow
           >
-            <img
-              src="/images/profile-default.jpg"
-              width="100%"
-              height="100%"
-            />
-          </Avatar>
-        </Tooltip>
-        {user == null || group == null ? null : (
-          <Stack sx={{ px: 4, justifyContent: 'center' }}>
-            <strong style={{ fontSize: '2.5em' }}>
-              {user.rank}
-              {' '}
-              {user.name}
-            </strong>
-            <span style={{ fontSize: '1.5em' }}>
-              {group.name}
-              {' '}
-              {user.title}
-            </span>
-          </Stack>
-        )}
-      </Stack>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 8 }}>
-        <Tabs
-          value={getTabIndex(location.pathname)}
-          variant="scrollable"
-          scrollButtons="auto"
-        >
-          {defaultURLs.map((e, index) => (
-            <LinkTab content={e} key={index} />
-          ))}
-          {baseURL.startsWith('/account')
-            ? accountURLs.map((e, index) => <LinkTab content={e} key={index} />)
-            : null}
-        </Tabs>
-      </Box>
-      <Switch>
-        <Route exact path={baseURL}>
-          <Profile user={user} group={group} />
-        </Route>
-        <Route exact path={`${baseURL}/items`}>
-          <UserItems userItem={userItem} />
-        </Route>
-        <Route exact path={`${baseURL}/settings`}>
-          <ProfileSettings />
-        </Route>
-        <Route exact path={`${baseURL}/settings/group`}>
-          <GroupSettings />
-        </Route>
-      </Switch>
-    </Box>
+            <Avatar
+              className="profile-image"
+              component={ButtonBase}
+              src={user && user.profileImageUrl}
+              sx={{ width: 120, height: 120 }}
+            >
+              <img
+                src="/images/profile-default.jpg"
+                width="100%"
+                height="100%"
+              />
+            </Avatar>
+          </Tooltip>
+          {user == null || group == null ? null : (
+            <Stack sx={{ px: 4, justifyContent: 'center' }}>
+              <strong style={{ fontSize: '2.5em' }}>
+                {user.rank}
+                {' '}
+                {user.name}
+              </strong>
+              <span style={{ fontSize: '1.5em' }}>
+                {group.name}
+                {' '}
+                {user.title}
+              </span>
+            </Stack>
+          )}
+        </Stack>
+        <Stack sx={{ pt: 4, pb: 2, px: 8 }}>
+          <Tabs
+            variant="fullWidth"
+            value={getTabIndex(location.pathname)}
+            centered
+          >
+            {defaultURLs.map((e, index) => (
+              <LinkTab content={e} key={index} />
+            ))}
+            {baseURL.startsWith('/account')
+              ? accountURLs.map((e, index) => <LinkTab content={e} key={index} />)
+              : null}
+          </Tabs>
+          <Divider light />
+          <Switch>
+            <Route exact path={baseURL}>
+              <Profile user={user} group={group} />
+            </Route>
+            <Route exact path={`${baseURL}/items`}>
+              <UserItems userItem={userItem} />
+            </Route>
+            <Route exact path={`${baseURL}/settings`}>
+              <ProfileSettings />
+            </Route>
+            <Route exact path={`${baseURL}/settings/group`}>
+              <GroupSettings />
+            </Route>
+          </Switch>
+        </Stack>
+      </Container>
+    </Container>
   );
 }
