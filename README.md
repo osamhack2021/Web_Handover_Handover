@@ -85,7 +85,7 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
 
 |<image src="./image/Chrome.png" width="20" height="20"> Chrome|<image src="./image/Edge.png" width="20" height="20"> Edge|<image src="./image/Firefox.png" width="20" height="20"> FireFox|<image src="./image/Safari.png" width="20" height="20"> Safari|
 |:---:|:---:|:---:|:---:|
-|✔|✔|✔|✔|
+|✔ (84+)|✔ (84+)|✔ (63+)|✔ (14.1+)|
  
 <h2 id="expectation"> ✨ Handover 기대효과 (Expectation) </h2>
  
