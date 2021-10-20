@@ -137,13 +137,13 @@ export default function ItemPage() {
 
     // reset states
     console.log("render (useEffect): item =", item, "cachedItem =", cachedItem);
-    setItem(cachedItem);
     setItemChildren(null);
     setItemParents(null);
     setItemOwner(null);
     setAvailableGroups(null);
     setVisible(true);
     setBookmarked(user.bookmarks.includes(itemId));
+    setItem(cachedItem);
 
     // Use this to add alert on leave
     // if (pathname.endsWith("/edit")) {
