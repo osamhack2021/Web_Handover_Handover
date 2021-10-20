@@ -50,7 +50,7 @@ Handover만의 **3가지 핵심 기능**과 함께 더 편리하고 똑똑한 �
 <h3> 🗄️ 3단계 문서 구성 </h3>
 
 <p align="center">
- <img src='./image/document_architecture.png' width="600" height="375"/>
+ <img src='./image/document_architecture.png' width="500" />
 </p>
 
 Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3단계 구성을 갖습니다.
@@ -59,7 +59,7 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
 - **카드**: 작은 업무를 수행하는 방법을 설명한 **짧은 글**
 
 <p align="center">
- <img src='./image/documents.png' />
+ <img src='./image/documents.png' width="80%" />
 </p>
 
 3단계 문서 구성과 **문서 작성 가이드**를 통해 더 읽기 쉽고, 체계화된 문서를 작성해보세요!
@@ -67,7 +67,7 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
 <h3> 🤝 문서 공유 서비스 </h3>
 
 <p align="center"> 
- <img src='./image/comment.png'  />
+ <img src='./image/comment.png' width="80%" />
 </p>
 
 - 같은 보직, 같은 소속의 사용자들과 인수인계 문서를 **공유**하고, **댓글**을 통해 의견을 나누어보세요!
@@ -76,7 +76,7 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
 <h3> 🔐 보안 관리자 등록을 통한 기밀 유출 방지 </h3>
 
 <p align="center"> 
- <img src='./image/security.png' />
+ <img src='./image/security.png' width="80%" />
 </p>
 
 - 그룹 별로 **보안 관리자**를 등록해 그룹 내 문서에서 보안 사항이 위반되고 있는지 확인하고, 관리할 수 있습니다.
