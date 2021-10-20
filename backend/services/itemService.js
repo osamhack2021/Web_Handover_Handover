@@ -4,7 +4,7 @@ const { RuntimeError } = require("./errors/RuntimeError.js");
 const LIMIT = 20;
 
 module.exports = {
-  search: async (query = {}, limit = true) => {
+  search: async (query = {}, limit = true, options = { populate: true }) => {
     try {
       const projection = {
         title: true,
@@ -50,6 +50,19 @@ module.exports = {
         path: "owner",
         select: ["rank", "name"],
       });
+
+      if (options.populate) {
+        query_.populate([
+          {
+            path: "accessGroups.read",
+            select: ["name", "path"],
+          },
+          {
+            path: "accessGroups.edit",
+            select: ["name", "path"],
+          },
+        ]);
+      }
 
       if (limit) query_.skip(query_.page * LIMIT).limit(LIMIT);
 
