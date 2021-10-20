@@ -168,12 +168,14 @@ export default function Item({
       // retrieve item from server for possible updates
       dispatch(attemptGetItem(itemId))
         .then((response) => {
-          if (!deepEqual(item, setItem(response))) {
+          if (!deepEqual(item, response)) {
             // update state deep equality between state and response is false
             console.log(
               itemId,
-              " cache was updated compared to server: ",
-              response
+              " cache was updated compared to server; new =",
+              response,
+              "\nold =",
+              item
             );
             setItem(response);
           }
