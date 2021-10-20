@@ -12,9 +12,11 @@ import WelcomeHeader from '_organisms/WelcomeHeader';
 import WelcomeFooter from '_organisms/WelcomeFooter';
 import MeetingPNG from '_assets/images/meeting.png';
 import WaveVector from '_assets/images/wave.png';
+
+import Comment from '_assets/images/comment.gif';
+import Share from '_assets/images/share.gif';
 import DemoPage from '_assets/images/demopage.png';
-import Share from '_assets/images/share.png';
-import Structure from '_assets/images/structure.png';
+
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import GroupIcon from '@mui/icons-material/Group';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
@@ -221,7 +223,7 @@ export default function WelcomePage() {
                 '인수 인계서 작성',
                 '효율적인 부대 관리',
                 '부대 업무를 한곳에 모아보세요. 사용자가 속한 그룹의 인수인계서, 업무들을 한번에 관리할 수 있습니다.',
-                Structure,
+                DemoPage,
                 'right',
                 'create',
               )}
@@ -237,7 +239,7 @@ export default function WelcomePage() {
                 '댓글 북마크 기능',
                 '보다 쉬운 인수인계서',
                 'Handover 의 모든 문서들은 서랍, 문서, 카드 의 구조를 가지고 있습니다 모든 보직, 근무의 인수인계서는 누구나 쉽게 이해할 수 있도록 서랍, 문서, 카드 3단계로 체계화 되어 있습니다. 어떤 업무를 수행하는지, 어떤 작업이 있는지 체계적으로 정리되어 있습니다. ',
-                DemoPage,
+                Comment,
                 'right',
                 'comment',
               )}

@@ -6,6 +6,7 @@ import Divider from '@mui/material/Divider';
 import WelcomeHeader from '_organisms/WelcomeHeader';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
+import Gif from '_assets/images/aboutpage-gif.gif';
 
 export default function AboutPage() {
   document.title = 'About - Handover';
@@ -30,12 +31,11 @@ export default function AboutPage() {
           spacing={3}
           sx={{ marginBottom: '200px' }}
         >
-          <div
-            style={{
-              backgroundColor: 'white',
-              width: '400px',
-              height: '300px',
-            }}
+          <img
+            alt="gif"
+            src={Gif}
+            width="400px"
+            style={{ border: '3px solid #555' }}
           />
           <Typography
             sx={{
