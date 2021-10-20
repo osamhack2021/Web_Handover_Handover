@@ -13,6 +13,7 @@ import RecoveryPage from '_pages/RecoveryPage';
 import SearchPage from '_pages/SearchPage';
 import { attemptGetGroup } from '_thunks/group';
 import { attemptGetUserItem } from '_thunks/item';
+import CreateItemPage from '../CreateItemPage';
 import RecommendPage from '../RecommendPage';
 
 export default function RoutingPage() {
@@ -63,7 +64,7 @@ export default function RoutingPage() {
               <Route exact path="/drafts" component={ItemListPage} />
 
               {/* Item Page */}
-              {/* <Route exact path="/create" component={ItemPage} /> */}
+              <Route exact path="/item/create" component={CreateItemPage} />
               <Route exact path="/item/:itemId" component={ItemPage} />
               <Route exact path="/item/:itemId/edit" component={ItemPage} />
               <Route exact path="/item/:itemId/settings" component={ItemPage} />
