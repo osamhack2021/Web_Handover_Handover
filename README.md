@@ -20,12 +20,10 @@
 
 **Handover**는 군 내의 인수인계를 효율적이고 편리하게 진행할 수 있도록 돕는 Web 서비스입니다.
 
-> **Handover**는 보직 변경 등의 상황에서 효율적이고 정확하지 않은 인수인계로 인해
->
+> **Handover**는 보직 변경 등의 상황에서 효율적이고 정확하지 않은 인수인계로 인해<br>
 > **새로운 업무 환경에 적응**하는 것에 어려움을 겪거나 **업무의 공백**이 생기는 문제점을 해결하고자 합니다.
->
-> 더 나아가, 부대 간 효율적인 업무 방법을 공유하는
->
+> 
+> 더 나아가, 부대 간 효율적인 업무 방법을 공유하는<br>
 > **통합적 업무 공유 플랫폼**을 제공하는 것을 목표로 하고 있습니다.
 
 ## 📖 목차
@@ -93,7 +91,7 @@ Handover 내의 모든 문서는 **🗄️ 서랍, 📰 문서, 📇 카드** �
 |:---:|:---:|:---:|:---:|
 |✔ (84+)|✔ (84+)|✔ (63+)|✔ (14.1+)|
  
-<h2 id="expectation"> ✨ Handover 의 기대효과 (Expectations) </h2>
+<h2 id="expectation"> ✨ Handover 의 기대효과 (Expectation) </h2>
  
  ### 👍 인수인계 방식의 체계화
   - 공통된 인수인계 문서 작성 플랫폼을 통한 **인수인계 방식 통일**
@@ -140,7 +138,7 @@ Handover 내의 모든 문서는 **🗄️ 서랍, 📰 문서, 📇 카드** �
 - [Sass](https://sass-lang.com/)
 - [webpack](https://webpack.kr/)
 
-<h2 id="install"> 🚀 설치 안내 (Installation Methods) </h2>
+<h2 id="install"> 🚀 설치 안내 (Installaltion Methods) </h2>
 
 ### 1. Repository Clone
 
@@ -328,6 +326,6 @@ Handover에 기여하고 싶으시다면, **[Contributing.md](Contributing.md)**
     </tbody>
 </table>
 
-<h2 id="license"> 📝 저작권 정보 (Copyright) </h2>
+<h2 id="license"> 📝 저작권 및 사용권 정보 (Copyright / End User License) </h2>
  
   - [**MIT License**](./LICENSE)
