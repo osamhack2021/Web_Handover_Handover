@@ -383,13 +383,13 @@ async function init() {
       {
         content:
           "좋은 문서 감사합니다! 저희 부대의 신임 간부와 전입 병사들에게 큰 도움이 될 것 같습니다. 혹시 주 장비실 청소 방법에 대한 내용을 추가해주실 수 있으십니까?",
-        by: users.AAA._id,
+        by: users.CCC._id,
         date: new Date("2021-9-10"),
       },
       {
         content:
           "피드백 감사합니다. 주 장비실 청소 방법에 대한 카드 문서를 추가했습니다!",
-        by: users.CCC._id,
+        by: users.AAA._id,
         date: new Date("2021-9-11"),
       },
       {
