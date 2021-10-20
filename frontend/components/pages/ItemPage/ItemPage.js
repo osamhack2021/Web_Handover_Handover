@@ -576,7 +576,7 @@ export default function ItemPage() {
         }}
         sx={{
           ".MuiBadge-badge": {
-            backgroundColor: "#eae8dc",
+            backgroundColor: "#f5f4ef",
             p: "4px",
             mb: "4px",
             mr: "4px",
