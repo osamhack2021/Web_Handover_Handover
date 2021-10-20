@@ -48,8 +48,55 @@
 
   .item-page-content-editor {
     margin-top: 16px;
-    background-color: white;
+    background-color: floralwhite;
     height: 720px;
+  }
+
+  .item-page-history-list {
+    display: flex;
+    flex-direction: column;
+    background-color: floralwhite;
+    border: 1px solid #0003;
+    border-radius: 8px;
+
+    .item-page-history-list-item {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 8px 16px;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid #0003;
+      }
+
+      .item-page-history-list-item-header {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 4px;
+
+        .item-page-history-list-item-title {
+          font-size: 1.2em;
+          font-weight: bold;
+        }
+  
+        .item-page-history-list-item-id {
+          font-size: 1em;
+          text-decoration: underline;
+          text-transform: uppercase;
+          font-family: monospace !important;
+        }
+      }
+
+      .item-page-history-list-profile {
+        display: flex;
+        gap: 4px;
+        flex-direction: row;
+        font-size: 0.8em;
+        text-align: start;
+        color: $black-b70;
+      }
+    }
   }
 
   .item-page-metadata {
@@ -69,16 +116,16 @@
       align-items: center;
       flex-direction: row;
       gap: 8px;
-  
+
       :first-child {
         margin-left: auto;
       }
-  
+
       .item-page-profile-image {
         width: 24px;
         height: 24px;
       }
-  
+
       .item-page-profile-name {
         display: flex;
         gap: 4px;
@@ -87,7 +134,7 @@
         text-align: start;
         padding-top: 2px;
         color: $black-b70;
-  
+
         a {
           color: $black-b70;
           text-decoration: none;
@@ -96,7 +143,6 @@
       }
     }
   }
-
 
   .item-list {
     margin-top: 32px;
