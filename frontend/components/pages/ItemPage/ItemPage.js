@@ -837,7 +837,7 @@ export default function ItemPage() {
                     onChange={handleParentPathChange}
                   >
                     {availablePaths.map(([itemId, item]) => (
-                      <MenuItem value={item.path}>
+                      <MenuItem value={item.path} key={item.path} >
                         {/* <TypeIcon
                           type={item.type}
                           size={0.75}
