@@ -525,8 +525,7 @@ export default function ItemPage() {
     // update settings from settings select
     dispatch(
       attemptUpdateItemSettings(itemId, {
-        ...item,
-        path: parentPath,
+        path: parentPath ? parentPath : item.path, // parentPath will be null on cabinet
         accessGroups: {
           read: accessGroups.read.map((groups) => groups._id),
           edit: accessGroups.edit.map((groups) => groups._id),
