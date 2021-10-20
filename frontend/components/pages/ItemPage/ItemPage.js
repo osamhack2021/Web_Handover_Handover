@@ -145,6 +145,7 @@ export default function ItemPage() {
     setAvailableGroups(null);
     setVisible(true);
     setBookmarked(user.bookmarks.includes(itemId));
+    setItem(cachedItem);
 
     // Use this to add alert on leave
     // if (pathname.endsWith("/edit")) {
