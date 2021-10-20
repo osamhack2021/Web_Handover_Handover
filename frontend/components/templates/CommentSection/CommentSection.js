@@ -1,5 +1,5 @@
 import { Button, Divider, TextField } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { attemptAddItemComment } from "_frontend/store/thunks/item";
 import Comment from "_organisms/Comment";
@@ -9,10 +9,14 @@ export default function CommentSection({
   comments: commentObjects,
   currentUser,
 }) {
-  const [comments, setComments] = React.useState(commentObjects);
-  const [commentContent, setCommentContent] = React.useState("");
-  const [editable, setEditable] = React.useState(true);
+  const [comments, setComments] = useState(commentObjects);
+  const [commentContent, setCommentContent] = useState("");
+  const [editable, setEditable] = useState(true);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setComments(commentObjects);
+  }, [commentObjects]);
 
   const handleChange = (event) => {
     setCommentContent(event.target.value);
