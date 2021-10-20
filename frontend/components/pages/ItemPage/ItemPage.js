@@ -11,6 +11,9 @@ import {
   mdiFileEditOutline,
   mdiFileTreeOutline,
   mdiHistory,
+  mdiLockCheckOutline,
+  mdiLockOpenAlertOutline,
+  mdiLockOpenRemoveOutline,
   mdiPackageDown,
   mdiShare,
   mdiStar,
@@ -62,6 +65,7 @@ import {
   attemptGetItemChildren,
   attemptPublishItem,
   attemptUpdateItemContents,
+  attemptUpdateItemInspection,
   attemptUpdateItemSettings
 } from "_thunks/item";
 import {
@@ -345,8 +349,7 @@ export default function ItemPage() {
   useEffect(() => {
     if (item != null) {
       const history =
-        itemHistory &&
-        itemHistory.find((item) => item._id === historyItemId);
+        itemHistory && itemHistory.find((item) => item._id === historyItemId);
       if (history != null) {
         setHistory(history);
       } else {
@@ -535,6 +538,14 @@ export default function ItemPage() {
     });
   };
 
+  const handleInspection = (result) => {
+    dispatch(attemptUpdateItemInspection(itemId, user._id, result)).then(
+      (item) => {
+        setItem(item);
+      }
+    );
+  };
+
   // Menu will lose anchor on render, use memoized component instead
   // Code from: https://stackoverflow.com/a/59682239/4524257
   const ItemActions = React.useMemo(() => {
@@ -683,49 +694,77 @@ export default function ItemPage() {
       <Switch>
         {/* Item Read Page */}
         <Route exact path="/item/:itemId">
-          <Stack spacing={1} className="item-page">
-            <Stack>
-              <div className="item-page-header">
-                <ItemTypeIconWithTooltip />
+          {item.inspection && item.inspection.result === "deny" ? (
+            <Stack spacing={1} className="item-page">
+              <Stack>
+                <div className="item-page-header">
+                  <ItemTypeIconWithTooltip />
 
-                {/* Item title */}
-                <div className="item-page-header-title">{item.title}</div>
+                  {/* Item title */}
+                  <div className="item-page-header-title">{item.title}</div>
+                </div>
+              </Stack>
 
-                {/* Item action menus */}
-                <ItemActions />
+              {/* Item BreadCrumbs */}
+              <ItemBreadCrumbs />
+
+              <div className="item-page-deny">
+                <Icon path={mdiLockOpenAlertOutline} size={4} />
+                <div className="item-page-deny-title">
+                  보안성 검토 승인을 받지 않은 항목
+                </div>
+                <div className="item-page-deny-content">
+                  보안성 승인을 받기 전에는 항목을 열람할 수 없습니다.
+                  <br />이 항목의 작성자인 경우, 그룹 보안 관리자에게 검토
+                  결과를 문의하세요.
+                </div>
               </div>
             </Stack>
+          ) : (
+            <Stack spacing={1} className="item-page">
+              <Stack>
+                <div className="item-page-header">
+                  <ItemTypeIconWithTooltip />
 
-            {/* Item BreadCrumbs */}
-            <ItemBreadCrumbs />
+                  {/* Item title */}
+                  <div className="item-page-header-title">{item.title}</div>
 
-            {/* Item content */}
-            {item.content && (
-              <div className="item-page-content">
-                <Editor content={item.content} editable={false} />
-              </div>
-            )}
+                  {/* Item action menus */}
+                  <ItemActions />
+                </div>
+              </Stack>
 
-            {/* Item metadata (owner profile, created date) */}
-            <ItemMetadata />
+              {/* Item BreadCrumbs */}
+              <ItemBreadCrumbs />
 
-            {/* Item children */}
-            {item.type !== "card" && (
-              <ItemList
-                items={itemChildren}
-                title="하위 항목"
-                icon={mdiFileTreeOutline}
+              {/* Item content */}
+              {item.content && (
+                <div className="item-page-content">
+                  <Editor content={item.content} editable={false} />
+                </div>
+              )}
+
+              {/* Item metadata (owner profile, created date) */}
+              <ItemMetadata />
+
+              {/* Item children */}
+              {item.type !== "card" && (
+                <ItemList
+                  items={itemChildren}
+                  title="하위 항목"
+                  icon={mdiFileTreeOutline}
+                />
+              )}
+
+              {/* Item comments */}
+              <ItemListHeader title="댓글" icon={mdiCommentTextOutline} />
+              <CommentSection
+                itemId={itemId}
+                comments={item.comments}
+                currentUser={user}
               />
-            )}
-
-            {/* Item comments */}
-            <ItemListHeader title="댓글" icon={mdiCommentTextOutline} />
-            <CommentSection
-              itemId={itemId}
-              comments={item.comments}
-              currentUser={user}
-            />
-          </Stack>
+            </Stack>
+          )}
         </Route>
 
         {/* Item Edit Page */}
@@ -1000,13 +1039,8 @@ export default function ItemPage() {
                 {/* Item title */}
                 <div className="item-page-header-title">
                   {history && history.title}
-                  <div className="item-page-header-type">
-                    수정된 항목
-                  </div>
+                  <div className="item-page-header-type">수정된 항목</div>
                 </div>
-
-                {/* Item action menus */}
-                <ItemActions />
               </div>
             </Stack>
 
@@ -1022,6 +1056,65 @@ export default function ItemPage() {
 
             {/* Item metadata (owner profile, created date) */}
             <ItemMetadata />
+          </Stack>
+        </Route>
+
+        {/* Item Inspection Page */}
+        <Route exact path="/item/:itemId/inspect">
+          <Stack spacing={1} className="item-page">
+            <Stack>
+              <div className="item-page-header">
+                <ItemTypeIconWithTooltip />
+
+                {/* Item title */}
+                <div className="item-page-header-title">{item.title}</div>
+              </div>
+            </Stack>
+
+            {/* Item BreadCrumbs */}
+            <ItemBreadCrumbs />
+
+            {/* Item content */}
+            {item.content && (
+              <div className="item-page-content">
+                <Editor content={item.content} editable={false} />
+              </div>
+            )}
+
+            {/* Item metadata (owner profile, created date) */}
+            <ItemMetadata />
+
+            {/* Item save action */}
+            <div className="item-action-editor">
+              <Button
+                variant="outlined"
+                color="secondary"
+                size="large"
+                disabled={status === "archived"}
+                onClick={() => handleInspection("deny")}
+              >
+                <Icon
+                  path={mdiLockOpenRemoveOutline}
+                  size={0.9}
+                  style={{ marginLeft: "-4px" }}
+                />
+                반려
+              </Button>
+              <Button
+                disableElevation
+                variant="contained"
+                color="secondary"
+                size="large"
+                onClick={() => handleInspection("approve")}
+              >
+                <Icon
+                  path={mdiLockCheckOutline}
+                  size={0.9}
+                  style={{ marginLeft: "-4px" }}
+                />
+                승인
+              </Button>
+            </div>
           </Stack>
         </Route>
       </Switch>

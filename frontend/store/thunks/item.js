@@ -2,7 +2,7 @@ import { store as RNC } from "react-notifications-component";
 import {
   addItemCache,
   addItemCaches,
-  deleteItemCache
+  deleteItemCache,
 } from "_actions/itemCache";
 import {
   addItemComment,
@@ -13,7 +13,7 @@ import {
   getItemChildren,
   getUserItem,
   publishItem,
-  updateItem
+  updateItem,
 } from "_api/item";
 import { dispatchError } from "_utils/api";
 
@@ -116,94 +116,28 @@ export const attemptUpdateItemContents = (itemId, item) => (dispatch) => {
     content: item.content,
     title: item.title,
     status: item.status,
-    created: new Date()
-  }).then((item) => {
-    // save response to itemCache
-    dispatch(addItemCache(item));
+    created: new Date(),
+  })
+    .then((item) => {
+      // save response to itemCache
+      dispatch(addItemCache(item));
 
-    RNC.addNotification({
-      title: "수정 완료",
-      type: "success",
-      message: "성공적으로 수정 내용을 저장하였습니다",
-      container: "top-center",
-      animationIn: ["animated", "fadeInRight"],
-      animationOut: ["animated", "fadeOutRight"],
-      dismiss: {
-        duration: 5000,
-      },
-    });
-  }).catch(error => {
-    RNC.addNotification({
-      title: "수정 오류",
-      message: error.text.split(": ")[1],
-      type: "danger",
-      container: "top-center",
-      animationIn: ["animated", "fadeInRight"],
-      animationOut: ["animated", "fadeOutRight"],
-      dismiss: {
-        duration: 5000,
-      },
-    });
-  });
-};
-
-export const attemptUpdateItemSettings = (itemId, item) => (dispatch) => {
-  return updateItem(itemId, {
-    accessGroups: item.accessGroups,
-    path: item.path,
-  }).then((item) => {
-    // save response to itemCache
-    dispatch(addItemCache(item));
-
-    RNC.addNotification({
-      title: "설정 저장 완료",
-      type: "success",
-      message: "성공적으로 설정 내용을 저장하였습니다",
-      container: "top-center",
-      animationIn: ["animated", "fadeInRight"],
-      animationOut: ["animated", "fadeOutRight"],
-      dismiss: {
-        duration: 5000,
-      },
-    });
-  }).catch(error => {
-    RNC.addNotification({
-      title: "수정 오류",
-      message: error.text.split(": ")[1],
-      type: "danger",
-      container: "top-center",
-      animationIn: ["animated", "fadeInRight"],
-      animationOut: ["animated", "fadeOutRight"],
-      dismiss: {
-        duration: 5000,
-      },
-    });
-  });
-};
-
-export const attemptUpdateItemPermission =
-  (itemId, accessGroup) => (dispatch) => {
-    return updateItem(itemId, { accessGroup: accessGroup }).then(
-      getItem(itemId).then((item) => {
-        // save response to itemCache
-        dispatch(addItemCache(item));
-
-        RNC.addNotification({
-          title: "권한 수정 완료",
-          type: "success",
-          message: "성공적으로 항목 권한을 변경하였습니다",
-          container: "top-center",
-          animationIn: ["animated", "fadeInRight"],
-          animationOut: ["animated", "fadeOutRight"],
-          dismiss: {
-            duration: 5000,
-          },
-        });
-      })
-    ).catch(error => {
       RNC.addNotification({
-        title: "권한 수정 오류",
-        message: error.text.split(": ")[1],
+        title: "수정 완료",
+        type: "success",
+        message: "성공적으로 수정 내용을 저장하였습니다",
+        container: "top-center",
+        animationIn: ["animated", "fadeInRight"],
+        animationOut: ["animated", "fadeOutRight"],
+        dismiss: {
+          duration: 5000,
+        },
+      });
+    })
+    .catch((error) => {
+      RNC.addNotification({
+        title: "수정 오류",
+        message: error.text.includes(": ") ? error.text.split(": ")[1] : error.text,
         type: "danger",
         container: "top-center",
         animationIn: ["animated", "fadeInRight"],
@@ -213,6 +147,114 @@ export const attemptUpdateItemPermission =
         },
       });
     });
+};
+
+export const attemptUpdateItemSettings = (itemId, item) => (dispatch) => {
+  return updateItem(itemId, {
+    accessGroups: item.accessGroups,
+    path: item.path,
+  })
+    .then((item) => {
+      // save response to itemCache
+      dispatch(addItemCache(item));
+
+      RNC.addNotification({
+        title: "설정 저장 완료",
+        type: "success",
+        message: "성공적으로 설정 내용을 저장하였습니다",
+        container: "top-center",
+        animationIn: ["animated", "fadeInRight"],
+        animationOut: ["animated", "fadeOutRight"],
+        dismiss: {
+          duration: 5000,
+        },
+      });
+    })
+    .catch((error) => {
+      RNC.addNotification({
+        title: "수정 오류",
+        message: error.text.includes(": ") ? error.text.split(": ")[1] : error.text,
+        type: "danger",
+        container: "top-center",
+        animationIn: ["animated", "fadeInRight"],
+        animationOut: ["animated", "fadeOutRight"],
+        dismiss: {
+          duration: 5000,
+        },
+      });
+    });
+};
+
+export const attemptUpdateItemPermission =
+  (itemId, accessGroup) => (dispatch) => {
+    return updateItem(itemId, { accessGroup: accessGroup })
+      .then(
+        getItem(itemId).then((item) => {
+          // save response to itemCache
+          dispatch(addItemCache(item));
+
+          RNC.addNotification({
+            title: "권한 수정 완료",
+            type: "success",
+            message: "성공적으로 항목 권한을 변경하였습니다",
+            container: "top-center",
+            animationIn: ["animated", "fadeInRight"],
+            animationOut: ["animated", "fadeOutRight"],
+            dismiss: {
+              duration: 5000,
+            },
+          });
+        })
+      )
+      .catch((error) => {
+        RNC.addNotification({
+          title: "권한 수정 오류",
+          message: error.text.includes(": ") ? error.text.split(": ")[1] : error.text,
+          type: "danger",
+          container: "top-center",
+          animationIn: ["animated", "fadeInRight"],
+          animationOut: ["animated", "fadeOutRight"],
+          dismiss: {
+            duration: 5000,
+          },
+        });
+      });
+  };
+
+export const attemptUpdateItemInspection =
+  (itemId, userId, result) => (dispatch) => {
+    return updateItem(itemId, {
+      inspection: { result, by: userId, date: new Date() },
+    })
+      .then((item) => {
+        // save response to itemCache
+        dispatch(addItemCache(item));
+
+        RNC.addNotification({
+          title: "보안성 검토 완료",
+          type: "success",
+          message: "성공적으로 보안성 검토 결과를 저장하였습니다",
+          container: "top-center",
+          animationIn: ["animated", "fadeInRight"],
+          animationOut: ["animated", "fadeOutRight"],
+          dismiss: {
+            duration: 5000,
+          },
+        });
+      })
+      .catch((error) => {
+        RNC.addNotification({
+          title: "보안성 검토 오류",
+          message: error.text.includes(": ") ? error.text.split(": ")[1] : error.text,
+          type: "danger",
+          container: "top-center",
+          animationIn: ["animated", "fadeInRight"],
+          animationOut: ["animated", "fadeOutRight"],
+          dismiss: {
+            duration: 5000,
+          },
+        });
+      });
   };
 
 export const attemptAddItemComment =
@@ -225,128 +267,136 @@ export const attemptAddItemComment =
 
 // deleting item
 export const attemptDeleteItem = (itemId) => (dispatch) => {
-  return deleteItem(itemId).then(() => {
-    // remove locally stored item
-    dispatch(deleteItemCache(itemId));
+  return deleteItem(itemId)
+    .then(() => {
+      // remove locally stored item
+      dispatch(deleteItemCache(itemId));
 
-    RNC.addNotification({
-      title: "삭제 완료",
-      type: "success",
-      message: "성공적으로 삭제하였습니다",
-      container: "top-center",
-      animationIn: ["animated", "fadeInRight"],
-      animationOut: ["animated", "fadeOutRight"],
-      dismiss: {
-        duration: 5000,
-      },
+      RNC.addNotification({
+        title: "삭제 완료",
+        type: "success",
+        message: "성공적으로 삭제하였습니다",
+        container: "top-center",
+        animationIn: ["animated", "fadeInRight"],
+        animationOut: ["animated", "fadeOutRight"],
+        dismiss: {
+          duration: 5000,
+        },
+      });
+    })
+    .catch((error) => {
+      RNC.addNotification({
+        title: "삭제 오류",
+        message: error.text.includes(": ") ? error.text.split(": ")[1] : error.text,
+        type: "danger",
+        container: "top-center",
+        animationIn: ["animated", "fadeInRight"],
+        animationOut: ["animated", "fadeOutRight"],
+        dismiss: {
+          duration: 5000,
+        },
+      });
     });
-  }).catch(error => {
-    RNC.addNotification({
-      title: "삭제 오류",
-      message: error.text.split(": ")[1],
-      type: "danger",
-      container: "top-center",
-      animationIn: ["animated", "fadeInRight"],
-      animationOut: ["animated", "fadeOutRight"],
-      dismiss: {
-        duration: 5000,
-      },
-    });
-  });
 };
 
 // archive item
 export const attemptArchiveItem = (itemId) => (dispatch) => {
-  return archiveItem(itemId).then((item) => {
-    // save response to itemCache
-    dispatch(addItemCache(item));
+  return archiveItem(itemId)
+    .then((item) => {
+      // save response to itemCache
+      dispatch(addItemCache(item));
 
-    RNC.addNotification({
-      title: "보관 완료",
-      type: "success",
-      message: "항목을 보관하였습니다",
-      container: "top-center",
-      animationIn: ["animated", "fadeInRight"],
-      animationOut: ["animated", "fadeOutRight"],
-      dismiss: {
-        duration: 5000,
-      },
+      RNC.addNotification({
+        title: "보관 완료",
+        type: "success",
+        message: "항목을 보관하였습니다",
+        container: "top-center",
+        animationIn: ["animated", "fadeInRight"],
+        animationOut: ["animated", "fadeOutRight"],
+        dismiss: {
+          duration: 5000,
+        },
+      });
+    })
+    .catch((error) => {
+      RNC.addNotification({
+        title: "보관 오류",
+        message: error.text.includes(": ") ? error.text.split(": ")[1] : error.text,
+        type: "danger",
+        container: "top-center",
+        animationIn: ["animated", "fadeInRight"],
+        animationOut: ["animated", "fadeOutRight"],
+        dismiss: {
+          duration: 5000,
+        },
+      });
     });
-  }).catch(error => {
-    RNC.addNotification({
-      title: "보관 오류",
-      message: error.text.split(": ")[1],
-      type: "danger",
-      container: "top-center",
-      animationIn: ["animated", "fadeInRight"],
-      animationOut: ["animated", "fadeOutRight"],
-      dismiss: {
-        duration: 5000,
-      },
-    });
-  });
 };
 
 // unarchive item
 export const attemptPublishItem = (itemId) => (dispatch) => {
-  return publishItem(itemId).then((item) => {
-    // save response to itemCache
-    dispatch(addItemCache(item));
+  return publishItem(itemId)
+    .then((item) => {
+      // save response to itemCache
+      dispatch(addItemCache(item));
 
-    RNC.addNotification({
-      title: "게시 완료",
-      type: "success",
-      message: "항목을 게시하였습니다",
-      container: "top-center",
-      animationIn: ["animated", "fadeInRight"],
-      animationOut: ["animated", "fadeOutRight"],
-      dismiss: {
-        duration: 5000,
-      },
+      RNC.addNotification({
+        title: "게시 완료",
+        type: "success",
+        message: "항목을 게시하였습니다",
+        container: "top-center",
+        animationIn: ["animated", "fadeInRight"],
+        animationOut: ["animated", "fadeOutRight"],
+        dismiss: {
+          duration: 5000,
+        },
+      });
+    })
+    .catch((error) => {
+      RNC.addNotification({
+        title: "게시 오류",
+        message: error.text.includes(": ") ? error.text.split(": ")[1] : error.text,
+        type: "danger",
+        container: "top-center",
+        animationIn: ["animated", "fadeInRight"],
+        animationOut: ["animated", "fadeOutRight"],
+        dismiss: {
+          duration: 5000,
+        },
+      });
     });
-  }).catch(error => {
-    RNC.addNotification({
-      title: "게시 오류",
-      message: error.text.split(": ")[1],
-      type: "danger",
-      container: "top-center",
-      animationIn: ["animated", "fadeInRight"],
-      animationOut: ["animated", "fadeOutRight"],
-      dismiss: {
-        duration: 5000,
-      },
-    });
-  });
 };
 
 export const attemptDuplicateItem = (itemObject) => (dispatch) => {
   console.log(`attemptDuplicateItem Item with ${JSON.stringify(itemObject)}`);
 
-  return createItem(itemObject).then((item) => {
-    dispatch(addItemCache(item));
+  return createItem(itemObject)
+    .then((item) => {
+      dispatch(addItemCache(item));
 
-    RNC.addNotification({
-      title: "복제 완료",
-      type: "success",
-      message: "성공적으로 복제하였습니다",
-      container: "top-center",
-      animationIn: ["animated", "fadeInRight"],
-      animationOut: ["animated", "fadeOutRight"],
-      dismiss: {
-        duration: 5000,
-      },
+      RNC.addNotification({
+        title: "복제 완료",
+        type: "success",
+        message: "성공적으로 복제하였습니다",
+        container: "top-center",
+        animationIn: ["animated", "fadeInRight"],
+        animationOut: ["animated", "fadeOutRight"],
+        dismiss: {
+          duration: 5000,
+        },
+      });
+    })
+    .catch((error) => {
+      RNC.addNotification({
+        title: "복제 오류",
+        message: error.text.includes(": ") ? error.text.split(": ")[1] : error.text,
+        type: "danger",
+        container: "top-center",
+        animationIn: ["animated", "fadeInRight"],
+        animationOut: ["animated", "fadeOutRight"],
+        dismiss: {
+          duration: 5000,
+        },
+      });
     });
-  }).catch(error => {
-    RNC.addNotification({
-      title: "복제 오류",
-      message: error.text.split(": ")[1],
-      type: "danger",
-      container: "top-center",
-      animationIn: ["animated", "fadeInRight"],
-      animationOut: ["animated", "fadeOutRight"],
-      dismiss: {
-        duration: 5000,
-      },
-    });
-  });
 };
