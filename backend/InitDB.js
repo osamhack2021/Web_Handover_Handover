@@ -339,7 +339,7 @@ async function init() {
     rank: "일병",
     title: "전기병",
     status: "active",
-    email: "20-71000000@navy.mil",
+    email: "21-71000000@navy.mil",
     tel: {
       military: "0000",
       mobile: "010-0000-0000",
@@ -352,8 +352,8 @@ async function init() {
   // login as ccc
   jwt = (
     await post("/login", {
-      serviceNumber: "20-71009999",
-      password: "20-71009999",
+      serviceNumber: "21-71000000",
+      password: "21-71000000",
     })
   ).token;
 
@@ -402,6 +402,12 @@ async function init() {
     created: new Date("2021-9-9"),
   };
 
+  jwt = (
+    await post("/login", {
+      serviceNumber: "16-19999",
+      password: "16-19999",
+    })
+  ).token;
   items.item1 = await post("/item", item1);
 
   await post(
@@ -716,6 +722,12 @@ async function init() {
     created: new Date("2021-9-10"),
   };
 
+  jwt = (
+    await post("/login", {
+      serviceNumber: "20-71009999",
+      password: "20-71009999",
+    })
+  ).token;
   items.item2 = await post("/item", item2);
 
   let item21 = {
