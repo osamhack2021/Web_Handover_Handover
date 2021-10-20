@@ -328,6 +328,6 @@ Handover에 기여하고 싶으시다면, **[Contributing.md](Contributing.md)**
     </tbody>
 </table>
 
-<h2 id="license"> 📝 저작권 및 사용권 정보 (Copyright / End User License) </h2>
+<h2 id="license"> 📝 저작권 정보 (Copyright) </h2>
  
   - [**MIT License**](./LICENSE)
