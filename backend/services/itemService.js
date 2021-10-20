@@ -16,6 +16,7 @@ module.exports = {
         status: true,
         inspection: true,
         created: true,
+        accessGroups: true,
       };
 
       if (query.group) {
