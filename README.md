@@ -165,7 +165,7 @@ npm run prd
 
 [localhost](http://localhost) 에서 서비스되고 있는 Handover 확인
 
-### 4. Docker 중지
+### 5. Docker 중지
 
 `Ctrl + C` 를 눌러서 터미널에서 실행되던 Docker 중지
 
