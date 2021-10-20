@@ -561,7 +561,7 @@ export default function ItemPage() {
         </IconButton>
       </Stack>
     ));
-  }, []);
+  }, [isBookmarked]);
 
   if (!visible || item == null) return <div>Loading...</div>;
 
