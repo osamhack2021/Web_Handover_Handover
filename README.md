@@ -62,7 +62,7 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
 <h3> 🤝 문서 공유 서비스 </h3>
 
 <p align="center"> 
- <img src='./image/dummy.png' width="400" height="400" />
+ <img src='./image/comment.png'  />
 </p>
 
 - 같은 보직, 같은 소속의 사용자들과 인수인계 문서를 **공유**하고, **댓글**을 통해 의견을 나누어보세요!
@@ -71,7 +71,7 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
 <h3> 🔐 보안 관리자 등록을 통한 기밀 유출 방지 </h3>
 
 <p align="center"> 
- <img src='./image/dummy.png' width="400" height="400" />
+ <img src='./image/security.png' />
 </p>
 
 - 그룹 별로 **보안 관리자**를 등록해 그룹 내 문서에서 보안 사항이 위반되고 있는지 확인하고, 관리할 수 있습니다.
