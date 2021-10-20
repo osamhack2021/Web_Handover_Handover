@@ -496,6 +496,8 @@ export default function ItemPage() {
     });
   };
 
+  // Menu will lose anchor on render, use memoized component instead
+  // Code from: https://stackoverflow.com/a/59682239/4524257
   const ItemActions = React.useMemo(() => {
     return React.forwardRef((props, ref) => (
       <Stack direction="row" ref={ref} {...props}>
