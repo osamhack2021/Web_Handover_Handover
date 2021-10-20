@@ -9,7 +9,7 @@ import {
   mdiShare,
   mdiStar,
   mdiStarOutline,
-  mdiUpload,
+  mdiUpload
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import {
@@ -20,7 +20,7 @@ import {
   Menu,
   MenuItem,
   Skeleton,
-  Tooltip,
+  Tooltip
 } from "@mui/material";
 import R from "ramda";
 import React, { useEffect, useState } from "react";
@@ -33,7 +33,7 @@ import {
   attemptDeleteItem,
   attemptGetItem,
   attemptGetItemChildren,
-  attemptPublishItem,
+  attemptPublishItem
 } from "_thunks/item";
 import { attemptAddBookmark, attemptRemoveBookmark } from "_thunks/user";
 import { deepEqual } from "_utils/compare";
@@ -42,6 +42,12 @@ const borderRadius = {
   cabinet: "0px 0px 16px 16px",
   document: "0px 16px 16px 0px",
   card: "16px",
+};
+
+const childType = {
+  card: "",
+  document: "card",
+  cabinet: "document",
 };
 
 // Maximum number of line of the content
@@ -68,18 +74,20 @@ const renderContent = (item, itemChildren) => {
   if (itemChildren == null) return null;
 
   // Join titles of child items with new line
-  return itemChildren.map((child, i) => {
-    if (i < LINE_CLAMP) {
-      return <div key={i}>{child.title}</div>;
-    }
-    if (i == LINE_CLAMP) {
-      return (
-        <div className="item-content-ellipsis" key={i}>
-          외 {itemChildren.length - LINE_CLAMP}건
-        </div>
-      );
-    }
-  });
+  return itemChildren
+    .filter((child) => child.type === childType[item.type])
+    .map((child, i) => {
+      if (i < LINE_CLAMP) {
+        return <div key={i}>{child.title}</div>;
+      }
+      if (i == LINE_CLAMP) {
+        return (
+          <div className="item-content-ellipsis" key={i}>
+            외 {itemChildren.length - LINE_CLAMP}건
+          </div>
+        );
+      }
+    });
 };
 
 const statusIcon = {

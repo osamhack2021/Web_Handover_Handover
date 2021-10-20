@@ -58,7 +58,7 @@ module.exports = {
         return { ...group._doc, pathGroups: pathGroups, fullName: parentName };
       }
       
-      return group._doc;
+      return group && group._doc;
     } catch (err) {
       throw new RuntimeError(err.message);
     }
