@@ -1,4 +1,5 @@
-# 📋 Handover - 국방업무공유체계 
+# 📋 Handover - 국방업무공유체계
+
 <p align="center">
  <br>
  <div width="400" style="background: #fff;" align="center">
@@ -6,7 +7,7 @@
  </div>
 </p>
 <p align="center">
- <a href="https://www.notion.so/osam-handover/f9e9132e0b0c4832a3d77e27411241e0?v=fe68ef0118be4d11aa0b1d0f6e8c20ea">Documentation</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="">PPT</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="">Demo Video</a>
+ <a href="https://www.notion.so/osam-handover/f9e9132e0b0c4832a3d77e27411241e0?v=fe68ef0118be4d11aa0b1d0f6e8c20ea">Documentation</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="bit.ly/osam-handover-presentation">Presentation</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="">Demo Video</a>
 </p>
 <p align="center">
  <img alt="GitHub language count" src="https://img.shields.io/github/contributors/osamhack2021/WEB_Handover_Handover?style=for-the-badge&logo">
@@ -17,15 +18,18 @@
 
 ## 👋 프로젝트 소개 (Project Introduction)
 
- **Handover**는 군 내의 인수인계를 효율적이고 편리하게 진행할 수 있도록 돕는 Web 서비스입니다.
+**Handover**는 군 내의 인수인계를 효율적이고 편리하게 진행할 수 있도록 돕는 Web 서비스입니다.
 
-> **Handover**는 보직 변경 등의 상황에서 효율적이고 정확하지 않은 인수인계로 인해<br>
-> **새로운 업무 환경에 적응**하는 것에 어려움을 겪거나 **업무의 공백**이 생기는 문제점을 해결하고자 합니다.<br><br>
-> 더 나아가, 부대 간 효율적인 업무 방법을 공유하는<br>
-> **통합적 업무 공유 플랫폼**을 제공하는 것을 목표로 하고 있습니다.<br>
-
+> **Handover**는 보직 변경 등의 상황에서 효율적이고 정확하지 않은 인수인계로 인해
+>
+> **새로운 업무 환경에 적응**하는 것에 어려움을 겪거나 **업무의 공백**이 생기는 문제점을 해결하고자 합니다.
+>
+> 더 나아가, 부대 간 효율적인 업무 방법을 공유하는
+>
+> **통합적 업무 공유 플랫폼**을 제공하는 것을 목표로 하고 있습니다.
 
 ## 📖 목차
+
 <ol>
  <li><a href="#features">기능 설명</a></li>
  <li><a href="#prerequisites">컴퓨터 구성 / 필수 조건 안내</a></li>
@@ -43,17 +47,19 @@
 <h2 id="features"> ✨ 기능 설명 (Key Features) </h2>
 
 Handover만의 **3가지 핵심 기능**과 함께 더 편리하고 똑똑한 인수인계를 진행해보세요!
- - **3단계 문서 구성** 으로 **체계적인** 인수인계 문서
- - **그룹**, **북마크**, **댓글** 기능들로 **공유하는** 인수인계 문서
- - **보안 관리자** 기능으로 보안위반으로부터 **안전한** 인수인계 문서
+
+- **3단계 문서 구성** 으로 **체계적인** 인수인계 문서
+- **그룹**, **북마크**, **댓글** 기능들로 **공유하는** 인수인계 문서
+- **보안 관리자** 기능으로 보안위반으로부터 **안전한** 인수인계 문서
 
 <h3> 🗄️ 3단계 문서 구성 </h3>
 
 <p align="center">
- <img src='./image/document_architecture.png' width="500" />
+ <img src='./image/document_architecture.png' width="80%" />
 </p>
 
-Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3단계 구성을 갖습니다.
+Handover 내의 모든 문서는 **🗄️ 서랍, 📰 문서, 📇 카드** 의 3단계 구성을 갖습니다.
+
 - **서랍**: 부서 또는 보직에 연관된 **문서들의 집합**
 - **문서**: 하나의 업무를 구성하는 **카드들의 집합**
 - **카드**: 작은 업무를 수행하는 방법을 설명한 **짧은 글**
@@ -87,7 +93,7 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
 |:---:|:---:|:---:|:---:|
 |✔ (84+)|✔ (84+)|✔ (63+)|✔ (14.1+)|
  
-<h2 id="expectation"> ✨ Handover 기대효과 (Expectation) </h2>
+<h2 id="expectation"> ✨ Handover 의 기대효과 (Expectation) </h2>
  
  ### 👍 인수인계 방식의 체계화
   - 공통된 인수인계 문서 작성 플랫폼을 통한 **인수인계 방식 통일**
@@ -99,7 +105,7 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
   - 사용자들의 **의견 공유**를 통한 업무 효율성 상승
   - **노하우 공유**를 통한 업무 능률 증폭
  
-<h2 id="competitiveness"> 🔥 Handover가 가진 경쟁력 (Competitiveness) </h2>
+<h2 id="competitiveness"> 🔥 Handover 가 가진 경쟁력 (Competitiveness) </h2>
  
  ### 📊 인수인계 문서의 데이터화
   - 사용자들의 업무 수행 문서들을 국방과학연구소, 국방정책실 등의 기관에서 연구데이터로 활용 가능
@@ -117,58 +123,71 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
   - [docker-compose](https://docs.docker.com/compose/)
   - [nginx](https://www.nginx.com/)
 
- ### :shopping_cart: Back-end
-  - [Node.js](https://nodejs.org/en/)
-  - [Express](https://expressjs.com/)
-  - [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
-  - [MongoDB](https://www.mongodb.com/)
-  - [Mongoose](https://mongoosejs.com/)
-  - [Algolia](https://www.algolia.com/)
- 
- ### 💄 Front-end
-  - [React](https://reactjs.org/)
-  - [Redux](https://redux.js.org/)
-  - [MaterialUI](https://mui.com/)
-  - [Sass](https://sass-lang.com/)
-  - [webpack](https://webpack.kr/)
- 
+### :shopping_cart: Back-end
+
+- [Node.js](https://nodejs.org/en/)
+- [Express](https://expressjs.com/)
+- [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
+- [MongoDB](https://www.mongodb.com/)
+- [Mongoose](https://mongoosejs.com/)
+- [Algolia](https://www.algolia.com/)
+
+### 💄 Front-end
+
+- [React](https://reactjs.org/)
+- [Redux](https://redux.js.org/)
+- [MaterialUI](https://mui.com/)
+- [Sass](https://sass-lang.com/)
+- [webpack](https://webpack.kr/)
+
 <h2 id="install"> 🚀 설치 안내 (Installaltion Methods) </h2>
 
- ### 1. Docker 설정
- 사용하는 운영체제에 맞는 [Docker 설치](https://docs.docker.com/get-docker/)
- ### 2. Clone Repository
- ```
- git clone https://github.com/osamhack2021/Web_Handover_Handover.git handover && cd handover
- ```
+### 1. Repository Clone
 
- ### 3. Docker 실행
- ```
- npm run prd
- ```
- ### 4. 프로젝트 실행 확인
- [localhost](http://localhost) 에서 서비스되고 있는 Handover 확인
- ### 4. Docker 중지
- ```
- npm down
- ```
+터미널(또는 콘솔)에서 다음 명령어 실행
 
+```
+git clone https://github.com/osamhack2021/Web_Handover_Handover.git handover && cd handover
+```
+### 2. Docker 설정
+
+사용하는 운영체제에 맞는 [Docker 설치](https://docs.docker.com/get-docker/)
+
+
+### 3. Docker 실행
+
+프로젝트 root 폴더에서 터미널을 열고 다음 명령어 실행
+```
+npm run prd
+```
+
+### 4. 프로젝트 실행 확인
+
+[localhost](http://localhost) 에서 서비스되고 있는 Handover 확인
+
+### 4. Docker 중지
+
+`Ctrl + C` 를 눌러서 터미널에서 실행되던 Docker 중지
 
 <h2 id="gettingstarted"> 🏃 프로젝트 사용법 (Getting Started) </h2>
 
 - yet to do...
- 
+
 <h2 id="contribute"> 🙌 Handover에 기여하는 법 (How to contribute) </h2>
 
-Handover는 **오픈소스 프로젝트**로, 여러분들의 도움을 기다리고 있습니다.   
-Handover에 기여하고 싶으시다면, **[Contributing.md](Contributing.md)** 을 참고해주세요. 
+Handover는 **오픈소스 프로젝트**로, 여러분들의 도움을 기다리고 있습니다.  
+Handover에 기여하고 싶으시다면, **[Contributing.md](Contributing.md)** 을 참고해주세요.
 
 <h2 id="structure"> 🕹️ 소스코드 구조 (Source Code Structure) </h2>
 
 ### WEB(FE)
+
 `/frontend`
+
 ### WEB(BE)
+
 `/backend`
- 
+
 <h2 id="teaminfo"> 👨‍👦‍👦 팀 정보 (Team Info) </h2>
 
 <table width="950">
@@ -312,4 +331,3 @@ Handover에 기여하고 싶으시다면, **[Contributing.md](Contributing.md)**
 <h2 id="license"> 📝 저작권 및 사용권 정보 (Copyright / End User License) </h2>
  
   - [**MIT License**](./LICENSE)
- 
