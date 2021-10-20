@@ -153,7 +153,7 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
  
 <h2 id="contribute"> 🙌 Handover에 기여하는 법 (How to contribute) </h2>
 
-Handover는 **오픈소스 프로젝트**로, 여러분들의 도움을 기다리고 있습니다.
+Handover는 **오픈소스 프로젝트**로, 여러분들의 도움을 기다리고 있습니다.   
 Handover에 기여하고 싶으시다면, **[Contributing.md](Contributing.md)** 을 참고해주세요. 
 
 <h2 id="structure"> 🕹️ 소스코드 구조 (Source Code Structure) </h2>
