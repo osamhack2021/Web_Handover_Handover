@@ -53,7 +53,7 @@ function FeatureBlock(subTitle, title, description, imgSrc, position, icon) {
         ''
       )}
       <div>
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={1} justifyContent={textAlign}>
           {icon === 'create' ? <BorderColorIcon /> : ''}
           {icon === 'share' ? <GroupIcon /> : ''}
           {icon === 'comment' ? <QuestionAnswerIcon /> : ''}
@@ -64,7 +64,6 @@ function FeatureBlock(subTitle, title, description, imgSrc, position, icon) {
               fontWeight: 'bold',
               fontSize: '18px',
               marginBottom: '15px',
-              textAlign: { textAlign },
             }}
           >
             {subTitle}
