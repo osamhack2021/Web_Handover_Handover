@@ -165,13 +165,13 @@ npm run prd
 
 [localhost](http://localhost) 에서 서비스되고 있는 Handover 확인
 
-### 4. Docker 중지
+### 5. Docker 중지
 
 `Ctrl + C` 를 눌러서 터미널에서 실행되던 Docker 중지
 
 <h2 id="gettingstarted"> 🏃 프로젝트 사용법 (Getting Started) </h2>
 
-- yet to do...
+ Handover는 별도의 설정이나 메뉴얼 없이도 직관적인 UI를 통해 바로 사용이 가능합니다!
 
 <h2 id="contribute"> 🙌 Handover에 기여하는 법 (How to contribute) </h2>
 
