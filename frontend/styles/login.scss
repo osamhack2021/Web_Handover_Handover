@@ -21,13 +21,12 @@
     }
 
     .login-title {
-      @include setfonts($font-weight: $weight-semibold);
+      font-weight: 700;
       font-size: 1.5em;
       color: $black;
     }
 
     .login-subtitle {
-      @include setfonts($font-weight: $weight-normal);
       font-size: 1em;
       color: $black-b70;
     }
