@@ -350,18 +350,21 @@ export default function ItemPage() {
   };
 
   const deleteItem = () => {
-    dispatch(attemptDeleteItem(itemId));
-    setVisible(false);
+    dispatch(attemptDeleteItem(itemId)).then(() => {
+      setVisible(false);
+    });
   };
 
   const archiveItem = () => {
-    dispatch(attemptArchiveItem(itemId));
-    setItem({ ...item, status: "archived" });
+    dispatch(attemptArchiveItem(itemId)).then(() => {
+      setItem({ ...item, status: "archived" });
+    });
   };
 
   const publishItem = () => {
-    dispatch(attemptPublishItem(itemId));
-    setItem({ ...item, status: "published" });
+    dispatch(attemptPublishItem(itemId)).then(() => {
+      setItem({ ...item, status: "published" });
+    });
   };
 
   const toggleBookmark = () => {
@@ -441,7 +444,16 @@ export default function ItemPage() {
   const handlePublish = () => {
     // update content with content from editor
     dispatch(
-      attemptUpdateItem(itemId, { ...item, title: title, content: content })
+      attemptUpdateItem(itemId, {
+        ...item,
+        title: title,
+        content: content,
+        path,
+        accessGroups: {
+          read: accessGroups.read.map((groups) => groups._id),
+          edit: accessGroups.edit.map((groups) => groups._id),
+        },
+      })
     ).then((item) => {
       setItem(item);
       dispatch(push(`/item/${itemId}`));
@@ -473,10 +485,12 @@ export default function ItemPage() {
   };
 
   const handleModify = () => {
-    // update content with content from editor
+    // update settings from settings select
     dispatch(
       attemptUpdateItem(itemId, {
         ...item,
+        title: title,
+        content: content,
         path,
         accessGroups: {
           read: accessGroups.read.map((groups) => groups._id),
@@ -488,8 +502,6 @@ export default function ItemPage() {
       dispatch(push(`/item/${itemId}`));
     });
   };
-
-  console.log("parent:", itemParents);
 
   return visible && item != null ? (
     // <div className="content-pane">
@@ -686,7 +698,7 @@ export default function ItemPage() {
             <div className="item-editor-breadcrumb">
               {itemParents != null ? (
                 <BreadCrumbs
-                  itemArray={[...itemParents, item]}
+                  itemArray={[...itemParents, {...item, title: title}]}
                   clickable={false}
                 />
               ) : (
