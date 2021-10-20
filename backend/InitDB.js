@@ -132,15 +132,15 @@ async function init() {
   );
   /****** icsqd End ******/
 
-  /****** Create AAA ******/
+  /****** Create 박찬우 대위 ******/
   let AAA = {
-    serviceNumber: "AAA",
-    password: "AAA",
+    serviceNumber: "16-19999",
+    password: "16-19999",
     name: "박찬우",
     rank: "대위",
-    title: "인사과장",
+    title: "사이버과장",
     status: "active",
-    email: "AAA@navy.mil",
+    email: "21-19999@navy.mil",
     tel: {
       military: "0000",
       mobile: "010-0000-0000",
@@ -153,13 +153,13 @@ async function init() {
   // login as AAA
   jwt = (
     await post("/login", {
-      serviceNumber: "AAA",
-      password: "AAA",
+      serviceNumber: "16-19999",
+      password: "16-19999",
     })
   ).token;
 
   groups.AAA = await post("/group", {
-    name: "인사과",
+    name: "사이버과",
     path: groups.icsqd.path,
     admins: [users.icsqd._id],
   });
@@ -175,15 +175,15 @@ async function init() {
 
   /****** AAA End ******/
 
-  /****** Create BBB ******/
+  /****** Create 박대영 대위 ******/
   let BBB = {
-    serviceNumber: "BBB",
-    password: "BBB",
+    serviceNumber: "14-19999",
+    password: "14-19999",
     name: "박대영",
     rank: "대위",
-    title: "BBB과장",
+    title: "정보통신과장",
     status: "active",
-    email: "BBB@navy.mil",
+    email: "14-19999@navy.mil",
     tel: {
       military: "0000",
       mobile: "010-0000-0000",
@@ -196,13 +196,13 @@ async function init() {
   // login as BBB
   jwt = (
     await post("/login", {
-      serviceNumber: "BBB",
-      password: "BBB",
+      serviceNumber: "14-19999",
+      password: "14-19999",
     })
   ).token;
 
   groups.BBB = await post("/group", {
-    name: "BBB과",
+    name: "정보통신과",
     path: groups.icsqd.path,
     admins: [users.icsqd._id],
   });
@@ -217,15 +217,15 @@ async function init() {
   );
   /****** BBB End ******/
 
-  /****** Create CCC ******/
+  /****** Create 김길동 소령 ******/
   let CCC = {
-    serviceNumber: "CCC",
-    password: "CCC",
+    serviceNumber: "08-19999",
+    password: "08-19999",
     name: "김길동",
     rank: "소령",
-    title: "CCC대장",
+    title: "전기대장",
     status: "active",
-    email: "CCC@navy.mil",
+    email: "08-19999@navy.mil",
     tel: {
       military: "0000",
       mobile: "010-0000-0000",
@@ -238,13 +238,13 @@ async function init() {
   // login as CCC
   jwt = (
     await post("/login", {
-      serviceNumber: "CCC",
-      password: "CCC",
+      serviceNumber: "08-19999",
+      password: "08-19999",
     })
   ).token;
 
   groups.CCC = await post("/group", {
-    name: "CCC대",
+    name: "전기대",
     path: groups.icsqd.path,
     admins: [users.icsqd._id],
   });
@@ -258,6 +258,114 @@ async function init() {
     "PUT"
   );
   /****** CCC End ******/
+
+  /****** Create 이병 오지환  ******/
+  let aaa = {
+    serviceNumber: "21-71009999",
+    password: "21-71009999",
+    name: "오지환",
+    rank: "이병",
+    title: "CERT감시병",
+    status: "active",
+    email: "21-71009999@navy.mil",
+    tel: {
+      military: "0000",
+      mobile: "010-0000-0000",
+    },
+    profileImageUrl:
+      "https://user-images.githubusercontent.com/67567023/137697785-811e6ae3-0bf3-4ddc-b031-5976293b1573.png",
+  };
+  users.aaa = await post("/user", aaa);
+
+  // login as aaa
+  jwt = (
+    await post("/login", {
+      serviceNumber: "21-71009999",
+      password: "21-71009999",
+    })
+  ).token;
+
+  // Update aaa's group
+  users.aaa = await post(
+    `/user/${users.aaa._id}`,
+    {
+      group: groups.AAA._id,
+    },
+    "PUT"
+  );
+  /****** aaa End ******/
+
+  /****** Create 상병 이상훈  ******/
+  let bbb = {
+    serviceNumber: "20-71009999",
+    password: "20-71009999",
+    name: "이상훈",
+    rank: "상병",
+    title: "정보통신관리병",
+    status: "active",
+    email: "20-71009999@navy.mil",
+    tel: {
+      military: "0000",
+      mobile: "010-0000-0000",
+    },
+    profileImageUrl:
+      "https://user-images.githubusercontent.com/67567023/137697751-3af02605-7b60-4dd2-b92b-b350fe46c30b.png",
+  };
+  users.bbb = await post("/user", bbb);
+
+  // login as bbb
+  jwt = (
+    await post("/login", {
+      serviceNumber: "20-71009999",
+      password: "20-71009999",
+    })
+  ).token;
+
+  // Update bbb's group
+  users.bbb = await post(
+    `/user/${users.bbb._id}`,
+    {
+      group: groups.BBB._id,
+    },
+    "PUT"
+  );
+  /****** bbb End ******/
+
+  /****** Create 일병 조현서  ******/
+  let ccc = {
+    serviceNumber: "21-71000000",
+    password: "21-71000000",
+    name: "조현서",
+    rank: "일병",
+    title: "전기병",
+    status: "active",
+    email: "20-71000000@navy.mil",
+    tel: {
+      military: "0000",
+      mobile: "010-0000-0000",
+    },
+    profileImageUrl:
+      "https://user-images.githubusercontent.com/67567023/137697741-ea28073b-4cdd-4439-ad80-4f619363a4f8.png",
+  };
+  users.ccc = await post("/user", ccc);
+
+  // login as ccc
+  jwt = (
+    await post("/login", {
+      serviceNumber: "20-71009999",
+      password: "20-71009999",
+    })
+  ).token;
+
+  // Update ccc's group
+  users.bbb = await post(
+    `/user/${users.ccc._id}`,
+    {
+      group: groups.CCC._id,
+    },
+    "PUT"
+  );
+  /****** ccc End ******/
 
   let item1 = {
     title: "CERT",
@@ -327,7 +435,7 @@ async function init() {
     type: "document",
     owner: users.AAA._id,
     path: items.item1.path,
-    content: `<blockquote><p>⛔ 야간 주 업무는 재진부대 <strong>네트워크 관제</strong> 및 <strong>NAC 관리</strong>이다.<br>     위의 임무는 별도의 문서에서 서술한다.</p></blockquote><h3>1745i : 출근 및 인수인계</h3><blockquote><p>질문사항이 있으면 그때 그때 질문하며, <strong>모르는 사항이 없도록 최대한 숙지</strong>한다.</p></blockquote><h3>1745i : 체계별 용량조사</h3><blockquote><p>체계의 안정적인 운영을 위해 매일 용량조사를 실시한다.</p></blockquote><p>[ CARD | 용량조사 하는 법 ]</p><h3>1830i : 주장비실 청소</h3><blockquote><p>청소를 한다.<br>주간과 다른 사항은 세절기를 비워야한다.</p></blockquote><h3>1900i : 유해 정보 차단</h3><blockquote><p>상위 부대에서 전파한 유해 정보를 차단한다.</p></blockquote><h3>2300i : 당직실에 보내야 할 것들 보내기</h3><blockquote><p>카드 참고</p></blockquote><h3>2330i : 일일 로그 분석</h3><blockquote><p>하루 동안 발생한 로그를 분석한다.</p></blockquote><p>[ CARD | 방화벽 로그분석 ] [ CARD | IPS 로그분석 ] [ CARD | NAC 로그분석 ] [ CARD | TMS 로그분석 ]</p><h3>0000i : 유해 정보 차단</h3><blockquote><p>상위부대에서 전파하는 유해정보를 차단한다.</p></blockquote><h3>0400i : 유해 정보 차단, =비밀사항=</h3><h3>0530i : =비밀사항=</h3><h3>0700i : 유해 정보 차단</h3><blockquote><p>상위부대에서 전파하는 유해정보를 차단한다.</p></blockquote><h3>0800i : 인수인계 및 퇴근</h3><blockquote><p>주간자에게 야간당직 및 이전당직간 있었던 일들을 꼼꼼히 인수인계 한 후 퇴근한다.</p></blockquote>`,
+    content: `<blockquote><p>⛔ 야간 주 업무는 재진부대 <strong>네트워크 관제</strong> 및 <strong>NAC 관리</strong>이다.<br>     위의 임무는 별도의 문서에서 서술한다.</p></blockquote><h3>1745i : 출근 및 인수인계</h3><blockquote><p>질문사항이 있으면 그때 그때 질문하며, <strong>모르는 사항이 없도록 최대한 숙지</strong>한다.</p></blockquote><h3>1745i : 체계별 용량조사</h3><blockquote><p>체계의 안정적인 운영을 위해 매일 용량조사를 실시한다.</p></blockquote><p>[ CARD | 용량조사 하는 법 ]</p><h3>1830i : 주장비실 청소</h3><blockquote><p>청소를 한다.<br>주간과 다른 사항은 세절기를 비워야한다.</p></blockquote><h3>1900i : 유해 정보 차단</h3><blockquote><p>상위 부대에서 전파한 유해 정보를 차단한다.</p></blockquote><h3>2300i : 당직실에 보내야 할 것들 보내기</h3><blockquote><p>카드 참고</p></blockquote><h3>2330i : 일일 로그 분석</h3><blockquote><p>하루 동안 발생한 로그를 분석한다.</p></blockquote><p>[ CARD | 방화벽 로그분석 ] [ CARD | IPS 로그분석 ] [ CARD | NAC 로그분석 ] [ CARD | TMS 로그분석 ]</p><h3>0000i : 유해 정보 차단</h3><blockquote><p>상위부대에서 전파하는 유해정보를 차단한다.</p></blockquote><h3>0400i : 유해 정보 차단, 비밀업무</h3><h3>0530i : 비밀업무</h3><h3>0700i : 유해 정보 차단</h3><blockquote><p>상위부대에서 전파하는 유해정보를 차단한다.</p></blockquote><h3>0800i : 인수인계 및 퇴근</h3><blockquote><p>주간자에게 야간당직 및 이전당직간 있었던 일들을 꼼꼼히 인수인계 한 후 퇴근한다.</p></blockquote>`,
     tags: ["CERT", "야간"],
     accessGroups: {
       read: [groups.AAA._id, groups.BBB._id, groups.CCC._id],
@@ -399,7 +507,7 @@ async function init() {
     type: "card",
     owner: users.AAA._id,
     path: items.item12.path,
-    content: `=비밀사항=`,
+    content: `<p>용량조사를 위한 한글파일과 엑셀파일을 연다.</p><br><p>용량조사를 진행하는 체계는 총 N개로...</p>`,
     tags: [],
     accessGroups: {
       read: [groups.AAA._id],
@@ -417,7 +525,7 @@ async function init() {
     type: "card",
     owner: users.AAA._id,
     path: items.item12.path,
-    content: `=비밀사항=`,
+    content: `<p>방화벽 로그를 분석하는 이유는 실시간으로 관제하고 있지만, 혹시 놓친 로그를 발견하고 대응하기 위해서이다.</p><br><p>로그 분석 방법은...</p>`,
     tags: [],
     accessGroups: {
       read: [groups.AAA._id],
@@ -435,7 +543,7 @@ async function init() {
     type: "card",
     owner: users.AAA._id,
     path: items.item12.path,
-    content: `=비밀사항=`,
+    content: `<p>IPS는 IPS(Intrusion Prevention System)란 용어 그대로 침입방지시스템이다.</p><br><p>대부분의 패킷은 방화벽을 이용해 필터링 되기 때문에...</p>`,
     tags: [],
     accessGroups: {
       read: [groups.AAA._id],
@@ -453,7 +561,7 @@ async function init() {
     type: "card",
     owner: users.AAA._id,
     path: items.item12.path,
-    content: `=비밀사항=`,
+    content: `<p>NAC로그는 이벤트가 다양하고 양이 방대해 시간이 매우 오래 걸릴 수 있다.</p><br><p>NAC는 1차적으로...</p>`,
     tags: [],
     accessGroups: {
       read: [groups.AAA._id],
@@ -471,7 +579,7 @@ async function init() {
     type: "card",
     owner: users.AAA._id,
     path: items.item12.path,
-    content: `=비밀사항=`,
+    content: `<p>TMS(Threat Management System)는 1차(방화벽) 2차(IPS)등의 보안장비 이후 설치되는 경우가 대부분으로...</p>`,
     tags: [],
     accessGroups: {
       read: [groups.AAA._id],
@@ -489,7 +597,7 @@ async function init() {
     type: "card",
     owner: users.AAA._id,
     path: items.item13.path,
-    content: `=비밀사항=`,
+    content: `<p>재진부대의 IP는 크게 N개의 분류로 나뉜다.</p><br><p>각각의 유형마다 나타나는 특징이 조금씩 다른데...</p>`,
     tags: [],
     accessGroups: {
       read: [groups.AAA._id],
@@ -507,7 +615,7 @@ async function init() {
     type: "card",
     owner: users.AAA._id,
     path: items.item13.path,
-    content: `=비밀사항=`,
+    content: `<p>NAC 계정은 기본적으로...</p>`,
     tags: [],
     accessGroups: {
       read: [groups.AAA._id],
@@ -525,7 +633,7 @@ async function init() {
     type: "card",
     owner: users.AAA._id,
     path: items.item13.path,
-    content: `=비밀사항=`,
+    content: `<p>NAC 정책은 크게 N개의 종류로 나눌 수 있다.</p><br><p>각 정책은 여러가지 세부 정책들로 나뉠 수 있는데...</p>`,
     tags: [],
     accessGroups: {
       read: [groups.AAA._id],
@@ -543,7 +651,7 @@ async function init() {
     type: "card",
     owner: users.AAA._id,
     path: items.item13.path,
-    content: `=비밀사항=`,
+    content: `<p>IP는 OOO을 이용해 차단을 실시한다.</p><br><p>OOO를 이용해 차단을 하는 이유는...</p>`,
     tags: [],
     accessGroups: {
       read: [groups.AAA._id],
@@ -561,7 +669,7 @@ async function init() {
     type: "card",
     owner: users.AAA._id,
     path: items.item13.path,
-    content: `=비밀사항=`,
+    content: `<p>URL은 XXX를 이용해 차단을 실시한다.</p><br><p>XXX는 OOO과 다르게...</p>`,
     tags: [],
     accessGroups: {
       read: [groups.AAA._id],
@@ -579,7 +687,7 @@ async function init() {
     type: "card",
     owner: users.AAA._id,
     path: items.item13.path,
-    content: `=비밀사항=`,
+    content: `<p>유해 계정은 xxx로 의심되거나 ooo등의 이유로 인해...</p>`,
     tags: [],
     accessGroups: {
       read: [groups.AAA._id],
@@ -651,7 +759,7 @@ async function init() {
     type: "card",
     owner: users.BBB._id,
     path: items.item21.path,
-    content: `=비밀사항=`,
+    content: `<p>우리가 조사해야할 백업 현황은 총 00개로 백업은 크게 N가지로 나뉜다.</p><p>AA백업 BB백업 CC백업등... 각 백업들은 방법이... </p>`,
     tags: [],
     accessGroups: {
       read: [groups.AAA._id, groups.BBB._id, groups.CCC._id],
