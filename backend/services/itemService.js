@@ -110,17 +110,20 @@ module.exports = {
 
   update: async (item, payload) => {
     try {
-      // Create previous item
-      previous_item = item.toObject();
-      previous_item = Object.assign(previous_item, { status: "modified" });
-      delete previous_item._id;
-      previous_item = await Item.create(previous_item);
+      // Create copy only if content is updated
+      if (payload.hasOwnProperty("content")) {
+        // Create previous item
+        previous_item = item.toObject();
+        previous_item = Object.assign(previous_item, { status: "modified" });
+        delete previous_item._id;
+        previous_item = await Item.create(previous_item);
 
-      // Append history
-      payload.history = [...item.history, previous_item._id];
+        // Append history
+        payload.history = [...item.history, previous_item._id];
 
-      // Clear inspection
-      payload.inspection = {};
+        // Clear inspection
+        payload.inspection = {};
+      }
 
       delete payload._id;
 
