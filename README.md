@@ -135,16 +135,18 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
 <h2 id="install"> 🚀 설치 안내 (Installaltion Methods) </h2>
 
  ### 1. Docker 설정
- 사용 운영체제에 맞는 Docker 설치 => [Get Docker](https://docs.docker.com/get-docker/)
+ 사용하는 운영체제에 맞는 [Docker 설치](https://docs.docker.com/get-docker/)
  ### 2. Clone Repository
  ```
- git clone https://github.com/osamhack2021/Web_Handover_Handover.git handover
+ git clone https://github.com/osamhack2021/Web_Handover_Handover.git handover && cd handover
  ```
 
  ### 3. Docker 실행
  ```
  npm run prd
  ```
+ ### 4. 프로젝트 실행 확인
+ [localhost](http://localhost) 에서 서비스되고 있는 Handover 확인
  ### 4. Docker 중지
  ```
  npm down
@@ -162,12 +164,10 @@ Handover에 기여하고 싶으시다면, **[Contributing.md](Contributing.md)**
 
 <h2 id="structure"> 🕹️ 소스코드 구조 (Source Code Structure) </h2>
 
-* Environment
-    - `/`
-* WEB(FE)
-    - `/frontend`
-* WEB(BE)
-    - `/backend`
+### WEB(FE)
+`/frontend`
+### WEB(BE)
+`/backend`
  
 <h2 id="teaminfo"> 👨‍👦‍👦 팀 정보 (Team Info) </h2>
 
@@ -309,7 +309,7 @@ Handover에 기여하고 싶으시다면, **[Contributing.md](Contributing.md)**
     </tbody>
 </table>
 
-<h2 id="license"> 📝 저작권 및 사용권 정보 (Copyleft / End User License) </h2>
+<h2 id="license"> 📝 저작권 및 사용권 정보 (Copyright / End User License) </h2>
  
-  - [**MIT License**](https://opensource.org/licenses/MIT)
+  - [**MIT License**](./LICENSE)
  
