@@ -58,7 +58,8 @@ import {
   attemptGetItem,
   attemptGetItemChildren,
   attemptPublishItem,
-  attemptUpdateItem
+  attemptUpdateItemContents,
+  attemptUpdateItemSettings
 } from "_thunks/item";
 import {
   attemptAddBookmark,
@@ -247,7 +248,7 @@ export default function ItemPage() {
             if (pathArray.length == 2) {
               // try item from cache
               setItemParents([cachedParent]);
-              setPath(cachedParent.path);
+              setParentPath(cachedParent.path);
               console.log("document - cachedParent.path", cachedParent.path);
 
               // check for document update
@@ -262,7 +263,7 @@ export default function ItemPage() {
             if (pathArray.length == 3) {
               // try item from cache
               setItemParents([cachedParentParent, cachedParent]);
-              setPath(cachedParent.path);
+              setParentPath(cachedParent.path);
               console.log("card - cachedParent.path", cachedParent.path);
 
               // check for document update
@@ -444,15 +445,10 @@ export default function ItemPage() {
   const handlePublish = () => {
     // update content with content from editor
     dispatch(
-      attemptUpdateItem(itemId, {
+      attemptUpdateItemContents(itemId, {
         ...item,
         title: title,
         content: content,
-        path,
-        accessGroups: {
-          read: accessGroups.read.map((groups) => groups._id),
-          edit: accessGroups.edit.map((groups) => groups._id),
-        },
       })
     ).then((item) => {
       setItem(item);
@@ -461,7 +457,7 @@ export default function ItemPage() {
   };
 
   // states for settings
-  const [path, setPath] = useState(null);
+  const [parentPath, setParentPath] = useState(null);
   const [accessGroups, setAccessGroups] = useState(null);
   const [availableGroups, setAvailableGroups] = useState(null);
 
@@ -480,18 +476,16 @@ export default function ItemPage() {
     ([itemId, item]) => item.type === parentType && item.owner._id === user._id
   );
 
-  const handlePathChange = (event) => {
-    setPath(event.target.value);
+  const handleParentPathChange = (event) => {
+    setParentPath(event.target.value);
   };
 
-  const handleModify = () => {
+  const handleUpdateSettings = () => {
     // update settings from settings select
     dispatch(
-      attemptUpdateItem(itemId, {
+      attemptUpdateItemSettings(itemId, {
         ...item,
-        title: title,
-        content: content,
-        path,
+        path: parentPath,
         accessGroups: {
           read: accessGroups.read.map((groups) => groups._id),
           edit: accessGroups.edit.map((groups) => groups._id),
@@ -698,7 +692,7 @@ export default function ItemPage() {
             <div className="item-editor-breadcrumb">
               {itemParents != null ? (
                 <BreadCrumbs
-                  itemArray={[...itemParents, {...item, title: title}]}
+                  itemArray={[...itemParents, { ...item, title: title }]}
                   clickable={false}
                 />
               ) : (
@@ -723,32 +717,45 @@ export default function ItemPage() {
               onContentChange={(html) => setContent(html)} // saves updates to separate state than item
             />
 
-            {/* Item metadata (owner profile, created date) */}
-            {itemOwner != null ? (
-              <Stack className="item-page-profile">
-                <img
-                  className="item-page-profile-image profile-image"
-                  src={
-                    itemOwner.profileImageUrl || "/images/profile-default.jpg"
-                  }
-                />
-                <div className="item-page-profile-name">
-                  <Link to={`/user/${itemOwner._id}`}>
-                    {itemOwner.rank} {itemOwner.name}
-                  </Link>
-                  님이
-                  <Tooltip title={dateToString(item.created)} arrow>
-                    <div>{dateElapsed(item.created)}</div>
-                  </Tooltip>
-                  작성
-                </div>
-              </Stack>
-            ) : (
-              <Stack className="item-page-profile">
-                <Skeleton variant="circular" width={24} height={24} />
-                <Skeleton width={200} height="1em" />
-              </Stack>
-            )}
+            <Stack className="item-page-metadata">
+              {/* Item owner profile, created date */}
+              {itemOwner != null ? (
+                <Stack className="item-page-profile">
+                  <img
+                    className="item-page-profile-image profile-image"
+                    src={
+                      itemOwner.profileImageUrl || "/images/profile-default.jpg"
+                    }
+                  />
+                  <div className="item-page-profile-name">
+                    <Link to={`/user/${itemOwner._id}`}>
+                      {itemOwner.rank} {itemOwner.name}
+                    </Link>
+                    님이
+                    <Tooltip title={dateToString(item.created)} arrow>
+                      <div>{dateElapsed(item.created)}</div>
+                    </Tooltip>
+                    작성
+                  </div>
+                </Stack>
+              ) : (
+                <Stack className="item-page-profile">
+                  <Skeleton variant="circular" width={24} height={24} />
+                  <Skeleton width={200} height="1em" />
+                </Stack>
+              )}
+
+              {/* Item history */}
+              {item.history.length > 0 && (
+                <Button
+                  component={LinkComponent}
+                  to={`/item/${itemId}/history`}
+                  variant="text"
+                >
+                  수정 기록
+                </Button>
+              )}
+            </Stack>
 
             {/* Item children */}
             {item.type !== "card" && (
@@ -879,10 +886,10 @@ export default function ItemPage() {
                     className="item-page-settings-item-path"
                     labelId="item-path-label"
                     id="item-path-select"
-                    value={path != null ? path : ""}
+                    value={parentPath != null ? parentPath : ""}
                     displayEmpty
                     label="상위 항목"
-                    onChange={handlePathChange}
+                    onChange={handleParentPathChange}
                   >
                     {availablePaths.map(([itemId, item]) => (
                       <MenuItem value={item.path}>
@@ -964,7 +971,7 @@ export default function ItemPage() {
                 variant="contained"
                 color="secondary"
                 size="large"
-                onClick={handleModify}
+                onClick={handleUpdateSettings}
               >
                 <Icon
                   path={mdiContentSave}

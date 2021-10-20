@@ -111,13 +111,11 @@ export const attemptCreateItem = (item) => (dispatch) => {
     .catch(dispatchError(dispatch));
 };
 
-export const attemptUpdateItem = (itemId, item) => (dispatch) => {
+export const attemptUpdateItemContents = (itemId, item) => (dispatch) => {
   return updateItem(itemId, {
     content: item.content,
     title: item.title,
-    status: item.status,
-    accessGroups: item.accessGroups,
-    path: item.path,
+    status: item.status
   }).then((item) => {
     // save response to itemCache
     dispatch(addItemCache(item));
@@ -126,6 +124,40 @@ export const attemptUpdateItem = (itemId, item) => (dispatch) => {
       title: "수정 완료",
       type: "success",
       message: "성공적으로 수정 내용을 저장하였습니다",
+      container: "top-center",
+      animationIn: ["animated", "fadeInRight"],
+      animationOut: ["animated", "fadeOutRight"],
+      dismiss: {
+        duration: 5000,
+      },
+    });
+  }).catch(error => {
+    RNC.addNotification({
+      title: "수정 오류",
+      message: error.text.split(": ")[1],
+      type: "danger",
+      container: "top-center",
+      animationIn: ["animated", "fadeInRight"],
+      animationOut: ["animated", "fadeOutRight"],
+      dismiss: {
+        duration: 5000,
+      },
+    });
+  });
+};
+
+export const attemptUpdateItemSettings = (itemId, item) => (dispatch) => {
+  return updateItem(itemId, {
+    accessGroups: item.accessGroups,
+    path: item.path,
+  }).then((item) => {
+    // save response to itemCache
+    dispatch(addItemCache(item));
+
+    RNC.addNotification({
+      title: "설정 저장 완료",
+      type: "success",
+      message: "성공적으로 설정 내용을 저장하였습니다",
       container: "top-center",
       animationIn: ["animated", "fadeInRight"],
       animationOut: ["animated", "fadeOutRight"],
