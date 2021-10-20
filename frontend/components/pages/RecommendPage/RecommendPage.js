@@ -48,7 +48,7 @@ export default function RecommendPage({ location }) {
   }, []);
 
   return (
-    !loading && <ItemListSection title={`${user.name}님`} items={itemList} />
+    !loading && <ItemListSection title={`${user.name}님, 좋은 아침입니다!`} items={itemList} />
   );
 }
 
