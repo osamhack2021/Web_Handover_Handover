@@ -51,3 +51,9 @@ a {
 .MuiTooltip-tooltip {
   margin-top: 8px !important;
 }
+
+// Global fonts
+body * {
+  font-family: "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Roboto", Arial, sans-serif !important;
+  letter-spacing: -0.4px !important;
+}
