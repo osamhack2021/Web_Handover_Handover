@@ -16,10 +16,11 @@ import {
   mdiStar,
   mdiStarOutline,
   mdiUpload,
-} from '@mdi/js';
-import Icon from '@mdi/react';
+} from "@mdi/js";
+import Icon from "@mdi/react";
 import {
   Badge,
+  ButtonBase,
   Container,
   Divider,
   FormControl,
@@ -33,28 +34,27 @@ import {
   Skeleton,
   Stack,
   Tooltip,
-} from '@mui/material';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import { push } from 'connected-react-router';
-import R from 'ramda';
-import React, { useEffect, useState } from 'react';
-import { store as RNC } from 'react-notifications-component';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  Route, Switch, useLocation, useParams,
-} from 'react-router';
-import { Link } from 'react-router-dom';
-import LinkComponent from '_atoms/LinkComponent';
-import TypeIcon from '_atoms/TypeIcon';
-import { getGroupByGroupId } from '_frontend/api/group';
-import MultipleGroupSelectChip from '_frontend/components/molecules/MultipleGroupSelectChip';
-import ItemList from '_frontend/components/organisms/ItemList';
-import CommentSection from '_frontend/components/templates/CommentSection';
-import { dateElapsed, dateToString } from '_frontend/utils/date';
-import BreadCrumbs from '_molecules/BreadCrumbs';
-import Editor from '_molecules/Editor';
-import ItemListHeader from '_molecules/ItemListHeader';
+} from "@mui/material";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import { push } from "connected-react-router";
+import R from "ramda";
+import React, { useEffect, useState } from "react";
+import { store as RNC } from "react-notifications-component";
+import { useDispatch, useSelector } from "react-redux";
+import { Route, Switch, useLocation, useParams } from "react-router";
+import { Link } from "react-router-dom";
+import LinkComponent from "_atoms/LinkComponent";
+import TypeIcon from "_atoms/TypeIcon";
+import { getGroupByGroupId } from "_frontend/api/group";
+import { getItem } from "_frontend/api/item";
+import MultipleGroupSelectChip from "_frontend/components/molecules/MultipleGroupSelectChip";
+import ItemList from "_frontend/components/organisms/ItemList";
+import CommentSection from "_frontend/components/templates/CommentSection";
+import { dateElapsed, dateToString } from "_frontend/utils/date";
+import BreadCrumbs from "_molecules/BreadCrumbs";
+import Editor from "_molecules/Editor";
+import ItemListHeader from "_molecules/ItemListHeader";
 import {
   attemptArchiveItem,
   attemptDeleteItem,
@@ -62,19 +62,19 @@ import {
   attemptGetItemChildren,
   attemptPublishItem,
   attemptUpdateItemContents,
-  attemptUpdateItemSettings
+  attemptUpdateItemSettings,
 } from "_thunks/item";
 import {
   attemptAddBookmark,
   attemptGetUser,
   attemptRemoveBookmark,
-} from '_thunks/user';
-import { deepEqual } from '_utils/compare';
+} from "_thunks/user";
+import { deepEqual } from "_utils/compare";
 
 const typeString = {
-  cabinet: '서랍',
-  document: '문서',
-  card: '카드',
+  cabinet: "서랍",
+  document: "문서",
+  card: "카드",
 };
 
 const hierarchyLevel = {
@@ -89,8 +89,8 @@ const statusIcon = {
 };
 
 const statusTooltipText = {
-  archived: '보관된',
-  public: '공개된',
+  archived: "보관된",
+  public: "공개된",
 };
 
 export default function ItemPage() {
@@ -99,7 +99,7 @@ export default function ItemPage() {
   const { pathname } = useLocation();
 
   // find current user from store
-  const { user } = useSelector(R.pick(['user']));
+  const { user } = useSelector(R.pick(["user"]));
   const dispatch = useDispatch();
 
   // Read more about useSelector() hook here:
@@ -111,35 +111,37 @@ export default function ItemPage() {
   const [itemChildren, setItemChildren] = useState(null);
   const [itemParents, setItemParents] = useState(null);
   const [itemOwner, setItemOwner] = useState(null);
+  const [itemHistory, setItemHistory] = useState(null);
 
   // visibility of the component; used on delete and unauthorized items
   const [visible, setVisible] = useState(true);
   const [isBookmarked, setBookmarked] = useState(
-    user.bookmarks.includes(itemId),
+    user.bookmarks.includes(itemId)
   );
 
   // creates [currentItemId, parentItemId, parentParentItemId] array
-  const pathArray = item != null
-    ? item.path
-      .split(',')
-      .filter((e) => e !== '') // remove surrounding empty strings
-      .reverse()
-    : [];
+  const pathArray =
+    item != null
+      ? item.path
+          .split(",")
+          .filter((e) => e !== "") // remove surrounding empty strings
+          .reverse()
+      : [];
   const cachedParent = useSelector(
-    (state) => state.itemCache[pathArray.length > 1 ? pathArray[1] : null],
+    (state) => state.itemCache[pathArray.length > 1 ? pathArray[1] : null]
   );
   const cachedParentParent = useSelector(
-    (state) => state.itemCache[pathArray.length > 2 ? pathArray[2] : null],
+    (state) => state.itemCache[pathArray.length > 2 ? pathArray[2] : null]
   );
 
   useEffect(() => {
     if (itemId.length != 24) {
-      dispatch(push('/error'));
+      dispatch(push("/error"));
       return;
     }
 
     // reset states
-    console.log('render (useEffect): item =', item, 'cachedItem =', cachedItem);
+    console.log("render (useEffect): item =", item, "cachedItem =", cachedItem);
     setItem(cachedItem);
     setItemChildren(null);
     setItemParents(null);
@@ -185,16 +187,16 @@ export default function ItemPage() {
     // } else {
     // }
     // setting recents of localstorage when visited as page
-    const recentArray = JSON.parse(localStorage.getItem('recents'));
+    const recentArray = JSON.parse(localStorage.getItem("recents"));
     if (recentArray != null) {
       if (!recentArray.includes(itemId)) {
         localStorage.setItem(
-          'recents',
-          JSON.stringify([itemId, ...recentArray].slice(0, 20)),
+          "recents",
+          JSON.stringify([itemId, ...recentArray].slice(0, 20))
         );
       }
     } else {
-      localStorage.setItem('recents', JSON.stringify([itemId]));
+      localStorage.setItem("recents", JSON.stringify([itemId]));
     }
   }, [itemId]);
 
@@ -204,7 +206,7 @@ export default function ItemPage() {
       .then((response) => {
         if (!deepEqual(item, response)) {
           // update state if deep equality between state and response is false
-          console.log('updated:', item, response);
+          console.log("updated:", item, response);
           setItem(response);
         }
       })
@@ -226,12 +228,13 @@ export default function ItemPage() {
 
       // retrieve itemChildren
       if (itemChildren == null) {
-        if (item.type !== 'card') {
+        if (item.type !== "card") {
           dispatch(attemptGetItemChildren(item.path)).then((children) => {
             setItemChildren(
               children.filter(
-                (child) => child._id != item._id && child.path.includes(item.path),
-              ),
+                (child) =>
+                  child._id != item._id && child.path.includes(item.path)
+              )
             );
           });
         }
@@ -239,14 +242,14 @@ export default function ItemPage() {
 
       // retrieve itemParents
       if (itemParents == null) {
-        console.log('get itemParents');
+        console.log("get itemParents");
         switch (item.type) {
-          case 'cabinet': // will have 0 parents because it's the root item
-            console.log('switch: case =', item.type, pathArray);
+          case "cabinet": // will have 0 parents because it's the root item
+            console.log("switch: case =", item.type, pathArray);
             setItemParents([]);
             break;
-          case 'document': // will have 1 parent item as cabinet
-            console.log('switch: case =', item.type, pathArray);
+          case "document": // will have 1 parent item as cabinet
+            console.log("switch: case =", item.type, pathArray);
             if (pathArray.length == 2) {
               // try item from cache
               setItemParents([cachedParent]);
@@ -260,8 +263,8 @@ export default function ItemPage() {
               });
             }
             break;
-          case 'card': // will have 2 parent items as document and cabinet
-            console.log('switch: case =', item.type, pathArray);
+          case "card": // will have 2 parent items as document and cabinet
+            console.log("switch: case =", item.type, pathArray);
             if (pathArray.length == 3) {
               // try item from cache
               setItemParents([cachedParentParent, cachedParent]);
@@ -293,7 +296,7 @@ export default function ItemPage() {
       if (user != null && availableGroups == null) {
         getGroupByGroupId(user.group).then(async (group) => {
           const loadedGroupIds = group.pathGroups.map(
-            (pathGroup) => pathGroup._id,
+            (pathGroup) => pathGroup._id
           );
           // List of groupIds that have to be loaded because they were in accessGroups
           let accessGroupIds = [
@@ -304,7 +307,7 @@ export default function ItemPage() {
             .filter((e, i) => accessGroupIds.indexOf(e) === i) // only leave unique items
             .filter((groupId) => !loadedGroupIds.includes(groupId));
 
-          console.log('additionally loading:', accessGroupIds);
+          console.log("additionally loading:", accessGroupIds);
 
           const loadedGroups = group.pathGroups;
 
@@ -322,16 +325,32 @@ export default function ItemPage() {
     }
   }, [item]);
 
+  useEffect(async () => {
+    if (item != null && pathname.includes("/history")) {
+      let itemHistoryArray = [];
+
+      // get full item from history in array
+      for (const itemId of item.history) {
+        if (itemId != null) {
+          const historyItem = await getItem(itemId);
+          itemHistoryArray.push(historyItem);
+        }
+      }
+
+      setItemHistory(itemHistoryArray);
+    }
+  }, [pathname, item]);
+
   const shareItem = () => {
     navigator.clipboard.writeText(`${location.hostname}/item/${itemId}`);
 
     RNC.addNotification({
-      title: '클립보드에 복사됨',
-      type: 'success',
-      message: '항목 링크가 클립보드에 복사되었습니다.',
-      container: 'top-center',
-      animationIn: ['animated', 'fadeInRight'],
-      animationOut: ['animated', 'fadeOutRight'],
+      title: "클립보드에 복사됨",
+      type: "success",
+      message: "항목 링크가 클립보드에 복사되었습니다.",
+      container: "top-center",
+      animationIn: ["animated", "fadeInRight"],
+      animationOut: ["animated", "fadeOutRight"],
       dismiss: {
         duration: 5000,
       },
@@ -340,12 +359,12 @@ export default function ItemPage() {
 
   const draftItem = () => {
     RNC.addNotification({
-      title: '임시저장 완료',
-      type: 'success',
-      message: '항목을 임시저장하였습니다',
-      container: 'top-center',
-      animationIn: ['animated', 'fadeInRight'],
-      animationOut: ['animated', 'fadeOutRight'],
+      title: "임시저장 완료",
+      type: "success",
+      message: "항목을 임시저장하였습니다",
+      container: "top-center",
+      animationIn: ["animated", "fadeInRight"],
+      animationOut: ["animated", "fadeOutRight"],
       dismiss: {
         duration: 5000,
       },
@@ -360,13 +379,13 @@ export default function ItemPage() {
 
   const archiveItem = () => {
     dispatch(attemptArchiveItem(itemId)).then(() => {
-      setItem({ ...item, status: 'archived' });
+      setItem({ ...item, status: "archived" });
     });
   };
 
   const publishItem = () => {
     dispatch(attemptPublishItem(itemId)).then(() => {
-      setItem({ ...item, status: 'published' });
+      setItem({ ...item, status: "published" });
     });
   };
 
@@ -423,20 +442,22 @@ export default function ItemPage() {
   //   handleDialogOpen();
   // };
 
-  const status = item == null
-    || !item.hasOwnProperty('status')
-    || !item.hasOwnProperty('accessGroups')
-    ? null
-    : item.status === 'archived'
-      ? 'archived'
-      : item.accessGroups.read === 'all'
-        ? 'public'
-        : null;
+  const status =
+    item == null ||
+    !item.hasOwnProperty("status") ||
+    !item.hasOwnProperty("accessGroups")
+      ? null
+      : item.status === "archived"
+      ? "archived"
+      : item.accessGroups.read === "all"
+      ? "public"
+      : null;
 
   const isCurrentUserOwner = item ? item.owner._id === user._id : false;
-  const isCurrentUserEditor = item != null && item.hasOwnProperty('accessGroups')
-    ? item.accessGroups.edit.includes(user.group)
-    : false;
+  const isCurrentUserEditor =
+    item != null && item.hasOwnProperty("accessGroups")
+      ? item.accessGroups.edit.includes(user.group)
+      : false;
 
   // states for editor
   const [title, setTitle] = useState(null);
@@ -461,18 +482,19 @@ export default function ItemPage() {
   const [accessGroups, setAccessGroups] = useState(null);
   const [availableGroups, setAvailableGroups] = useState(null);
 
-  const parentType = item
-    && {
-      card: 'document',
-      document: 'cabinet',
+  const parentType =
+    item &&
+    {
+      card: "document",
+      document: "cabinet",
       cabinet: null,
     }[item.type];
 
   const availablePaths = Object.entries(
-    useSelector((state) => state.itemCache),
+    useSelector((state) => state.itemCache)
   ).filter(
     // filter items from cache where type is parent and current user is owner
-    ([itemId, item]) => item.type === parentType && item.owner._id === user._id,
+    ([itemId, item]) => item.type === parentType && item.owner._id === user._id
   );
 
   const handleParentPathChange = (event) => {
@@ -489,7 +511,7 @@ export default function ItemPage() {
           read: accessGroups.read.map((groups) => groups._id),
           edit: accessGroups.edit.map((groups) => groups._id),
         },
-      }),
+      })
     ).then((item) => {
       setItem(item);
       dispatch(push(`/item/${itemId}`));
@@ -556,32 +578,35 @@ export default function ItemPage() {
       <BreadCrumbs hierarchyLevel={hierarchyLevel[item.type]} />
     );
 
+  const ItemOwnerProfile = () =>
+    itemOwner != null ? (
+      <Stack className="item-page-profile">
+        <img
+          className="item-page-profile-image profile-image"
+          src={itemOwner.profileImageUrl || "/images/profile-default.jpg"}
+        />
+        <div className="item-page-profile-name">
+          <Link to={`/user/${itemOwner._id}`}>
+            {itemOwner.rank} {itemOwner.name}
+          </Link>
+          님이
+          <Tooltip title={dateToString(item.created)} arrow>
+            <div>{dateElapsed(item.created)}</div>
+          </Tooltip>
+          작성
+        </div>
+      </Stack>
+    ) : (
+      <Stack className="item-page-profile">
+        <Skeleton variant="circular" width={24} height={24} />
+        <Skeleton width={200} height="1em" />
+      </Stack>
+    );
+
   const ItemMetadata = () => (
     <Stack className="item-page-metadata">
       {/* Item owner profile, created date */}
-      {itemOwner != null ? (
-        <Stack className="item-page-profile">
-          <img
-            className="item-page-profile-image profile-image"
-            src={itemOwner.profileImageUrl || "/images/profile-default.jpg"}
-          />
-          <div className="item-page-profile-name">
-            <Link to={`/user/${itemOwner._id}`}>
-              {itemOwner.rank} {itemOwner.name}
-            </Link>
-            님이
-            <Tooltip title={dateToString(item.created)} arrow>
-              <div>{dateElapsed(item.created)}</div>
-            </Tooltip>
-            작성
-          </div>
-        </Stack>
-      ) : (
-        <Stack className="item-page-profile">
-          <Skeleton variant="circular" width={24} height={24} />
-          <Skeleton width={200} height="1em" />
-        </Stack>
-      )}
+      <ItemOwnerProfile />
 
       {/* Item history */}
       {item.history.length > 0 && (
@@ -596,6 +621,34 @@ export default function ItemPage() {
         </Button>
       )}
     </Stack>
+  );
+
+  const HistoryListItem = ({ item: historyItem }) => (
+    <ButtonBase
+      className="item-page-history-list-item"
+      component={LinkComponent}
+      to={`/item/${itemId}/history/${historyItem ? historyItem._id : ""}`}
+    >
+      <div className="item-page-history-list-item-header">
+        <div className="item-page-history-list-item-id">
+          {historyItem ? historyItem._id.slice(-6) : <Skeleton width="45px" />}
+        </div>
+        <div className="item-page-history-list-item-title">
+          {historyItem ? historyItem.title : <Skeleton width="150px" />}
+        </div>
+      </div>
+      {historyItem ? (
+        <div className="item-page-history-list-profile">
+          {historyItem.owner.rank} {historyItem.owner.name} 님이
+          <Tooltip title={dateToString(historyItem.created)} arrow>
+            <div>{dateElapsed(historyItem.created)}</div>
+          </Tooltip>
+          작성
+        </div>
+      ) : (
+        <Skeleton width="150px" />
+      )}
+    </ButtonBase>
   );
 
   return (
@@ -632,7 +685,7 @@ export default function ItemPage() {
             <ItemMetadata />
 
             {/* Item children */}
-            {item.type !== 'card' && (
+            {item.type !== "card" && (
               <ItemList
                 items={itemChildren}
                 title="하위 항목"
@@ -698,7 +751,7 @@ export default function ItemPage() {
             <ItemMetadata />
 
             {/* Item children */}
-            {item.type !== 'card' && (
+            {item.type !== "card" && (
               <ItemList
                 items={itemChildren}
                 title="하위 항목"
@@ -721,7 +774,7 @@ export default function ItemPage() {
                 variant="outlined"
                 color="secondary"
                 size="large"
-                disabled={status === 'archived'}
+                disabled={status === "archived"}
                 onClick={archiveItem}
               >
                 <Icon path={mdiPackageDown} size={0.9} />
@@ -737,7 +790,7 @@ export default function ItemPage() {
                 <Icon
                   path={mdiUpload}
                   size={0.9}
-                  style={{ marginLeft: '-4px' }}
+                  style={{ marginLeft: "-4px" }}
                 />
                 항목 게시
               </Button>
@@ -764,7 +817,7 @@ export default function ItemPage() {
             <ItemBreadCrumbs />
 
             {/* Item path */}
-            {item != null && item.type !== 'cabinet' && (
+            {item != null && item.type !== "cabinet" && (
               <>
                 <ItemListHeader
                   title="항목 위치"
@@ -812,12 +865,18 @@ export default function ItemPage() {
               helperText="현재 항목을 열람할 수 있는 사용자 그룹"
               selectedGroups={
                 // array of groupId
-                accessGroups?.read.map((group) => (group.hasOwnProperty('_id') ? group._id : group))
+                accessGroups?.read.map((group) =>
+                  group.hasOwnProperty("_id") ? group._id : group
+                )
               }
-              onChange={(selection) => setAccessGroups({
-                ...accessGroups,
-                read: selection.map((groupId) => availableGroups.find((e) => e._id === groupId)),
-              })}
+              onChange={(selection) =>
+                setAccessGroups({
+                  ...accessGroups,
+                  read: selection.map((groupId) =>
+                    availableGroups.find((e) => e._id === groupId)
+                  ),
+                })
+              }
             />
 
             <div style={{ height: 8 }} />
@@ -828,16 +887,22 @@ export default function ItemPage() {
               helperText="현재 항목을 수정할 수 있는 사용자 그룹"
               selectedGroups={
                 // array of groupId
-                accessGroups?.edit.map((group) => (group.hasOwnProperty('_id') ? group._id : group))
+                accessGroups?.edit.map((group) =>
+                  group.hasOwnProperty("_id") ? group._id : group
+                )
               }
-              onChange={(selection) => setAccessGroups({
-                ...accessGroups,
-                edit: selection.map((groupId) => availableGroups.find((e) => e._id === groupId)),
-              })}
+              onChange={(selection) =>
+                setAccessGroups({
+                  ...accessGroups,
+                  edit: selection.map((groupId) =>
+                    availableGroups.find((e) => e._id === groupId)
+                  ),
+                })
+              }
             />
 
             {/* Item children */}
-            {item.type !== 'card' && (
+            {item.type !== "card" && (
               <ItemList
                 items={itemChildren}
                 title="하위 항목"
@@ -863,6 +928,42 @@ export default function ItemPage() {
             </div>
           </Stack>
         </Route>
+
+        {/* Item History Page */}
+        <Route exact path="/item/:itemId/history">
+          <Stack spacing={1} className="item-page">
+            <Stack>
+              <div className="item-page-header">
+                <ItemTypeIconWithTooltip />
+
+                {/* Item title */}
+                <div className="item-page-header-title">{item.title}</div>
+
+                {/* Item action menus */}
+                <ItemActions />
+              </div>
+            </Stack>
+
+            {/* Item BreadCrumbs */}
+            <ItemBreadCrumbs />
+
+            {/* History item list */}
+            <ItemListHeader
+              title="수정 기록"
+              icon={mdiHistory}
+              style={{ marginTop: 16, marginBottom: 16 }}
+            />
+            <div className="item-page-history-list">
+              {itemHistory != null
+                ? itemHistory.map((item, index) => (
+                    <HistoryListItem item={item} key={index} />
+                  ))
+                : [...Array(item.history.length).keys()].map((i, index) => (
+                    <HistoryListItem key={index} />
+                  ))}
+            </div>
+          </Stack>
+        </Route>
       </Switch>
       <Menu
         anchorEl={anchorEl}
@@ -872,38 +973,38 @@ export default function ItemPage() {
         PaperProps={{
           elevation: 0,
           sx: {
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            ml: '6px',
+            overflow: "visible",
+            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+            ml: "6px",
             mt: 0.5,
-            '&:before': {
+            "&:before": {
               content: '""',
-              display: 'block',
-              position: 'absolute',
+              display: "block",
+              position: "absolute",
               top: 0,
               right: 24,
               width: 10,
               height: 10,
-              bgcolor: 'background.paper',
-              transform: 'translateY(-50%) rotate(45deg)',
+              bgcolor: "background.paper",
+              transform: "translateY(-50%) rotate(45deg)",
               zIndex: 0,
             },
           },
         }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {!pathname.endsWith('/edit')
-        && (isCurrentUserOwner || isCurrentUserEditor) ? ( // only show edit menu to owner and editor
+        {!pathname.endsWith("/edit") &&
+        (isCurrentUserOwner || isCurrentUserEditor) ? ( // only show edit menu to owner and editor
           <MenuItem component={LinkComponent} to={`/item/${itemId}/edit`}>
             <ListItemIcon>
               <Icon path={mdiFileEditOutline} size={1} />
             </ListItemIcon>
             수정
           </MenuItem>
-          ) : (
-            <div />
-          )}
+        ) : (
+          <div />
+        )}
         <MenuItem component={LinkComponent} to={`/item/${itemId}/duplicate`}>
           <ListItemIcon>
             <Icon path={mdiContentDuplicate} size={1} />
@@ -918,7 +1019,7 @@ export default function ItemPage() {
         </MenuItem>
         {isCurrentUserOwner ? (
           <div>
-            {!pathname.endsWith('/settings') && (
+            {!pathname.endsWith("/settings") && (
               <MenuItem
                 component={LinkComponent}
                 to={`/item/${itemId}/settings`}
@@ -930,7 +1031,7 @@ export default function ItemPage() {
               </MenuItem>
             )}
             <Divider light />
-            {status !== 'archived' ? (
+            {status !== "archived" ? (
               <MenuItem onClick={archiveItem}>
                 <ListItemIcon>
                   <Icon path={mdiPackageDown} size={1} />
