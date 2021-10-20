@@ -1,75 +1,205 @@
 @import "mixins";
 
-.content-pane {
-  .outer-div {
-    @include flexBox($display: flex, $justify-content: center);
-    width: 100%;
-    .grid-container {
-      margin-top: 0;
-      max-height: 100%;
-      overflow-x: auto;
-      width: fit-content;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 80px;
-    }
-  }
-}
-
 .item-page {
-  .item-header {
+  .item-page-header {
     display: flex;
     flex-direction: row;
     align-items: center;
     margin-bottom: 8px;
     gap: 12px;
 
-    .item-header-title {
+    .MuiIconButton-root {
+      width: 46px;
+      height: 46px;
+    }
+
+    .item-page-header-title,
+    #item-page-header-title-editor {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
       font-size: 2.5em;
       font-weight: bolder;
       flex-grow: 1;
+
+      .item-page-header-type {
+        margin-left: 24px;
+        font-size: 16px;
+        line-height: 16px;
+        padding: 8px 12px 6px 12px;
+        font-weight: normal;
+        border-radius: 16px;
+        background-color: #0003;
+      }
+    }
+
+    .item-page-header-title {
       margin-bottom: -6px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    .item-page-header-title-editor {
+      margin-bottom: 14px;
+    }
   }
 
-  .item-profile {
-    align-items: center;
+  .item-page-content {
+    margin-top: 24px;
+  }
+
+  .item-editor-breadcrumb {
+    display: flex;
     flex-direction: row;
-    gap: 12px;
+    gap: 16px;
+
+    svg {
+      margin-right: 4px;
+    }
+  }
+
+  .item-page-deny {
+    width: 100%;
+    padding: 64px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+
+    svg {
+      opacity: 0.7;
+    }
+
+    * {
+      text-align: center;
+    }
+
+    .item-page-deny-title {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    .item-page-deny-content {
+      line-height: 1.5em;
+    }
+  }
+
+  .item-page-content-editor {
+    margin-top: 16px;
+    background-color: white;
+    height: 360px;
+  }
+
+  .item-page-history-list {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 1px solid #0003;
+    border-radius: 8px;
+
+    .item-page-history-list-item {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 8px 16px;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid #0003;
+      }
+
+      .item-page-history-list-item-header {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 4px;
+
+        .item-page-history-list-item-title {
+          font-size: 1.2em;
+          font-weight: bold;
+        }
+  
+        .item-page-history-list-item-id {
+          font-size: 1em;
+          text-decoration: underline;
+          text-transform: uppercase;
+          font-family: monospace !important;
+        }
+      }
+
+      .item-page-history-list-profile {
+        display: flex;
+        gap: 4px;
+        flex-direction: row;
+        font-size: 0.8em;
+        text-align: start;
+        color: $black-b70;
+      }
+    }
+  }
+
+  .item-page-metadata {
     padding-top: 8px;
-    
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top: 8px;
+    width: 100%;
+    gap: 8px;
+
     :first-child {
       margin-left: auto;
     }
 
-    .item-profile-image {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      border: 1px solid #0003;
-    }
-
-    .item-profile-name {
-      display: flex;
-      gap: 4px;
+    .item-page-profile {
+      align-items: center;
       flex-direction: row;
-      font-size: 1em;
-      text-align: start;
-      padding-top: 3px;
-      color: $black-b70;
+      gap: 8px;
 
-      a {
+      :first-child {
+        margin-left: auto;
+      }
+
+      .item-page-profile-image {
+        width: 24px;
+        height: 24px;
+      }
+
+      .item-page-profile-name {
+        display: flex;
+        gap: 4px;
+        flex-direction: row;
+        font-size: 1em;
+        text-align: start;
+        padding-top: 2px;
         color: $black-b70;
-        text-decoration: none;
-        font-weight: bold;
+
+        a {
+          color: $black-b70;
+          text-decoration: none;
+          font-weight: bold;
+        }
       }
     }
   }
 
   .item-list {
     margin-top: 32px;
+  }
+
+  .item-action-editor {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 32px;
+    gap: 8px;
+
+    :first-child {
+      margin-left: auto;
+    }
+
+    svg {
+      margin-right: 6px;
+    }
   }
 }

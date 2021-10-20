@@ -1,19 +1,18 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Provider } from "react-redux";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ConnectedRouter } from "connected-react-router";
-import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-
+import PropTypes from "prop-types";
+import React from "react";
+import { Provider } from "react-redux";
 import Main from "_environment/Main";
 
 const theme = createTheme({
   palette: {
-    type: 'light',
+    type: "light",
     primary: {
-      main: '#3f51b5',
+      main: "#dd4436",
     },
     secondary: {
-      main: '#f50057',
+      main: "#E85A50",
     },
   },
 });

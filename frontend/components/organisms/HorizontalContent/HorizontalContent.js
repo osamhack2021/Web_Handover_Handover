@@ -1,13 +1,11 @@
 /* eslint-disable react/jsx-filename-extension */
-import PropTypes from 'prop-types';
-import React, { useEffect, useRef } from 'react';
-import Item from '_molecules/Item';
+import PropTypes from "prop-types";
+import React, { useEffect, useRef } from "react";
+import Item from "_molecules/Item";
 
 function CreateCardArray(cardArray) {
   return cardArray.map((elem) => {
-    return (
-      <Item item={elem} />
-    );
+    return <Item item={elem} />;
   });
 }
 
@@ -23,11 +21,11 @@ export default function HorizontalContent({ cardArray }) {
         e.preventDefault();
         container.scrollTo({
           left: container.scrollLeft + e.deltaY,
-          behavior: 'smooth',
+          behavior: "smooth",
         });
       };
-      container.addEventListener('wheel', onWheel);
-      return () => container.removeEventListener('wheel', onWheel);
+      container.addEventListener("wheel", onWheel);
+      return () => container.removeEventListener("wheel", onWheel);
     }
   }, [cardArray]);
   // type = 'card', title, description, children, isArchived = false

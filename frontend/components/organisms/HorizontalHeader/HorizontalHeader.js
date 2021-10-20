@@ -1,27 +1,27 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import React from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
-export default function HorizontalHeader({ type, link = '/' }) {
-  let title = '';
+export default function HorizontalHeader({ type, link = "/" }) {
+  let title = "";
   switch (type) {
-    case 'cabinet':
-      title = '서랍';
+    case "cabinet":
+      title = "서랍";
       break;
-    case 'document':
-      title = '문서';
+    case "document":
+      title = "문서";
       break;
     default:
-      title = '카드';
+      title = "카드";
   }
 
   return (
     <div className="recommend-header">
-      <div className="recommend-header-title">
-        {title}
-      </div>
+      <div className="recommend-header-title">{title}</div>
       <div className="recommend-header-link">
-        <Link to={link} className="recommend-link-text">더 보기</Link>
+        <Link to={link} className="recommend-link-text">
+          더 보기
+        </Link>
       </div>
     </div>
   );

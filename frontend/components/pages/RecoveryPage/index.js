@@ -1,3 +1,3 @@
-import RecoveryPage from './RecoveryPage';
+import RecoveryPage from "./RecoveryPage";
 
 export default RecoveryPage;

@@ -3,50 +3,47 @@
 .login-page,
 .register-page,
 .recovery-page {
-  .login-box{
-    width : 480px;
-    margin : 185px auto 0 auto;
-  }
-  text-align: center;
+  padding: 32px;
+  border: 1px solid #0003;
+  background-color: white;
+  border-radius: 16px;
 
-  // dummy logo
-  .login-logo {
-    width : 48px;
-    height : 48px;
-    background-color: $white;
-    margin : 0 auto 24px auto;
-  }
+  .login-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    margin-top: 16px;
+    margin-bottom: 24px;
 
-  .login-title {
-    @include setfonts(
-      $font-weight: $weight-semibold,
-      $font-size: $size-4,
-      $line-height: 38px
-    );
-    color: $black;
-    margin-bottom : 12px
-  }
+    .logo {
+      height: 24px;
+    }
 
-  .login-subtitle {
-    @include setfonts(
-      $font-weight: $weight-normal,
-      $font-size: $size-6,
-      $line-height: 24px
-    );
-    color: $pale-sky;
-    margin-bottom : 32px;
+    .login-title {
+      font-weight: 700;
+      font-size: 1.5em;
+      color: $black;
+    }
+
+    .login-subtitle {
+      font-size: 1em;
+      color: $black-b70;
+    }
   }
 
-  .login-button {
-    margin : 25px 0px;
-    width : 100%;
-  }
+  .login-options {
+    margin-top: 16px;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
 
-  .login-register{
-    margin-bottom : 32px;
-  }
+    :first-child {
+      margin-left: -10px;
+    }
 
-  .login-link {
-    text-decoration : none;
+    :last-child {
+      margin-right: -10px;
+    }
   }
 }

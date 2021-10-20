@@ -1,8 +1,8 @@
 .dropdown {
   min-width: 20rem;
-  padding: .5rem 0;
+  padding: 0.5rem 0;
   position: absolute;
-  right: .75rem;
+  right: 0.75rem;
   top: 4rem;
 
   .dropdown-list {
@@ -23,7 +23,7 @@
     a {
       color: $black;
       display: block;
-      padding: .5rem 1rem;
+      padding: 0.5rem 1rem;
       width: 100%;
     }
 
@@ -35,7 +35,7 @@
   }
 
   .dropdown-separator {
-    margin: .5rem 0;
+    margin: 0.5rem 0;
   }
 }
 
@@ -44,5 +44,31 @@
   border-bottom-color: transparent;
   border-left-color: transparent;
   border-right-color: transparent;
-  margin-left: .25rem;
+  margin-left: 0.25rem;
+}
+
+.profile-image {
+  border: 1px solid #0003 !important;
+  border-radius: 50% !important;
+}
+
+// custom scrollbar
+// from: https://dev.to/xtrp/how-to-create-a-beautiful-custom-scrollbar-for-your-site-in-plain-css-1mjg
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #00000025;
+  border-radius: 20px;
+  border: 5px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #00000015;
 }

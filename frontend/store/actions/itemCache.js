@@ -1,9 +1,9 @@
-export const ADD_ITEM_CACHES = 'ADD_ITEM_CACHES';
-export const ADD_ITEM_CACHE = 'ADD_ITEM_CACHE';
+export const ADD_ITEM_CACHES = "ADD_ITEM_CACHES";
+export const ADD_ITEM_CACHE = "ADD_ITEM_CACHE";
 // export const GET_USER_ITEM = 'GET_USER_ITEM';
 // export const GET_ITEM = 'GET_ITEM';
 // export const UPDATE_ITEM_PERMISSION = 'UPDATE_ITEM_PERMISSION';
-export const DELETE_ITEM_CACHE = 'DELETE_ITEM_CACHE';
+export const DELETE_ITEM_CACHE = "DELETE_ITEM_CACHE";
 // export const ARCHIVE_ITEM = 'ARCHIVE_ITEM';
 // export const PUBLISH_ITEM = 'PUBLISH_ITEM';
 // export const ADD_ITEM = 'ADD_ITEM';
@@ -22,8 +22,8 @@ export function addItemCaches(items) {
   //   },
   //   ...
   // }
-  items.forEach(e => itemCaches[e._id] = e)
-  
+  items.forEach((e) => (itemCaches[e._id] = e));
+
   return {
     type: ADD_ITEM_CACHES,
     itemCaches,
@@ -41,7 +41,7 @@ export function addItemCache(item) {
   // }
   return {
     type: ADD_ITEM_CACHE,
-    itemCache: {[item._id]: item},
+    itemCache: { [item._id]: item },
   };
 }
 

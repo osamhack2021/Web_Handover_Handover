@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import ReactNotification from 'react-notifications-component';
 import { useDispatch } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router';
+import NotFoundPage from '_frontend/components/pages/NotFoundPage';
 import AboutPage from '_pages/AboutPage';
 import LoginPage from '_pages/LoginPage';
 import RegisterPage from '_pages/RegisterPage';
@@ -57,7 +58,7 @@ export default function Main({ location }) {
 
             {/* 404 Fallback page */}
             <Route path="/error">
-              <div>페이지를 찾을 수 없습니다.</div>
+              <NotFoundPage />
             </Route>
             <Route path="*">
               <Redirect to="/error" />

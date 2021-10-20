@@ -1,3 +1,3 @@
-import ProfileMenu from './ProfileMenu';
+import ProfileMenu from "./ProfileMenu";
 
 export default ProfileMenu;

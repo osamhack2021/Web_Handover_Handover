@@ -1,7 +1,9 @@
-import { Box, Container, LinearProgress, Tab, Tabs } from "@mui/material";
-import React from "react";
-import Item from "_molecules/Item";
-import TabPanel from "_molecules/TabPanel";
+import {
+  Box, Container, LinearProgress, Tab, Tabs, Divider,
+} from '@mui/material';
+import React from 'react';
+import Item from '_molecules/Item';
+import TabPanel from '_molecules/TabPanel';
 
 const CardGrid = ({ cards }) => {
   if (cards == null || cards.length == 0) {
@@ -12,14 +14,13 @@ const CardGrid = ({ cards }) => {
     <Container
       component={Container}
       maxWidth="md"
-      minWidth="sm"
       sx={{
         pt: 4,
         ml: 6,
-        display: "flex",
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: "12px"
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: '12px',
       }}
     >
       {cards.map((e) => (
@@ -46,27 +47,25 @@ export default function UserItems({ userItem }) {
     <LinearProgress />
   ) : (
     <Box>
-      <Box sx={{ borderBottom: 1, borderColor: "divider", px: 8 }}>
-        <Tabs
-          value={tabNumber}
-          onChange={handleChange}
+      <Tabs
+        value={tabNumber}
+        onChange={handleChange}
           // TabIndicatorProps={{ style: { background: "black" } }}
-          variant="scrollable"
-          scrollButtons="auto"
-        >
-          <Tab label="작성한 서랍" />
-          <Tab label="작성한 문서" />
-          <Tab label="작성한 카드" />
-        </Tabs>
-      </Box>
+        variant="fullWidth"
+      >
+        <Tab label="작성한 서랍" />
+        <Tab label="작성한 문서" />
+        <Tab label="작성한 카드" />
+      </Tabs>
+      <Divider />
       <TabPanel value={tabNumber} index={0}>
-        <CardGrid cards={userItem.filter((item) => item.type === "cabinet")} />
+        <CardGrid cards={userItem.filter((item) => item.type === 'cabinet')} />
       </TabPanel>
       <TabPanel value={tabNumber} index={1}>
-        <CardGrid cards={userItem.filter((item) => item.type === "document")} />
+        <CardGrid cards={userItem.filter((item) => item.type === 'document')} />
       </TabPanel>
       <TabPanel value={tabNumber} index={2}>
-        <CardGrid cards={userItem.filter((item) => item.type === "card")} />
+        <CardGrid cards={userItem.filter((item) => item.type === 'card')} />
       </TabPanel>
     </Box>
   );

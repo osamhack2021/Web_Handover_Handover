@@ -5,7 +5,7 @@ import React from "react";
 import LinkComponent from "_atoms/LinkComponent";
 import TypeIcon from "_atoms/TypeIcon";
 
-const BreadCrumbItem = ({ item = null }) => {
+const BreadCrumbItem = ({ item = null, clickable = true }) => {
   return (
     <Button
       variant="text"
@@ -16,15 +16,24 @@ const BreadCrumbItem = ({ item = null }) => {
         borderRadius: "16px",
         px: 1.5,
         backgroundColor: "rgba(0, 0, 0, 0.075)",
-        color: "black"
+        color: "black",
       }}
-      component={item != null ? LinkComponent : null}
-      to={item != null ? `/item/${item._id}` : null}
+      component={clickable && item != null ? LinkComponent : "a"}
+      to={clickable && item != null ? `/item/${item._id}` : null}
     >
-      <Stack direction="row" spacing={0.75} sx={{ alignItems: "center" }}>
+      <Stack
+        direction="row"
+        spacing={0.75}
+        sx={{ alignItems: "center", width: "100%" }}
+      >
         {item != null ? <TypeIcon type={item.type} size={0.75} /> : null}
         {item != null ? (
-          <div className="breadcrumb-text">{item.title}</div>
+          <div
+            className="breadcrumb-text"
+            style={clickable == false ? { marginLeft: 0 } : null}
+          >
+            {item.title}
+          </div>
         ) : (
           <Skeleton width="100%" />
         )}
@@ -33,7 +42,11 @@ const BreadCrumbItem = ({ item = null }) => {
   );
 };
 
-export default function BreadCrumbs({ itemArray = null, hierarchyLevel = 3 }) {
+export default function BreadCrumbs({
+  itemArray = null,
+  hierarchyLevel = 3,
+  clickable = true,
+}) {
   return (
     <Breadcrumbs
       sx={{
@@ -43,7 +56,7 @@ export default function BreadCrumbs({ itemArray = null, hierarchyLevel = 3 }) {
     >
       {itemArray != null
         ? itemArray.map((item, index) => (
-            <BreadCrumbItem item={item} key={index} />
+            <BreadCrumbItem item={item} key={index} clickable={clickable} />
           ))
         : [...Array(hierarchyLevel).keys()].map((i, index) => (
             <BreadCrumbItem key={index} />

@@ -1,46 +1,51 @@
-@import 'mixins';
+@import "mixins";
 
 .group-member {
-    background-color: $white;
-    border: 1px solid $grey-light;
-    border-radius: 25px;
-    width: 720px;
-    height: 80px;
+  background-color: $white;
+  border: 1px solid $grey-light;
+  border-radius: 25px;
+  width: 720px;
+  height: 80px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 20px;
+
+  .group-member-profile {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-bottom : 20px;
-
-    .group-member-profile {
-        display: flex;
-        width : 230px;
-        .profile-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 70%;
-            border: 1px solid $black;
-            margin-right: 10px;
-        }
-
-        .profile-string-above {
-            @include setfonts($font-weight : $weight-bold,
-                $font-size : $size-5,
-                $line-height : 24px);
-        }
-
-        .profile-string-below {
-            color: $black-b50;
-            @include setfonts($font-weight : $weight-semibold,
-                $font-size : $size-7,
-                $line-height : 15px);
-        }
+    width: 230px;
+    .profile-image {
+      width: 40px;
+      height: 40px;
+      border-radius: 70%;
+      margin-right: 10px;
     }
 
-    .group-member-admin,
-    .group-member-active{
-        width : 50px;
-        @include setfonts($font-weight : $weight-bold,
-                $font-size : $size-6,
-                $line-height : 18px);
+    .profile-string-above {
+      @include setfonts(
+        $font-weight: $weight-bold,
+        $font-size: $size-5,
+        $line-height: 24px
+      );
     }
+
+    .profile-string-below {
+      color: $black-b50;
+      @include setfonts(
+        $font-weight: $weight-semibold,
+        $font-size: $size-7,
+        $line-height: 15px
+      );
+    }
+  }
+
+  .group-member-admin,
+  .group-member-active {
+    width: 50px;
+    @include setfonts(
+      $font-weight: $weight-bold,
+      $font-size: $size-6,
+      $line-height: 18px
+    );
+  }
 }

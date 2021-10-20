@@ -1,3 +1,3 @@
-import RecommendPage from './RecommendPage';
+import RecommendPage from "./RecommendPage";
 
 export default RecommendPage;

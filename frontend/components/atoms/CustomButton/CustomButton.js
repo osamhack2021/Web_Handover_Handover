@@ -1,10 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 export default function CustomButton({
-  imgSrc, className = '', onClick, alt, type,
+  imgSrc,
+  className = "",
+  onClick,
+  alt,
+  type,
 }) {
-  if (className === '' && type === '') {
+  if (className === "" && type === "") {
     return (
       <button type={type} onClick={onClick}>
         <img src={imgSrc} alt={alt} />

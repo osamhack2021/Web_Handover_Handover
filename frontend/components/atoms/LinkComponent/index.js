@@ -1,3 +1,3 @@
-import LinkComponent from './LinkComponent';
+import LinkComponent from "./LinkComponent";
 
 export default LinkComponent;

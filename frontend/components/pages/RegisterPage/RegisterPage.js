@@ -1,16 +1,14 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { Container } from '@mui/material';
 import { push } from 'connected-react-router';
 import R from 'ramda';
-
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Register from '_organisms/Register';
-
-import Box from '@mui/material/Box';
 
 export default function RegisterPage() {
   const dispatch = useDispatch();
   const { user } = useSelector(R.pick(['user']));
-
+  document.title = 'Register - Handover';
   useEffect(() => {
     if (!R.isEmpty(user)) {
       dispatch(push('/home'));
@@ -18,16 +16,17 @@ export default function RegisterPage() {
   }, []);
 
   return (
-    <Box 
-      className="register-page page"
+    <Container
+      maxWidth="xs"
       sx={{
-        height: '100%',
+        // overflow: 'scroll',
+        // height: '100%',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
       }}
     >
       <Register />
-    </Box>
+    </Container>
   );
 }

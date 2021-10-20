@@ -19,7 +19,7 @@ services:
     # command: tail -f /dev/null # DEBUG: uncomment to keep container running
     depends_on:
       - mongodb
-    build: 
+    build:
       dockerfile: Dockerfile
       context: ./backend
     # restart: unless-stopped
@@ -34,9 +34,9 @@ services:
   frontend:
     container_name: front
     # command: tail -f /dev/null # DEBUG: uncomment to keep container running
-    depends_on: 
+    depends_on:
       - backend
-    build: 
+    build:
       dockerfile: Dockerfile
       context: ./frontend
       args:
@@ -45,13 +45,13 @@ services:
       - ./frontend:/app/frontend
     networks:
       - frontend
-  
+
   # Nginx Reserse Proxy
   nginx:
     image: nginx:alpine
     container_name: nginx
     # command: tail -f /dev/null # DEBUG: uncomment to keep container running
-    depends_on: 
+    depends_on:
       - frontend
     ports:
       - 80:80

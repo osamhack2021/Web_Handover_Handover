@@ -1,20 +1,19 @@
+import LoadingButton from "@mui/lab/LoadingButton";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import ListSubheader from "@mui/material/ListSubheader";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import TextField from "@mui/material/TextField";
+import Tooltip from "@mui/material/Tooltip";
+import R from "ramda";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import R from "ramda";
-
-import { validateServiceNumber, validatePassword } from "_utils/validation";
+import LinkComponent from "_frontend/components/atoms/LinkComponent";
+import Logo from "_frontend/components/atoms/Logo";
 import { attemptRegister } from "_thunks/auth";
-
-import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import ListSubheader from "@mui/material/ListSubheader";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import LoadingButton from "@mui/lab/LoadingButton";
-import Tooltip from "@mui/material/Tooltip";
-import Container from "@mui/material/Container";
-
+import { validatePassword, validateServiceNumber } from "_utils/validation";
 
 export default function Register() {
   const dispatch = useDispatch();
@@ -165,10 +164,11 @@ export default function Register() {
   };
 
   return (
-    <Container maxWidth="sm">
-      <div className="login-logo mx-auto" />
-      <div className="login-title">회원가입</div>
-      <div className="login-subtitle">환영합니다!</div>
+    <div className="register-page">
+      <div className="login-header">
+        <Logo />
+        <div className="login-title">계정 만들기</div>
+      </div>
       <div>
         <TextField
           fullWidth
@@ -225,7 +225,12 @@ export default function Register() {
         />
         <FormControl fullWidth margin="normal">
           <InputLabel htmlFor="select-rank">계급/등급</InputLabel>
-          <Select defaultValue="" id="select-rank" label="계급/등급" onChange={(event) => handleInputChange(event, setRank)}>
+          <Select
+            defaultValue=""
+            id="select-rank"
+            label="계급/등급"
+            onChange={(event) => handleInputChange(event, setRank)}
+          >
             <MenuItem value="" disabled={true}>
               선택
             </MenuItem>
@@ -318,12 +323,13 @@ export default function Register() {
       {/* Register button with tooltip */}
       <Tooltip
         title={isInputValid() ? "" : "필수 정보를 모두 입력해주세요"}
-        placement="bottom"
+        arrow
       >
-        <span style={{ width: "100%" }}>
+        <div style={{ width: "100%" }}>
           <LoadingButton
             sx={{ mt: 2 }}
             fullWidth
+            color="secondary"
             disabled={!isInputValid()}
             loading={registerStatus === "loading"}
             onClick={register}
@@ -333,8 +339,13 @@ export default function Register() {
           >
             회원가입
           </LoadingButton>
-        </span>
+        </div>
       </Tooltip>
-    </Container>
+      <div className="login-options">
+        <Button component={LinkComponent} to="/login">
+          로그인하기
+        </Button>
+      </div>
+    </div>
   );
 }

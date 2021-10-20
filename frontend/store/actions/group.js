@@ -1,4 +1,4 @@
-export const LOAD_GROUP = 'LOAD_GROUP';
+export const LOAD_GROUP = "LOAD_GROUP";
 
 export function loadGroup(group) {
   return {

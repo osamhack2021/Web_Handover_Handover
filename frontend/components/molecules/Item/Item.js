@@ -1,5 +1,5 @@
 import {
-  mdiAccountMultipleCheck,
+  mdiCog,
   mdiContentDuplicate,
   mdiDelete,
   mdiDotsVertical,
@@ -44,6 +44,12 @@ const borderRadius = {
   card: "16px",
 };
 
+const childType = {
+  card: "",
+  document: "card",
+  cabinet: "document",
+};
+
 // Maximum number of line of the content
 const LINE_CLAMP = 4;
 
@@ -68,18 +74,20 @@ const renderContent = (item, itemChildren) => {
   if (itemChildren == null) return null;
 
   // Join titles of child items with new line
-  return itemChildren.map((child, i) => {
-    if (i < LINE_CLAMP) {
-      return <div key={i}>{child.title}</div>;
-    }
-    if (i == LINE_CLAMP) {
-      return (
-        <div className="item-content-ellipsis" key={i}>
-          외 {itemChildren.length - LINE_CLAMP}건
-        </div>
-      );
-    }
-  });
+  return itemChildren
+    .filter((child) => child.type === childType[item.type])
+    .map((child, i) => {
+      if (i < LINE_CLAMP) {
+        return <div key={i}>{child.title}</div>;
+      }
+      if (i == LINE_CLAMP) {
+        return (
+          <div className="item-content-ellipsis" key={i}>
+            외 {itemChildren.length - LINE_CLAMP}건
+          </div>
+        );
+      }
+    });
 };
 
 const statusIcon = {
@@ -113,8 +121,8 @@ export default function Item({
   const cachedItem = useSelector((state) => state.itemCache[itemId]);
 
   // DEBUG
-  if (cachedItem == null) console.log(itemId + " wasn't found in itemCache.");
-  else console.log(itemId + " was found in itemCache: ", cachedItem);
+  // if (cachedItem == null) console.log(itemId + " wasn't found in itemCache.");
+  // else console.log(itemId + " was found in itemCache: ", cachedItem);
 
   // will try to use object passed as props if exists
   // will try to use cachedItem if not null (= if exists in cache)
@@ -160,12 +168,14 @@ export default function Item({
       // retrieve item from server for possible updates
       dispatch(attemptGetItem(itemId))
         .then((response) => {
-          if (!deepEqual(item, setItem(response))) {
+          if (!deepEqual(item, response)) {
             // update state deep equality between state and response is false
             console.log(
               itemId,
-              " cache was updated compared to server: ",
-              response
+              " cache was updated compared to server; new =",
+              response,
+              "\nold =",
+              item
             );
             setItem(response);
           }
@@ -277,7 +287,7 @@ export default function Item({
   // don't render if visible is false
   if (visible == false) return null;
 
-  const content = renderContent(item, itemChildren)
+  const content = renderContent(item, itemChildren);
 
   return item == null ? (
     <div className="item" key={itemId}>
@@ -426,9 +436,9 @@ export default function Item({
           <div>
             <MenuItem component={LinkComponent} to={`/item/${itemId}/settings`}>
               <ListItemIcon>
-                <Icon path={mdiAccountMultipleCheck} size={1} />
+                <Icon path={mdiCog} size={1} />
               </ListItemIcon>
-              권한 설정
+              설정
             </MenuItem>
             <Divider light />
             {item.status !== "archived" ? (

@@ -1,5 +1,5 @@
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 
-import Main from './Main';
+import Main from "./Main";
 
 export default withRouter(Main);

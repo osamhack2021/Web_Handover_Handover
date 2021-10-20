@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { Container } from '@mui/material';
 import { push } from 'connected-react-router';
 import R from 'ramda';
-
-import LoginSection from '_templates/LoginSection';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import WelcomeHeader from '_frontend/components/organisms/WelcomeHeader';
+import Login from '_organisms/Login';
 
 export default function LoginPage() {
   const dispatch = useDispatch();
   const { user } = useSelector(R.pick(['user']));
+
+  document.title = 'Login - Handover';
 
   useEffect(() => {
     if (!R.isEmpty(user)) {
@@ -16,8 +19,20 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="login-page page">
-      <LoginSection />
+    <div style={{ overflowY: 'hidden' }}>
+      <WelcomeHeader />
+      <Container
+        maxWidth="xs"
+        sx={{
+          marginTop: '200px',
+          height: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Login />
+      </Container>
     </div>
   );
 }
