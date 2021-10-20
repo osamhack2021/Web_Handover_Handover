@@ -1,6 +1,8 @@
 // Images
 import './images/profile-default.jpg';
 import './images/aboutpage-gif.gif';
+import './images/share.gif';
+import './images/comment.gif';
 import './images/handover-logo.png';
 import './images/demopage.png';
 import './images/share.png';
