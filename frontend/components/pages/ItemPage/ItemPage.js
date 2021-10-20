@@ -95,7 +95,7 @@ const statusTooltipText = {
 
 export default function ItemPage() {
   // Item id from URL params: /item/:itemId
-  const { itemId } = useParams();
+  const { itemId, historyItemId } = useParams();
   const { pathname } = useLocation();
 
   // find current user from store
@@ -118,6 +118,7 @@ export default function ItemPage() {
   const [isBookmarked, setBookmarked] = useState(
     user.bookmarks.includes(itemId)
   );
+  const [history, setHistory] = useState(null);
 
   // creates [currentItemId, parentItemId, parentParentItemId] array
   const pathArray =
@@ -340,6 +341,22 @@ export default function ItemPage() {
       setItemHistory(itemHistoryArray);
     }
   }, [pathname, item]);
+
+  useEffect(() => {
+    if (item != null) {
+      const history =
+        itemHistory &&
+        itemHistory.find((item) => item._id === historyItemId);
+      if (history != null) {
+        setHistory(history);
+      } else {
+        // request for history
+        dispatch(attemptGetItem(historyItemId)).then((historyItem) =>
+          setHistory(historyItem)
+        );
+      }
+    }
+  }, [historyItemId, item]);
 
   const shareItem = () => {
     navigator.clipboard.writeText(`${location.hostname}/item/${itemId}`);
@@ -631,10 +648,18 @@ export default function ItemPage() {
     >
       <div className="item-page-history-list-item-header">
         <div className="item-page-history-list-item-id">
-          {historyItem ? historyItem._id.slice(-6) : <Skeleton width="45px" height="1em" />}
+          {historyItem ? (
+            historyItem._id.slice(-6)
+          ) : (
+            <Skeleton width="45px" height="1em" />
+          )}
         </div>
         <div className="item-page-history-list-item-title">
-          {historyItem ? historyItem.title : <Skeleton width="150px" height="1.2em" />}
+          {historyItem ? (
+            historyItem.title
+          ) : (
+            <Skeleton width="150px" height="1.2em" />
+          )}
         </div>
       </div>
       {historyItem ? (
@@ -837,7 +862,7 @@ export default function ItemPage() {
                     onChange={handleParentPathChange}
                   >
                     {availablePaths.map(([itemId, item]) => (
-                      <MenuItem value={item.path} key={item.path} >
+                      <MenuItem value={item.path} key={item.path}>
                         {/* <TypeIcon
                           type={item.type}
                           size={0.75}
@@ -962,6 +987,36 @@ export default function ItemPage() {
                     <HistoryListItem key={index} />
                   ))}
             </div>
+          </Stack>
+        </Route>
+
+        {/* Item History Read Page */}
+        <Route exact path="/item/:itemId/history/:historyItemId">
+          <Stack spacing={1} className="item-page">
+            <Stack>
+              <div className="item-page-header">
+                <ItemTypeIconWithTooltip />
+
+                {/* Item title */}
+                <div className="item-page-header-title">{history && history.title}</div>
+
+                {/* Item action menus */}
+                <ItemActions />
+              </div>
+            </Stack>
+
+            {/* Item BreadCrumbs */}
+            <ItemBreadCrumbs />
+
+            {/* Item content */}
+            {history && history.content && (
+              <div className="item-page-content">
+                <Editor content={history.content} editable={false} />
+              </div>
+            )}
+
+            {/* Item metadata (owner profile, created date) */}
+            <ItemMetadata />
           </Stack>
         </Route>
       </Switch>
