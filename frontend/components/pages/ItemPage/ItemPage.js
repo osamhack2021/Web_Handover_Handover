@@ -998,7 +998,12 @@ export default function ItemPage() {
                 <ItemTypeIconWithTooltip />
 
                 {/* Item title */}
-                <div className="item-page-header-title">{history && history.title}</div>
+                <div className="item-page-header-title">
+                  {history && history.title}
+                  <div className="item-page-header-type">
+                    수정된 항목
+                  </div>
+                </div>
 
                 {/* Item action menus */}
                 <ItemActions />

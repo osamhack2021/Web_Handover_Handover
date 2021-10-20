@@ -15,9 +15,22 @@
 
     .item-page-header-title,
     #item-page-header-title-editor {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
       font-size: 2.5em;
       font-weight: bolder;
       flex-grow: 1;
+
+      .item-page-header-type {
+        margin-left: 24px;
+        font-size: 16px;
+        line-height: 16px;
+        padding: 8px 12px 6px 12px;
+        font-weight: normal;
+        border-radius: 16px;
+        background-color: #0003;
+      }
     }
 
     .item-page-header-title {
