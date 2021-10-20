@@ -15,7 +15,7 @@ import {
   mdiShare,
   mdiStar,
   mdiStarOutline,
-  mdiUpload,
+  mdiUpload
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import {
@@ -33,7 +33,7 @@ import {
   Select,
   Skeleton,
   Stack,
-  Tooltip,
+  Tooltip
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -62,12 +62,12 @@ import {
   attemptGetItemChildren,
   attemptPublishItem,
   attemptUpdateItemContents,
-  attemptUpdateItemSettings,
+  attemptUpdateItemSettings
 } from "_thunks/item";
 import {
   attemptAddBookmark,
   attemptGetUser,
-  attemptRemoveBookmark,
+  attemptRemoveBookmark
 } from "_thunks/user";
 import { deepEqual } from "_utils/compare";
 
@@ -631,10 +631,10 @@ export default function ItemPage() {
     >
       <div className="item-page-history-list-item-header">
         <div className="item-page-history-list-item-id">
-          {historyItem ? historyItem._id.slice(-6) : <Skeleton width="45px" />}
+          {historyItem ? historyItem._id.slice(-6) : <Skeleton width="45px" height="1em" />}
         </div>
         <div className="item-page-history-list-item-title">
-          {historyItem ? historyItem.title : <Skeleton width="150px" />}
+          {historyItem ? historyItem.title : <Skeleton width="150px" height="1.2em" />}
         </div>
       </div>
       {historyItem ? (
@@ -646,7 +646,7 @@ export default function ItemPage() {
           작성
         </div>
       ) : (
-        <Skeleton width="150px" />
+        <Skeleton width="150px" height="0.8em" />
       )}
     </ButtonBase>
   );
