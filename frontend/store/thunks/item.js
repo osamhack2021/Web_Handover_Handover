@@ -133,6 +133,18 @@ export const attemptUpdateItem = (itemId, item) => (dispatch) => {
         duration: 5000,
       },
     });
+  }).catch(error => {
+    RNC.addNotification({
+      title: "수정 오류",
+      message: error.text.split(": ")[1],
+      type: "danger",
+      container: "top-center",
+      animationIn: ["animated", "fadeInRight"],
+      animationOut: ["animated", "fadeOutRight"],
+      dismiss: {
+        duration: 5000,
+      },
+    });
   });
 };
 
@@ -155,7 +167,19 @@ export const attemptUpdateItemPermission =
           },
         });
       })
-    );
+    ).catch(error => {
+      RNC.addNotification({
+        title: "권한 수정 오류",
+        message: error.text.split(": ")[1],
+        type: "danger",
+        container: "top-center",
+        animationIn: ["animated", "fadeInRight"],
+        animationOut: ["animated", "fadeOutRight"],
+        dismiss: {
+          duration: 5000,
+        },
+      });
+    });
   };
 
 export const attemptAddItemComment =
@@ -183,6 +207,18 @@ export const attemptDeleteItem = (itemId) => (dispatch) => {
         duration: 5000,
       },
     });
+  }).catch(error => {
+    RNC.addNotification({
+      title: "삭제 오류",
+      message: error.text.split(": ")[1],
+      type: "danger",
+      container: "top-center",
+      animationIn: ["animated", "fadeInRight"],
+      animationOut: ["animated", "fadeOutRight"],
+      dismiss: {
+        duration: 5000,
+      },
+    });
   });
 };
 
@@ -196,6 +232,18 @@ export const attemptArchiveItem = (itemId) => (dispatch) => {
       title: "보관 완료",
       type: "success",
       message: "항목을 보관하였습니다",
+      container: "top-center",
+      animationIn: ["animated", "fadeInRight"],
+      animationOut: ["animated", "fadeOutRight"],
+      dismiss: {
+        duration: 5000,
+      },
+    });
+  }).catch(error => {
+    RNC.addNotification({
+      title: "보관 오류",
+      message: error.text.split(": ")[1],
+      type: "danger",
       container: "top-center",
       animationIn: ["animated", "fadeInRight"],
       animationOut: ["animated", "fadeOutRight"],
@@ -223,6 +271,18 @@ export const attemptPublishItem = (itemId) => (dispatch) => {
         duration: 5000,
       },
     });
+  }).catch(error => {
+    RNC.addNotification({
+      title: "게시 오류",
+      message: error.text.split(": ")[1],
+      type: "danger",
+      container: "top-center",
+      animationIn: ["animated", "fadeInRight"],
+      animationOut: ["animated", "fadeOutRight"],
+      dismiss: {
+        duration: 5000,
+      },
+    });
   });
 };
 
@@ -236,6 +296,18 @@ export const attemptDuplicateItem = (itemObject) => (dispatch) => {
       title: "복제 완료",
       type: "success",
       message: "성공적으로 복제하였습니다",
+      container: "top-center",
+      animationIn: ["animated", "fadeInRight"],
+      animationOut: ["animated", "fadeOutRight"],
+      dismiss: {
+        duration: 5000,
+      },
+    });
+  }).catch(error => {
+    RNC.addNotification({
+      title: "복제 오류",
+      message: error.text.split(": ")[1],
+      type: "danger",
       container: "top-center",
       animationIn: ["animated", "fadeInRight"],
       animationOut: ["animated", "fadeOutRight"],
