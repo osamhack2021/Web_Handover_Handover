@@ -12,18 +12,18 @@ import MenuItem from '_molecules/MenuItem';
 import ProfileMenu from '_molecules/ProfileMenu';
 import { store as RNC } from 'react-notifications-component';
 
-const dummy = [
-  {
-    Id: 1,
-    title: '군수과',
-    type: 'cabinet',
-  },
-  {
-    Id: 2,
-    title: '00대대',
-    type: 'cabinet',
-  },
-];
+// const dummy = [
+//   {
+//     Id: 1,
+//     title: '군수과',
+//     type: 'cabinet',
+//   },
+//   {
+//     Id: 2,
+//     title: '00대대',
+//     type: 'cabinet',
+//   },
+// ];
 
 function arrayToMenuItems(array) {
   return array.map((elem, index) => (
@@ -43,32 +43,38 @@ export default function LeftPane() {
   // if user exists, means a user has logged in, i.e. item, group items are available
   const { user } = useSelector(R.pick(['user']));
   const { group } = useSelector(R.pick(['group']));
+  const { itemCache } = useSelector(R.pick(['itemCache']));
 
   const [myCabinet, setMyCabinet] = useState([]);
   const [loadingCabinet, setLoadingCabinet] = useState(true);
 
   useEffect(() => {
-    dispatch(attemptGetUserItem(user._id))
-      .catch(() => {
-        setLoadingCabinet(false);
-        RNC.addNotification({
-          title: '서버 오류',
-          type: 'error',
-          message: '내 서랍을 서버로부터 불러오지 못했습니다.',
-          container: 'top-center',
-          animationIn: ['animated', 'fadeInRight'],
-          animationOut: ['animated', 'fadeOutRight'],
-          dismiss: {
-            duration: 5000,
-          },
+    if (Object.keys(itemCache).length === 0) {
+      console.log('rendering through api request');
+      dispatch(attemptGetUserItem(user._id))
+        .catch(() => {
+          setLoadingCabinet(false);
+          RNC.addNotification({
+            title: '서버 오류',
+            type: 'error',
+            message: '서버로부터 항목들을 불러오지 못했습니다.',
+            container: 'top-center',
+            animationIn: ['animated', 'fadeInRight'],
+            animationOut: ['animated', 'fadeOutRight'],
+            dismiss: {
+              duration: 5000,
+            },
+          });
+        })
+        .then((data) => {
+          setMyCabinet(data.filter((elem) => elem.type === 'cabinet'));
+          setLoadingCabinet(false);
         });
-      })
-      .then((data) => {
-        console.log('useritem');
-        console.log(data);
-        setMyCabinet(data.filter((elem) => (elem.type === 'cabinet')));
-        setLoadingCabinet(false);
-      });
+    } else {
+      console.log('rendering from itemCache');
+      setMyCabinet(Object.values(itemCache).filter((elem) => elem.type === 'cabinet'));
+      setLoadingCabinet(false);
+    }
   }, []);
 
   return !loadingCabinet && (
