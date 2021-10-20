@@ -18,13 +18,22 @@ const BreadCrumbItem = ({ item = null, clickable = true }) => {
         backgroundColor: "rgba(0, 0, 0, 0.075)",
         color: "black",
       }}
-      component={clickable && item != null ? LinkComponent : null}
+      component={clickable && item != null ? LinkComponent : "a"}
       to={clickable && item != null ? `/item/${item._id}` : null}
     >
-      <Stack direction="row" spacing={0.75} sx={{ alignItems: "center", width: "100%" }}>
+      <Stack
+        direction="row"
+        spacing={0.75}
+        sx={{ alignItems: "center", width: "100%" }}
+      >
         {item != null ? <TypeIcon type={item.type} size={0.75} /> : null}
         {item != null ? (
-          <div className="breadcrumb-text">{item.title}</div>
+          <div
+            className="breadcrumb-text"
+            style={clickable == false ? { marginLeft: 0 } : null}
+          >
+            {item.title}
+          </div>
         ) : (
           <Skeleton width="100%" />
         )}
