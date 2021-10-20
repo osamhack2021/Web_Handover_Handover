@@ -20,6 +20,33 @@ import Editor from "_molecules/Editor";
 import ItemListHeader from "_molecules/ItemListHeader";
 import { attemptCreateItem } from "_thunks/item";
 
+const template = [
+  {
+    title: "순서가 있는 업무",
+    content:
+      "<h1>1. 첫번째 업무 제목</h1><p>첫번째 업무에 대한 설명을 자세히 적어주세요.</p><h1>2. 두번째 업무 제목</h1><p>두번째 업무에 대한 설명을 자세히 적어주세요.</p><h1>3. 세번째 업무 제목</h1><p>세번째 업무에 대한 설명을 자세히 적어주세요.</p>",
+  },
+  {
+    title: "시간대별로 수행하는 업무",
+    content:
+      "<h1>09:00 업무 제목</h1><p>09:00 에 하는 업무에 대한 설명을 자세히 적어주세요.</p><h1>10:00 업무 제목</h1><p>10:00 에 하는 업무에 대한 설명을 자세히 적어주세요.</p><h1>11:00 업무 제목</h1><p>11:00 에 하는 업무에 대한 설명을 자세히 적어주세요.</p>",
+  },
+  {
+    title: "상황에 따라 하는 업무",
+    content:
+      "<h1>상황: 상황 제목</h1><p>아래 업무는 이러이러한 상황이 일어났을때 수행한다.</p><p>상황에 대한 설명을 자세히 적어주세요.</p><h1>업무: 수행해야 할 업무 제목</h1><p>수행해야 할 업무에 대한 설명을 자세히 적어주세요.</p>",
+  },
+  {
+    title: "부대시설 이용",
+    content:
+      "<h1>부대시설 이름</h1><p>부대시설에 대한 설명을 간단하게 적어주세요.</p><h2>사용 시간</h2><p>부대시설을 사용할 수 있는 시간을 적어주세요.</p><ul><li><p><strong>평일</strong>: 09:00 ~ 17:00</p></li><li><p><strong>주말</strong>: 11:00 ~ 15:00</p></li></ul><h2>사용 방법</h2><p>부대시설을 사용하는 방법을 자세히 적어주세요.</p><h2>주의 사항</h2><p>부대시설을 사용할 때 주의해야 할 사항을 자세히 적어주세요.</p>",
+  },
+  {
+    title: "내용 초기화",
+    content: "",
+  },
+];
+
 export default function CreateItemPage() {
   // find current user from store
   const { user } = useSelector(R.pick(["user"]));
@@ -48,7 +75,7 @@ export default function CreateItemPage() {
     let item = {
       title: title,
       content: content,
-      status: "published"
+      status: "published",
     };
 
     if (parentPath !== "new") {
@@ -105,6 +132,14 @@ export default function CreateItemPage() {
             />
           </div>
         </Stack>
+
+        <div style={{ display: "flex", flexDirection: "row", gap: 8 }}>
+          {template.map((e, i) => (
+            <Button variant="outlined" onClick={() => setInitialContent(e.content)}>
+              <div className="item-title">{e.title}</div>
+            </Button>
+          ))}
+        </div>
 
         {/* Item content editor */}
         <Editor
