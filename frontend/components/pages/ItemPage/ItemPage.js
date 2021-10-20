@@ -10,6 +10,7 @@ import {
   mdiFamilyTree,
   mdiFileEditOutline,
   mdiFileTreeOutline,
+  mdiHistory,
   mdiPackageDown,
   mdiShare,
   mdiStar,
@@ -497,7 +498,107 @@ export default function ItemPage() {
     });
   };
 
-  return visible && item != null ? (
+  const ItemActions = React.useMemo(() => {
+    return React.forwardRef((props, ref) => (
+      <Stack direction="row" ref={ref} {...props}>
+        <Tooltip title="북마크에 추가" arrow>
+          <IconButton onClick={toggleBookmark}>
+            <Icon size={1.25} path={isBookmarked ? mdiStar : mdiStarOutline} />
+          </IconButton>
+        </Tooltip>
+        <IconButton onClick={handleMenuClick}>
+          <Icon size={1} path={mdiDotsVertical} />
+        </IconButton>
+      </Stack>
+    ));
+  }, []);
+
+  if (!visible || item == null) return <div>Loading...</div>;
+
+  // refactored components
+
+  const ItemTypeIconWithTooltip = () => (
+    <Tooltip
+      title={
+        (status != null ? `${statusTooltipText[status]} ` : "") +
+        typeString[item.type]
+      }
+      arrow
+    >
+      <Badge
+        badgeContent={
+          status != null ? (
+            <Icon size={0.75} path={statusIcon[status]} opacity={0.7} />
+          ) : null
+        }
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        sx={{
+          ".MuiBadge-badge": {
+            backgroundColor: "#eae8dc",
+            p: "4px",
+            mb: "4px",
+            mr: "4px",
+          },
+        }}
+      >
+        <TypeIcon type={item.type} size={1.5} opacity={0.7} />
+      </Badge>
+    </Tooltip>
+  );
+
+  const ItemBreadCrumbs = ({ clickable = true }) =>
+    item != null && itemParents != null ? (
+      <BreadCrumbs itemArray={[...itemParents, item]} clickable={clickable} />
+    ) : (
+      <BreadCrumbs hierarchyLevel={hierarchyLevel[item.type]} />
+    );
+
+  const ItemMetadata = () => (
+    <Stack className="item-page-metadata">
+      {/* Item owner profile, created date */}
+      {itemOwner != null ? (
+        <Stack className="item-page-profile">
+          <img
+            className="item-page-profile-image profile-image"
+            src={itemOwner.profileImageUrl || "/images/profile-default.jpg"}
+          />
+          <div className="item-page-profile-name">
+            <Link to={`/user/${itemOwner._id}`}>
+              {itemOwner.rank} {itemOwner.name}
+            </Link>
+            님이
+            <Tooltip title={dateToString(item.created)} arrow>
+              <div>{dateElapsed(item.created)}</div>
+            </Tooltip>
+            작성
+          </div>
+        </Stack>
+      ) : (
+        <Stack className="item-page-profile">
+          <Skeleton variant="circular" width={24} height={24} />
+          <Skeleton width={200} height="1em" />
+        </Stack>
+      )}
+
+      {/* Item history */}
+      {item.history.length > 0 && (
+        <Button
+          component={LinkComponent}
+          to={`/item/${itemId}/history`}
+          variant="text"
+          sx={{ fontSize: "1em", alignItems: "normal", pt: "8px" }}
+        >
+          <Icon path={mdiHistory} size={1} style={{ marginRight: 4 }} />
+          수정 기록
+        </Button>
+      )}
+    </Stack>
+  );
+
+  return (
     // <div className="content-pane">
     // <Header />
     <Container maxWidth="md" sx={{ py: 4 }}>
@@ -507,66 +608,18 @@ export default function ItemPage() {
           <Stack spacing={1} className="item-page">
             <Stack>
               <div className="item-page-header">
-                <Tooltip
-                  title={
-                    (status != null ? `${statusTooltipText[status]} ` : "") +
-                    typeString[item.type]
-                  }
-                  arrow
-                >
-                  <Badge
-                    badgeContent={
-                      status != null ? (
-                        <Icon
-                          size={0.75}
-                          path={statusIcon[status]}
-                          opacity={0.7}
-                        />
-                      ) : null
-                    }
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                    sx={{
-                      ".MuiBadge-badge": {
-                        backgroundColor: "#eae8dc",
-                        p: "4px",
-                        mb: "4px",
-                        mr: "4px",
-                      },
-                    }}
-                  >
-                    <TypeIcon type={item.type} size={1.5} opacity={0.7} />
-                  </Badge>
-                </Tooltip>
+                <ItemTypeIconWithTooltip />
 
                 {/* Item title */}
                 <div className="item-page-header-title">{item.title}</div>
 
                 {/* Item action menus */}
-                <Stack direction="row">
-                  <Tooltip title="북마크에 추가" arrow>
-                    <IconButton onClick={toggleBookmark}>
-                      <Icon
-                        size={1.25}
-                        path={isBookmarked ? mdiStar : mdiStarOutline}
-                      />
-                    </IconButton>
-                  </Tooltip>
-                  <IconButton onClick={handleMenuClick}>
-                    <Icon size={1} path={mdiDotsVertical} />
-                  </IconButton>
-                </Stack>
+                <ItemActions />
               </div>
             </Stack>
 
             {/* Item BreadCrumbs */}
-            {itemParents != null ? (
-              <BreadCrumbs itemArray={[...itemParents, item]} />
-            ) : (
-              <BreadCrumbs hierarchyLevel={hierarchyLevel[item.type]} />
-            )}
+            <ItemBreadCrumbs />
 
             {/* Item content */}
             {item.content && (
@@ -576,31 +629,7 @@ export default function ItemPage() {
             )}
 
             {/* Item metadata (owner profile, created date) */}
-            {itemOwner != null ? (
-              <Stack className="item-page-profile">
-                <img
-                  className="item-page-profile-image profile-image"
-                  src={
-                    itemOwner.profileImageUrl || "/images/profile-default.jpg"
-                  }
-                />
-                <div className="item-page-profile-name">
-                  <Link to={`/user/${itemOwner._id}`}>
-                    {itemOwner.rank} {itemOwner.name}
-                  </Link>
-                  님이
-                  <Tooltip title={dateToString(item.created)} arrow>
-                    <div>{dateElapsed(item.created)}</div>
-                  </Tooltip>
-                  작성
-                </div>
-              </Stack>
-            ) : (
-              <Stack className="item-page-profile">
-                <Skeleton variant="circular" width={24} height={24} />
-                <Skeleton width={200} height="1em" />
-              </Stack>
-            )}
+            <ItemMetadata />
 
             {/* Item children */}
             {item.type !== "card" && (
@@ -626,39 +655,7 @@ export default function ItemPage() {
           <Stack className="item-page item-editor">
             <Stack>
               <div className="item-page-header">
-                <Tooltip
-                  title={
-                    (status != null ? `${statusTooltipText[status]} ` : "") +
-                    typeString[item.type]
-                  }
-                  arrow
-                >
-                  <Badge
-                    badgeContent={
-                      status != null ? (
-                        <Icon
-                          size={0.75}
-                          path={statusIcon[status]}
-                          opacity={0.7}
-                        />
-                      ) : null
-                    }
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                    sx={{
-                      ".MuiBadge-badge": {
-                        backgroundColor: "#eae8dc",
-                        p: "4px",
-                        mb: "4px",
-                        mr: "4px",
-                      },
-                    }}
-                  >
-                    <TypeIcon type={item.type} size={1.5} opacity={0.7} />
-                  </Badge>
-                </Tooltip>
+                <ItemTypeIconWithTooltip />
 
                 {/* Item title */}
                 <TextField
@@ -672,32 +669,13 @@ export default function ItemPage() {
                 />
 
                 {/* Item action menus */}
-                <Stack direction="row">
-                  <Tooltip title="북마크에 추가" arrow>
-                    <IconButton onClick={toggleBookmark}>
-                      <Icon
-                        size={1.25}
-                        path={isBookmarked ? mdiStar : mdiStarOutline}
-                      />
-                    </IconButton>
-                  </Tooltip>
-                  <IconButton onClick={handleMenuClick}>
-                    <Icon size={1} path={mdiDotsVertical} />
-                  </IconButton>
-                </Stack>
+                <ItemActions />
               </div>
             </Stack>
 
             {/* Item BreadCrumbs */}
             <div className="item-editor-breadcrumb">
-              {itemParents != null ? (
-                <BreadCrumbs
-                  itemArray={[...itemParents, { ...item, title: title }]}
-                  clickable={false}
-                />
-              ) : (
-                <BreadCrumbs hierarchyLevel={hierarchyLevel[item.type]} />
-              )}
+              <ItemBreadCrumbs clickable={false} />
               <Button
                 variant="text"
                 color="secondary"
@@ -717,45 +695,7 @@ export default function ItemPage() {
               onContentChange={(html) => setContent(html)} // saves updates to separate state than item
             />
 
-            <Stack className="item-page-metadata">
-              {/* Item owner profile, created date */}
-              {itemOwner != null ? (
-                <Stack className="item-page-profile">
-                  <img
-                    className="item-page-profile-image profile-image"
-                    src={
-                      itemOwner.profileImageUrl || "/images/profile-default.jpg"
-                    }
-                  />
-                  <div className="item-page-profile-name">
-                    <Link to={`/user/${itemOwner._id}`}>
-                      {itemOwner.rank} {itemOwner.name}
-                    </Link>
-                    님이
-                    <Tooltip title={dateToString(item.created)} arrow>
-                      <div>{dateElapsed(item.created)}</div>
-                    </Tooltip>
-                    작성
-                  </div>
-                </Stack>
-              ) : (
-                <Stack className="item-page-profile">
-                  <Skeleton variant="circular" width={24} height={24} />
-                  <Skeleton width={200} height="1em" />
-                </Stack>
-              )}
-
-              {/* Item history */}
-              {item.history.length > 0 && (
-                <Button
-                  component={LinkComponent}
-                  to={`/item/${itemId}/history`}
-                  variant="text"
-                >
-                  수정 기록
-                </Button>
-              )}
-            </Stack>
+            <ItemMetadata />
 
             {/* Item children */}
             {item.type !== "card" && (
@@ -810,66 +750,18 @@ export default function ItemPage() {
           <Stack spacing={1} className="item-page">
             <Stack>
               <div className="item-page-header">
-                <Tooltip
-                  title={
-                    (status != null ? `${statusTooltipText[status]} ` : "") +
-                    typeString[item.type]
-                  }
-                  arrow
-                >
-                  <Badge
-                    badgeContent={
-                      status != null ? (
-                        <Icon
-                          size={0.75}
-                          path={statusIcon[status]}
-                          opacity={0.7}
-                        />
-                      ) : null
-                    }
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                    sx={{
-                      ".MuiBadge-badge": {
-                        backgroundColor: "#eae8dc",
-                        p: "4px",
-                        mb: "4px",
-                        mr: "4px",
-                      },
-                    }}
-                  >
-                    <TypeIcon type={item.type} size={1.5} opacity={0.7} />
-                  </Badge>
-                </Tooltip>
+                <ItemTypeIconWithTooltip />
 
                 {/* Item title */}
                 <div className="item-page-header-title">{item.title}</div>
 
                 {/* Item action menus */}
-                <Stack direction="row">
-                  <Tooltip title="북마크에 추가" arrow>
-                    <IconButton onClick={toggleBookmark}>
-                      <Icon
-                        size={1.25}
-                        path={isBookmarked ? mdiStar : mdiStarOutline}
-                      />
-                    </IconButton>
-                  </Tooltip>
-                  <IconButton onClick={handleMenuClick}>
-                    <Icon size={1} path={mdiDotsVertical} />
-                  </IconButton>
-                </Stack>
+                <ItemActions />
               </div>
             </Stack>
 
             {/* Item BreadCrumbs */}
-            {itemParents != null ? (
-              <BreadCrumbs itemArray={[...itemParents, item]} />
-            ) : (
-              <BreadCrumbs hierarchyLevel={hierarchyLevel[item.type]} />
-            )}
+            <ItemBreadCrumbs />
 
             {/* Item path */}
             {item != null && item.type !== "cabinet" && (
@@ -1077,8 +969,6 @@ export default function ItemPage() {
         )}
       </Menu>
     </Container>
-  ) : (
-    <div>Loading...</div>
   );
 }
 

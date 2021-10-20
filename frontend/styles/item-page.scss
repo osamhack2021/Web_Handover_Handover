@@ -52,37 +52,51 @@
     height: 720px;
   }
 
-  .item-page-profile {
-    align-items: center;
-    flex-direction: row;
-    gap: 8px;
+  .item-page-metadata {
     padding-top: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top: 8px;
+    width: 100%;
+    gap: 8px;
 
     :first-child {
       margin-left: auto;
     }
 
-    .item-page-profile-image {
-      width: 24px;
-      height: 24px;
-    }
-
-    .item-page-profile-name {
-      display: flex;
-      gap: 4px;
+    .item-page-profile {
+      align-items: center;
       flex-direction: row;
-      font-size: 1em;
-      text-align: start;
-      padding-top: 2px;
-      color: $black-b70;
-
-      a {
+      gap: 8px;
+  
+      :first-child {
+        margin-left: auto;
+      }
+  
+      .item-page-profile-image {
+        width: 24px;
+        height: 24px;
+      }
+  
+      .item-page-profile-name {
+        display: flex;
+        gap: 4px;
+        flex-direction: row;
+        font-size: 1em;
+        text-align: start;
+        padding-top: 2px;
         color: $black-b70;
-        text-decoration: none;
-        font-weight: bold;
+  
+        a {
+          color: $black-b70;
+          text-decoration: none;
+          font-weight: bold;
+        }
       }
     }
   }
+
 
   .item-list {
     margin-top: 32px;
