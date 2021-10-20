@@ -34,6 +34,7 @@
  <li><a href="#competitiveness">경쟁력</a></li>
  <li><a href="#install">설치 안내</a></li>
  <li><a href="#gettingstarted">프로젝트 사용법</a></li>
+ <li><a href="#contribute">Handover에 기여하는 법</a></li>
  <li><a href="#structure">소스코드 구조</a></li>
  <li><a href="#teaminfo">팀 정보</a></li>
  <li><a href="#license">저작권 및 사용권 정보</a></li>
@@ -150,6 +151,11 @@ Handover 내의 모든 문서는 **🗄️서랍, 📰문서, 📇카드** 의 3
 
 - yet to do...
  
+<h2 id="contribute"> 🙌 Handover에 기여하는 법 (How to contribute) </h2>
+
+Handover는 **오픈소스 프로젝트**로, 여러분들의 도움을 기다리고 있습니다.
+Handover에 기여하고 싶으시다면, **[Contributing.md](Contributing.md)** 을 참고해주세요. 
+
 <h2 id="structure"> 🕹️ 소스코드 구조 (Source Code Structure) </h2>
 
 * Environment
