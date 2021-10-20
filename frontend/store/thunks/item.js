@@ -115,7 +115,8 @@ export const attemptUpdateItemContents = (itemId, item) => (dispatch) => {
   return updateItem(itemId, {
     content: item.content,
     title: item.title,
-    status: item.status
+    status: item.status,
+    created: new Date()
   }).then((item) => {
     // save response to itemCache
     dispatch(addItemCache(item));
