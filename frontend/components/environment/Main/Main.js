@@ -1,15 +1,16 @@
-import PropTypes from "prop-types";
-import R from "ramda";
-import React, { useEffect, useState } from "react";
-import ReactNotification from "react-notifications-component";
-import { useDispatch } from "react-redux";
-import { Redirect, Route, Switch } from "react-router";
-import AboutPage from "_pages/AboutPage";
-import LoginPage from "_pages/LoginPage";
-import RegisterPage from "_pages/RegisterPage";
-import RoutingPage from "_pages/RoutingPage";
-import WelcomePage from "_pages/WelcomePage";
-import { attemptGetCurrentUser } from "_thunks/user";
+import PropTypes from 'prop-types';
+import R from 'ramda';
+import React, { useEffect, useState } from 'react';
+import ReactNotification from 'react-notifications-component';
+import { useDispatch } from 'react-redux';
+import { Redirect, Route, Switch } from 'react-router';
+import NotFoundPage from '_frontend/components/pages/NotFoundPage';
+import AboutPage from '_pages/AboutPage';
+import LoginPage from '_pages/LoginPage';
+import RegisterPage from '_pages/RegisterPage';
+import RoutingPage from '_pages/RoutingPage';
+import WelcomePage from '_pages/WelcomePage';
+import { attemptGetCurrentUser } from '_thunks/user';
 
 export default function Main({ location }) {
   const dispatch = useDispatch();
@@ -57,7 +58,7 @@ export default function Main({ location }) {
 
             {/* 404 Fallback page */}
             <Route path="/error">
-              <div>페이지를 찾을 수 없습니다.</div>
+              <NotFoundPage />
             </Route>
             <Route path="*">
               <Redirect to="/error" />
