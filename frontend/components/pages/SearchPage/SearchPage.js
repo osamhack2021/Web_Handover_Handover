@@ -8,6 +8,7 @@ export default function SearchPage() {
   const [searchReusult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(true);
   const { searchQuery } = useParams();
+  document.title = `${searchQuery} - Handover Search`;
   console.log(`/api/item/algolia/${searchQuery}`);
   useEffect(() => {
     algoliaSearch(searchQuery).then((data) => {
