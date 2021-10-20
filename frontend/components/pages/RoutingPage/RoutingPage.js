@@ -6,13 +6,11 @@ import { Redirect, Route, Switch } from 'react-router';
 import { login } from '_actions/user';
 import Header from '_organisms/Header';
 import LeftPane from '_organisms/LeftPane';
-import EditorPage from '_pages/EditorPage';
 import ItemListPage from '_pages/ItemListPage';
 import ItemPage from '_pages/ItemPage';
 import ProfilePage from '_pages/ProfilePage';
 import RecoveryPage from '_pages/RecoveryPage';
 import SearchPage from '_pages/SearchPage';
-import TestPage from '_pages/TestPage';
 import { attemptGetGroup } from '_thunks/group';
 import { attemptGetUserItem } from '_thunks/item';
 import RecommendPage from '../RecommendPage';
@@ -65,7 +63,7 @@ export default function RoutingPage() {
               <Route exact path="/drafts" component={ItemListPage} />
 
               {/* Item Page */}
-              <Route exact path="/create" component={EditorPage} />
+              {/* <Route exact path="/create" component={ItemPage} /> */}
               <Route exact path="/item/:itemId" component={ItemPage} />
               <Route exact path="/item/:itemId/edit" component={ItemPage} />
               <Route exact path="/item/:itemId/settings" component={ItemPage} />
