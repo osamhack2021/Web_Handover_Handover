@@ -7,7 +7,7 @@
  </div>
 </p>
 <p align="center">
- <a href="https://www.notion.so/osam-handover/f9e9132e0b0c4832a3d77e27411241e0?v=fe68ef0118be4d11aa0b1d0f6e8c20ea">Documentation</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="bit.ly/osam-handover-presentation">Presentation</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="">Demo Video</a>
+ <a href="https://www.notion.so/osam-handover/f9e9132e0b0c4832a3d77e27411241e0?v=fe68ef0118be4d11aa0b1d0f6e8c20ea">Documentation</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="bit.ly/osam-handover-presentation">Presentation</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="https://bit.ly/osam-handover-video">Demo Video</a>
 </p>
 <p align="center">
  <img alt="GitHub language count" src="https://img.shields.io/github/contributors/osamhack2021/WEB_Handover_Handover?style=for-the-badge&logo">
@@ -173,7 +173,7 @@ npm run prd
 <h2 id="contribute"> 🙌 Handover에 기여하는 법 (How to contribute) </h2>
 
 Handover는 **오픈소스 프로젝트**로, 여러분들의 도움을 기다리고 있습니다.  
-Handover에 기여하고 싶으시다면, **[Contributing.md](Contributing.md)** 을 참고해주세요.
+Handover에 기여하고 싶으시다면, **[CONTRIBUTING.md](CONTRIBUTING.md)** 을 참고해주세요.
 
 <h2 id="structure"> 🕹️ 소스코드 구조 (Source Code Structure) </h2>
 
